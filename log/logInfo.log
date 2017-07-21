@@ -1,0 +1,14 @@
+2017-07-21 01:41:29.589 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection by.epam.bokhan.pool size: 10 connections
+2017-07-21 01:58:38.025 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection by.epam.bokhan.pool size: 10 connections
+2017-07-21 16:35:08.721 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection by.epam.bokhan.pool size: 10 connections
+2017-07-21 16:39:33.842 [http-nio-8080-exec-6] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection by.epam.bokhan.pool size: 10 connections
+2017-07-21 16:42:59.183 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection by.epam.bokhan.pool size: 10 connections
+2017-07-21 18:14:40.312 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection by.epam.bokhan.pool size: 10 connections
+2017-07-21 18:36:08.624 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-21 18:37:53.148 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-21 20:25:17.789 [localhost-startStop-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-21 20:26:41.684 [localhost-startStop-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-21 20:28:43.407 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-21 20:28:49.140 [http-nio-8080-exec-6] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not log in. Reason : Illegal operation on empty result set.
+2017-07-21 20:29:41.772 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-21 20:34:42.711 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections

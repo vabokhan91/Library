@@ -1,10 +1,9 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
-
-import java.sql.SQLException;
 
 /**
  * Created by vbokh on 13.07.2017.
@@ -16,12 +15,18 @@ public class LogoutCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws SQLException {
+    public void execute(RequestContent content) {
 
 
-        super.execute(content);
+        try {
+            super.execute(content);
+            String page = ConfigurationManager.getProperty("path.page.index");
+            content.insertParameter("page", page);
+        } catch (DAOException e) {
+            String page = ConfigurationManager.getProperty("path.page.error");
+            content.insertParameter("page", page);
+        }
 
-        String page = ConfigurationManager.getProperty("path.page.index");
-        content.insertAttributes("page", page);
+
     }
 }

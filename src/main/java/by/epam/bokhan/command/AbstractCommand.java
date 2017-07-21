@@ -1,6 +1,7 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.receiver.Receiver;
 
 import java.sql.SQLException;
@@ -15,8 +16,8 @@ public abstract class AbstractCommand {
         this.receiver = receiver;
     }
 
-    public void execute(RequestContent content) throws SQLException {
-        receiver.action(CommandType.takeCommandType(this), content);
+    public void execute(RequestContent content) throws DAOException{
+            receiver.action(CommandType.takeCommandType(this), content);
     }
 
     public Receiver getReceiver() {

@@ -1,6 +1,7 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
@@ -16,7 +17,7 @@ public class EmptyCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws SQLException {
+    public void execute(RequestContent content) throws DAOException {
 
     }
 }

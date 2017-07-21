@@ -1,4 +1,4 @@
-package by.epam.bokhan.dao.connectionpool;
+package by.epam.bokhan.pool;
 
 import java.sql.*;
 import java.util.Map;

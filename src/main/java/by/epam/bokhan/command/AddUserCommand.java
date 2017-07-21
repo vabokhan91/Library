@@ -1,12 +1,10 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.controller.Controller;
+import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
-
-import java.sql.SQLException;
 
 /**
  * Created by vbokh on 16.07.2017.
@@ -16,18 +14,22 @@ public class AddUserCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws SQLException {
+    public void execute(RequestContent content)  {
 
-        super.execute(content);
+        try {
+            super.execute(content);
+            String page = ConfigurationManager.getProperty("path.page.adduser");
+            content.insertParameter("page", page);
+            if(Boolean.parseBoolean((String) content.getRequestParameters().get("userIsAdded"))){
+                content.insertParameter("user_insert_status", MessageManager.getProperty("message.add_user_true"));
+            }else {
+                content.insertParameter("user_insert_status", MessageManager.getProperty("message.add_user_false"));
+            }
 
-        String page = ConfigurationManager.getProperty("path.page.adduser");
-        content.insertAttributes("page", page);
-        if (content.getRequestParameters().get("userIsAdded") == "true") {
-            content.insertAttributes("user_insert_status", MessageManager.getProperty("message.add_user_true"));
+        } catch (DAOException e) {
+            String page = ConfigurationManager.getProperty("path.page.error");
+            content.insertParameter("page", page);
         }
-        else {
-            content.insertAttributes("user_insert_status", MessageManager.getProperty("message.add_user_false"));
-        }
-        content.insertAttributes("invalidate", "false");
+        content.insertParameter("invalidate", "false");
     }
 }

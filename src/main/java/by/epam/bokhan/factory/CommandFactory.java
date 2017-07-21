@@ -18,7 +18,7 @@ public class CommandFactory {
                 CommandType currentCommand = CommandType.valueOf(action.toUpperCase());
                 current = currentCommand.getCommand();
             } catch (IllegalArgumentException e) {
-                content.insertAttributes("wrongAction", action + MessageManager.getProperty("message.wrongAction"));
+                content.insertParameter("wrongAction", action + MessageManager.getProperty("message.wrongAction"));
             }
         }
         return current;

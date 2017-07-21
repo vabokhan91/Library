@@ -15,6 +15,7 @@
     </select>
 </form>
 
+
 <form method = "POST" action = "/controller">
     <input type = "hidden" name = "command" value = "login"/>
     <fmt:message key="label.login"/> : <br/>

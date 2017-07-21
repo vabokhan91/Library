@@ -1,6 +1,6 @@
 package by.epam.bokhan.dao;
 
-import by.epam.bokhan.dao.connectionpool.ConnectionPool;
+import by.epam.bokhan.pool.ConnectionPool;
 import by.epam.bokhan.entity.User;
 
 import java.sql.Connection;
@@ -20,7 +20,7 @@ public class UserDAO extends AbstractDAO {
     public boolean addUser(String name, String surname, String patronymic, String address, int roleId, String login, String password, String mobilephone) throws SQLException {
         boolean result = false;
         Connection connection = null;
-        PreparedStatement st;
+        PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_INSERT_USER);
@@ -41,21 +41,15 @@ public class UserDAO extends AbstractDAO {
         } catch (SQLException e) {
             throw e;
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
+            closeStatement(st);
+            closeConnection(connection);
         }
     }
 
     public boolean removeUser(int id) throws SQLException {
         boolean result = false;
         Connection connection = null;
-        PreparedStatement st;
+        PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_REMOVE_USER);
@@ -68,13 +62,8 @@ public class UserDAO extends AbstractDAO {
         } catch (SQLException e) {
             throw e;
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(st);
+            closeConnection(connection);
         }
 
     }
@@ -82,7 +71,7 @@ public class UserDAO extends AbstractDAO {
     public User findUserById(int id) throws SQLException{
         User user = new User();
         Connection connection = null;
-        PreparedStatement st;
+        PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_FIND_USER);
@@ -102,13 +91,8 @@ public class UserDAO extends AbstractDAO {
         } catch (SQLException e) {
             throw e;
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeStatement(st);
+            closeConnection(connection);
         }
     }
 }

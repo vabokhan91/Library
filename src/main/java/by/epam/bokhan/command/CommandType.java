@@ -1,9 +1,9 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.receiver.UserReceiverImpl;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.List;
  */
 public enum CommandType {
     LOGIN(new LoginCommand(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws SQLException {
-            ((UserReceiverImpl) getCommand().getReceiver()).signIn(content);
+        public void doReceiver(RequestContent content) throws DAOException{
+            ((UserReceiverImpl) getCommand().getReceiver()).login(content);
         }
     },
     LOGOUT(new LogoutCommand(new UserReceiverImpl())) {
@@ -23,17 +23,17 @@ public enum CommandType {
         }
     },
     ADD_USER(new AddUserCommand(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws SQLException {
+        public void doReceiver(RequestContent content) throws DAOException {
             ((UserReceiverImpl) getCommand().getReceiver()).addUser(content);
         }
     },
     REMOVE_USER(new RemoveUserCommand(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws SQLException {
+        public void doReceiver(RequestContent content) throws DAOException {
             ((UserReceiverImpl) getCommand().getReceiver()).removeUser(content);
         }
     },
     FIND_USER(new FindUserCommand(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws SQLException {
+        public void doReceiver(RequestContent content) throws DAOException {
             ((UserReceiverImpl) getCommand().getReceiver()).findUser(content);
         }
     };
@@ -50,7 +50,7 @@ public enum CommandType {
         return command;
     }
 
-    public abstract void doReceiver(RequestContent content) throws SQLException;
+    public abstract void doReceiver(RequestContent content) throws DAOException;
 
     public static CommandType takeCommandType(AbstractCommand command) {
         ArrayList<CommandType> result = new ArrayList<>();

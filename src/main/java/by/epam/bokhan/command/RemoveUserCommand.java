@@ -1,11 +1,10 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
-
-import java.sql.SQLException;
 
 /**
  * Created by vbokh on 17.07.2017.
@@ -15,18 +14,22 @@ public class RemoveUserCommand extends AbstractCommand{
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws SQLException {
+    public void execute(RequestContent content) {
 
-        super.execute(content);
-
-        String page = ConfigurationManager.getProperty("path.page.remove_user");
-        content.insertAttributes("page", page);
-        if (Boolean.parseBoolean((String)content.getRequestParameters().get("isUserDeleted")) ) {
-            content.insertAttributes("user_remove_status", MessageManager.getProperty("message.remove_user_true"));
+        try {
+            super.execute(content);
+            String page = ConfigurationManager.getProperty("path.page.remove_user");
+            content.insertParameter("page", page);
+            if (Boolean.parseBoolean((String)content.getRequestParameters().get("isUserDeleted")) ) {
+                content.insertParameter("user_remove_status", MessageManager.getProperty("message.remove_user_true"));
+            }
+            else {
+                content.insertParameter("user_remove_status", MessageManager.getProperty("message.remove_user_false"));
+            }
+        } catch (DAOException e) {
+            String page = ConfigurationManager.getProperty("path.page.error");
+            content.insertParameter("page", page);
         }
-        else {
-            content.insertAttributes("user_remove_status", MessageManager.getProperty("message.remove_user_false"));
-        }
-        content.insertAttributes("invalidate", "false");
+        content.insertParameter("invalidate", "false");
     }
 }

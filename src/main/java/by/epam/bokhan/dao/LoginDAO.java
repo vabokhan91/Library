@@ -1,6 +1,6 @@
 package by.epam.bokhan.dao;
 
-import by.epam.bokhan.dao.connectionpool.ConnectionPool;
+import by.epam.bokhan.pool.ConnectionPool;
 import by.epam.bokhan.entity.User;
 
 import java.sql.*;
@@ -21,7 +21,7 @@ public class LoginDAO extends AbstractDAO{
     public User getUserByLogin(String login) throws SQLException {
         User user = new User();
         Connection connection = null;
-        PreparedStatement st;
+        PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN);
@@ -41,16 +41,9 @@ public class LoginDAO extends AbstractDAO{
         } catch (SQLException e) {
             throw e;
         } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-
+            closeStatement(st);
+            closeConnection(connection);
         }
-
         return user;
     }
 }

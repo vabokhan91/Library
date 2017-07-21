@@ -1,13 +1,10 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.logic.LoginLogic;
+import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
-
-import java.sql.SQLException;
-import java.util.Locale;
 
 /**
  * Created by vbokh on 13.07.2017.
@@ -18,19 +15,23 @@ public class LoginCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws SQLException {
+    public void execute(RequestContent content) {
 
-        super.execute(content);
+        try {
+            super.execute(content);
+            if (Boolean.parseBoolean((String) content.getRequestParameters().get("isValid"))) {
+                String page = ConfigurationManager.getProperty("path.page.main");
+                content.insertParameter("page", page);
+            } else {
+                content.insertParameter("errorLoginPassMessage", MessageManager.getProperty("message.loginerror"));
+                String page = ConfigurationManager.getProperty("path.page.index");
+                content.insertParameter("page", page);
+            }
+        } catch (DAOException e) {
+            String page = ConfigurationManager.getProperty("path.page.error");
+            content.insertParameter("page", page);
 
-
-        if (content.getRequestParameters().get("isValid").equals("true")) {
-            String page = ConfigurationManager.getProperty("path.page.main");
-            content.insertAttributes("page", page);
-        }else {
-            content.insertAttributes("errorLoginPassMessage", MessageManager.getProperty("message.loginerror"));
-            String page = ConfigurationManager.getProperty("path.page.index");
-            content.insertAttributes("page", page);
         }
-        content.insertAttributes("invalidate", "false");
+        content.insertParameter("invalidate", "false");
     }
 }

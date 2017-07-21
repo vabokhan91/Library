@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class RequestContent {
     private HashMap<String, Object> requestParameters;
+    private HashMap<String, Object> requestAttributes;
 
     public RequestContent() {
         requestParameters = new HashMap<>();
@@ -22,8 +23,12 @@ public class RequestContent {
     }
 
 
-    public void insertAttributes(String key, Object value) {
+    public void insertParameter(String key, Object value) {
         requestParameters.put(key, value);
+    }
+
+    public void insertAttribute(String key, Object attribute) {
+        requestAttributes.put(key, attribute);
     }
 
 
@@ -35,6 +40,12 @@ public class RequestContent {
         this.requestParameters = requestParameters;
     }
 
+    public HashMap<String, Object> getRequestAttributes() {
+        return requestAttributes;
+    }
 
+    public void setRequestAttributes(HashMap<String, Object> requestAttributes) {
+        this.requestAttributes = requestAttributes;
+    }
 }
 
