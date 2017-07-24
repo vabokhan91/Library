@@ -40,7 +40,7 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+
         if (request.getParameter("command") != null) {
             CommandFactory factory = new CommandFactory();
             RequestContent content = new RequestContent();
@@ -67,10 +67,16 @@ public class Controller extends HttpServlet {
             }
             if (page != null) {
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-                dispatcher.forward(request, response);
-                if (Boolean.parseBoolean((String) content.getRequestParameters().get("invalidate"))) {
-                    request.getSession().invalidate();
+                String typeOfTransition = (String) request.getAttribute("type_of_transition");
+                if(typeOfTransition== null || !typeOfTransition.equalsIgnoreCase("redirect")){
+                    dispatcher.forward(request, response);
+                    if (Boolean.parseBoolean((String) content.getRequestParameters().get("invalidate"))) {
+                        request.getSession().invalidate();
+                    }
+                }else {
+                    response.sendRedirect(page);
                 }
+
             }
         }
         else {

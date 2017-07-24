@@ -1,6 +1,7 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.entity.User;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
@@ -19,9 +20,20 @@ public class LoginCommand extends AbstractCommand {
 
         try {
             super.execute(content);
+
             if (Boolean.parseBoolean((String) content.getRequestParameters().get("isValid"))) {
-                String page = ConfigurationManager.getProperty("path.page.main");
-                content.insertParameter("page", page);
+                User user = (User)content.getRequestParameters().get("user");
+                int role = user.getRoleId();
+                if (role == 4) {
+                    String page = ConfigurationManager.getProperty("path.page.admin");
+                    content.insertParameter("page", page);
+                } else if (role == 3) {
+                    String page = ConfigurationManager.getProperty("path.page.librarian");
+                    content.insertParameter("page", page);
+                } else if (role == 2) {
+                    String page = ConfigurationManager.getProperty("path.page.authorized_user_main");
+                    content.insertParameter("page", page);
+                }
             } else {
                 content.insertParameter("errorLoginPassMessage", MessageManager.getProperty("message.loginerror"));
                 String page = ConfigurationManager.getProperty("path.page.index");

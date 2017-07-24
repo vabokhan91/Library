@@ -7,11 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="authorization_project" />
+        <module name="library" />
         <module name="library_project" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
-      <module name="library_project" target="1.8" />
+      <module name="library" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -18,18 +18,25 @@ public class AddUserCommand extends AbstractCommand {
 
         try {
             super.execute(content);
-            String page = ConfigurationManager.getProperty("path.page.adduser");
-            content.insertParameter("page", page);
-            if(Boolean.parseBoolean((String) content.getRequestParameters().get("userIsAdded"))){
-                content.insertParameter("user_insert_status", MessageManager.getProperty("message.add_user_true"));
-            }else {
-                content.insertParameter("user_insert_status", MessageManager.getProperty("message.add_user_false"));
-            }
+//            String page = ConfigurationManager.getProperty("path.page.adduser");
 
+
+            String page;
+            if ((Boolean) content.getRequestParameters().get("userIsAdded")) {
+//               content.insertParameter("user_insert_status", MessageManager.getProperty("message.add_user_true"));
+                page = "/controller?command=to_user_added_page";
+            }
+            else {
+//                content.insertParameter("user_remove_status", MessageManager.getProperty("message.remove_user_false"));
+                page = "/controller?command=to_user_not_added_page";
+            }
+            content.insertParameter("page", page);
+            content.insertParameter("type_of_transition", "redirect");
         } catch (DAOException e) {
             String page = ConfigurationManager.getProperty("path.page.error");
             content.insertParameter("page", page);
         }
         content.insertParameter("invalidate", "false");
+
     }
 }

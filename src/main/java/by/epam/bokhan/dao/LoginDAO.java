@@ -9,7 +9,7 @@ import java.sql.*;
  * Created by vbokh on 13.07.2017.
  */
 public class LoginDAO extends AbstractDAO{
-    private static final String SQL_SELECT_USER_BY_LOGIN = "Select id, name, surname, patronymic, address, role_id, login, password, mobile_phone, blocked  from user where login = ?";
+    private static final String SQL_SELECT_USER_BY_LOGIN = "Select library_card, name, surname, patronymic, address, role_id, login, password, mobile_phone, blocked  from user where login = ?";
 
     public LoginDAO() {
     }
@@ -29,12 +29,13 @@ public class LoginDAO extends AbstractDAO{
             ResultSet rs = null;
             rs = st.executeQuery();
             rs.next();
-            user.setId(rs.getInt("id"));
+            user.setId(rs.getInt("library_card"));
             user.setName(rs.getString("name"));
             user.setSurname(rs.getString("surname"));
             user.setPatronymic(rs.getString("patronymic"));
             user.setAddress(rs.getString("address"));
             user.setLogin(rs.getString("login"));
+            user.setRoleId(rs.getInt("role_id"));
             user.setPassword(rs.getString("password"));
             user.setMobilePhone(rs.getString("mobile_phone"));
             user.setBlocked(rs.getInt("blocked"));

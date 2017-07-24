@@ -7,7 +7,6 @@ import by.epam.bokhan.dao.UserDAO;
 import by.epam.bokhan.entity.User;
 import by.epam.bokhan.exception.DAOException;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,12 +44,12 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public void signOut(RequestContent content) {
-        System.out.println("SignOut dao");
         content.insertParameter("invalidate", "true");
     }
 
     public void addUser(RequestContent requestContent) throws DAOException{
         UserDAO userDAO = new UserDAO();
+        boolean isUserAdded = false;
         String name = (String) requestContent.getRequestParameters().get("username");
         String surname = (String) requestContent.getRequestParameters().get("usersurname");
         String patronymic = (String) requestContent.getRequestParameters().get("userpatronymic");
@@ -58,16 +57,17 @@ public class UserReceiverImpl implements UserReceiver {
         int role = Integer.parseInt((String) requestContent.getRequestParameters().get("user_role"));
         String login = (String) requestContent.getRequestParameters().get("login");
         String password = (String) requestContent.getRequestParameters().get("userpassword");
+        String hashedPassword = password != null ? DigestUtils.md5Hex(password) : null;
         String phone = (String) requestContent.getRequestParameters().get("usermobilephone");
         try {
-            boolean isUserAdded = userDAO.addUser(name, surname, patronymic, address, role, login, password, phone);
+            isUserAdded = userDAO.addUser(name, surname, patronymic, address, role, login, hashedPassword, phone);
             if (isUserAdded) {
-                requestContent.insertParameter("userIsAdded", String.valueOf(isUserAdded));
+                requestContent.insertParameter("userIsAdded", isUserAdded);
             }else {
-                requestContent.insertParameter("userIsAdded", "false");
+                requestContent.insertParameter("userIsAdded", isUserAdded);
             }
         } catch (SQLException e) {
-            requestContent.insertParameter("userIsAdded", "false");
+            requestContent.insertParameter("userIsAdded", isUserAdded);
             LOGGER.log(Level.ERROR, String.format("Can not add user. Reason : %s", e.getMessage()));
             throw new DAOException(e);
         }
@@ -77,9 +77,18 @@ public class UserReceiverImpl implements UserReceiver {
 
     public void removeUser(RequestContent content) throws DAOException {
         UserDAO dao = new UserDAO();
-        int id = Integer.parseInt((String) content.getRequestParameters().get("user_id"));
+        int id;
+        String login;
+        boolean isUserDeleted = false;
+        String typeOfSearch = (String) content.getRequestParameters().get("type_of_search");
         try {
-            boolean isUserDeleted = dao.removeUser(id);
+            if (typeOfSearch.equalsIgnoreCase("by_library_card")) {
+                id = Integer.parseInt((String) content.getRequestParameters().get("remove_query_value"));
+                isUserDeleted = dao.removeUserById(id);
+            } else if (typeOfSearch.equalsIgnoreCase("by_login")) {
+                login = (String) content.getRequestParameters().get("remove_query_value");
+                isUserDeleted = dao.removeUserByLogin(login);
+            }
             if (isUserDeleted) {
                 content.insertParameter("isUserDeleted", String.valueOf(isUserDeleted));
             }else {
@@ -94,18 +103,50 @@ public class UserReceiverImpl implements UserReceiver {
 
     public void findUser(RequestContent requestContent) throws DAOException{
         UserDAO dao = new UserDAO();
-        int id = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
+        int libraryCard;
+        String login;
+        User user = null;
+        String typeOfSearch = (String) requestContent.getRequestParameters().get("type_of_search");
         try {
-            User user = dao.findUserById(id);
+            if (typeOfSearch.equalsIgnoreCase("by_library_card")) {
+                libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("find_query_value"));
+                user = dao.findUserByLibraryCard(libraryCard);
+            }else if(typeOfSearch.equalsIgnoreCase("by_login")){
+                login = (String) requestContent.getRequestParameters().get("find_query_value");
+                user = dao.findUserByLogin(login);
+            }
             if (user != null) {
                 requestContent.insertParameter("foundUser", user);
             }else {
                 requestContent.insertParameter("foundUser", null);
             }
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             requestContent.insertParameter("foundUser", null);
             LOGGER.log(Level.ERROR, String.format("Can not find user. Reason : %s", e.getMessage()));
             throw new DAOException(e);
         }
     }
+
+    public void blockUser(RequestContent requestContent) throws DAOException{
+        UserDAO dao = new UserDAO();
+        int libraryCard;
+        String login;
+        boolean isUserBlocked = false;
+        String typeOfSearch = (String) requestContent.getRequestParameters().get("type_of_search");
+        try {
+            if (typeOfSearch.equalsIgnoreCase("by_library_card")) {
+                libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("block_query_value"));
+                isUserBlocked = dao.blockUserByLibraryCard(libraryCard);
+            }else if(typeOfSearch.equalsIgnoreCase("by_login")){
+                login = (String) requestContent.getRequestParameters().get("block_query_value");
+                isUserBlocked = dao.blockUserByLogin(login);
+            }
+            requestContent.insertParameter("isUserBlocked", isUserBlocked);
+        }catch (SQLException e) {
+            requestContent.insertParameter("foundUser", null);
+            LOGGER.log(Level.ERROR, String.format("Can not find user. Reason : %s", e.getMessage()));
+            throw new DAOException(e);
+        }
+    }
+
 }
