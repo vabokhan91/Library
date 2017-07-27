@@ -11,14 +11,15 @@ import by.epam.bokhan.receiver.Receiver;
  * Created by vbokh on 22.07.2017.
  */
 public class ToRegistrationPageCommand extends AbstractCommand {
+
     public ToRegistrationPageCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content)  {
 
-            String page = ConfigurationManager.getProperty("path.page.registration_page");
-            content.insertParameter("page", page);
-            content.insertParameter("invalidate", "false");
+            String page = ConfigurationManager.getProperty(REGISTRATION_PAGE);
+            content.insertParameter(PAGE, page);
+            content.insertParameter(INVALIDATE, false);
     }
 }

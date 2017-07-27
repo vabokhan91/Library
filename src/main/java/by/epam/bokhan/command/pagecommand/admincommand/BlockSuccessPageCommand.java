@@ -9,13 +9,16 @@ import by.epam.bokhan.receiver.Receiver;
  * Created by vbokh on 24.07.2017.
  */
 public class BlockSuccessPageCommand extends AbstractCommand{
+
+
+
     public BlockSuccessPageCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content)  {
-        String page = ConfigurationManager.getProperty("path.page.block_success");
-        content.insertParameter("page", page);
-        content.insertParameter("invalidate", "false");
+        String page = ConfigurationManager.getProperty(TO_BLOCK_SUCCESS_USER_PAGE);
+        content.insertParameter(PAGE, page);
+        content.insertParameter(INVALIDATE, false);
     }
 }

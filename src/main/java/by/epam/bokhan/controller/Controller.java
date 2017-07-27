@@ -3,10 +3,12 @@ package by.epam.bokhan.controller;
 import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.DAOException;
+import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.factory.CommandFactory;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.pool.ConnectionPool;
+import by.epam.bokhan.receiver.Receiver;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +30,14 @@ import java.util.Map;
 @WebServlet({"/controller"})
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
+    private final String COMMAND = "command";
+    private final String PAGE = "page";
+    private final String TYPE_OF_TRANSITION = "type_of_transition";
+    private final String REDIRECT = "redirect";
+    private final String INVALIDATE = "invalidate";
+    private final String INDEX_PAGE = "path.page.index";
+    private final String USER = "user";
+
     public Controller() {
     }
 
@@ -40,52 +50,50 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        if (request.getParameter("command") != null) {
+        if (request.getParameter(COMMAND) != null) {
             CommandFactory factory = new CommandFactory();
             RequestContent content = new RequestContent();
             content.extractValues(request);
             AbstractCommand command = factory.defineCommand(content);
-
             try {
                 command.execute(content);
-            } catch (DAOException e) {
+            } catch (ReceiverException e) {
                 LOGGER.log(Level.ERROR, e.getMessage());
             }
 
-            String page = (String) content.getRequestParameters().get("page");
-            HashMap<String, Object> s = content.getRequestParameters();
-            for (Map.Entry<String, Object> p : s.entrySet()) {
-                String first = p.getKey();
-                Object second =  p.getValue();
-//                kyda user'a
-                if (first.equalsIgnoreCase("user")) {
-                    request.getSession().setAttribute(first,second);
-                }else {
-                    request.setAttribute(first,second);
-                }
-            }
+            String page = (String) content.getRequestParameters().get(PAGE);
+            getAttributesFromContent(request, content);
             if (page != null) {
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-                String typeOfTransition = (String) request.getAttribute("type_of_transition");
-                if(typeOfTransition== null || !typeOfTransition.equalsIgnoreCase("redirect")){
+                String typeOfTransition = (String) request.getAttribute(TYPE_OF_TRANSITION);
+                if (typeOfTransition == null || !typeOfTransition.equalsIgnoreCase(REDIRECT)) {
                     dispatcher.forward(request, response);
-                    if (Boolean.parseBoolean((String) content.getRequestParameters().get("invalidate"))) {
+                    if ((Boolean) content.getRequestParameters().get(INVALIDATE)) {
                         request.getSession().invalidate();
                     }
-                }else {
+                } else {
                     response.sendRedirect(page);
                 }
-
             }
-        }
-        else {
-            String page = ConfigurationManager.getProperty("path.page.index");
+        } else {
+            String page = ConfigurationManager.getProperty(INDEX_PAGE);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
             dispatcher.forward(request, response);
 
         }
+    }
 
+    private void getAttributesFromContent(HttpServletRequest request, RequestContent content) {
+        HashMap<String, Object> s = content.getRequestParameters();
+        for (Map.Entry<String, Object> p : s.entrySet()) {
+            String first = p.getKey();
+            Object second = p.getValue();
+            if (first.equalsIgnoreCase(USER)) {
+                request.getSession().setAttribute(first, second);
+            } else {
+                request.setAttribute(first, second);
+            }
+        }
     }
 
     @Override

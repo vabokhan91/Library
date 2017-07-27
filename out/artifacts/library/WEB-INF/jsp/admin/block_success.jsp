@@ -12,7 +12,12 @@
 </head>
 <body>
 <fmt:message key="label.user.blocked_true" bundle="${messages}"/><br/>
-<a href="/controller?command=to_block_user_page"><fmt:message key="label.block_one_more_user" bundle="${messages}"/> </a><br/>
+
+<form method="get" action="/controller" accept-charset="UTF-8">
+    <input type="hidden" name="command" value="get_not_blocked_users"/>
+
+    <input type="submit" name="submit" value="<fmt:message key="label.block_one_more_user" bundle="${messages}"/>"/>
+</form>
 
 <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
 </body>

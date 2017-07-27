@@ -6,3 +6,63 @@
 2017-07-24 18:12:05.922 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
 2017-07-24 18:12:12.805 [http-nio-8080-exec-7] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not find user. Reason : Column 'id' not found.
 2017-07-24 18:13:35.301 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 18:53:53.052 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 18:54:29.426 [http-nio-8080-exec-8] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not find user. Reason : No value specified for parameter 1
+2017-07-24 18:54:51.264 [http-nio-8080-exec-1] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not find user. Reason : No value specified for parameter 1
+2017-07-24 18:56:14.419 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 18:56:23.402 [http-nio-8080-exec-7] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not find user. Reason : Can not block user. It is already blocked
+2017-07-24 19:01:34.099 [http-nio-8080-exec-6] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 19:01:41.357 [http-nio-8080-exec-8] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not block user. Reason : It is already blocked
+2017-07-24 19:02:55.384 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 19:03:00.561 [http-nio-8080-exec-6] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not block user. Reason : It is already blocked
+2017-07-24 19:08:38.631 [http-nio-8080-exec-6] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 19:08:44.433 [http-nio-8080-exec-8] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not block user. Reason : It is already blocked
+2017-07-24 19:10:16.242 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 19:10:21.627 [http-nio-8080-exec-7] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not block user. Reason : It is already blocked
+2017-07-24 19:19:14.314 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 19:19:18.900 [http-nio-8080-exec-7] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not block user. Reason : Already blocked
+2017-07-24 21:47:19.964 [http-nio-8080-exec-6] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 21:48:54.264 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-24 21:49:46.600 [http-nio-8080-exec-3] ERROR by.epam.bokhan.receiver.UserReceiverImpl - Can not unblock user. Reason : Already blocked
+2017-07-25 13:14:30.956 [http-nio-8080-exec-8] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-25 19:00:56.027 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-25 20:01:51.894 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-25 20:20:16.319 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-25 20:23:08.288 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-25 20:24:26.935 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-25 20:28:24.330 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-25 20:28:30.467 [http-nio-8080-exec-7] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.ReceiverException: by.epam.bokhan.exception.DAOException: Can not unblock user. Reason : Already blocked
+2017-07-25 20:29:48.729 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-07-25 20:29:54.284 [http-nio-8080-exec-7] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.DAOException: Can not unblock user. Reason : Already blocked
+2017-07-25 23:27:15.715 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-25 23:28:54.191 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-25 23:31:55.788 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-25 23:34:01.857 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-25 23:36:02.446 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-26 16:01:31.550 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-26 23:53:35.677 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-26 23:55:34.974 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 00:08:11.754 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 00:11:51.125 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 00:14:38.856 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 00:14:38.896 [http-nio-8080-exec-5] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.ReceiverException: Can not log in. Reason : Can not log in. No user with such login exists
+2017-07-27 00:15:53.168 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 00:16:06.869 [http-nio-8080-exec-4] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.ReceiverException: Can not log in. Reason : Can not log in. No user with such login exists
+2017-07-27 00:18:27.146 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 00:18:34.186 [http-nio-8080-exec-8] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.ReceiverException: Can not log in. Reason : Can not log in. No user with such login exists
+2017-07-27 00:18:37.010 [http-nio-8080-exec-9] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.ReceiverException: Can not log in. Reason : Can not log in. No user with such login exists
+2017-07-27 13:18:14.875 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 13:22:32.774 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 13:24:32.953 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 13:29:46.622 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 13:31:45.337 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 13:36:12.413 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 14:03:58.978 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 14:58:41.171 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 15:07:39.564 [http-nio-8080-exec-6] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 15:08:33.539 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 15:10:20.469 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 15:35:50.648 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 15:36:59.371 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 15:37:59.461 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10
+2017-07-27 15:40:27.240 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - Available connections: 10

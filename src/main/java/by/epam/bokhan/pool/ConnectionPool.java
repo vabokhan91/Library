@@ -5,8 +5,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by vbokh on 14.07.2017.
  */
-public class ConnectionPool<T extends Connection> {
+public class ConnectionPool{
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int POOL_SIZE = 10;
     private static Lock lock = new ReentrantLock();
@@ -30,7 +32,7 @@ public class ConnectionPool<T extends Connection> {
             initConnectionPool();
         } catch (ClassNotFoundException e) {
             LOGGER.log(Level.FATAL, String.format("Connection pool was not created. Reason : %s", e.getMessage()));
-            throw new ConnectionPoolException("Connection pool was not created.", e);
+            throw new ConnectionPoolException(e);
         }
     }
 
@@ -43,7 +45,7 @@ public class ConnectionPool<T extends Connection> {
                     isConnectionPoolCreated.set(true);
                 }
             } catch (ConnectionPoolException e) {
-                e.printStackTrace();
+               new RuntimeException(e);
             } finally {
                 lock.unlock();
             }
@@ -58,33 +60,16 @@ public class ConnectionPool<T extends Connection> {
         }
         if (!isAllConnectionsCreated()) {
             tryToRecreateConnections();
-            if (connectionQueue.size() != POOL_SIZE) {
-                LOGGER.log(Level.INFO, "Connection pool is not full. Available connections: " + connectionQueue.size());
+            if (connectionQueue.size() > 0) {
+                LOGGER.log(Level.INFO, "Available connections: " + connectionQueue.size());
             } else {
-                LOGGER.log(Level.INFO, String.format("All connections were created successfully. Connection pool size: %s connections", connectionQueue.size()));
+//                is it right
+                throw new RuntimeException();
             }
         } else {
             LOGGER.log(Level.INFO, String.format("All connections were created successfully. Connection pool size: %s connections", connectionQueue.size()));
         }
 
-    }
-
-    private void createConnectionAndAddToPool() {
-        try {
-            ProxyConnection connection = ConnectionCreator.getConnection();
-            connectionQueue.put(connection);
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, String.format("Connection was not created. Reason : %s", e.getMessage()));
-        } catch (InterruptedException e) {
-            LOGGER.log(Level.ERROR, String.format("Connection was not added to pool. Reason : %s", e.getMessage()));
-        }
-    }
-
-    private void tryToRecreateConnections() {
-        int difference = POOL_SIZE - connectionQueue.size();
-        for (int i = 0; i < difference; i++) {
-            createConnectionAndAddToPool();
-        }
     }
 
     private boolean isAllConnectionsCreated() {
@@ -96,13 +81,12 @@ public class ConnectionPool<T extends Connection> {
         try {
             connection = connectionQueue.take();
         } catch (InterruptedException e) {
-            System.out.println("Can not take connection");
-            e.printStackTrace();
+            LOGGER.log(Level.ERROR, String.format("Can not get connection from pool. Reason : %s", e.getMessage()));
         }
         return connection;
     }
 
-    public void releaseConnection(ProxyConnection connection) {
+    void releaseConnection(ProxyConnection connection) {
         try {
             if (connection.isValid(0)) {
                 if (!connectionQueue.offer(connection)) {
@@ -124,6 +108,33 @@ public class ConnectionPool<T extends Connection> {
             } catch (SQLException e) {
                 LOGGER.log(Level.ERROR, String.format("Can not close connection. Reason : %s", e.getMessage()));
             }
+        }
+        try {
+            Enumeration<Driver> drivers = DriverManager.getDrivers();
+            while (drivers.hasMoreElements()) {
+                Driver driver = drivers.nextElement();
+                DriverManager.deregisterDriver(driver);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.ERROR, String.format("Can not deregister driver. Reason : %s", e.getMessage()));
+        }
+    }
+
+    private void createConnectionAndAddToPool() {
+        try {
+            ProxyConnection connection = ConnectionCreator.getConnection();
+            connectionQueue.put(connection);
+        } catch (SQLException e) {
+            LOGGER.log(Level.ERROR, String.format("Connection was not created. Reason : %s", e.getMessage()));
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.ERROR, String.format("Connection was not added to pool. Reason : %s", e.getMessage()));
+        }
+    }
+
+    private void tryToRecreateConnections() {
+        int difference = POOL_SIZE - connectionQueue.size();
+        for (int i = 0; i < difference; i++) {
+            createConnectionAndAddToPool();
         }
     }
 }

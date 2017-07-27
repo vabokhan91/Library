@@ -9,14 +9,15 @@ import by.epam.bokhan.receiver.Receiver;
  * Created by vbokh on 23.07.2017.
  */
 public class ToAdminPageCommand extends AbstractCommand {
+
     public ToAdminPageCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content)  {
 
-        String page = ConfigurationManager.getProperty("path.page.admin");
-        content.insertParameter("page", page);
-        content.insertParameter("invalidate", "false");
+        String page = ConfigurationManager.getProperty(ADMIN_PAGE);
+        content.insertParameter(PAGE, page);
+        content.insertParameter(INVALIDATE, false);
     }
 }

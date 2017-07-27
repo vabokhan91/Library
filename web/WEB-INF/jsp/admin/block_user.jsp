@@ -12,26 +12,43 @@
 </head>
 <body>
 
-<form method="post" action="/controller" accept-charset="UTF-8">
-    <input type="hidden" name="command" value="block_user"/>
 
-    <fmt:message key="label.user.block_user" bundle="${messages}"/>
-    <select name="type_of_search">
-        <option value="by_library_card" ><fmt:message key="label.by_library_card" bundle="${messages}"/></option>
-        <option value="by_login"><fmt:message key="label.by.login" bundle="${messages}"/></option>
-    </select> :
-    <input type = "text" name = "block_query_value" value=""/><br/>
 
-    <input type="submit" name="submit" value=<fmt:message key="label.user.block_user" bundle="${messages}"/>/>
-</form>
-<%--<c:if test="${user_remove_status !=null}">
-    <c:choose>
-        <c:when test="${isUserDeleted == true}" >
-            <fmt:message key="message.remove_user_true" bundle="${messages}"/>
-        </c:when>
-        <c:otherwise><fmt:message key="message.remove_user_false" bundle="${messages}"/> </c:otherwise>
-    </c:choose>
-</c:if>--%>
+
+<table class="item-table">
+    <tr>
+        <th>Library Card</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Patronumic</th>
+        <th>Address</th>
+        <th>Role</th>
+        <th>Login</th>
+        <th>Mobile Phone</th>
+    </tr>
+
+    <c:forEach items="${not_blocked_users}" var="item">
+        <tr>
+            <td>${item.id}</td>
+            <td>${item.name}</td>
+            <td>${item.surname}</td>
+            <td>${item.patronymic}</td>
+            <td>${item.address}</td>
+            <td>${item.roleId}</td>
+            <td>${item.login}</td>
+            <td>${item.mobilePhone}</td>
+            <td><form method="post" action="/controller" accept-charset="UTF-8">
+                <input type="hidden" name="command" value="block_user"/>
+                <input type = "hidden" name = "block_query_value" value="${item.id}"/><br/>
+                <input type="submit" name="submit" value=<fmt:message key="label.user.block_user" bundle="${messages}"/>/>
+            </form> </td>
+
+        </tr>
+    </c:forEach>
+
+</table>
+
+
 <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/></a>
 
 </body>

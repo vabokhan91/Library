@@ -12,8 +12,8 @@ import java.io.IOException;
 public class EncodingFilter implements Filter {
     private String code;
 
-    public void init(FilterConfig fConfig) throws ServletException {
-        code = fConfig.getInitParameter("encoding");
+    public void init(FilterConfig config) throws ServletException {
+        code = config.getInitParameter("encoding");
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -22,7 +22,6 @@ public class EncodingFilter implements Filter {
             request.setCharacterEncoding(code);
             response.setCharacterEncoding(code);
         }
-
         chain.doFilter(request, response);
     }
 

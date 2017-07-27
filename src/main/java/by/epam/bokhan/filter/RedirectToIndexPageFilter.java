@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
         initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp")})
 public class RedirectToIndexPageFilter implements Filter {
     private String indexPath;
-    private ResourceBundle resourceBundle = ResourceBundle.getBundle("resource.config");
 
     public void init(FilterConfig fConfig) throws ServletException {
         indexPath = fConfig.getInitParameter("INDEX_PATH");

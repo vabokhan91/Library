@@ -9,14 +9,17 @@ import by.epam.bokhan.receiver.Receiver;
  * Created by vbokh on 23.07.2017.
  */
 public class ToRemoveUserPageCommand extends AbstractCommand {
+
+
+
     public ToRemoveUserPageCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content)  {
 
-        String page = ConfigurationManager.getProperty("path.page.remove_user");
-        content.insertParameter("page", page);
-        content.insertParameter("invalidate", "false");
+        String page = ConfigurationManager.getProperty(REMOVE_USER_PAGE);
+        content.insertParameter(PAGE, page);
+        content.insertParameter(INVALIDATE, false);
     }
 }

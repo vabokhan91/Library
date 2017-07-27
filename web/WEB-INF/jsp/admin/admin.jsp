@@ -25,11 +25,23 @@
 
         <a href="/controller?command=to_Remove_User_Page" ><fmt:message key="label.remove_user" bundle="${message}"/> </a><br/>
 
-        <a href="/controller?command=to_Find_User_Page" ><fmt:message key="label.button.find_user" bundle="${message}"/> </a>
+        <a href="/controller?command=to_Find_User_Page" ><fmt:message key="label.button.find_user" bundle="${message}"/> </a><br/>
 
-        <a href="/controller?command=to_block_user_page" ><fmt:message key="label.user.block_user" bundle="${message}"/> </a>
+        <form method="get" action="/controller" accept-charset="UTF-8">
+                <input type="hidden" name="command" value="get_not_blocked_users"/>
 
-        <%--<a href = "jsp/add_user.jsp">Add User</a>--%>
+                <input type="submit" name="submit" value="<fmt:message key="label.user.block_user" bundle="${message}"/> "/>
+        </form>
+
+        <%--<a href="/controller?command=to_block_user_page" ><fmt:message key="label.user.block_user" bundle="${message}"/> </a><br/>--%>
+
+        <form method="get" action="/controller" accept-charset="UTF-8">
+                <input type="hidden" name="command" value="get_blocked_users"/>
+
+                <input type="submit" name="submit" value="<fmt:message key="label.user.unblock_user" bundle="${message}"/> "/>
+        </form>
+
+
         <br/>
         <a href = "/controller?command=logout">Log Out</a>
 

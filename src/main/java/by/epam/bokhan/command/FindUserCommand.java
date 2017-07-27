@@ -1,7 +1,7 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.exception.DAOException;
+import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
@@ -10,6 +10,7 @@ import by.epam.bokhan.receiver.Receiver;
  * Created by vbokh on 17.07.2017.
  */
 public class FindUserCommand extends AbstractCommand {
+
     public FindUserCommand(Receiver receiver) {
         super(receiver);
     }
@@ -17,18 +18,18 @@ public class FindUserCommand extends AbstractCommand {
     public void execute(RequestContent content) {
         try {
             super.execute(content);
-            String page = ConfigurationManager.getProperty("path.page.user_info");
-            content.insertParameter("page", page);
-            if (content.getRequestParameters().get("foundUser") != null) {
-                content.insertParameter("user_found_status", MessageManager.getProperty("message.found_user_true"));
+            String page = ConfigurationManager.getProperty(USER_INFO_PAGE);
+            content.insertParameter(PAGE, page);
+            if (content.getRequestParameters().get(FOUND_USER) != null) {
+                content.insertParameter(USER_FOUND_STATUS, MessageManager.getProperty(MESSAGE_FOUND_USER_TRUE));
             } else {
-                content.insertParameter("user_found_status", MessageManager.getProperty("message.found_user_false"));
+                content.insertParameter(USER_FOUND_STATUS, MessageManager.getProperty(MESSAGE_FOUND_USER_FALSE));
             }
-        } catch (DAOException e) {
+        } catch (ReceiverException e) {
 //            error page
-            String page = ConfigurationManager.getProperty("path.page.error");
-            content.insertParameter("page", page);
+            String page = ConfigurationManager.getProperty(ERROR_PAGE);
+            content.insertParameter(PAGE, page);
         }
-        content.insertParameter("invalidate", "false");
+        content.insertParameter(INVALIDATE, false);
     }
 }

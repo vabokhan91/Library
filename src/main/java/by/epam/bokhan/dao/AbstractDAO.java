@@ -1,7 +1,5 @@
 package by.epam.bokhan.dao;
 
-import by.epam.bokhan.entity.User;
-import by.epam.bokhan.manager.ConfigurationManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,13 +13,8 @@ import java.sql.Statement;
  */
 public abstract class AbstractDAO {
     private static final Logger LOGGER = LogManager.getLogger();
-    protected Connection connection;
 
     public AbstractDAO() {
-    }
-
-    public AbstractDAO(Connection connection) {
-        this.connection = connection;
     }
 
     void closeStatement(Statement statement) {

@@ -9,13 +9,16 @@ import by.epam.bokhan.receiver.Receiver;
  * Created by vbokh on 24.07.2017.
  */
 public class ToAddUserPageCommand extends AbstractCommand{
+
+
+
     public ToAddUserPageCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content)  {
-        String page = ConfigurationManager.getProperty("path.page.adduser");
-        content.insertParameter("page", page);
-        content.insertParameter("invalidate", "false");
+        String page = ConfigurationManager.getProperty(TO_ADD_USER_PAGE);
+        content.insertParameter(PAGE, page);
+        content.insertParameter(INVALIDATE, false);
     }
 }
