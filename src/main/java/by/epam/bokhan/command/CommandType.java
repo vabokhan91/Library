@@ -2,10 +2,8 @@ package by.epam.bokhan.command;
 
 import by.epam.bokhan.command.pagecommand.*;
 import by.epam.bokhan.command.pagecommand.admincommand.*;
-import by.epam.bokhan.command.pagecommand.commoncommand.ToAddUserPageCommand;
+import by.epam.bokhan.command.pagecommand.commoncommand.*;
 import by.epam.bokhan.command.pagecommand.librariancommand.ToLibrarianMainPageCommand;
-import by.epam.bokhan.command.pagecommand.commoncommand.ToUserAddedPage;
-import by.epam.bokhan.command.pagecommand.commoncommand.ToUserNotAddedPage;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.UserReceiverImpl;
@@ -127,6 +125,26 @@ public enum CommandType {
     },GET_NOT_BLOCKED_USERS(new GetNotBlockedUsers(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getNotBlockedUsers(content);
+        }
+    },GET_USERS_FOR_REMOVAL(new GetUsersForRemoval(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).getAllUsers(content);
+        }
+    },GET_ALL_USERS(new GetAllUsers(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).getAllUsers(content);
+        }
+    },TO_SHOW_USERS_PAGE(new ToShowUsersPage(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },GET_EXPLICIT_USER_INFO(new GetExplicitUserInfo(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).getExplicitUserInfo(content);
+        }
+    },TO_EXPLICIT_USER_INFO_PAGE(new ToExplicitUserPage(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
         }
     };
 

@@ -4,7 +4,7 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="message"/>
-<c:if test="${user.roleId!=3}">
+<c:if test="${user.role!=2}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>

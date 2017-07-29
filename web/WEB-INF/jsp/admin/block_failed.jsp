@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.roleId!=4}">
+<c:if test="${user.role.ordinal()!=3}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>

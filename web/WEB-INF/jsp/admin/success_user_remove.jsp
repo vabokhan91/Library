@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.roleId!=4}">
+<c:if test="${user.role.ordinal()!=3}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -12,7 +12,7 @@
 </head>
 <body>
 <fmt:message key="message.remove_user_true" bundle="${messages}"/><br/>
-<a href="/controller?command=to_remove_user_page"><fmt:message key="label.remove.one_more_user" bundle="${messages}"/> </a><br/>
+<a href="/controller?command=get_users_for_removal"><fmt:message key="label.remove.one_more_user" bundle="${messages}"/> </a><br/>
 
 <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
 </body>

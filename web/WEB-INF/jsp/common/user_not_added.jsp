@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.roleId!=4 && user.roleId!=3}">
+<c:if test="${user.role.ordinal()!=3 && user.role.ordinal()!=2}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -16,7 +16,7 @@
 <a href="/controller?command=to_add_user_page"><fmt:message key="label.try.once.again" bundle="${messages}"/> </a><br/>
 
 <c:choose>
-    <c:when test="${user.roleId==4}">
+    <c:when test="${user.role.ordinal()==3}">
         <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
     </c:when>
     <c:otherwise>

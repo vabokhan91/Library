@@ -5,16 +5,15 @@
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.roleId!=4 && user.roleId!=3}">
+<c:if test="${user.role.ordinal()!=3 && user.role.ordinal()!=2}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>MainPage</title></head>
+    <title>Find USer</title></head>
 
 <body>
-<h3>Find User</h3>
 
 
 <form method="post" action="/controller">

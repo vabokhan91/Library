@@ -1,5 +1,7 @@
 package by.epam.bokhan.entity;
 
+import java.util.ArrayList;
+
 /**
  * Created by vbokh on 13.07.2017.
  */
@@ -9,22 +11,14 @@ public class User {
     private String surname;
     private String patronymic;
     private String address;
-    private int roleId;
+    private Role role;
     private String login;
     private String password;
     private String mobilePhone;
     private boolean isBlocked;
+    private ArrayList<Order> orders = new ArrayList<>();
 
     public User() {
-    }
-
-    public User(int id, String name, String surname, String patronymic, int roleId, String login) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.patronymic = patronymic;
-        this.roleId = roleId;
-        this.login = login;
     }
 
     public int getId() {
@@ -67,12 +61,12 @@ public class User {
         this.patronymic = patronymic;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getAddress() {
@@ -109,6 +103,14 @@ public class User {
         } else isBlocked = true;
     }
 
+    public ArrayList<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(ArrayList<Order> orders) {
+        this.orders = orders;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -117,7 +119,7 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", patronymic='" + patronymic + '\'' +
                 ", address='" + address + '\'' +
-                ", roleId=" + roleId +
+                ", role=" + role +
                 ", login='" + login + '\'' +
                 ", mobilePhone='" + mobilePhone + '\'' +
                 '}';

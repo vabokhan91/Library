@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <fmt:setBundle basename="resource.config" var="config"/>
-<c:if test="${user.roleId!=3 && user.roleId!=4}">
+<c:if test="${user.role.ordinal()!=2 && user.role.ordinal()!=3}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -29,11 +29,11 @@
     <input type = "text" name = "useraddress" value=""/><br/>
 
     <c:choose>
-        <c:when test="${user.roleId == 4}">
+        <c:when test="${user.role.ordinal() == 3}">
             <select name="user_role">
-                <option  value="4">Admin</option>
-                <option  value="3">Librarian</option>
-                <option value="2">User</option>
+                <option  value="3">Admin</option>
+                <option  value="2">Librarian</option>
+                <option value="1">User</option>
             </select>
 
             <fmt:message key="label.login" bundle="${messages}"/> :
@@ -45,7 +45,7 @@
         </c:when>
         <c:otherwise>
             <select name="user_role">
-                <option value="2">User</option>
+                <option value="1">User</option>
             </select>
         </c:otherwise>
     </c:choose>

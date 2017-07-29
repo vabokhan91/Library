@@ -1,8 +1,8 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.entity.Role;
 import by.epam.bokhan.entity.User;
-import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
@@ -24,16 +24,22 @@ public class LoginCommand extends AbstractCommand {
 
             if ((Boolean) content.getRequestParameters().get(IS_VALID)) {
                 User user = (User)content.getRequestParameters().get(USER);
-                int role = user.getRoleId();
-                if (role == 4) {
-                    String page = ConfigurationManager.getProperty(ADMIN_PAGE);
-                    content.insertParameter(PAGE, page);
-                } else if (role == 3) {
-                    String page = ConfigurationManager.getProperty(LIBRARIAN_PAGE);
-                    content.insertParameter(PAGE, page);
-                } else if (role == 2) {
-                    String page = ConfigurationManager.getProperty(USER_MAIN_PAGE);
-                    content.insertParameter(PAGE, page);
+                Role role = user.getRole();
+                String page;
+
+                switch (role) {
+                    case CLIENT:
+                        page = ConfigurationManager.getProperty(USER_MAIN_PAGE);
+                        content.insertParameter(PAGE, page);
+                        break;
+                    case LIBRARIAN:
+                        page = ConfigurationManager.getProperty(LIBRARIAN_PAGE);
+                        content.insertParameter(PAGE, page);
+                        break;
+                    case ADMINISTRATOR:
+                        page = ConfigurationManager.getProperty(ADMIN_PAGE);
+                        content.insertParameter(PAGE, page);
+                        break;
                 }
             } else {
                 content.insertParameter(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty(LOGIN_ERROR_MESSAGE));

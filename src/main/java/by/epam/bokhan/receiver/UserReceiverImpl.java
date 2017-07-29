@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserReceiverImpl implements UserReceiver {
@@ -52,6 +53,7 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             User user = userDAO.getUserByLogin(login);
             isRightData = user.getLogin().equals(login) && user.getPassword().equals(hash);
+            user.setPassword(null);
             content.insertParameter(IS_VALID, isRightData);
             content.insertParameter(USER, user);
         } catch (DAOException e) {
@@ -92,29 +94,28 @@ public class UserReceiverImpl implements UserReceiver {
 
     }
 
+    public void getAllUsers(RequestContent requestContent) throws ReceiverException{
+        UserDAO dao = new UserDAOImpl();
+        ArrayList<User> users;
+        try {
+            users = dao.getAllUsers();
+            requestContent.insertParameter("users", users);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
     public void removeUser(RequestContent content) throws ReceiverException {
         UserDAOImpl dao = new UserDAOImpl();
-        int id;
-        String login;
+        int libraryCard;
         boolean isUserDeleted = false;
-        String typeOfSearch = (String) content.getRequestParameters().get(TYPE_OF_SEARCH);
         try {
-            if (typeOfSearch.equalsIgnoreCase(BY_LIBRARY_CARD)) {
-                id = Integer.parseInt((String) content.getRequestParameters().get(REMOVE_QUERY_VALUE));
-                isUserDeleted = dao.removeUserById(id);
-            } else if (typeOfSearch.equalsIgnoreCase(BY_LOGIN)) {
-                login = (String) content.getRequestParameters().get(REMOVE_QUERY_VALUE);
-                isUserDeleted = dao.removeUserByLogin(login);
-            }
-            if (isUserDeleted) {
-                content.insertParameter(IS_USER_DELETED, isUserDeleted);
-            } else {
-                content.insertParameter(IS_USER_DELETED, isUserDeleted);
-            }
+                libraryCard = Integer.parseInt((String) content.getRequestParameters().get(REMOVE_QUERY_VALUE));
+                isUserDeleted = dao.removeUserByLibraryCard(libraryCard);
+            content.insertParameter(IS_USER_DELETED, isUserDeleted);
         } catch (DAOException e) {
             content.insertParameter(IS_USER_DELETED, isUserDeleted);
-            LOGGER.log(Level.ERROR, String.format("Can not remove user. Reason : %s", e.getMessage()));
-            throw new ReceiverException(e);
+            throw new ReceiverException(String.format("Can not remove user. Reason : %s", e.getMessage()), e);
         }
     }
 
@@ -188,6 +189,18 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             blockedUsers = dao.getNotBlockedUsers();
             requestContent.insertParameter("not_blocked_users", blockedUsers);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    public void getExplicitUserInfo(RequestContent requestContent) throws ReceiverException{
+        UserDAOImpl dao = new UserDAOImpl();
+        User user;
+        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+        try {
+            user = dao.getExplicitUserInfo(libraryCard);
+            requestContent.insertParameter("foundUser", user);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
