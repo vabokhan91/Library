@@ -8,15 +8,15 @@ import by.epam.bokhan.receiver.Receiver;
 /**
  * Created by vbokh on 17.07.2017.
  */
-public class RemoveUser extends AbstractCommand{
+public class RemoveUserCommand extends AbstractCommand{
 
-    public RemoveUser(Receiver receiver) {
+    public RemoveUserCommand(Receiver receiver) {
         super(receiver);
     }
 
-    public void execute(RequestContent content) {
+    public void execute(RequestContent content) throws ReceiverException{
 
-        try {
+
             super.execute(content);
             String page;
             if ((Boolean) content.getRequestParameters().get(IS_USER_DELETED))  {
@@ -27,10 +27,7 @@ public class RemoveUser extends AbstractCommand{
             }
             content.insertParameter(PAGE, page);
             content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
-        } catch (ReceiverException e) {
-            String page = ConfigurationManager.getProperty(ERROR_PAGE);
-            content.insertParameter(PAGE, page);
-        }
+
         content.insertParameter(INVALIDATE, false);
     }
 }

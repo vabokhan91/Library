@@ -55,37 +55,38 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter(COMMAND) != null) {
+            String page;
             CommandFactory factory = new CommandFactory();
             RequestContent content = new RequestContent();
             content.extractValues(request);
             AbstractCommand command = factory.defineCommand(content);
             try {
                 command.execute(content);
-            } catch (ReceiverException e) {
-                LOGGER.log(Level.ERROR, e.getMessage());
-            }
-
-            String page = (String) content.getRequestParameters().get(PAGE);
-            getAttributesFromContent(request, content);
-            if (page != null) {
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-                String typeOfTransition = (String) request.getAttribute(TYPE_OF_TRANSITION);
-                if (typeOfTransition == null || !typeOfTransition.equalsIgnoreCase(REDIRECT)) {
-                    if ((Boolean) content.getRequestParameters().get(INVALIDATE)) {
-                        request.getSession().invalidate();
+                page = (String) content.getRequestParameters().get(PAGE);
+                getAttributesFromContent(request, content);
+                if (page != null) {
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+                    String typeOfTransition = (String) request.getAttribute(TYPE_OF_TRANSITION);
+                    if (typeOfTransition == null || !typeOfTransition.equalsIgnoreCase(REDIRECT)) {
+                        if ((Boolean) content.getRequestParameters().get(INVALIDATE)) {
+                            request.getSession().invalidate();
+                        }
+                        dispatcher.forward(request, response);
+                    } else {
+                        response.sendRedirect(page);
                     }
-                    dispatcher.forward(request, response);
                 } else {
-                    response.sendRedirect(page);
-                }
-            }
-        } else {
-            String page = ConfigurationManager.getProperty(INDEX_PAGE);
+            page = ConfigurationManager.getProperty(INDEX_PAGE);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
             dispatcher.forward(request, response);
 
-        }
-    }
+        }}catch (ReceiverException e) {
+                page = "/controller?command=error_page";
+                LOGGER.log(Level.ERROR, e.getMessage());
+                response.sendRedirect(page);
+            }
+
+    }}
 
     private void getAttributesFromContent(HttpServletRequest request, RequestContent content) {
         HashMap<String, Object> s = content.getRequestParameters();

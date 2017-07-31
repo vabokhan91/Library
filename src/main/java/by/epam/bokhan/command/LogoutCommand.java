@@ -9,20 +9,17 @@ import by.epam.bokhan.receiver.Receiver;
 /**
  * Created by vbokh on 13.07.2017.
  */
-public class Logout extends AbstractCommand {
+public class LogoutCommand extends AbstractCommand {
 
-    public Logout(Receiver receiver) {
+    public LogoutCommand(Receiver receiver) {
         super(receiver);
     }
 
-    public void execute(RequestContent content) {
-        try {
+    public void execute(RequestContent content) throws ReceiverException{
+
             super.execute(content);
             String page = ConfigurationManager.getProperty(INDEX_PAGE);
             content.insertParameter(PAGE, page);
-        } catch (ReceiverException e) {
-            String page = ConfigurationManager.getProperty(ERROR_PAGE);
-            content.insertParameter(PAGE, page);
-        }
+
     }
 }

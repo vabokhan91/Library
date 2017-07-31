@@ -259,21 +259,21 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
-    public boolean unblockUserByLibraryCard(int libraryCard) throws DAOException {
+    public boolean unblockUser(int libraryCard) throws DAOException {
         boolean isUnblocked = false;
         Connection connection = null;
         PreparedStatement st = null;
         PreparedStatement userUnblockedStatus = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            userUnblockedStatus = connection.prepareStatement(SQL_BLOCK_STATUS_BY_LIBRARY_CARD);
+           /* userUnblockedStatus = connection.prepareStatement(SQL_BLOCK_STATUS_BY_LIBRARY_CARD);
             userUnblockedStatus.setInt(1, libraryCard);
             ResultSet resultSet = userUnblockedStatus.executeQuery();
             resultSet.next();
             int status = resultSet.getInt(BLOCK_FIELD);
             if (status == 0) {
                 throw new SQLException("Already unblocked");
-            }
+            }*/
             st = connection.prepareStatement(SQL_UNBLOCK_USER_BY_CARD);
             st.setInt(1, libraryCard);
             int res = st.executeUpdate();
@@ -284,7 +284,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not unblock user. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(userUnblockedStatus);
+//            closeStatement(userUnblockedStatus);
             closeStatement(st);
             closeConnection(connection);
         }

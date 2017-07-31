@@ -8,22 +8,18 @@ import by.epam.bokhan.receiver.Receiver;
 /**
  * Created by vbokh on 27.07.2017.
  */
-public class GetBlockedUsers extends AbstractCommand{
+public class GetBlockedUsersCommand extends AbstractCommand{
 
-    public GetBlockedUsers(Receiver receiver) {
+    public GetBlockedUsersCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException {
-        try {
+
             super.execute(content);
             String page = TO_UNBLOCK_USER_PAGE_COMMAND;
             content.insertParameter(PAGE, page);
-        } catch (ReceiverException e) {
-            String page = TO_UNBLOCK_USER_FAILED_PAGE_COMMAND;
-            content.insertParameter(PAGE, page);
-            throw e;
-        }
+
         content.insertParameter(INVALIDATE, false);
     }
 }

@@ -9,17 +9,17 @@ import by.epam.bokhan.receiver.Receiver;
 /**
  * Created by vbokh on 31.07.2017.
  */
-public class EditUser extends AbstractCommand {
+public class EditUserCommand extends AbstractCommand {
 
 
 
-    public EditUser(Receiver receiver) {
+    public EditUserCommand(Receiver receiver) {
         super(receiver);
     }
 
-    public void execute(RequestContent content)  {
+    public void execute(RequestContent content) throws ReceiverException {
 
-        try {
+
             super.execute(content);
             String page;
             if ((Boolean) content.getRequestParameters().get(IS_USER_EDITED)) {
@@ -30,11 +30,7 @@ public class EditUser extends AbstractCommand {
             }
             content.insertParameter(PAGE, page);
             content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
-        } catch (ReceiverException e) {
-            
-            String page = ConfigurationManager.getProperty(TO_USER_NOT_EDITED_PAGE);
-            content.insertParameter(PAGE, page);
-        }
+
         content.insertParameter(INVALIDATE, false);
 
     }

@@ -16,24 +16,37 @@ import java.util.ResourceBundle;
  * Created by vbokh on 13.07.2017.
  */
 class ConnectionCreator {
-    private static final Logger LOGGER = LogManager.getLogger();
+
     private static final String DB_URL = "db.url";
     private static final String DB_USER = "db.user";
     private static final String DB_PASSWORD = "db.password";
+    private static final String DB_CONFIG = "/resource/database";
     private static ResourceBundle resourceBundle;
+    private static String url;
+    private static String login;
+    private static String password;
+
+
     static {
         try {
-            resourceBundle = PropertyResourceBundle.getBundle("/resource/database");
+            resourceBundle = PropertyResourceBundle.getBundle(DB_CONFIG);
+            url = resourceBundle.getString(DB_URL);
+            login = resourceBundle.getString(DB_USER);
+            password = resourceBundle.getString(DB_PASSWORD);
+
         } catch (MissingResourceException e) {
-            LOGGER.log(Level.FATAL, String.format("Can not find resourcebundle. Reason : %s", e.getMessage()));
+            throw new RuntimeException(String.format("Can not find resourcebundle. Reason : %s", e.getMessage()));
         }
     }
-    private static String url = resourceBundle.getString(DB_URL);
-    private static String login = resourceBundle.getString(DB_USER);
-    private static String password = resourceBundle.getString(DB_PASSWORD);
 
-    static ProxyConnection getConnection() throws SQLException {
-        Connection connection = DriverManager.getConnection(url, login, password);
+    static ProxyConnection getConnection() throws ConnectionPoolException{
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(url, login, password);
+
+        } catch (SQLException e) {
+            throw new ConnectionPoolException(String.format("Connection was not created. Reason : %s", e.getMessage()), e);
+        }
         return new ProxyConnection(connection);
     }
 }

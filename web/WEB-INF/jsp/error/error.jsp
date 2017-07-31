@@ -2,12 +2,6 @@
 <html>
 <head><title>Error Page</title></head>
 <body>
-    Request from URI : ${pageContext.errorData.requestURI} is failed
-    <br/>
-    Servlet name or type : ${pageContext.errorData.servletName}
-    <br/>
-    Status code : ${pageContext.errorData.statusCode}
-    <br/>
-    <br/>
+   Sorry, something gone wrong...
 
     </body></html>

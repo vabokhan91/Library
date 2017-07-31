@@ -19,7 +19,7 @@ public interface UserDAO {
 
     boolean blockUserByLibraryCard(int librarianCard) throws DAOException;
 
-    boolean unblockUserByLibraryCard(int libraryCard) throws DAOException ;
+    boolean unblockUser(int libraryCard) throws DAOException ;
 
     User getUserByLogin(String login) throws DAOException;
 

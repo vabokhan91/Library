@@ -8,9 +8,6 @@ import by.epam.bokhan.entity.User;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,7 +160,7 @@ public class UserReceiverImpl implements UserReceiver {
         boolean isUserUnblocked = false;
         try {
             libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(UNBLOCK_QUERY_VALUE));
-            isUserUnblocked = dao.unblockUserByLibraryCard(libraryCard);
+            isUserUnblocked = dao.unblockUser(libraryCard);
             requestContent.insertParameter(IS_USER_UNBLOCKED, isUserUnblocked);
         } catch (DAOException e) {
             requestContent.insertParameter(IS_USER_UNBLOCKED, isUserUnblocked);

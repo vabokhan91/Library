@@ -4,6 +4,7 @@ import by.epam.bokhan.command.navigation.admin.*;
 import by.epam.bokhan.command.navigation.common.*;
 import by.epam.bokhan.command.navigation.librarian.ToLibrarianMainPage;
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.UserReceiverImpl;
 
@@ -15,32 +16,36 @@ import java.util.List;
  * Created by vbokh on 13.07.2017.
  */
 public enum CommandType {
-    LOGIN(new Login(new UserReceiverImpl())) {
+    LOGIN(new LoginCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException{
             ((UserReceiverImpl) getCommand().getReceiver()).login(content);
         }
     },
-    LOGOUT(new Logout(new UserReceiverImpl())) {
+    LOGOUT(new LogoutCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) {
             ((UserReceiverImpl) getCommand().getReceiver()).signOut(content);
         }
     },
-    ADD_USER(new AddUser(new UserReceiverImpl())) {
+    ERROR_PAGE(new ErrorPage(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) {
+        }
+    },
+    ADD_USER(new AddUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).addUser(content);
         }
     },
-    REMOVE_USER(new RemoveUser(new UserReceiverImpl())) {
+    REMOVE_USER(new RemoveUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).removeUser(content);
         }
     },
-    FIND_USER(new FindUser(new UserReceiverImpl())) {
+    FIND_USER(new FindUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).findUser(content);
         }
     },
-    REGISTER(new RegisterUser(new UserReceiverImpl())) {
+    REGISTER(new RegisterUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).addUser(content);
         }
@@ -92,7 +97,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },BLOCK_USER(new BlockUser(new UserReceiverImpl())) {
+    },BLOCK_USER(new BlockUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).blockUser(content);
         }
@@ -108,7 +113,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },UNBLOCK_USER(new UnblockUser(new UserReceiverImpl())) {
+    },UNBLOCK_USER(new UnblockUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).unblockUser(content);
         }
@@ -120,19 +125,19 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },GET_BLOCKED_USERS(new GetBlockedUsers(new UserReceiverImpl())) {
+    },GET_BLOCKED_USERS(new GetBlockedUsersCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getBlockedUsers(content);
         }
-    },GET_NOT_BLOCKED_USERS(new GetNotBlockedUsers(new UserReceiverImpl())) {
+    },GET_NOT_BLOCKED_USERS(new GetNotBlockedUsersCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getNotBlockedUsers(content);
         }
-    },GET_USERS_FOR_REMOVAL(new GetUsersForRemoval(new UserReceiverImpl())) {
+    },GET_USERS_FOR_REMOVAL(new GetUsersForRemovalCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getAllUsers(content);
         }
-    },GET_ALL_USERS(new GetAllUsers(new UserReceiverImpl())) {
+    },GET_ALL_USERS(new GetAllUsersCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getAllUsers(content);
         }
@@ -140,7 +145,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },GET_EXPLICIT_USER_INFO(new GetExplicitUserInfo(new UserReceiverImpl())) {
+    },GET_EXPLICIT_USER_INFO(new GetExplicitUserInfoCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getExplicitUserInfo(content);
         }
@@ -148,7 +153,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },GET_USER_FOR_EDITING(new GetUserForEditing(new UserReceiverImpl())) {
+    },GET_USER_FOR_EDITING(new GetUserForEditingCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getUser(content);
         }
@@ -156,12 +161,12 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },EDIT_USER(new EditUser(new UserReceiverImpl())) {
+    },EDIT_USER(new EditUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).editUser(content);
         }
     },TO_USER_EDITED_PAGE(new ToUserEditedPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
+        public void doReceiver(RequestContent content) throws ReceiverException{
 
         }
     },TO_USER_NOT_EDITED_PAGE(new ToUserNotEditedPage(new UserReceiverImpl())) {

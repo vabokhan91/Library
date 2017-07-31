@@ -18,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by vbokh on 14.07.2017.
  */
-public class ConnectionPool{
+public class ConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int POOL_SIZE = 10;
     private static Lock lock = new ReentrantLock();
@@ -27,13 +27,13 @@ public class ConnectionPool{
     private static ConnectionPool instance;
     private static AtomicBoolean isConnectionPoolCreated = new AtomicBoolean(false);
 
-    private ConnectionPool() throws ConnectionPoolException {
+    private ConnectionPool() {
         connectionQueue = new ArrayBlockingQueue<>(POOL_SIZE);
         try {
             initConnectionPool();
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException e) {
             LOGGER.log(Level.FATAL, String.format("Connection pool was not created. Reason : %s", e.getMessage()));
-            throw new ConnectionPoolException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -45,8 +45,6 @@ public class ConnectionPool{
                     instance = new ConnectionPool();
                     isConnectionPoolCreated.set(true);
                 }
-            } catch (ConnectionPoolException e) {
-               new RuntimeException(e);
             } finally {
                 lock.unlock();
             }
@@ -54,8 +52,9 @@ public class ConnectionPool{
         return instance;
     }
 
-    private void initConnectionPool() throws ClassNotFoundException {
-        Class.forName("com.mysql.jdbc.Driver");
+    private void initConnectionPool() throws SQLException {
+//        Class.forName("com.mysql.jdbc.Driver");
+        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         for (int i = 0; i < POOL_SIZE; i++) {
             createConnectionAndAddToPool();
         }
@@ -64,7 +63,7 @@ public class ConnectionPool{
             if (connectionQueue.size() > 0) {
                 LOGGER.log(Level.INFO, "Available connections: " + connectionQueue.size());
             } else {
-                throw new RuntimeException();
+                throw new RuntimeException("Connection pool is empty");
             }
         } else {
             LOGGER.log(Level.INFO, String.format("All connections were created successfully. Connection pool size: %s connections", connectionQueue.size()));
@@ -87,15 +86,7 @@ public class ConnectionPool{
     }
 
     void releaseConnection(ProxyConnection connection) {
-        try {
-            if (connection.isValid(0)) {
-                if (!connectionQueue.offer(connection)) {
-                    throw new SQLException("Can not retrive connection to pool. It is already full");
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, e.getMessage());
-        }
+        connectionQueue.offer(connection);
     }
 
     public void destroyConnections() {
@@ -122,11 +113,12 @@ public class ConnectionPool{
     }
 
     private void createConnectionAndAddToPool() {
+//        is it good or runtime better?
         try {
             ProxyConnection connection = ConnectionCreator.getConnection();
             connectionQueue.put(connection);
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, String.format("Connection was not created. Reason : %s", e.getMessage()));
+        } catch (ConnectionPoolException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
         } catch (InterruptedException e) {
             LOGGER.log(Level.ERROR, String.format("Connection was not added to pool. Reason : %s", e.getMessage()));
         }

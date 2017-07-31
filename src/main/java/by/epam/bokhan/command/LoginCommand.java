@@ -11,15 +11,15 @@ import by.epam.bokhan.receiver.Receiver;
 /**
  * Created by vbokh on 13.07.2017.
  */
-public class Login extends AbstractCommand {
+public class LoginCommand extends AbstractCommand {
 
-    public Login(Receiver receiver) {
+    public LoginCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content)throws ReceiverException {
 //think about redirect
-        try {
+
             super.execute(content);
 
             if ((Boolean) content.getRequestParameters().get(IS_VALID)) {
@@ -46,13 +46,7 @@ public class Login extends AbstractCommand {
                 String page = ConfigurationManager.getProperty(INDEX_PAGE);
                 content.insertParameter(PAGE, page);
             }
-        } catch (ReceiverException e) {
-            content.insertParameter(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty(LOGIN_ERROR_MESSAGE));
-            String page = ConfigurationManager.getProperty(INDEX_PAGE);
-            content.insertParameter(PAGE, page);
-            content.insertParameter(INVALIDATE, false);
-            throw new ReceiverException(e);
-        }
+
         content.insertParameter(INVALIDATE, false);
     }
 }

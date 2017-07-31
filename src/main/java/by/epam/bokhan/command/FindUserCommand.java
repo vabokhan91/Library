@@ -9,14 +9,14 @@ import by.epam.bokhan.receiver.Receiver;
 /**
  * Created by vbokh on 17.07.2017.
  */
-public class FindUser extends AbstractCommand {
+public class FindUserCommand extends AbstractCommand {
 
-    public FindUser(Receiver receiver) {
+    public FindUserCommand(Receiver receiver) {
         super(receiver);
     }
 
-    public void execute(RequestContent content) {
-        try {
+    public void execute(RequestContent content) throws ReceiverException{
+
             super.execute(content);
             String page = ConfigurationManager.getProperty(USER_INFO_PAGE);
             content.insertParameter(PAGE, page);
@@ -25,11 +25,7 @@ public class FindUser extends AbstractCommand {
             } else {
                 content.insertParameter(USER_FOUND_STATUS, MessageManager.getProperty(MESSAGE_FOUND_USER_FALSE));
             }
-        } catch (ReceiverException e) {
-//            error page
-            String page = ConfigurationManager.getProperty(ERROR_PAGE);
-            content.insertParameter(PAGE, page);
-        }
+
         content.insertParameter(INVALIDATE, false);
     }
 }
