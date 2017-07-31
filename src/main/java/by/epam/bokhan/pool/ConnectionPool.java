@@ -22,6 +22,7 @@ public class ConnectionPool{
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int POOL_SIZE = 10;
     private static Lock lock = new ReentrantLock();
+
     private BlockingQueue<ProxyConnection> connectionQueue;
     private static ConnectionPool instance;
     private static AtomicBoolean isConnectionPoolCreated = new AtomicBoolean(false);
@@ -63,7 +64,6 @@ public class ConnectionPool{
             if (connectionQueue.size() > 0) {
                 LOGGER.log(Level.INFO, "Available connections: " + connectionQueue.size());
             } else {
-//                is it right
                 throw new RuntimeException();
             }
         } else {
@@ -73,7 +73,7 @@ public class ConnectionPool{
     }
 
     private boolean isAllConnectionsCreated() {
-        return connectionQueue.size() < POOL_SIZE;
+        return connectionQueue.size() == POOL_SIZE;
     }
 
     public ProxyConnection getConnection() {
@@ -99,7 +99,8 @@ public class ConnectionPool{
     }
 
     public void destroyConnections() {
-        for (int i = 0; i < connectionQueue.size(); i++) {
+        int size = connectionQueue.size();
+        for (int i = 0; i < size; i++) {
             try {
                 ProxyConnection connection = connectionQueue.take();
                 connection.closeConnection();

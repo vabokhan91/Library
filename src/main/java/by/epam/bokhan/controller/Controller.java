@@ -20,9 +20,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by vbokh on 13.07.2017.
@@ -67,10 +71,10 @@ public class Controller extends HttpServlet {
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
                 String typeOfTransition = (String) request.getAttribute(TYPE_OF_TRANSITION);
                 if (typeOfTransition == null || !typeOfTransition.equalsIgnoreCase(REDIRECT)) {
-                    dispatcher.forward(request, response);
                     if ((Boolean) content.getRequestParameters().get(INVALIDATE)) {
                         request.getSession().invalidate();
                     }
+                    dispatcher.forward(request, response);
                 } else {
                     response.sendRedirect(page);
                 }

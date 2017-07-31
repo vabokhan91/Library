@@ -36,6 +36,12 @@
                 <input type="hidden" name="command" value="get_explicit_user_info"/>
                 <input type = "hidden" name = "library_card" value="${item.id}"/><br/>
                 <input type="submit" name="submit" value=<fmt:message key="label.button.show_explicit_info" bundle="${messages}"/>/>
+            </form></td>
+
+            <td><form method="post" action="/controller" accept-charset="UTF-8">
+                <input type="hidden" name="command" value="get_user_for_editing"/>
+                <input type = "hidden" name = "library_card" value="${item.id}"/><br/>
+                <input type="submit" name="submit" value=<fmt:message key="label.user.edit_user" bundle="${messages}"/>/>
             </form> </td>
 
         </tr>
@@ -44,8 +50,16 @@
     </table>
 
 
-    <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/></a>
+    <c:choose>
+        <c:when test="${user.role.ordinal()==3}">
+            <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+        </c:when>
+        <c:otherwise>
+            <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+        </c:otherwise>
+    </c:choose><br/>
 
+    <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 
 
 </body>

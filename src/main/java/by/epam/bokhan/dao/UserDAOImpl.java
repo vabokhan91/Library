@@ -20,14 +20,11 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "(?,?,?,?,?,?,?,?)";
     private static final String SQL_REMOVE_USER_BY_LIBRARY_CARD = "DELETE FROM USER where library_card = ?";
     private static final String SQL_GET_ALL_USERS = "SELECT library_card, user.name, surname, patronymic, address, role.name, login, mobile_phone, blocked from user left join role on user.role_id = role.id";
-    private static final String SQL_REMOVE_USER_BY_LOGIN = "DELETE FROM USER where login = ?";
     private static final String SQL_FIND_USER_BY_LIBRARY_CARD = "SELECT library_card, user.name,surname,patronymic,address,role.name,login,mobile_phone, blocked from user left join role on user.role_id = role.id where library_card = ?";
     private static final String SQL_FIND_USER_BY_LOGIN = "SELECT library_card, user.name,surname,patronymic,address,role.name,login,mobile_phone, blocked from user left join role on user.role_id = role.id where login = ?";
     private static final String SQL_CHECK_IF_USER_EXIST = "SELECT login FROM user where login = ?";
     private static final String SQL_BLOCK_USER_BY_CARD = "UPDATE user SET blocked = 1 WHERE library_card = ?";
-    private static final String SQL_BLOCK_USER_BY_LOGIN = "UPDATE user SET blocked = 1 WHERE login = ?";
     private static final String SQL_UNBLOCK_USER_BY_CARD = "UPDATE user SET blocked = 0 WHERE library_card = ?";
-    private static final String SQL_BLOCK_STATUS_BY_LOGIN = "SELECT blocked FROM user WHERE login = ?";
     private static final String SQL_BLOCK_STATUS_BY_LIBRARY_CARD = "SELECT blocked FROM user WHERE library_card = ?";
     private static final String SQL_GET_BLOCKED_USERS = "Select library_card, user.name, surname, patronymic, role.name, login, blocked from USER left join role on user.role_id = role.id where blocked = 1";
     private static final String SQL_GET_NOT_BLOCKED_USERS = "Select library_card, user.name, surname, patronymic, role.name, login, blocked from USER left join role on user.role_id = role.id where blocked = 0";
@@ -35,6 +32,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "from orders\n" +
             "left join book on orders.book_id = book.id\n" +
             "where orders.user_id = ?";
+
+    private static final String SQL_EDIT_USER_INFO = "UPDATE user SET library_card = ?, name =?, surname=?, patronymic=?,address =?, role_id=?, login =?, mobile_phone=? where library_card = ?";
 
     private final String LIBRARY_CARD = "library_card";
     private final String USER_NAME = "user.name";
@@ -79,7 +78,6 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             closeStatement(st);
             closeConnection(connection);
         }
-
     }
 
 
@@ -172,27 +170,6 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
-    /*public boolean removeUserByLogin(String login) throws DAOException {
-        boolean result = false;
-        Connection connection = null;
-        PreparedStatement st = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_REMOVE_USER_BY_LOGIN);
-            st.setString(1, login);
-            int res = st.executeUpdate();
-            if (res > 0) {
-                result = true;
-            }
-            return result;
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            closeStatement(st);
-            closeConnection(connection);
-        }
-    }*/
-
     public User findUserByLibraryCard(int libraryCard) throws DAOException {
         User user = new User();
         Connection connection = null;
@@ -281,38 +258,6 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             closeConnection(connection);
         }
     }
-
-    /*public boolean blockUserByLogin(String login) throws DAOException {
-        boolean isBlocked = false;
-        Connection connection = null;
-        PreparedStatement st = null;
-        PreparedStatement userBlockedStatus = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            userBlockedStatus = connection.prepareStatement(SQL_BLOCK_STATUS_BY_LOGIN);
-            userBlockedStatus.setString(1, login);
-            ResultSet resultSet = userBlockedStatus.executeQuery();
-            resultSet.next();
-            int status = resultSet.getInt(BLOCK_FIELD);
-            if (status == 1) {
-                throw new SQLException("Already blocked");
-            }
-            st = connection.prepareStatement(SQL_BLOCK_USER_BY_LOGIN);
-            st.setString(1, login);
-            int res = st.executeUpdate();
-            if (res > 0) {
-                isBlocked = true;
-            }
-            return isBlocked;
-        } catch (SQLException e) {
-            throw new DAOException(String.format("Can not block user. Reason : %s", e.getMessage()), e);
-
-        } finally {
-            closeStatement(userBlockedStatus);
-            closeStatement(st);
-            closeConnection(connection);
-        }
-    }*/
 
     public boolean unblockUserByLibraryCard(int libraryCard) throws DAOException {
         boolean isUnblocked = false;
@@ -458,6 +403,35 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }finally {
             closeStatement(st);
             closeStatement(ordersInfo);
+            closeConnection(connection);
+        }
+    }
+
+    public boolean editUser(int libraryCard, String name, String surname, String patronymic, String address, int role, String login, String mobile_phone) throws DAOException{
+        boolean isUserEdited = false;
+        Connection connection = null;
+        PreparedStatement st = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            st = connection.prepareStatement(SQL_EDIT_USER_INFO);
+            st.setInt(1, libraryCard);
+            st.setString(2, name);
+            st.setString(3, surname);
+            st.setString(4, patronymic);
+            st.setString(5, address);
+            st.setInt(6, role);
+            st.setString(7, login);
+            st.setString(8,mobile_phone);
+            st.setInt(9, libraryCard);
+            int res = st.executeUpdate();
+            if (res > 0) {
+                isUserEdited = true;
+            }
+            return isUserEdited;
+        } catch (SQLException e) {
+            throw new DAOException(String.format("Can not edit user. Reason : %s", e.getMessage()), e);
+        } finally {
+            closeStatement(st);
             closeConnection(connection);
         }
     }

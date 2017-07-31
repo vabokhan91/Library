@@ -20,7 +20,9 @@
     <c:otherwise>
         <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
     </c:otherwise>
-</c:choose>
+</c:choose><br/>
+
+<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 
 
 

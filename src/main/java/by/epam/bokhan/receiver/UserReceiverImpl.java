@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserReceiverImpl implements UserReceiver {
-    private static final Logger LOGGER = LogManager.getLogger();
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
     private final String IS_VALID = "isValid";
@@ -68,7 +67,8 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     public void addUser(RequestContent requestContent) throws ReceiverException {
-        UserDAOImpl userDAO = new UserDAOImpl();
+//        make validation
+        UserDAO userDAO = new UserDAOImpl();
         boolean isUserAdded = false;
         String name = (String) requestContent.getRequestParameters().get(USER_NAME);
         String surname = (String) requestContent.getRequestParameters().get(USER_SURNAME);
@@ -77,15 +77,14 @@ public class UserReceiverImpl implements UserReceiver {
         int role = Integer.parseInt((String) requestContent.getRequestParameters().get(USER_ROLE));
         String login = (String) requestContent.getRequestParameters().get(LOGIN);
         String password = (String) requestContent.getRequestParameters().get(USER_PASSWORD);
-        String hashedPassword = password != null ? DigestUtils.md5Hex(password) : null;
+        String hashedPassword = null;
+        if (password != null) {
+            hashedPassword = DigestUtils.md5Hex(password);
+        }
         String phone = (String) requestContent.getRequestParameters().get(USER_MOBILE_PHONE);
         try {
             isUserAdded = userDAO.addUser(name, surname, patronymic, address, role, login, hashedPassword, phone);
-            if (isUserAdded) {
-                requestContent.insertParameter(USER_IS_ADDED, isUserAdded);
-            } else {
-                requestContent.insertParameter(USER_IS_ADDED, isUserAdded);
-            }
+            requestContent.insertParameter(USER_IS_ADDED, isUserAdded);
         } catch (DAOException e) {
             requestContent.insertParameter(USER_IS_ADDED, isUserAdded);
             throw new ReceiverException(String.format("Can not add user. Reason : %s", e.getMessage()), e);
@@ -94,7 +93,7 @@ public class UserReceiverImpl implements UserReceiver {
 
     }
 
-    public void getAllUsers(RequestContent requestContent) throws ReceiverException{
+    public void getAllUsers(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
         ArrayList<User> users;
         try {
@@ -110,8 +109,8 @@ public class UserReceiverImpl implements UserReceiver {
         int libraryCard;
         boolean isUserDeleted = false;
         try {
-                libraryCard = Integer.parseInt((String) content.getRequestParameters().get(REMOVE_QUERY_VALUE));
-                isUserDeleted = dao.removeUserByLibraryCard(libraryCard);
+            libraryCard = Integer.parseInt((String) content.getRequestParameters().get(REMOVE_QUERY_VALUE));
+            isUserDeleted = dao.removeUserByLibraryCard(libraryCard);
             content.insertParameter(IS_USER_DELETED, isUserDeleted);
         } catch (DAOException e) {
             content.insertParameter(IS_USER_DELETED, isUserDeleted);
@@ -194,7 +193,7 @@ public class UserReceiverImpl implements UserReceiver {
         }
     }
 
-    public void getExplicitUserInfo(RequestContent requestContent) throws ReceiverException{
+    public void getExplicitUserInfo(RequestContent requestContent) throws ReceiverException {
         UserDAOImpl dao = new UserDAOImpl();
         User user;
         int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
@@ -203,6 +202,42 @@ public class UserReceiverImpl implements UserReceiver {
             requestContent.insertParameter("foundUser", user);
         } catch (DAOException e) {
             throw new ReceiverException(e);
+        }
+    }
+
+    public void getUser(RequestContent requestContent) throws ReceiverException {
+        UserDAOImpl dao = new UserDAOImpl();
+        int libraryCard;
+        User user = null;
+        try {
+
+            libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            user = dao.findUserByLibraryCard(libraryCard);
+
+            requestContent.insertParameter(FOUND_USER, user);
+        } catch (DAOException e) {
+            requestContent.insertParameter(FOUND_USER, user);
+            throw new ReceiverException(String.format("Can not find user. Reason : %s", e.getMessage()), e);
+        }
+    }
+
+    public void editUser(RequestContent requestContent) throws ReceiverException{
+        UserDAOImpl dao = new UserDAOImpl();
+        boolean isUserEdited = false;
+        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+        String name = (String) requestContent.getRequestParameters().get(USER_NAME);
+        String surname = (String) requestContent.getRequestParameters().get(USER_SURNAME);
+        String patronymic = (String) requestContent.getRequestParameters().get(USER_PATRONYMIC);
+        String address = (String) requestContent.getRequestParameters().get(USER_ADDRESS);
+        int role = Integer.parseInt((String) requestContent.getRequestParameters().get(USER_ROLE));
+        String login = (String) requestContent.getRequestParameters().get(LOGIN);
+        String phone = (String) requestContent.getRequestParameters().get(USER_MOBILE_PHONE);
+        try {
+            isUserEdited = dao.editUser(libraryCard, name, surname, patronymic, address, role, login, phone);
+            requestContent.insertParameter("isUserEdited", isUserEdited);
+        } catch (DAOException e) {
+            requestContent.insertParameter("isUserEdited", isUserEdited);
+            throw new ReceiverException(String.format("Can not edit user. Reason : %s", e.getMessage()), e);
         }
     }
 

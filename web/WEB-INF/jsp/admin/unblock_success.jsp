@@ -19,6 +19,8 @@
     <input type="submit" name="submit" value="<fmt:message key="label.unblock_one_more_user" bundle="${messages}"/>"/>
 </form>
 
-<a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+<a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
+
+<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 </body>
 </html>

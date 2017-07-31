@@ -1,5 +1,6 @@
 package by.epam.bokhan.pool;
 
+import by.epam.bokhan.exception.ConnectionPoolException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

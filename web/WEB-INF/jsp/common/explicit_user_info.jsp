@@ -53,7 +53,16 @@
 
 
 
-<a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/></a>
+<c:choose>
+    <c:when test="${user.role.ordinal()==3}">
+        <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:when>
+    <c:otherwise>
+        <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:otherwise>
+</c:choose><br/>
+
+<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 
 </body>
 </html>

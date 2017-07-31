@@ -30,6 +30,9 @@
 </form>
 
 <br/>
+
+<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
+
 <a href = "/controller?command=logout">Log Out</a>
 
 

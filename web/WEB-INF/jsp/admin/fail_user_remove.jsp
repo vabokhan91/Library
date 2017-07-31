@@ -14,6 +14,8 @@
 <fmt:message key="message.remove_user_false" bundle="${messages}"/>
 <a href="/controller?command=get_users_for_removal"><fmt:message key="label.try.once.again" bundle="${messages}"/> </a><br/>
 
-<a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+<a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
+
+<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 </body>
 </html>
