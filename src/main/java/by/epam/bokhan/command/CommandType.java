@@ -2,10 +2,14 @@ package by.epam.bokhan.command;
 
 import by.epam.bokhan.command.navigation.admin.*;
 import by.epam.bokhan.command.navigation.common.*;
+import by.epam.bokhan.command.navigation.librarian.FindBook;
+import by.epam.bokhan.command.navigation.librarian.ToFindBookPage;
 import by.epam.bokhan.command.navigation.librarian.ToLibrarianMainPage;
+import by.epam.bokhan.command.navigation.librarian.ToShowBooksPage;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
+import by.epam.bokhan.receiver.BookReceiverImpl;
 import by.epam.bokhan.receiver.UserReceiverImpl;
 
 import java.util.ArrayList;
@@ -172,6 +176,22 @@ public enum CommandType {
     },TO_USER_NOT_EDITED_PAGE(new ToUserNotEditedPage(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
+        }
+    },GET_ALL_BOOKS(new GetAllBooksCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getAllBooks(content);
+        }
+    },TO_SHOW_BOOKS_PAGE(new ToShowBooksPage(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },TO_FIND_BOOK_PAGE(new ToFindBookPage(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },FIND_BOOK(new FindBook(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).findBook(content);
         }
     };
 

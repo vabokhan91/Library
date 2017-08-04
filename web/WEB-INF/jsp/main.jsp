@@ -28,10 +28,9 @@
             <input type = "password" name = "password" value=""/>
             <br/>
                 ${errorLoginPassMessage}
-            <br/>
-                ${nullpage}
-            <br/>
-                ${wrongAction}
+            <c:if test="${not empty sessionScope.errorLoginPassMessage}">
+                <c:remove var="errorLoginPassMessage" scope="session" />
+            </c:if>
             <br/>
             <input type="submit" name="submit" value=<fmt:message key="label.button.login" bundle="${messages}"/> />
         </form>

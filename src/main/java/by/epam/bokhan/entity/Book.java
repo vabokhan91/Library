@@ -1,5 +1,6 @@
 package by.epam.bokhan.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,8 +14,14 @@ public class Book {
     private int year;
     private String publisher;
     private String description;
-    private List<Genre> genre;
+    private List<Genre> genre ;
     private Location location;
+    private List<Author> authors;
+
+    public Book() {
+        genre = new ArrayList<>();
+        authors = new ArrayList<>();
+    }
 
     public int getId() {
         return id;
@@ -86,5 +93,35 @@ public class Book {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public void addGenre(Genre genre) {
+        this.genre.add(genre);
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void addAuthor(Author author) {
+        authors.add(author);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", pages=" + pages +
+                ", isbn='" + isbn + '\'' +
+                ", year=" + year +
+                ", publisher='" + publisher + '\'' +
+                ", genre=" + genre +
+                ", location=" + location +
+                '}';
     }
 }

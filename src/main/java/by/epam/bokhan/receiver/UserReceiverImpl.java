@@ -46,15 +46,23 @@ public class UserReceiverImpl implements UserReceiver {
         String login = (String) content.getRequestParameters().get(LOGIN);
         String password = (String) content.getRequestParameters().get(PASSWORD);
         String hash = DigestUtils.md5Hex(password);
-        try {
-            User user = userDAO.getUserByLogin(login);
-            isRightData = user.getLogin().equals(login) && user.getPassword().equals(hash);
-            user.setPassword(null);
+
+        if (login != null && !login.isEmpty() && password != null && !password.isEmpty()) {
+            try {
+                User user = userDAO.getUserByLogin(login);
+                isRightData = login.equals(user.getLogin()) && hash.equals(user.getPassword());
+                if (isRightData) {
+                    user.setPassword(null);
+                    content.insertParameter(USER, user);
+                }
+                content.insertParameter(IS_VALID, isRightData);
+
+            } catch (DAOException e) {
+                content.insertParameter(IS_VALID, isRightData);
+                throw new ReceiverException(String.format("Can not log in. Reason : %s", e.getMessage()), e);
+            }
+        }else {
             content.insertParameter(IS_VALID, isRightData);
-            content.insertParameter(USER, user);
-        } catch (DAOException e) {
-            content.insertParameter(IS_VALID, isRightData);
-            throw new ReceiverException(String.format("Can not log in. Reason : %s", e.getMessage()), e);
         }
     }
 
@@ -218,7 +226,7 @@ public class UserReceiverImpl implements UserReceiver {
         }
     }
 
-    public void editUser(RequestContent requestContent) throws ReceiverException{
+    public void editUser(RequestContent requestContent) throws ReceiverException {
         UserDAOImpl dao = new UserDAOImpl();
         boolean isUserEdited = false;
         int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));

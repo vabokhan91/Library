@@ -16,7 +16,6 @@ import java.util.ResourceBundle;
  * Created by vbokh on 13.07.2017.
  */
 class ConnectionCreator {
-
     private static final String DB_URL = "db.url";
     private static final String DB_USER = "db.user";
     private static final String DB_PASSWORD = "db.password";
@@ -26,14 +25,12 @@ class ConnectionCreator {
     private static String login;
     private static String password;
 
-
     static {
         try {
             resourceBundle = PropertyResourceBundle.getBundle(DB_CONFIG);
             url = resourceBundle.getString(DB_URL);
             login = resourceBundle.getString(DB_USER);
             password = resourceBundle.getString(DB_PASSWORD);
-
         } catch (MissingResourceException e) {
             throw new RuntimeException(String.format("Can not find resourcebundle. Reason : %s", e.getMessage()));
         }

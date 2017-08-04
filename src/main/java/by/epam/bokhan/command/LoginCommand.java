@@ -45,6 +45,7 @@ public class LoginCommand extends AbstractCommand {
                 content.insertParameter(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty(LOGIN_ERROR_MESSAGE));
                 String page = ConfigurationManager.getProperty(INDEX_PAGE);
                 content.insertParameter(PAGE, page);
+                content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
             }
 
         content.insertParameter(INVALIDATE, false);

@@ -19,5 +19,9 @@
 
 <a href="/controller?command=to_Find_User_Page" ><fmt:message key="label.button.find_user" bundle="${message}"/> </a><br/>
 
+<a href="/controller?command=get_all_books" ><fmt:message key="label.book.show_all_books" bundle="${message}"/> </a><br/>
+
+<a href="/controller?command=to_find_book_page" ><fmt:message key="label.book.find_book" bundle="${message}"/> </a><br/>
+
 </body>
 </html>

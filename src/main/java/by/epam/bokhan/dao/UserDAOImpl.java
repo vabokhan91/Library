@@ -68,10 +68,11 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 user.setRole(userRole);
                 user.setMobilePhone(rs.getString(MOBILE_PHONE));
                 user.setBlocked(rs.getInt(BLOCK_FIELD));
-                return user;
-            }else {
+
+            }/*else {
                 throw new DAOException("Can not log in. No user with such login exists");
-            }
+            }*/
+            return user;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
@@ -232,17 +233,10 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         boolean isBlocked = false;
         Connection connection = null;
         PreparedStatement st = null;
-        PreparedStatement userBlockedStatus = null;
+
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            userBlockedStatus = connection.prepareStatement(SQL_BLOCK_STATUS_BY_LIBRARY_CARD);
-            userBlockedStatus.setInt(1, librarianCard);
-            ResultSet resultSet = userBlockedStatus.executeQuery();
-            resultSet.next();
-            int status = resultSet.getInt(BLOCK_FIELD);
-            if (status == 1) {
-                throw new SQLException("Already blocked");
-            }
+
             st = connection.prepareStatement(SQL_BLOCK_USER_BY_CARD);
             st.setInt(1, librarianCard);
             int res = st.executeUpdate();
@@ -253,7 +247,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not block user. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(userBlockedStatus);
+
             closeStatement(st);
             closeConnection(connection);
         }
@@ -359,7 +353,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             st = connection.prepareStatement(SQL_FIND_USER_BY_LIBRARY_CARD);
             st.setInt(1, libraryCard);
             ResultSet resultSet = st.executeQuery();
-            if(resultSet.next()){
+            resultSet.next();
             user.setId(resultSet.getInt(LIBRARY_CARD));
             user.setName(resultSet.getString(USER_NAME));
             user.setSurname(resultSet.getString(USER_SURNAME));
@@ -370,9 +364,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             user.setRole(userRole);
             user.setMobilePhone(resultSet.getString(MOBILE_PHONE));
             user.setBlocked(resultSet.getInt(BLOCK_FIELD));
-            }else {
-                throw new DAOException(String.format("Can not get user. No such user exists"));
-            }
+
             ordersInfo = connection.prepareStatement(SQL_GET_USERS_ORDER_INFO);
             ordersInfo.setInt(1, libraryCard);
             ResultSet ordersInfoResult = ordersInfo.executeQuery();

@@ -93,11 +93,15 @@ public class Controller extends HttpServlet {
         for (Map.Entry<String, Object> p : s.entrySet()) {
             String first = p.getKey();
             Object second = p.getValue();
+            if (first.equalsIgnoreCase("errorloginpassmessage")) {
+                request.getSession().setAttribute(first, second);
+            }
             if (first.equalsIgnoreCase(USER)) {
                 request.getSession().setAttribute(first, second);
             } else {
                 request.setAttribute(first, second);
             }
+
         }
     }
 
