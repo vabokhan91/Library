@@ -23,7 +23,7 @@ public class LoginCommand extends AbstractCommand {
             super.execute(content);
 
             if ((Boolean) content.getRequestParameters().get(IS_VALID)) {
-                User user = (User)content.getRequestParameters().get(USER);
+                User user = (User)content.getSessionAttributes().get(USER);
                 Role role = user.getRole();
                 String page;
 
@@ -42,7 +42,7 @@ public class LoginCommand extends AbstractCommand {
                         break;
                 }
             } else {
-                content.insertParameter(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty(LOGIN_ERROR_MESSAGE));
+                content.insertAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty(LOGIN_ERROR_MESSAGE));
                 String page = ConfigurationManager.getProperty(INDEX_PAGE);
                 content.insertParameter(PAGE, page);
                 content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);

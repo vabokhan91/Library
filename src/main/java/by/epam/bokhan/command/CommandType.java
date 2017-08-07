@@ -2,12 +2,8 @@ package by.epam.bokhan.command;
 
 import by.epam.bokhan.command.navigation.admin.*;
 import by.epam.bokhan.command.navigation.common.*;
-import by.epam.bokhan.command.navigation.librarian.FindBook;
-import by.epam.bokhan.command.navigation.librarian.ToFindBookPage;
-import by.epam.bokhan.command.navigation.librarian.ToLibrarianMainPage;
-import by.epam.bokhan.command.navigation.librarian.ToShowBooksPage;
+import by.epam.bokhan.command.navigation.librarian.*;
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.BookReceiverImpl;
 import by.epam.bokhan.receiver.UserReceiverImpl;
@@ -189,9 +185,65 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },FIND_BOOK(new FindBook(new BookReceiverImpl())) {
+    },FIND_BOOK(new FindBookCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).findBook(content);
+        }
+    },GET_EXPLICIT_BOOK_INFO(new GetExplicitBookInfoCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getExplicitBookInfo(content);
+        }
+    },TO_EXPLICIT_BOOK_INFO_PAGE(new ToExplicitBookInfoPage(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },GET_BOOK_FOR_EDITING(new GetBookForEditing(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getBookForEditing(content);
+        }
+    },TO_EDIT_BOOK_PAGE(new ToEditBookPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },EDIT_BOOK(new EditBookCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).editBook(content);
+        }
+    },TO_BOOK_EDITED_PAGE(new ToBookEditedSuccessPage(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },TO_ADD_AUTHOR_PAGE(new ToAddAuthorPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },ADD_AUTHOR(new AddAuthorCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).addAuthor(content);
+        }
+    },TO_AUTHOR_ADDED_PAGE(new ToAuthorAddedPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },TO_AUTHOR_NOT_ADDED_PAGE(new ToAuthorNotAddedPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },TO_ADD_BOOK_PAGE(new ToAddBookPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getGenresAuthorsPublishers(content);
+        }
+    },ADD_BOOK(new AddBookCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).addBook(content);
+        }
+    },DELETE_BOOK(new DeleteBookCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).deleteBook(content);
+        }
+    },TO_BOOK_DELETE_RESULT_PAGE(new ToBookDeleteResultPage(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
         }
     };
 

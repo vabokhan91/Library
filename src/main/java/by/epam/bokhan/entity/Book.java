@@ -17,10 +17,12 @@ public class Book {
     private List<Genre> genre ;
     private Location location;
     private List<Author> authors;
+    private List<Order> orders;
 
     public Book() {
         genre = new ArrayList<>();
         authors = new ArrayList<>();
+        orders = new ArrayList<>();
     }
 
     public int getId() {
@@ -109,6 +111,18 @@ public class Book {
 
     public void addAuthor(Author author) {
         authors.add(author);
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public void addOrder(Order order) {
+        orders.add(order);
     }
 
     @Override

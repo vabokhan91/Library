@@ -93,15 +93,22 @@ public class Controller extends HttpServlet {
         for (Map.Entry<String, Object> p : s.entrySet()) {
             String first = p.getKey();
             Object second = p.getValue();
-            if (first.equalsIgnoreCase("errorloginpassmessage")) {
+            request.setAttribute(first, second);
+            /*if (first.equalsIgnoreCase("errorloginpassmessage")) {
                 request.getSession().setAttribute(first, second);
             }
             if (first.equalsIgnoreCase(USER)) {
                 request.getSession().setAttribute(first, second);
             } else {
-                request.setAttribute(first, second);
-            }
 
+            }*/
+
+        }
+        HashMap<String, Object> attributes = content.getSessionAttributes();
+        for (Map.Entry<String, Object> a : attributes.entrySet()) {
+            String first = a.getKey();
+            Object second = a.getValue();
+            request.getSession().setAttribute(first,second);
         }
     }
 

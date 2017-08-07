@@ -53,7 +53,7 @@ public class UserReceiverImpl implements UserReceiver {
                 isRightData = login.equals(user.getLogin()) && hash.equals(user.getPassword());
                 if (isRightData) {
                     user.setPassword(null);
-                    content.insertParameter(USER, user);
+                    content.insertAttribute(USER, user);
                 }
                 content.insertParameter(IS_VALID, isRightData);
 
