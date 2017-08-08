@@ -36,7 +36,7 @@
         </form>
         <br />
 
-        <a href="/controller?command=to_Registration_Page" bundle="${config}"/>"><fmt:message key="label.registration" bundle="${messages}"/> </a>
+        <a href="/controller?command=to_Registration_Page" bundle="${config}"/><fmt:message key="label.registration" bundle="${messages}"/> </a>
     </c:when>
     <c:otherwise>
         <ctg:welcome-tag/>

@@ -1,9 +1,6 @@
 package by.epam.bokhan.dao;
 
-import by.epam.bokhan.entity.Author;
-import by.epam.bokhan.entity.Book;
-import by.epam.bokhan.entity.Genre;
-import by.epam.bokhan.entity.Publisher;
+import by.epam.bokhan.entity.*;
 import by.epam.bokhan.exception.DAOException;
 
 import java.util.LinkedList;
@@ -21,6 +18,9 @@ public interface BookDAO {
 
     List<Book> getExplicitBookInfo(int bookId) throws DAOException;
 
+
+    List<Order> getBooksLastOrder(int bookId) throws DAOException;
+
     List<Book> getBookForEditing(int bookId) throws DAOException;
 
     LinkedList<Genre> getAllGenres() throws DAOException;
@@ -36,4 +36,6 @@ public interface BookDAO {
     boolean addBook(Book book,int publisherId, int genreId, int authorId) throws DAOException;
 
     boolean deleteBook(int bookId) throws DAOException;
+
+    boolean addOrder(int bookId, String typeOfOrder, int librarianId, int libraryCard) throws DAOException;
 }

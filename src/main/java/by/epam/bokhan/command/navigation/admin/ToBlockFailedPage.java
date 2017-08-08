@@ -10,8 +10,6 @@ import by.epam.bokhan.receiver.Receiver;
  */
 public class ToBlockFailedPage extends AbstractCommand{
 
-
-
     public ToBlockFailedPage(Receiver receiver) {
         super(receiver);
     }

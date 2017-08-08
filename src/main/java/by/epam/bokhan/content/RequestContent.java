@@ -7,10 +7,11 @@ import java.util.HashMap;
 
 public class RequestContent {
     private HashMap<String, Object> requestParameters;
-    private HashMap<String, Object> requestAttributes;
+    private HashMap<String, Object> sessionAttributes;
 
     public RequestContent() {
         requestParameters = new HashMap<>();
+        sessionAttributes = new HashMap<>();
     }
 
     public void extractValues(HttpServletRequest request) {
@@ -28,7 +29,7 @@ public class RequestContent {
     }
 
     public void insertAttribute(String key, Object attribute) {
-        requestAttributes.put(key, attribute);
+        sessionAttributes.put(key, attribute);
     }
 
 
@@ -40,12 +41,12 @@ public class RequestContent {
         this.requestParameters = requestParameters;
     }
 
-    public HashMap<String, Object> getRequestAttributes() {
-        return requestAttributes;
+    public HashMap<String, Object> getSessionAttributes() {
+        return sessionAttributes;
     }
 
-    public void setRequestAttributes(HashMap<String, Object> requestAttributes) {
-        this.requestAttributes = requestAttributes;
+    public void setSessionAttributes(HashMap<String, Object> sessionAttributes) {
+        this.sessionAttributes = sessionAttributes;
     }
 }
 

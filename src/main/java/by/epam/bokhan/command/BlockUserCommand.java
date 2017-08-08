@@ -2,6 +2,7 @@ package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
+import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
 /**

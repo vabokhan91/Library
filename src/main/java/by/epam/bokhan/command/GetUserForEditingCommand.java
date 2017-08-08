@@ -10,8 +10,6 @@ import by.epam.bokhan.receiver.Receiver;
  */
 public class GetUserForEditingCommand extends AbstractCommand {
 
-
-
     public GetUserForEditingCommand(Receiver receiver) {
         super(receiver);
     }
