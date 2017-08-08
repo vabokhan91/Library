@@ -31,5 +31,7 @@
 
 <a href="/controller?command=to_find_book_page" ><fmt:message key="label.button.book.add_order" bundle="${messages}"/> </a><br/>
 
+<a href="/controller?command=to_find_user_orders_page" ><fmt:message key="label.button.book.return_book" bundle="${messages}"/> </a><br/>
+
 </body>
 </html>

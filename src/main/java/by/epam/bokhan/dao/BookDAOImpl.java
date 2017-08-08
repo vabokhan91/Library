@@ -66,6 +66,13 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_ORDER = "INSERT INTO ORDERS (orders.user_id, orders.book_id, orders.order_date, orders.expiration_date, orders.return_date, orders.librarian_id) VALUES (?,?,now(),addtime(now(), '30 0:0:0.0'), null,?)";
     private static final String SQL_BOOK_LOCATION_SUBSCRIPTION = "Update book set location = 'subscription' where book.id = ?";
     private static final String SQL_BOOK_LOCATION_READING_ROOM = "Update book set location = 'reading_room' where book.id = ?";
+    private static final String SQL_BOOK_LOCATION_STORAGE = "Update book set location = 'storage' where book.id = ?";
+    private static final String SQL_GET_USER_ORDERS = "select orders.id, book.id, book.title, book.isbn, user.library_card, user.name, user.surname, user.patronymic, user.mobile_phone, orders.order_date, orders.expiration_date, orders.return_date from orders \n" +
+            "right join user\n" +
+            "on orders.user_id = user.library_card\n" +
+            "left join book on book.id = orders.book_id\n" +
+            "where user.library_card = ?";
+    private static final String SQL_RETURN_BOOK = "UPDATE orders set orders.return_date = now() where orders.id = ?";
 
     @Override
     public List<Book> getAllBooks() throws DAOException {
@@ -676,6 +683,99 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         } finally {
             closeStatement(addOrderStatement);
             closeStatement(changeBookStatus);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public List<Order> getUserOrders(int libraryCard) throws DAOException {
+        LinkedList<Order> userOrders = new LinkedList<>();
+        Connection connection = null;
+        PreparedStatement st = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            st = connection.prepareStatement(SQL_GET_USER_ORDERS);
+            st.setInt(1, libraryCard);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Order order = new Order();
+                int orderId = Integer.parseInt(rs.getString("orders.id"));
+                order.setId(orderId);
+                User user = new User();
+                int userLibraryCard = Integer.parseInt(rs.getString("user.library_card"));
+                String userName = rs.getString("user.name");
+                String userSurname = rs.getString("user.surname");
+                String userPatronymic = rs.getString("user.patronymic");
+                String userMobilePhone = rs.getString("user.mobile_phone");
+                user.setId(userLibraryCard);
+                user.setName(userName);
+                user.setSurname(userSurname);
+                user.setPatronymic(userPatronymic);
+                user.setMobilePhone(userMobilePhone);
+                order.setUser(user);
+                Book book = new Book();
+                int bookId = Integer.parseInt(rs.getString("book.id"));
+                String bookTitle = rs.getString("book.title");
+                String bookIsbn = rs.getString("book.isbn");
+                book.setId(bookId);
+                book.setTitle(bookTitle);
+                book.setIsbn(bookIsbn);
+                order.setBook(book);
+                Timestamp lastOrderTimeStamp = rs.getTimestamp("orders.order_date");
+                LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
+                order.setOrderDate(lastOrderDate);
+                Timestamp expirationDateTimeStamp = rs.getTimestamp("orders.expiration_date");
+                LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                order.setExpirationDate(expirationDate);
+                Timestamp returnDateTimeStamp = rs.getTimestamp("orders.return_date");
+                LocalDate returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                order.setReturnDate(returnDate);
+                userOrders.add(order);
+            }
+            return userOrders;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeStatement(st);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean returnBook(int orderId, int bookId) throws DAOException {
+        boolean isBookReturned = false;
+        Connection connection = null;
+        PreparedStatement returnBookStatement = null;
+        PreparedStatement changeBookStatusStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            returnBookStatement = connection.prepareStatement(SQL_RETURN_BOOK);
+            returnBookStatement.setInt(1, orderId);
+            int returnBookRes = returnBookStatement.executeUpdate();
+
+            changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_STORAGE);
+            changeBookStatusStatement.setInt(1, bookId);
+
+            int changeBookStatusRes = changeBookStatusStatement.executeUpdate();
+            if (returnBookRes > 0 && changeBookStatusRes > 0) {
+                isBookReturned = true;
+                connection.commit();
+            }else {
+                connection.rollback();
+            }
+            return isBookReturned;
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+                throw new DAOException(e);
+            } catch (SQLException e1) {
+                throw new DAOException(e1);
+            }
+
+        } finally {
+            closeStatement(changeBookStatusStatement);
+            closeStatement(returnBookStatement);
             closeConnection(connection);
         }
     }

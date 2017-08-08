@@ -257,7 +257,25 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
+    },TO_FIND_USER_ORDERS_PAGE(new ToFindUserOrdersPage(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },GET_USER_ORDERS(new GetUserOrdersCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getUserOrders(content);
+        }
+    },RETURN_BOOK(new ReturnBookCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).returnBook(content);
+        }
+    },TO_BOOK_RETURN_STATUS_PAGE(new ToBookReturnStatusPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
     };
+
+
 
     private AbstractCommand command;
 

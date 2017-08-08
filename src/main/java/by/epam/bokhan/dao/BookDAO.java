@@ -38,4 +38,8 @@ public interface BookDAO {
     boolean deleteBook(int bookId) throws DAOException;
 
     boolean addOrder(int bookId, String typeOfOrder, int librarianId, int libraryCard) throws DAOException;
+
+    List<Order> getUserOrders(int libraryCard) throws DAOException;
+
+    boolean returnBook(int orderId, int bookId) throws DAOException;
 }

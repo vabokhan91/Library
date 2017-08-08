@@ -196,4 +196,33 @@ public class BookReceiverImpl implements BookReceiver {
             throw new ReceiverException(e);
         }
     }
+
+    @Override
+    public void getUserOrders(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        List<Order> userOrders;
+        try {
+            int libraryCard;
+            libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            userOrders = bookDAO.getUserOrders(libraryCard);
+
+            requestContent.insertAttribute("userOrders", userOrders);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void returnBook(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        boolean isBookReturned;
+        try {
+            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
+            int orderId = Integer.parseInt((String) requestContent.getRequestParameters().get("order_id"));
+            isBookReturned = bookDAO.returnBook(orderId, bookId);
+            requestContent.insertAttribute("isBookReturned", isBookReturned);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
 }
