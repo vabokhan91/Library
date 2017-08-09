@@ -7,10 +7,10 @@ import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
 
 /**
- * Created by vbokh on 05.08.2017.
+ * Created by vbokh on 09.08.2017.
  */
-public class AddBookCommand extends AbstractCommand {
-    public AddBookCommand(Receiver receiver) {
+public class AddPublisherCommand extends AbstractCommand {
+    public AddPublisherCommand(Receiver receiver) {
         super(receiver);
     }
 
@@ -18,12 +18,8 @@ public class AddBookCommand extends AbstractCommand {
 
         super.execute(content);
 
-        String page = "/controller?command=to_add_book_page";
-        if ((Boolean) content.getRequestParameters().get("isBookAdded")) {
-            content.insertAttribute("bookAddStatus", MessageManager.getProperty("message.book_added_successfully"));
-        } else {
-            content.insertAttribute("bookAddStatus", MessageManager.getProperty("message.book_was_not_added"));
-        }
+        String page = "/controller?command=to_add_publisher_page";
+
         content.insertParameter(PAGE, page);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
         content.insertParameter(INVALIDATE, false);

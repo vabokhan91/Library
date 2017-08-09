@@ -36,4 +36,6 @@ public interface BookReceiver extends Receiver {
     void getUserOrders(RequestContent requestContent) throws ReceiverException;
 
     void returnBook(RequestContent requestContent) throws ReceiverException;
+
+    void addPublisher(RequestContent requestContent) throws ReceiverException;
 }

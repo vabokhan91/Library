@@ -2,20 +2,23 @@ package by.epam.bokhan.command.navigation.librarian;
 
 import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
 /**
- * Created by vbokh on 05.08.2017.
+ * Created by vbokh on 09.08.2017.
  */
-public class ToAuthorNotAddedPageCommand extends AbstractCommand {
-    public ToAuthorNotAddedPageCommand(Receiver receiver) {
+public class ToAddPublisherPage extends AbstractCommand {
+    public ToAddPublisherPage(Receiver receiver) {
         super(receiver);
     }
 
-    public void execute(RequestContent content)  {
-        String page = ConfigurationManager.getProperty("path.page.author_not_added");
+    public void execute(RequestContent content) throws ReceiverException {
+
+        String page = ConfigurationManager.getProperty("path.page.book.add_publisher");
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);
+
     }
 }

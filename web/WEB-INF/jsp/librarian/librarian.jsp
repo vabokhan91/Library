@@ -25,6 +25,8 @@
 
 <a href="/controller?command=to_add_author_page" ><fmt:message key="label.book.add_author" bundle="${messages}"/> </a><br/>
 
+<a href="/controller?command=to_add_publisher_page" ><fmt:message key="label.book.add_publisher" bundle="${messages}"/> </a><br/>
+
 <a href="/controller?command=to_add_book_page" ><fmt:message key="label.book.add_book" bundle="${messages}"/> </a><br/>
 
 <a href="/controller?command=to_find_book_page" ><fmt:message key="label.button.book.delete_book" bundle="${messages}"/> </a><br/>

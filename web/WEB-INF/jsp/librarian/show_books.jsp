@@ -36,7 +36,7 @@
             <td>${item.isbn}</td>
             <td>${item.year}</td>
             <td>${item.location}</td>
-            <td>${item.publisher}</td>
+            <td>${item.publisher.name}</td>
             <td><c:forEach items="${item.genre}" var="genres">
                 ${genres.getName()}
             </c:forEach> </td>

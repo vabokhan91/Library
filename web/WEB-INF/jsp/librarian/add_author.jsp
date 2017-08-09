@@ -31,6 +31,21 @@
     <input type="submit" name="submit" value=<fmt:message key="label.book.add_author" bundle="${messages}"/> />
 </form>
 
+<c:choose>
+    <c:when test="${not empty sessionScope.isAuthorAdded || sessionScope.isAuthorAdded eq true}">
+        <fmt:message key="label.book.author_is_added" bundle="${messages}"/>
+    </c:when>
+    <c:when test="${not empty sessionScope.isAuthorAdded || sessionScope.isAuthorAdded eq false}">
+        <fmt:message key="label.book.author_not_added" bundle="${messages}"/>
+    </c:when>
+</c:choose><br/>
+
+<c:if test="${not empty sessionScope.isAuthorAdded}">
+    <c:remove var="isAuthorAdded" scope="session" />
+</c:if>
+
+
+
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 
 </body>

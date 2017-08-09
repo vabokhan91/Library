@@ -21,7 +21,7 @@
     <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
     <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
     <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
-    <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher}<br/>
+    <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher.name}<br/>
     <fmt:message key="label.book.author" bundle="${messages}"/> :
     <c:forEach items="${item.authors}" var="authors">
         ${authors.toString()}

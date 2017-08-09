@@ -27,13 +27,15 @@
         </c:forEach>
     </select><br/>
 
-    <fmt:message key="label.book.genre" bundle="${messages}"/> : <select name="book_genre">
+    <fmt:message key="label.book.genre" bundle="${messages}"/> : <br/>
+    <select multiple name="book_genre">
     <c:forEach items="${genres}" var="genre">
     <option value="${genre.id}">${genre.getName()} </option>
     </c:forEach>
     </select><br/>
 
-    <fmt:message key="label.book.author" bundle="${messages}"/> : <select name="book_author">
+    <fmt:message key="label.book.author" bundle="${messages}"/> : <br/>
+    <select multiple name="book_author">
     <c:forEach items="${authors}" var="author">
     <option value="${author.id}">${author.getSurname()} ${author.getName()} ${author.getPatronymic()} </option>
     </c:forEach>
@@ -54,14 +56,7 @@
     <c:when test="${not empty sessionScope.bookAddStatus || sessionScope.bookAddStatus eq false}">
         <fmt:message key="message.book_was_not_added" bundle="${messages}"/>
     </c:when>
-</c:choose>
-
-   <%-- <c:if test="${not empty sessionScope.bookAddStatus && bookAddStatus == true}">
-        <fmt:message key="message.book_added_successfully" bundle="${messages}"/>
-    </c:if>
-    <c:if test="${not empty sessionScope.bookAddStatus && bookAddStatus == false}">
-        <fmt:message key="message.book_was_not_added" bundle="${messages}"/>
-    </c:if>--%>
+</c:choose><br/>
 
 <c:if test="${not empty sessionScope.bookAddStatus}">
 <c:remove var="bookAddStatus" scope="session" />

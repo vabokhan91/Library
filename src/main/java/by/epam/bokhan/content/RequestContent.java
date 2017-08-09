@@ -8,18 +8,27 @@ import java.util.HashMap;
 public class RequestContent {
     private HashMap<String, Object> requestParameters;
     private HashMap<String, Object> sessionAttributes;
+    private HashMap<String, Object> requestParameterValues;
 
     public RequestContent() {
         requestParameters = new HashMap<>();
         sessionAttributes = new HashMap<>();
+        requestParameterValues = new HashMap<>();
     }
 
     public void extractValues(HttpServletRequest request) {
         Enumeration requestParameters = request.getParameterNames();
         while (requestParameters.hasMoreElements()) {
             String name = (String) requestParameters.nextElement();
-            String value = request.getParameter(name);
+            Object value = request.getParameter(name);
             this.requestParameters.put(name, value);
+        }
+
+        Enumeration requestParameterValues = request.getParameterNames();
+        while (requestParameterValues.hasMoreElements()) {
+            String name = (String) requestParameterValues.nextElement();
+            Object value = request.getParameterValues(name);
+            this.requestParameterValues.put(name, value);
         }
     }
 
@@ -30,6 +39,10 @@ public class RequestContent {
 
     public void insertAttribute(String key, Object attribute) {
         sessionAttributes.put(key, attribute);
+    }
+
+    public void insertParameterValue(String key, Object attribute) {
+        requestParameterValues.put(key, attribute);
     }
 
 
@@ -47,6 +60,14 @@ public class RequestContent {
 
     public void setSessionAttributes(HashMap<String, Object> sessionAttributes) {
         this.sessionAttributes = sessionAttributes;
+    }
+
+    public HashMap<String, Object> getRequestParameterValues() {
+        return requestParameterValues;
+    }
+
+    public void setRequestParameterValues(HashMap<String, Object> requestParameterValues) {
+        this.requestParameterValues = requestParameterValues;
     }
 }
 

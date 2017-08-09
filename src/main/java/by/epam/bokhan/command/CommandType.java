@@ -221,14 +221,6 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).addAuthor(content);
         }
-    },TO_AUTHOR_ADDED_PAGE(new ToAuthorAddedPageCommand(new BookReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },TO_AUTHOR_NOT_ADDED_PAGE(new ToAuthorNotAddedPageCommand(new BookReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
     },TO_ADD_BOOK_PAGE(new ToAddBookPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getGenresAuthorsPublishers(content);
@@ -272,6 +264,14 @@ public enum CommandType {
     },TO_BOOK_RETURN_STATUS_PAGE(new ToBookReturnStatusPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
+        }
+    },TO_ADD_PUBLISHER_PAGE(new ToAddPublisherPage(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },ADD_PUBLISHER(new AddPublisherCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).addPublisher(content);
         }
     };
 

@@ -68,10 +68,20 @@ public class BookReceiverImpl implements BookReceiver {
     public void getBookForEditing(RequestContent requestContent) throws ReceiverException {
         BookDAO dao = new BookDAOImpl();
         List<Book> books;
+        List<Genre> genres;
+        List<Author> authors;
+        List<Publisher> publishers;
         int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
         try {
             books = dao.getBookForEditing(bookId);
             requestContent.insertParameter("foundBook", books);
+            genres = dao.getAllGenres();
+            requestContent.insertParameter("genres", genres);
+            authors = dao.getAllAuthors();
+            requestContent.insertParameter("authors", authors);
+            publishers = dao.getAllPublishers();
+            requestContent.insertParameter("publishers", publishers);
+
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -98,7 +108,24 @@ public class BookReceiverImpl implements BookReceiver {
             int pages = Integer.parseInt((String) requestContent.getRequestParameters().get("book_pages"));
             String isbn = (String) requestContent.getRequestParameters().get("book_isbn");
             int year = Integer.parseInt((String) requestContent.getRequestParameters().get("book_year"));
-            isBookEdited = bookDAO.editBook(bookId, title, pages, year, isbn);
+            Book book = new Book();
+            book.setId(bookId);
+            book.setTitle(title);
+            book.setPages(pages);
+            book.setIsbn(isbn);
+            book.setYear(year);
+            String[] genreIdStrings = (String[]) requestContent.getRequestParameterValues().get("book_genre");
+            int[] genreId = new int[genreIdStrings.length];
+            for(int i = 0; i < genreIdStrings.length;i++) {
+                genreId[i] = Integer.parseInt(genreIdStrings[i]);
+            }
+            String[] authorsIds = (String[]) requestContent.getRequestParameterValues().get("book_author");
+            int[] authorIds = new int[authorsIds.length];
+            for(int i = 0; i < authorsIds.length;i++) {
+                authorIds[i] = Integer.parseInt(authorsIds[i]);
+            }
+
+            isBookEdited = bookDAO.editBook(book,genreId, authorIds);
             requestContent.insertParameter("isBookEdited", isBookEdited);
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -114,7 +141,21 @@ public class BookReceiverImpl implements BookReceiver {
             String patronymic = (String) requestContent.getRequestParameters().get("author_pathonymic");
             String dateOfBirth = (String) requestContent.getRequestParameters().get("date_of_birth");
             authorIsAdded = bookDAO.addAuthor(name, surname, patronymic, dateOfBirth);
-            requestContent.insertParameter("isAuthorAdded", authorIsAdded);
+            requestContent.insertAttribute("isAuthorAdded", authorIsAdded);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void addPublisher(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        boolean isPublisherAdded;
+        try {
+            String publisherName = (String) requestContent.getRequestParameters().get("publisher_name");
+
+            isPublisherAdded = bookDAO.addPublisher(publisherName);
+            requestContent.insertAttribute("isPublisherAdded", isPublisherAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -148,8 +189,22 @@ public class BookReceiverImpl implements BookReceiver {
             int yearOfPublishing = Integer.parseInt((String) requestContent.getRequestParameters().get("book_year"));
             String isbn = (String) requestContent.getRequestParameters().get("book_isbn");
             int publisherId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_publisher"));
-            int genreId = (Integer.parseInt((String) requestContent.getRequestParameters().get("book_genre")));
-            int authorId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_author"));
+            String genresId[] = (String[]) requestContent.getRequestParameterValues().get("book_genre");
+            int genreId[] = new int[genresId.length];
+            for (int i = 0; i < genreId.length; i++) {
+                String stringValue = genresId[i];
+                int id = Integer.parseInt(stringValue);
+                genreId[i] = id;
+            }
+
+            String authorsId[]= (String[]) requestContent.getRequestParameterValues().get("book_author");
+            int[] authorId = new int[authorsId.length];
+            for (int i = 0; i < authorId.length; i++) {
+                String stringValue = authorsId[i];
+                int id = Integer.parseInt(stringValue);
+                authorId[i] = id;
+
+            }
             String description = (String) requestContent.getRequestParameters().get("book_description");
             Location location = Location.valueOf(((String) requestContent.getRequestParameters().get("book_location")).toUpperCase());
             Book book = new Book();

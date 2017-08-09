@@ -94,14 +94,6 @@ public class Controller extends HttpServlet {
             String first = p.getKey();
             Object second = p.getValue();
             request.setAttribute(first, second);
-            /*if (first.equalsIgnoreCase("errorloginpassmessage")) {
-                request.getSession().setAttribute(first, second);
-            }
-            if (first.equalsIgnoreCase(USER)) {
-                request.getSession().setAttribute(first, second);
-            } else {
-
-            }*/
 
         }
         HashMap<String, Object> attributes = content.getSessionAttributes();

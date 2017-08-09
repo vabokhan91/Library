@@ -25,7 +25,7 @@ public interface BookDAO {
 
     LinkedList<Genre> getAllGenres() throws DAOException;
 
-    boolean editBook(int bookId, String title, int pages, int year, String isbn) throws DAOException;
+    boolean editBook(Book book, int[] genreId, int[] authorId) throws DAOException;
 
     boolean addAuthor(String name, String surname, String patronymic, String dateOfBirth) throws DAOException;
 
@@ -33,7 +33,7 @@ public interface BookDAO {
 
     LinkedList<Publisher> getAllPublishers() throws DAOException;
 
-    boolean addBook(Book book,int publisherId, int genreId, int authorId) throws DAOException;
+    boolean addBook(Book book,int publisherId, int genreId[], int[] authorId) throws DAOException;
 
     boolean deleteBook(int bookId) throws DAOException;
 
@@ -42,4 +42,6 @@ public interface BookDAO {
     List<Order> getUserOrders(int libraryCard) throws DAOException;
 
     boolean returnBook(int orderId, int bookId) throws DAOException;
+
+    boolean addPublisher(String publisherName) throws DAOException;
 }

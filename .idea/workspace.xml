@@ -4,14 +4,10 @@
     <bookmark url="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/pool/ConnectionCreator.java" line="17" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7fd0963-556a-444e-a4b4-b3735092d7e9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/GetUserOrdersCommand.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ReturnBookCommand.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToBookReturnStatusPageCommand.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToFindUserOrdersPage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_return_status.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/find_user_orders.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/user_orders.jsp" />
+    <list default="true" id="b7fd0963-556a-444e-a4b4-b3735092d7e9" name="Default" comment="edit command added edit several genres, authors functionality&#10;add publisher command added">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddPublisherCommand.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAddPublisherPage.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_publisher.jsp" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/ToFindUserPageCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/ToMainPageCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/ToRegistrationPageCommand.class" afterPath="" />
@@ -26,6 +22,8 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/commoncommand/ToUserAddedPage.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/commoncommand/ToUserNotAddedPage.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/librariancommand/ToLibrarianMainPageCommand.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAuthorAddedPageCommand.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAuthorNotAddedPageCommand.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/EmptyCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/pagecommand/ToFindUserPageCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/pagecommand/ToMainPageCommand.class" afterPath="" />
@@ -42,6 +40,8 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/pagecommand/commoncommand/ToUserNotAddedPage.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/pagecommand/librariancommand/ToLibrarianMainPageCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/dao/LoginDAO.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/author_added.jsp" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/author_not_added.jsp" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/AbstractCommand.class" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/AbstractCommand.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/AddUserCommand.class" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/AddUserCommand.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/BlockUserCommand.class" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/BlockUserCommand.class" />
@@ -146,9 +146,14 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/jsp/main.jsp" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/jsp/main.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/jsp/removeuser.jsp" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/jsp/removeuser.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockFailedPage.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockFailedPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddAuthorCommand.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddAuthorCommand.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddBookCommand.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddBookCommand.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/content/RequestContent.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/content/RequestContent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/controller/Controller.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/controller/Controller.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAO.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAO.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Book.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Book.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Publisher.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Publisher.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiver.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/resource/config.properties" afterPath="$PROJECT_DIR$/src/main/resources/resource/config.properties" />
@@ -159,7 +164,12 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/resource/language.properties" afterPath="$PROJECT_DIR$/target/classes/resource/language.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/resource/language_en_US.properties" afterPath="$PROJECT_DIR$/target/classes/resource/language_en_US.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/resource/language_ru_RU.properties" afterPath="$PROJECT_DIR$/target/classes/resource/language_ru_RU.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_author.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_author.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_book.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_book.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_explicit_info.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_explicit_info.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/edit_book.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/edit_book.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/librarian.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/librarian.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/show_books.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/show_books.jsp" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -176,18 +186,8 @@
       <file leaf-file-name="BookReceiverImpl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="223" column="34" lean-forward="false" selection-start-line="223" selection-start-column="34" selection-end-line="223" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommandType.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="273" column="0" lean-forward="false" selection-start-line="273" selection-start-column="0" selection-end-line="273" selection-end-column="0" />
+            <state relative-caret-position="326">
+              <caret line="157" column="44" lean-forward="false" selection-start-line="157" selection-start-column="44" selection-end-line="157" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -195,78 +195,44 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AddBookCommand.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddBookCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="20" column="40" lean-forward="false" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="book_return_status.jsp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_return_status.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="77" lean-forward="false" selection-start-line="21" selection-start-column="77" selection-end-line="21" selection-end-column="77" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ToFindUserOrdersPage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToFindUserOrdersPage.java">
+      <file leaf-file-name="add_publisher.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_publisher.jsp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="204">
-              <caret line="18" column="67" lean-forward="false" selection-start-line="18" selection-start-column="67" selection-end-line="18" selection-end-column="67" />
+              <caret line="16" column="87" lean-forward="false" selection-start-line="16" selection-start-column="87" selection-end-line="16" selection-end-column="87" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReturnBookCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ReturnBookCommand.java">
+      <file leaf-file-name="book_delete_result.jsp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_delete_result.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="69" lean-forward="false" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="69" />
+            <state relative-caret-position="383">
+              <caret line="28" column="7" lean-forward="false" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="add_author.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_author.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="326">
+              <caret line="30" column="111" lean-forward="true" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="111" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ToAddPublisherPage.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAddPublisherPage.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="241">
+              <caret line="18" column="84" lean-forward="false" selection-start-line="18" selection-start-column="84" selection-end-line="18" selection-end-column="84" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#440#441#0" expanded="true" />
-                <element signature="e#471#472#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ToBookReturnStatusPageCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToBookReturnStatusPageCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="16" column="89" lean-forward="false" selection-start-line="16" selection-start-column="56" selection-end-line="16" selection-end-column="89" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.properties" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/resource/config.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="44" column="81" lean-forward="false" selection-start-line="44" selection-start-column="81" selection-end-line="44" selection-end-column="81" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ToBookEditedSuccessPage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToBookEditedSuccessPage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="20" column="5" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="20" selection-end-column="5" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -284,6 +250,50 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="CommandType.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="265">
+              <caret line="271" column="43" lean-forward="false" selection-start-line="271" selection-start-column="24" selection-end-line="271" selection-end-column="43" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddPublisherCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddPublisherCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="258">
+              <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddAuthorCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddAuthorCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="19" column="15" lean-forward="false" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddBookCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddBookCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="343">
+              <caret line="30" column="5" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="30" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -291,6 +301,7 @@
       <list>
         <option value="Interface" />
         <option value="Enum" />
+        <option value="JavaScript File" />
         <option value="Jsp File" />
         <option value="Class" />
       </list>
@@ -301,6 +312,7 @@
       <find>DAOException</find>
       <find>private</find>
       <find>&lt;/th&gt;</find>
+      <find>getAllA</find>
     </findStrings>
     <replaceStrings>
       <replace>ReceiverException</replace>
@@ -318,30 +330,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_edited.jsp" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/edit_book.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAddAuthorPageCommand.java" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/author_added.jsp" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/author_not_added.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAuthorAddedPageCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAuthorNotAddedPageCommand.java" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_author.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddAuthorCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAddBookPageCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Author.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/LoginCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/controller/Controller.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/content/RequestContent.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddBookCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Publisher.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Genre.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/find_book.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToBookDeleteResultPage.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/common/user_is_edited.jsp" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_delete_result.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/DeleteBookCommand.java" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_book.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/FindBookCommand.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/main.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAddOrderPage.java" />
@@ -349,26 +345,42 @@
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToOrderStatusPage.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/order_status_page.jsp" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_order.jsp" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_explicit_info.jsp" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_info.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/BlockUserCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockFailedPage.java" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/librarian.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToFindUserOrdersPage.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/FindUserOrdersCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/GetUserOrdersCommand.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/find_user_orders.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiver.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/user_orders.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ReturnBookCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/resource/language.properties" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_return_status.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToBookReturnStatusPageCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddBookCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/controller/Controller.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/factory/CommandFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/content/RequestContent.java" />
+        <option value="$PROJECT_DIR$/web/js/dropdown.js" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_book.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Publisher.java" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/show_books.jsp" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_explicit_info.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Book.java" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/edit_book.jsp" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_author.jsp" />
         <option value="$PROJECT_DIR$/src/main/resources/resource/config.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAddPublisherPage.java" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/librarian.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddAuthorCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddPublisherCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/resource/language.properties" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_publisher.jsp" />
       </list>
     </option>
   </component>
@@ -556,58 +568,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="librarian" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Library" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="library" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jsp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Library" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="library" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jsp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="admin" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1145,44 +1105,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bokhan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="command" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="navigation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="admin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Library" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="library" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value=".idea" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -1216,22 +1138,22 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/vbokh/Desktop/authorization_project/src/by/epam/bokhan/logic/LoginLogic.java" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/EpamSoundTracker-master" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/hotel-booking-master" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.30069125" />
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\vbokh\Desktop\library\web\WEB-INF\jsp\common" />
-      <recent name="C:\Users\vbokh\Desktop\library\web\WEB-INF\jsp\librarian" />
-      <recent name="C:\Users\vbokh\Desktop\library\web\WEB-INF" />
-      <recent name="C:\Users\vbokh\Desktop\library\web\jsp\user" />
-      <recent name="C:\Users\vbokh\Desktop\library\web\jsp\librarian" />
-    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\vbokh\Desktop\authorization_project\src\main\resources" />
+      <recent name="C:\Users\vbokh\Desktop\authorization_project\web\WEB-INF\lib" />
+      <recent name="C:\Users\vbokh\Desktop\authorization_project" />
+      <recent name="C:\Users\vbokh\Desktop\authorization_project\src\main\java\resources" />
+      <recent name="C:\Users\vbokh\Desktop\authorization_project\src\by\epam\bokhan\receiver" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="by.epam.bokhan.entity" />
@@ -1240,12 +1162,12 @@
       <recent name="by.epam.bokhan.manager" />
       <recent name="by.epam.bokhan.logic" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\vbokh\Desktop\authorization_project\src\main\resources" />
-      <recent name="C:\Users\vbokh\Desktop\authorization_project\web\WEB-INF\lib" />
-      <recent name="C:\Users\vbokh\Desktop\authorization_project" />
-      <recent name="C:\Users\vbokh\Desktop\authorization_project\src\main\java\resources" />
-      <recent name="C:\Users\vbokh\Desktop\authorization_project\src\by\epam\bokhan\receiver" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\vbokh\Desktop\library\web" />
+      <recent name="C:\Users\vbokh\Desktop\library\web\WEB-INF" />
+      <recent name="C:\Users\vbokh\Desktop\library\web\WEB-INF\jsp\common" />
+      <recent name="C:\Users\vbokh\Desktop\library\web\WEB-INF\jsp\librarian" />
+      <recent name="C:\Users\vbokh\Desktop\library\web\jsp\user" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -1750,7 +1672,7 @@
       <workItem from="1500675106253" duration="114460000" />
       <workItem from="1501155121751" duration="63916000" />
       <workItem from="1501514917739" duration="115941000" />
-      <workItem from="1502115788495" duration="42130000" />
+      <workItem from="1502115788495" duration="77408000" />
     </task>
     <task id="LOCAL-00001" summary="21.07. log4j, changes to connection pool, commands">
       <created>1500669292977</created>
@@ -1808,15 +1730,30 @@
       <option name="project" value="LOCAL" />
       <updated>1502207253096</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="book return command added">
+      <created>1502230602870</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1502230602870</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="456657000" />
+    <option name="totallyTimeSpent" value="491935000" />
+  </component>
+  <component name="TodoView" selected-index="4">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1831,17 +1768,18 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4064603" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32839838" sideWeight="0.49485862" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32839838" sideWeight="0.49485862" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23650385" sideWeight="0.5" order="7" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23650385" sideWeight="0.5" order="7" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -1849,7 +1787,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1870,7 +1807,9 @@
     <MESSAGE value="admin almost ended" />
     <MESSAGE value="changes to commands" />
     <MESSAGE value="add order command added, fixes to book_info commands" />
-    <option name="LAST_COMMIT_MESSAGE" value="add order command added, fixes to book_info commands" />
+    <MESSAGE value="book return command added" />
+    <MESSAGE value="edit command added edit several genres, authors functionality&#10;add publisher command added" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit command added edit several genres, authors functionality&#10;add publisher command added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1913,7 +1852,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java</url>
-          <line>204</line>
+          <line>259</line>
           <properties />
           <option name="timeStamp" value="151" />
         </line-breakpoint>
@@ -1923,14 +1862,27 @@
           <properties />
           <option name="timeStamp" value="152" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java</url>
+          <line>116</line>
+          <properties />
+          <option name="timeStamp" value="167" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java</url>
+          <line>495</line>
+          <properties />
+          <option name="timeStamp" value="169" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="153" />
+      <option name="time" value="171" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
         <watch expression="connectionQueue" />
         <watch expression="request" />
         <watch expression="this.classCache" custom="javax.servlet.jsp.PageContext,javax.servlet.ServletContext" />
+        <watch expression="this.attributes" />
       </configuration>
     </watches-manager>
   </component>
@@ -1939,191 +1891,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/common/add_user.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="35" column="26" lean-forward="false" selection-start-line="31" selection-start-column="12" selection-end-line="35" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAuthorAddedPageCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="16" column="81" lean-forward="false" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Book.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-119">
-          <caret line="9" column="18" lean-forward="false" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="55" column="39" lean-forward="false" selection-start-line="55" selection-start-column="39" selection-end-line="55" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToShowBooksPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="19" column="5" lean-forward="false" selection-start-line="11" selection-start-column="4" selection-end-line="19" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/author_added.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="23" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_book.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="56" column="11" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="56" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/main.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="32" column="19" lean-forward="false" selection-start-line="30" selection-start-column="12" selection-end-line="32" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_order.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="44" column="68" lean-forward="false" selection-start-line="44" selection-start-column="68" selection-end-line="44" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/Receiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AbstractCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToOrderStatusPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="19" column="5" lean-forward="false" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/factory/CommandFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/manager/MessageManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding>
-            <element signature="e#437#438#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddOrderCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_101/src.zip!/java/sql/PreparedStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="76" column="14" lean-forward="false" selection-start-line="76" selection-start-column="14" selection-end-line="76" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/GetExplicitBookInfoCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="11" column="11" lean-forward="false" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
-          <folding>
-            <element signature="e#405#406#0" expanded="false" />
-            <element signature="e#436#437#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToExplicitBookInfoPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Order.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-340">
-          <caret line="16" column="28" lean-forward="false" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/BlockUserCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="22" column="58" lean-forward="false" selection-start-line="22" selection-start-column="58" selection-end-line="22" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_user.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-510">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockFailedPage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -2135,26 +1902,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAddOrderPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="22" column="5" lean-forward="false" selection-start-line="12" selection-start-column="3" selection-end-line="22" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/FindBookCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/edit_book.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2167,22 +1918,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/show_books.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_explicit_info.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="52" column="94" lean-forward="true" selection-start-line="38" selection-start-column="4" selection-end-line="52" selection-end-column="94" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/order_status_page.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -2191,87 +1926,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_info.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-422">
-          <caret line="29" column="45" lean-forward="false" selection-start-line="29" selection-start-column="45" selection-end-line="29" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="37" column="9" lean-forward="false" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="43" column="36" lean-forward="false" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/find_user_orders.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="17" column="115" lean-forward="false" selection-start-line="17" selection-start-column="103" selection-end-line="17" selection-end-column="115" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="259" column="0" lean-forward="false" selection-start-line="259" selection-start-column="0" selection-end-line="259" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1502223019651" expanded="true" signature="514:1347" ph="SELECT book.... book" />
-            <marker date="1502223019651" expanded="true" signature="876:982" ph="select book_... book_genre" />
-            <marker date="1502223019651" expanded="true" signature="1070:1288" ph="select book_... book_author" />
-            <marker date="1502223019651" expanded="true" signature="1405:1443" ph="SELECT book.... book" />
-            <marker date="1502223019651" expanded="true" signature="1405:1902" ph="SELECT book.... book" />
-            <marker date="1502223019651" expanded="true" signature="1405:1913" ph="SELECT book.... book" />
-            <marker date="1502223019651" expanded="true" signature="1655:1807" ph="select book_... book_author" />
-            <marker date="1502223019651" expanded="true" signature="1975:2013" ph="SELECT book.... book" />
-            <marker date="1502223019651" expanded="true" signature="1975:2143" ph="SELECT book.... book" />
-            <marker date="1502223019651" expanded="true" signature="1975:2488" ph="SELECT book.... book" />
-            <marker date="1502223019651" expanded="true" signature="1975:2489" ph="SELECT book.... book" />
-            <marker date="1502223019651" expanded="true" signature="2225:2377" ph="select book_... book_author" />
-            <marker date="1502223019651" expanded="true" signature="2556:3344" ph="SELECT book.... book" />
-            <marker date="1502223019651" expanded="true" signature="2918:3067" ph="select book_... book_author" />
-            <marker date="1502223019651" expanded="true" signature="3143:3249" ph="select book_... book_genre" />
-            <marker date="1502223019651" expanded="true" signature="3408:3892" ph="SELECT order... orders" />
-            <marker date="1502223019651" expanded="true" signature="3832:3891" ph="select max(o... orders" />
-            <marker date="1502223019651" expanded="true" signature="3950:3969" ph="Select * fro... genres" />
-            <marker date="1502223019651" expanded="true" signature="4021:4090" ph="Update book " />
-            <marker date="1502223019651" expanded="true" signature="4143:4249" ph="INSERT INTO author... " />
-            <marker date="1502223019651" expanded="true" signature="4307:4327" ph="Select * fro... author" />
-            <marker date="1502223019651" expanded="true" signature="4388:4402" ph="Select * fro... author" />
-            <marker date="1502223019651" expanded="true" signature="4388:4411" ph="Select * fro... publisher" />
-            <marker date="1502223019651" expanded="true" signature="4462:4596" ph="INSERT INTO author... " />
-            <marker date="1502223019651" expanded="true" signature="4653:4707" ph="INSERT INTO book_genre... " />
-            <marker date="1502223019651" expanded="true" signature="4765:4821" ph="INSERT INTO book_genre... " />
-            <marker date="1502223019651" expanded="true" signature="4875:4907" ph="DELETE FROM " />
-            <marker date="1502223019651" expanded="true" signature="4875:4909" ph="DELETE FROM " />
-            <marker date="1502223019651" expanded="true" signature="4961:5096" ph="INSERT INTO ORDERS... " />
-            <marker date="1502223019651" expanded="true" signature="4961:5152" ph="INSERT INTO ORDERS... " />
-            <marker date="1502223019651" expanded="true" signature="5221:5280" ph="Update book " />
-            <marker date="1502223019651" expanded="true" signature="5349:5408" ph="Update book " />
-            <marker date="1502223019651" expanded="true" signature="5472:5526" ph="Update book " />
-            <marker date="1502223019651" expanded="true" signature="5584:5985" ph="select book.... orders" />
-            <marker date="1502223019651" expanded="true" signature="6039:6103" ph="UPDATE order... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/controller/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2299,33 +1957,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="52" column="64" lean-forward="false" selection-start-line="52" selection-start-column="64" selection-end-line="52" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/librarian.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="33" column="53" lean-forward="false" selection-start-line="33" selection-start-column="29" selection-end-line="33" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_delete_result.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="28" column="7" lean-forward="false" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/resource/language.properties">
-      <provider selected="true" editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="95" column="31" lean-forward="false" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -2371,31 +2002,311 @@
         <state relative-caret-position="238">
           <caret line="16" column="89" lean-forward="false" selection-start-line="16" selection-start-column="56" selection-end-line="16" selection-end-column="89" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/RemoveUserCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="45" column="30" lean-forward="false" selection-start-line="45" selection-start-column="30" selection-end-line="45" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/factory/CommandFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="14" column="35" lean-forward="false" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/BlockUserCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="22" column="58" lean-forward="false" selection-start-line="22" selection-start-column="58" selection-end-line="22" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/content/RequestContent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="64" column="64" lean-forward="false" selection-start-line="64" selection-start-column="64" selection-end-line="64" selection-end-column="64" />
+          <folding>
+            <element signature="e#2177#2178#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/js/dropdown.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="1715" column="17" lean-forward="false" selection-start-line="1715" selection-start-column="17" selection-end-line="1715" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/Receiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AbstractCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Publisher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="27" column="19" lean-forward="false" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
+          <folding>
+            <element signature="e#431#432#0" expanded="true" />
+            <element signature="e#458#459#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/show_books.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="38" column="37" lean-forward="false" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_explicit_info.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="23" column="90" lean-forward="false" selection-start-line="23" selection-start-column="90" selection-end-line="23" selection-end-column="90" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/GetBookForEditing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Genre.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="12" lean-forward="false" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/controller/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToEditBookPageCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="19" column="51" lean-forward="true" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Author.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="25" lean-forward="false" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_info.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="58" column="23" lean-forward="true" selection-start-line="58" selection-start-column="23" selection-end-line="58" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/edit_book.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="53" column="12" lean-forward="false" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Book.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-578">
+          <caret line="18" column="28" lean-forward="true" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+          <folding>
+            <element signature="e#1261#1262#0" expanded="true" />
+            <element signature="e#1293#1294#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/author_not_added.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/author_added.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_book.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="69" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAddOrderPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="22" column="5" lean-forward="true" selection-start-line="12" selection-start-column="4" selection-end-line="22" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/resource/config.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="44" column="81" lean-forward="false" selection-start-line="44" selection-start-column="81" selection-end-line="44" selection-end-column="81" />
+        <state relative-caret-position="301">
+          <caret line="35" column="30" lean-forward="false" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/librarian.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="39" column="21" lean-forward="false" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="45" column="67" lean-forward="false" selection-start-line="45" selection-start-column="67" selection-end-line="45" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="589" column="35" lean-forward="false" selection-start-line="589" selection-start-column="35" selection-end-line="589" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1502311180779" expanded="true" signature="514:1360" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="889:995" ph="select book_... book_genre" />
+            <marker date="1502311180779" expanded="true" signature="1083:1301" ph="select book_... book_author" />
+            <marker date="1502311180779" expanded="true" signature="1418:1456" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="1418:1915" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="1418:1926" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="1668:1820" ph="select book_... book_author" />
+            <marker date="1502311180779" expanded="true" signature="1990:2800" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="1990:2801" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="2287:2439" ph="select book_... book_author" />
+            <marker date="1502311180779" expanded="true" signature="2515:2626" ph="select book_... book_genre" />
+            <marker date="1502311180779" expanded="true" signature="2863:2901" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="2863:3031" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="2863:3376" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="2863:3377" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="3113:3265" ph="select book_... book_author" />
+            <marker date="1502311180779" expanded="true" signature="3444:4245" ph="SELECT book.... book" />
+            <marker date="1502311180779" expanded="true" signature="3819:3968" ph="select book_... book_author" />
+            <marker date="1502311180779" expanded="true" signature="4044:4150" ph="select book_... book_genre" />
+            <marker date="1502311180779" expanded="true" signature="4309:4793" ph="SELECT order... orders" />
+            <marker date="1502311180779" expanded="true" signature="4733:4792" ph="select max(o... orders" />
+            <marker date="1502311180779" expanded="true" signature="4851:4870" ph="Select * fro... genres" />
+            <marker date="1502311180779" expanded="true" signature="4922:4991" ph="Update book " />
+            <marker date="1502311180779" expanded="true" signature="5052:5103" ph="DELETE FROM " />
+            <marker date="1502311180779" expanded="true" signature="5165:5218" ph="DELETE FROM " />
+            <marker date="1502311180779" expanded="true" signature="5271:5377" ph="INSERT INTO author... " />
+            <marker date="1502311180779" expanded="true" signature="5433:5482" ph="INSERT INTO publisher... " />
+            <marker date="1502311180779" expanded="true" signature="5540:5560" ph="Select * fro... author" />
+            <marker date="1502311180779" expanded="true" signature="5621:5635" ph="Select * fro... author" />
+            <marker date="1502311180779" expanded="true" signature="5621:5644" ph="Select * fro... publisher" />
+            <marker date="1502311180779" expanded="true" signature="5695:5829" ph="INSERT INTO author... " />
+            <marker date="1502311180779" expanded="true" signature="5886:5940" ph="INSERT INTO book_genre... " />
+            <marker date="1502311180779" expanded="true" signature="5998:6054" ph="INSERT INTO book_genre... " />
+            <marker date="1502311180779" expanded="true" signature="6108:6140" ph="DELETE FROM " />
+            <marker date="1502311180779" expanded="true" signature="6108:6142" ph="DELETE FROM " />
+            <marker date="1502311180779" expanded="true" signature="6194:6329" ph="INSERT INTO ORDERS... " />
+            <marker date="1502311180779" expanded="true" signature="6194:6385" ph="INSERT INTO ORDERS... " />
+            <marker date="1502311180779" expanded="true" signature="6454:6513" ph="Update book " />
+            <marker date="1502311180779" expanded="true" signature="6582:6641" ph="Update book " />
+            <marker date="1502311180779" expanded="true" signature="6705:6759" ph="Update book " />
+            <marker date="1502311180779" expanded="true" signature="6817:7218" ph="select book.... orders" />
+            <marker date="1502311180779" expanded="true" signature="7272:7336" ph="UPDATE order... " />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="223" column="34" lean-forward="false" selection-start-line="223" selection-start-column="34" selection-end-line="223" selection-end-column="34" />
-          <folding />
+        <state relative-caret-position="326">
+          <caret line="157" column="44" lean-forward="false" selection-start-line="157" selection-start-column="44" selection-end-line="157" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToAddPublisherPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="18" column="84" lean-forward="false" selection-start-line="18" selection-start-column="84" selection-end-line="18" selection-end-column="84" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="273" column="0" lean-forward="false" selection-start-line="273" selection-start-column="0" selection-end-line="273" selection-end-column="0" />
+        <state relative-caret-position="265">
+          <caret line="271" column="43" lean-forward="false" selection-start-line="271" selection-start-column="24" selection-end-line="271" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -2404,8 +2315,61 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddBookCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="20" column="40" lean-forward="false" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
+        <state relative-caret-position="343">
+          <caret line="30" column="5" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="30" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddAuthorCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="19" column="15" lean-forward="false" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/AddPublisherCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/resource/language.properties">
+      <provider selected="true" editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="95" column="31" lean-forward="false" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_author.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="30" column="111" lean-forward="true" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="111" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/add_publisher.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="16" column="87" lean-forward="false" selection-start-line="16" selection-start-column="87" selection-end-line="16" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_delete_result.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="28" column="7" lean-forward="false" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="7" />
           <folding />
         </state>
       </provider>

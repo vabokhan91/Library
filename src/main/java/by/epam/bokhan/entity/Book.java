@@ -12,9 +12,9 @@ public class Book {
     private int pages;
     private String isbn;
     private int year;
-    private String publisher;
+    private Publisher publisher;
     private String description;
-    private List<Genre> genre ;
+    private List<Genre> genre;
     private Location location;
     private List<Author> authors;
     private List<Order> orders;
@@ -23,6 +23,7 @@ public class Book {
         genre = new ArrayList<>();
         authors = new ArrayList<>();
         orders = new ArrayList<>();
+
     }
 
     public int getId() {
@@ -65,11 +66,11 @@ public class Book {
         this.year = year;
     }
 
-    public String getPublisher() {
+    public Publisher getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
+    public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
 
