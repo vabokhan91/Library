@@ -50,16 +50,16 @@
 
 
 <c:choose>
-    <c:when test="${not empty sessionScope.bookAddStatus || sessionScope.bookAddStatus eq true}">
+    <c:when test="${not empty sessionScope.isBookAdded && sessionScope.isBookAdded eq true}">
         <fmt:message key="message.book_added_successfully" bundle="${messages}"/>
     </c:when>
-    <c:when test="${not empty sessionScope.bookAddStatus || sessionScope.bookAddStatus eq false}">
+    <c:when test="${not empty sessionScope.isBookAdded && sessionScope.isBookAdded eq false}">
         <fmt:message key="message.book_was_not_added" bundle="${messages}"/>
     </c:when>
 </c:choose><br/>
 
-<c:if test="${not empty sessionScope.bookAddStatus}">
-<c:remove var="bookAddStatus" scope="session" />
+<c:if test="${not empty sessionScope.isBookAdded}">
+<c:remove var="isBookAdded" scope="session" />
 </c:if>
 
 <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>

@@ -59,6 +59,7 @@
                 </form>
             </td>
 
+            <c:if test="${item.getLocation().getName() eq 'storage'}">
             <td>
                 <form method="post" action="/controller" accept-charset="UTF-8">
                     <input type="hidden" name="command" value="delete_book"/>
@@ -67,6 +68,7 @@
                                                                           bundle="${messages}"/>/>
                 </form>
             </td>
+            </c:if>
 
             <c:if test="${item.getLocation().getName() eq 'storage'}">
             <td>
@@ -79,7 +81,6 @@
                 </form>
             </td>
             </c:if>
-
         </tr>
     </c:forEach>
 

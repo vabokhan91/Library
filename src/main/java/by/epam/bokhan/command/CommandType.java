@@ -289,6 +289,22 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).deleteGenre(content);
         }
+    },TO_DELETE_AUTHOR_PAGE(new ToDeleteAuthorPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getAllAuthors(content);
+        }
+    },DELETE_AUTHOR(new DeleteAuthorCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).deleteAuthor(content);
+        }
+    },TO_DELETE_PUBLISHER_PAGE(new ToDeletePublisherPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getAllPublishers(content);
+        }
+    },DELETE_PUBLISHER(new DeletePublisherCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).deletePublisher(content);
+        }
     };
 
 

@@ -47,5 +47,9 @@ public interface BookDAO {
 
     boolean addGenre(String genreName) throws DAOException;
 
-    boolean deleteGenre(int[] genreId) throws DAOException;
+    boolean deleteGenre(int[] genreIds) throws DAOException;
+
+    boolean deleteAuthor(int[] authorIds) throws DAOException;
+
+    boolean deletePublisher(int[] publishersIds) throws DAOException;
 }

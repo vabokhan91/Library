@@ -108,12 +108,16 @@ public class BookReceiverImpl implements BookReceiver {
             int pages = Integer.parseInt((String) requestContent.getRequestParameters().get("book_pages"));
             String isbn = (String) requestContent.getRequestParameters().get("book_isbn");
             int year = Integer.parseInt((String) requestContent.getRequestParameters().get("book_year"));
+            int publisherId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_publisher"));
+            Publisher publisher = new Publisher();
+            publisher.setId(publisherId);
             Book book = new Book();
             book.setId(bookId);
             book.setTitle(title);
             book.setPages(pages);
             book.setIsbn(isbn);
             book.setYear(year);
+            book.setPublisher(publisher);
             String[] genreIdStrings = (String[]) requestContent.getRequestParameterValues().get("book_genre");
             int[] genreId = new int[genreIdStrings.length];
             for(int i = 0; i < genreIdStrings.length;i++) {
@@ -162,6 +166,35 @@ public class BookReceiverImpl implements BookReceiver {
     }
 
     @Override
+    public void deletePublisher(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        boolean isPublisherDeleted;
+        try {
+            String[] publishers = (String[]) requestContent.getRequestParameterValues().get("book_publisher");
+            int[] publishersIds = new int[publishers.length];
+            for(int i = 0; i < publishers.length; i++) {
+                publishersIds[i] = Integer.parseInt(publishers[i]);
+            }
+            isPublisherDeleted = bookDAO.deletePublisher(publishersIds);
+            requestContent.insertAttribute("isPublisherDeleted", isPublisherDeleted);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void getAllPublishers(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        LinkedList<Publisher> publishers;
+        try {
+            publishers = bookDAO.getAllPublishers();
+            requestContent.insertParameter("publishers", publishers);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
     public void addGenre(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isGenreAdded;
@@ -187,6 +220,35 @@ public class BookReceiverImpl implements BookReceiver {
             }
             isGenreDeleted = bookDAO.deleteGenre(genresId);
             requestContent.insertAttribute("isGenreDeleted", isGenreDeleted);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void getAllAuthors(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        LinkedList<Author> authors;
+        try {
+            authors = bookDAO.getAllAuthors();
+            requestContent.insertParameter("authors", authors);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void deleteAuthor(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        boolean isAuthorDeleted;
+        try {
+            String[] authors = (String[]) requestContent.getRequestParameterValues().get("book_author");
+            int[] authorsIds = new int[authors.length];
+            for(int i = 0; i < authors.length; i++) {
+                authorsIds[i] = Integer.parseInt(authors[i]);
+            }
+            isAuthorDeleted = bookDAO.deleteAuthor(authorsIds);
+            requestContent.insertAttribute("isAuthorDeleted", isAuthorDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -247,7 +309,7 @@ public class BookReceiverImpl implements BookReceiver {
             book.setDescription(description);
             book.setLocation(location);
             isBookAdded = bookDAO.addBook(book, publisherId, genreId, authorId);
-            requestContent.insertParameter("isBookAdded", isBookAdded);
+            requestContent.insertAttribute("isBookAdded", isBookAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -259,7 +321,7 @@ public class BookReceiverImpl implements BookReceiver {
         try {
             int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
             isBookDeleted = bookDAO.deleteBook(bookId);
-            requestContent.insertParameter("isBookDeleted", isBookDeleted);
+            requestContent.insertAttribute("isBookDeleted", isBookDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }

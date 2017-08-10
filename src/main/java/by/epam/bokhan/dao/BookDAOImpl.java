@@ -66,10 +66,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "where orders.order_date = (select max(order_date) from orders where orders.book_id = ?)";
 
     private static final String SQL_GET_ALL_GENRES = "Select * from genre";
-    private static final String SQL_EDIT_BOOK = "Update book set title = ?, pages = ?, isbn = ?, year = ? where id = ?";
+    private static final String SQL_EDIT_BOOK = "Update book set title = ?, pages = ?, isbn = ?, year = ?,publisher_id = ? where id = ?";
     private static final String SQL_DELETE_BOOKS_GENRE = "DELETE FROM book_genre WHERE book_genre.book_id = ?";
     private static final String SQL_DELETE_BOOKS_AUTHOR = "DELETE FROM book_author WHERE book_author.book_id = ?";
     private static final String SQL_DELETE_GENRE = "DELETE FROM genre WHERE genre.id = ?";
+    private static final String SQL_DELETE_AUTHOR = "DELETE FROM author WHERE author.id = ?";
+    private static final String SQL_DELETE_PUBLISHER = "DELETE FROM publisher WHERE publisher.id = ?";
     private static final String SQL_ADD_AUTHOR = "INSERT INTO author (author.name, author.surname, author.patronymic, author.date_of_birth) VALUES (?,?,?,?)";
     private static final String SQL_ADD_PUBLISHER = "INSERT INTO publisher (publisher.name) VALUES (?)";
     private static final String SQL_GET_ALL_AUTHORS = "Select * from author";
@@ -530,12 +532,13 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             st.setInt(2, book.getPages());
             st.setString(3, book.getIsbn());
             st.setInt(4, book.getYear());
-            st.setInt(5, book.getId());
+            st.setInt(5, book.getPublisher().getId());
+            st.setInt(6, book.getId());
             int editBookRes = st.executeUpdate();
 
             deleteGenreStatement = connection.prepareStatement(SQL_DELETE_BOOKS_GENRE);
             deleteGenreStatement.setInt(1, book.getId());
-            int deleteGenreStatus = deleteGenreStatement.executeUpdate();
+            deleteGenreStatement.executeUpdate();
             addGenreStatement = connection.prepareStatement(SQL_ADD_BOOK_GENRE);
             int addGenreRes = 0;
             for (int genId : genreId) {
@@ -546,7 +549,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
             deleteAuthorStatement = connection.prepareStatement(SQL_DELETE_BOOKS_AUTHOR);
             deleteAuthorStatement.setInt(1, book.getId());
-            int deleteAuthorStatus = deleteAuthorStatement.executeUpdate();
+            deleteAuthorStatement.executeUpdate();
 
             addAuthorStatement = connection.prepareStatement(SQL_ADD_BOOK_AUTHOR);
             int addAuthorRes = 0;
@@ -569,6 +572,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             closeStatement(st);
             closeStatement(deleteGenreStatement);
             closeStatement(addGenreStatement);
+            closeStatement(deleteAuthorStatement);
+            closeStatement(addAuthorStatement);
             closeConnection(connection);
         }
     }
@@ -612,6 +617,31 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 isPublisherAdded = true;
             }
             return isPublisherAdded;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeStatement(st);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean deletePublisher(int[] publishersIds) throws DAOException {
+        boolean isPublisherDeleted = false;
+        Connection connection = null;
+        PreparedStatement st = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            st = connection.prepareStatement(SQL_DELETE_PUBLISHER);
+            int res = 0;
+            for (int id : publishersIds) {
+                st.setInt(1, id);
+                res += st.executeUpdate();
+            }
+            if (res > 0) {
+                isPublisherDeleted = true;
+            }
+            return isPublisherDeleted;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
@@ -671,6 +701,31 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 isGenreDeleted = true;
             }
             return isGenreDeleted;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeStatement(st);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean deleteAuthor(int[] authorIds) throws DAOException {
+        boolean isAuthorDeleted = false;
+        Connection connection = null;
+        PreparedStatement st = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            st = connection.prepareStatement(SQL_DELETE_AUTHOR);
+            int res = 0;
+            for (int id : authorIds) {
+                st.setInt(1, id);
+                res += st.executeUpdate();
+            }
+            if (res > 0) {
+                isAuthorDeleted = true;
+            }
+            return isAuthorDeleted;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

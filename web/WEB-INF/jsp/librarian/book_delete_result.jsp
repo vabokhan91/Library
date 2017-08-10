@@ -8,24 +8,24 @@
 </c:if>
 <html>
 <head>
-    <title>Deleting done</title>
+    <title>Deleting status</title>
 </head>
 <body>
 
 
 <c:choose>
-    <c:when test="${not empty sessionScope.bookDeleteStatus || sessionScope.bookDeleteStatus eq true}">
-        <fmt:message key="label.book.delete_success" bundle="${messages}"/>
+    <c:when test="${not empty sessionScope.isBookDeleted && sessionScope.isBookDeleted eq true}">
+        <fmt:message key="label.book.delete_success" bundle="${messages}"/><br/>
         <a href="/controller?command=to_find_book_page"><fmt:message key="label.book.delete_one_more_book" bundle="${messages}"/> </a><br/>
     </c:when>
-    <c:when test="${not empty sessionScope.bookDeleteStatus || sessionScope.bookDeleteStatus eq false}">
-        <fmt:message key="message.book_was_not_added" bundle="${messages}"/>
+    <c:when test="${not empty sessionScope.isBookDeleted && sessionScope.isBookDeleted eq false}">
+        <fmt:message key="label.book.delete_failed" bundle="${messages}"/>
         <a href="/controller?command=to_find_book_page"><fmt:message key="label.try.once.again" bundle="${messages}"/> </a><br/>
     </c:when>
 </c:choose>
 
-<c:if test="${not empty sessionScope.bookDeleteStatus}">
-    <c:remove var="bookAddStatus" scope="session" />
+<c:if test="${not empty sessionScope.v}">
+    <c:remove var="isBookDeleted" scope="session" />
 </c:if>
 
 

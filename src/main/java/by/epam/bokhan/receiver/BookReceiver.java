@@ -42,4 +42,12 @@ public interface BookReceiver extends Receiver {
     void getAllGenres(RequestContent requestContent) throws ReceiverException;
 
     void deleteGenre(RequestContent requestContent) throws ReceiverException;
+
+    void getAllAuthors(RequestContent requestContent) throws ReceiverException;
+
+    void deleteAuthor(RequestContent requestContent) throws ReceiverException;
+
+    void getAllPublishers(RequestContent requestContent) throws ReceiverException;
+
+    void deletePublisher(RequestContent requestContent) throws ReceiverException;
 }
