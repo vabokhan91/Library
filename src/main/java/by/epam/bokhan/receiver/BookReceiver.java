@@ -19,8 +19,6 @@ public interface BookReceiver extends Receiver {
 
     void getBookForEditing(RequestContent requestContent) throws ReceiverException;
 
-    void getGenres(RequestContent requestContent) throws ReceiverException;
-
     void editBook(RequestContent requestContent) throws ReceiverException;
 
     void addAuthor(RequestContent requestContent) throws ReceiverException;
@@ -38,4 +36,10 @@ public interface BookReceiver extends Receiver {
     void returnBook(RequestContent requestContent) throws ReceiverException;
 
     void addPublisher(RequestContent requestContent) throws ReceiverException;
+
+    void addGenre(RequestContent requestContent) throws ReceiverException;
+
+    void getAllGenres(RequestContent requestContent) throws ReceiverException;
+
+    void deleteGenre(RequestContent requestContent) throws ReceiverException;
 }

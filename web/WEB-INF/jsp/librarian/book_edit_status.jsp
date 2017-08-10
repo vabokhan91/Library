@@ -11,7 +11,21 @@
     <title>Editing done</title>
 </head>
 <body>
-<fmt:message key="label.user.edit_success" bundle="${messages}"/><br/>
+
+
+<c:choose>
+    <c:when test="${not empty sessionScope.isBookEdited && sessionScope.isBookEdited eq true}">
+        <fmt:message key="label.book.edit_success" bundle="${messages}"/><br/>
+    </c:when>
+    <c:when test="${not empty sessionScope.isBookEdited && sessionScope.isBookEdited eq false}">
+        <fmt:message key="label.book.edit_failed" bundle="${messages}"/>
+    </c:when>
+</c:choose><br/>
+
+<c:if test="${not empty sessionScope.isBookEdited}">
+    <c:remove var="isBookEdited" scope="session" />
+</c:if>
+
 <a href="/controller?command=to_find_book_page"><fmt:message key="label.book.edit_one_more_book" bundle="${messages}"/> </a><br/>
 
 <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>

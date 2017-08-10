@@ -44,4 +44,8 @@ public interface BookDAO {
     boolean returnBook(int orderId, int bookId) throws DAOException;
 
     boolean addPublisher(String publisherName) throws DAOException;
+
+    boolean addGenre(String genreName) throws DAOException;
+
+    boolean deleteGenre(int[] genreId) throws DAOException;
 }

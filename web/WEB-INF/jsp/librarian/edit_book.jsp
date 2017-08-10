@@ -53,7 +53,7 @@
     <br/>
 </c:forEach>
 
-    <input type="submit" name="submit" value="<fmt:message key="label.user.edit_user" bundle="${messages}"/>" />
+    <input type="submit" name="submit" value="<fmt:message key="label.book.edit_book" bundle="${messages}"/>" />
 </form>
 
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>

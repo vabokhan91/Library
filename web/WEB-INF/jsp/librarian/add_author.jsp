@@ -44,7 +44,7 @@
     <c:remove var="isAuthorAdded" scope="session" />
 </c:if>
 
-
+<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
 
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 

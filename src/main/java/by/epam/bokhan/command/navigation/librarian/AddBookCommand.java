@@ -19,11 +19,11 @@ public class AddBookCommand extends AbstractCommand {
         super.execute(content);
 
         String page = "/controller?command=to_add_book_page";
-        if ((Boolean) content.getRequestParameters().get("isBookAdded")) {
+        /*if ((Boolean) content.getRequestParameters().get("isBookAdded")) {
             content.insertAttribute("bookAddStatus", MessageManager.getProperty("message.book_added_successfully"));
         } else {
             content.insertAttribute("bookAddStatus", MessageManager.getProperty("message.book_was_not_added"));
-        }
+        }*/
         content.insertParameter(PAGE, page);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
         content.insertParameter(INVALIDATE, false);

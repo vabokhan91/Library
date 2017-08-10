@@ -6,18 +6,18 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;
 
 /**
- * Created by vbokh on 05.08.2017.
+ * Created by vbokh on 10.08.2017.
  */
-public class EditBookCommand extends AbstractCommand {
-
-    public EditBookCommand(Receiver receiver) {
+public class AddGenreCommand extends AbstractCommand {
+    public AddGenreCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException {
 
         super.execute(content);
-        String page = "/controller?command=to_book_edit_status_page";
+        String page = "/controller?command=to_add_genre_page";
+
         content.insertParameter(PAGE, page);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
 

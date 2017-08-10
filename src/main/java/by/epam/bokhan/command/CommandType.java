@@ -209,7 +209,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).editBook(content);
         }
-    },TO_BOOK_EDITED_PAGE(new ToBookEditedSuccessPage(new BookReceiverImpl())) {
+    },TO_BOOK_EDIT_STATUS_PAGE(new ToBookEditStatusPage(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -272,6 +272,22 @@ public enum CommandType {
     },ADD_PUBLISHER(new AddPublisherCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).addPublisher(content);
+        }
+    },TO_ADD_GENRE_PAGE(new ToAddGenrePage(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },ADD_GENRE(new AddGenreCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).addGenre(content);
+        }
+    },TO_DELETE_GENRE_PAGE(new ToDeleteGenrePageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getAllGenres(content);
+        }
+    },DELETE_GENRE(new DeleteGenreCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).deleteGenre(content);
         }
     };
 

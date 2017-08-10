@@ -25,6 +25,10 @@
 
 <a href="/controller?command=to_add_author_page" ><fmt:message key="label.book.add_author" bundle="${messages}"/> </a><br/>
 
+<a href="/controller?command=to_add_genre_page" ><fmt:message key="label.button.add_genre" bundle="${messages}"/> </a><br/>
+
+<a href="/controller?command=to_delete_genre_page" ><fmt:message key="label.button.delete_genre" bundle="${messages}"/> </a><br/>
+
 <a href="/controller?command=to_add_publisher_page" ><fmt:message key="label.book.add_publisher" bundle="${messages}"/> </a><br/>
 
 <a href="/controller?command=to_add_book_page" ><fmt:message key="label.book.add_book" bundle="${messages}"/> </a><br/>

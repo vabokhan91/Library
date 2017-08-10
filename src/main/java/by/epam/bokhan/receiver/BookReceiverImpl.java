@@ -88,7 +88,7 @@ public class BookReceiverImpl implements BookReceiver {
     }
 
     @Override
-    public void getGenres(RequestContent requestContent) throws ReceiverException {
+    public void getAllGenres(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
         LinkedList<Genre> genres;
         try {
@@ -126,7 +126,7 @@ public class BookReceiverImpl implements BookReceiver {
             }
 
             isBookEdited = bookDAO.editBook(book,genreId, authorIds);
-            requestContent.insertParameter("isBookEdited", isBookEdited);
+            requestContent.insertAttribute("isBookEdited", isBookEdited);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -156,6 +156,37 @@ public class BookReceiverImpl implements BookReceiver {
 
             isPublisherAdded = bookDAO.addPublisher(publisherName);
             requestContent.insertAttribute("isPublisherAdded", isPublisherAdded);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void addGenre(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        boolean isGenreAdded;
+        try {
+            String genreName = (String) requestContent.getRequestParameters().get("genre_name");
+
+            isGenreAdded = bookDAO.addGenre(genreName);
+            requestContent.insertAttribute("isGenreAdded", isGenreAdded);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void deleteGenre(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        boolean isGenreDeleted;
+        try {
+            String[] genres = (String[]) requestContent.getRequestParameterValues().get("book_genre");
+            int[] genresId = new int[genres.length];
+            for(int i = 0; i < genres.length; i++) {
+                genresId[i] = Integer.parseInt(genres[i]);
+            }
+            isGenreDeleted = bookDAO.deleteGenre(genresId);
+            requestContent.insertAttribute("isGenreDeleted", isGenreDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
