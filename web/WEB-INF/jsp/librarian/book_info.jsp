@@ -46,7 +46,7 @@
                     <input type="hidden" name="command" value="get_explicit_book_info"/>
                     <input type="hidden" name="book_id" value="${item.id}"/>
                     <input type="submit" name="submit" value=<fmt:message key="label.button.more_detail"
-                                                                          bundle="${messages}"/>/>
+                                                                          bundle="${messages}"/>>
                 </form>
             </td>
 

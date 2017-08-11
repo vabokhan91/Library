@@ -4,7 +4,7 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=1}">
+<c:if test="${user.role.ordinal()!=1 && empty user.role}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -43,17 +43,17 @@
                     <input type="hidden" name="command" value="get_explicit_book_info"/>
                     <input type="hidden" name="book_id" value="${item.id}"/>
                     <input type="submit" name="submit" value=<fmt:message key="label.button.more_detail"
-                                                                          bundle="${messages}"/>/>
+                                                                          bundle="${messages}"/>>
                 </form>
             </td>
 
-            <c:if test="${item.getLocation().getName() eq 'storage'}">
+            <c:if test="${item.getLocation().getName() eq 'storage' && user.role.ordinal()==1}">
                 <td>
                     <form method="post" action="/controller" accept-charset="UTF-8">
-                        <input type="hidden" name="command" value="to_add_order_page"/>
+                        <input type="hidden" name="command" value="to_add_online_order_page"/>
                         <input type="hidden" name="book_id" value="${item.id}"/>
                         <input type="hidden" name="type_of_search" value="by_id">
-                        <input type="submit" name="submit" value=<fmt:message key="label.button.book.add_order"
+                        <input type="submit" name="submit" value=<fmt:message key="label.button.book.make_online_order"
                                                                               bundle="${messages}"/>/>
                     </form>
                 </td>
@@ -62,10 +62,17 @@
     </c:forEach>
 
 
-</table>
+</table><br/>
 
-<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu"
-                                                                  bundle="${messages}"/> </a><br/>
+
+<c:choose>
+    <c:when test="${empty user.role}">
+        <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:when>
+    <c:when test="${user.role.ordinal()==1}">
+        <a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:when>
+</c:choose>
 
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
 

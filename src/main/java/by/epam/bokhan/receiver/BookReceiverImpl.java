@@ -373,4 +373,33 @@ public class BookReceiverImpl implements BookReceiver {
             throw new ReceiverException(e);
         }
     }
+
+    @Override
+    public void addOnlineOrder(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        boolean isOnlineOrderAdded;
+        try {
+            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
+            int userId = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
+            isOnlineOrderAdded = bookDAO.addOnlineOrder(bookId, userId);
+            requestContent.insertAttribute("isOnlineOrderAdded", isOnlineOrderAdded);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void getUserOnlineOrders(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        List<Order> userOrders;
+        try {
+            int userId;
+            userId = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
+            userOrders = bookDAO.getUserOnlineOrders(userId);
+
+            requestContent.insertParameter("userOrders", userOrders);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
 }

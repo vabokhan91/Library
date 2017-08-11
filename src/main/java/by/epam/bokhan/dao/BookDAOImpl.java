@@ -86,12 +86,24 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_BOOK_LOCATION_SUBSCRIPTION = "Update book set location = 'subscription' where book.id = ?";
     private static final String SQL_BOOK_LOCATION_READING_ROOM = "Update book set location = 'reading_room' where book.id = ?";
     private static final String SQL_BOOK_LOCATION_STORAGE = "Update book set location = 'storage' where book.id = ?";
-    private static final String SQL_GET_USER_ORDERS = "select orders.id, book.id, book.title, book.isbn, user.library_card, user.name, user.surname, user.patronymic, user.mobile_phone, orders.order_date, orders.expiration_date, orders.return_date from orders \n" +
+    private static final String SQL_BOOK_LOCATION_ONLINE_ORDER = "Update book set location = 'online_order' where book.id = ?";
+    private static final String SQL_GET_USER_ORDERS = "Select orders.id, book.id, book.title, book.isbn, user.library_card, user.name, user.surname, user.patronymic, user.mobile_phone, orders.order_date, orders.expiration_date, orders.return_date from orders \n" +
             "right join user\n" +
             "on orders.user_id = user.library_card\n" +
             "left join book on book.id = orders.book_id\n" +
             "where user.library_card = ?";
     private static final String SQL_RETURN_BOOK = "UPDATE orders set orders.return_date = now() where orders.id = ?";
+    private static final String SQL_ADD_ONLINE_ORDER = "INSERT INTO online_orders (online_orders.user_id, online_orders.book_id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date, online_orders.order_status) \n" +
+            "VALUES (?,?,now(),addtime(now(), '3 0:0:0.0'), null,'booked')";
+
+    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name,authors.surname, authors.patronymic, user.library_card, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date\n" +
+            "from online_orders \n" +
+            "right join user\n" +
+            "on online_orders.user_id = user.library_card\n" +
+            "left join book on book.id = online_orders.book_id\n" +
+            "left join (select book_author.book_id as b_id, author.name, author.surname, author.patronymic from author join book_author on book_author.author_id = author.id) as authors\n" +
+            "on authors.b_id = online_orders.book_id\n" +
+            "where user.library_card = ?";
 
     @Override
     public List<Book> getAllBooks() throws DAOException {
@@ -1029,6 +1041,117 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         } finally {
             closeStatement(changeBookStatusStatement);
             closeStatement(returnBookStatement);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean addOnlineOrder(int bookId, int userId) throws DAOException {
+        boolean isOnlineOrderAdded = false;
+        Connection connection = null;
+        PreparedStatement addOnlineOrderStatement = null;
+        PreparedStatement changeBookStatusStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            addOnlineOrderStatement = connection.prepareStatement(SQL_ADD_ONLINE_ORDER);
+            addOnlineOrderStatement.setInt(1, userId);
+            addOnlineOrderStatement.setInt(2, bookId);
+            int onlineOrderResult = addOnlineOrderStatement.executeUpdate();
+
+            changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_ONLINE_ORDER);
+            changeBookStatusStatement.setInt(1, bookId);
+
+            int changeBookStatusRes = changeBookStatusStatement.executeUpdate();
+            if (onlineOrderResult > 0 && changeBookStatusRes > 0) {
+                isOnlineOrderAdded = true;
+                connection.commit();
+            } else {
+                connection.rollback();
+            }
+            return isOnlineOrderAdded;
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+                throw new DAOException(e);
+            } catch (SQLException e1) {
+                throw new DAOException(e1);
+            }
+
+        } finally {
+            closeStatement(changeBookStatusStatement);
+            closeStatement(addOnlineOrderStatement);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public List<Order> getUserOnlineOrders(int userId) throws DAOException {
+        LinkedList<Order> userOrders = new LinkedList<>();
+        Connection connection = null;
+        PreparedStatement st = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            st = connection.prepareStatement(SQL_GET_USER_ONLINE_ORDERS);
+            st.setInt(1, userId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+
+                Book book = new Book();
+                int ordersId = Integer.parseInt(rs.getString("online_orders.id"));
+                int bookId = Integer.parseInt(rs.getString("book.id"));
+                int lastId = !userOrders.isEmpty() ? userOrders.getLast().getId() : 0;
+                if (lastId == ordersId) {
+                    String authorName = rs.getString("authors.name");
+                    String authorSurname = rs.getString("authors.surname");
+                    String authorPatronymic = rs.getString("authors.patronymic");
+                    Author author = new Author();
+                    author.setName(authorName);
+                    author.setSurname(authorSurname);
+                    author.setPatronymic(authorPatronymic);
+                    Book b = userOrders.getLast().getBook();
+                    if (!b.getAuthors().contains(author)) {
+                        b.addAuthor(author);
+                    }
+                    continue;
+                }
+
+                String bookTitle = rs.getString("book.title");
+                String bookIsbn = rs.getString("book.isbn");
+                String authorName = rs.getString("authors.name");
+                String authorSurname = rs.getString("authors.surname");
+                String authorPatronymic = rs.getString("authors.patronymic");
+                Author author = new Author();
+                author.setName(authorName);
+                author.setSurname(authorSurname);
+                author.setPatronymic(authorPatronymic);
+                book.addAuthor(author);
+                book.setId(bookId);
+                book.setTitle(bookTitle);
+                book.setIsbn(bookIsbn);
+                Order order = new Order();
+                order.setBook(book);
+                order.setId(ordersId);
+                User user = new User();
+                int userLibraryCard = Integer.parseInt(rs.getString("user.library_card"));
+                user.setId(userLibraryCard);
+                order.setUser(user);
+                Timestamp lastOrderTimeStamp = rs.getTimestamp("online_orders.order_date");
+                LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
+                order.setOrderDate(lastOrderDate);
+                Timestamp expirationDateTimeStamp = rs.getTimestamp("online_orders.expiration_date");
+                LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                order.setExpirationDate(expirationDate);
+                Timestamp returnDateTimeStamp = rs.getTimestamp("online_orders.order_execution_date");
+                LocalDate executionDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                order.setReturnDate(executionDate);
+                userOrders.add(order);
+            }
+            return userOrders;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeStatement(st);
             closeConnection(connection);
         }
     }

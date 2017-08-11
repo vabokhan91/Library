@@ -50,4 +50,8 @@ public interface BookReceiver extends Receiver {
     void getAllPublishers(RequestContent requestContent) throws ReceiverException;
 
     void deletePublisher(RequestContent requestContent) throws ReceiverException;
+
+    void addOnlineOrder(RequestContent requestContent) throws ReceiverException;
+
+    void getUserOnlineOrders(RequestContent requestContent) throws ReceiverException;
 }

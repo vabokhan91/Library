@@ -4,7 +4,7 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2}">
+<c:if test="${user.role.ordinal()!=2 && user.role.ordinal()!=1}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -15,8 +15,9 @@
 
 
 <c:forEach items="${foundBook}" var="item">
-
+    <c:if test="${user.role.ordinal()==2}">
     <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.id}<br/>
+    </c:if>
     <fmt:message key="label.book.title" bundle="${messages}"/> : ${item.title}<br/>
     <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
     <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
@@ -30,9 +31,11 @@
     <c:forEach items="${item.genre}" var="genres">
         ${genres.getName()}
     </c:forEach><br/>
+    <c:if test="${user.role.ordinal()==2}">
     <fmt:message key="label.book.location" bundle="${messages}"/> : ${item.location}<br/>
+    </c:if>
 </c:forEach><br/>
-
+<c:if test="${user.role.ordinal()==2}">
 <fmt:message key="label.book.latest_order_information" bundle="${messages}"/> : <br/>
 
 <c:forEach items="${foundOrder}" var="item">
@@ -52,10 +55,16 @@
 
     <fmt:message key="label.book.return_date" bundle="${messages}"/> : ${item.returnDate}<br/>
 </c:forEach><br/>
+</c:if>
 
-
-<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu"
-                                                                  bundle="${messages}"/> </a><br/>
+<c:choose>
+    <c:when test="${user.role.ordinal()==2}">
+        <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:when>
+    <c:when test="${user.role.ordinal()==1}">
+        <a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:when>
+</c:choose>
 
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
 

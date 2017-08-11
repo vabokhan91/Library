@@ -24,11 +24,25 @@
     <input type="submit" value="<fmt:message key="label.order.watch_orders" bundle="${messages}"/> ">
 </form>
 
+
 <form method="post" action="/controller">
     <input type="hidden" name="command" value="to_user_find_book_page">
 
     <input type="submit" value="<fmt:message key="label.book.find_book" bundle="${messages}"/> ">
 </form>
+
+<form method="post" action="/controller">
+    <input type="hidden" name="command" value="to_get_online_orders_page">
+    <input type="hidden" name="user_id" value="${sessionScope.user.id}">
+    <input type="submit" value="<fmt:message key="label.book.online_orders" bundle="${messages}"/> ">
+</form>
+
+<form method="post" action="/controller">
+    <input type="hidden" name="command" value="to_get_online_orders_page">
+    <input type="hidden" name="user_id" value="${sessionScope.user.id}">
+    <input type="submit" value="<fmt:message key="label.book.cancel_online_order" bundle="${messages}"/> ">
+</form>
+
 
 </body>
 </html>
