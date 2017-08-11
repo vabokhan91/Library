@@ -18,10 +18,10 @@
 </form>
 
 <c:choose>
-    <c:when test="${not empty sessionScope.isPublisherAdded || sessionScope.isPublisherAdded eq true}">
+    <c:when test="${not empty sessionScope.isPublisherAdded && sessionScope.isPublisherAdded eq true}">
         <fmt:message key="label.book.publisher_was_added" bundle="${messages}"/>
     </c:when>
-    <c:when test="${not empty sessionScope.isPublisherAdded || sessionScope.isPublisherAdded eq false}">
+    <c:when test="${not empty sessionScope.isPublisherAdded && sessionScope.isPublisherAdded eq false}">
         <fmt:message key="label.book.publisher_was_not_added" bundle="${messages}"/>
     </c:when>
 </c:choose><br/>

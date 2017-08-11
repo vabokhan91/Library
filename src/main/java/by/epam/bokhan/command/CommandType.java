@@ -3,6 +3,7 @@ package by.epam.bokhan.command;
 import by.epam.bokhan.command.navigation.admin.*;
 import by.epam.bokhan.command.navigation.common.*;
 import by.epam.bokhan.command.navigation.librarian.*;
+import by.epam.bokhan.command.navigation.user.*;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.BookReceiverImpl;
@@ -304,6 +305,38 @@ public enum CommandType {
     },DELETE_PUBLISHER(new DeletePublisherCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).deletePublisher(content);
+        }
+    },TO_USER_MAIN_PAGE(new ToUserMainPage(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },TO_CHANGE_PASSWORD_PAGE(new ToChangePasswordPage(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },CHANGE_PASSWORD(new ChangePasswordCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).changePassword(content);
+        }
+    },TO_CHANGE_PASSWORD_STATUS_PAGE(new ToChangePasswordStatusPage(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },TO_CHANGE_LOGIN_PAGE(new ToChangeLoginPage(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },CHANGE_LOGIN(new ChangeLoginCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).changeLogin(content);
+        }
+    },TO_USER_FIND_BOOK_PAGE(new ToUserFindBookCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },USER_FIND_BOOK(new UserFindBookCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).findBook(content);
         }
     };
 

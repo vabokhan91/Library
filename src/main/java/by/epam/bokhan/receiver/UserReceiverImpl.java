@@ -11,6 +11,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserReceiverImpl implements UserReceiver {
     private static final String LOGIN = "login";
@@ -61,7 +63,7 @@ public class UserReceiverImpl implements UserReceiver {
                 content.insertParameter(IS_VALID, isRightData);
                 throw new ReceiverException(String.format("Can not log in. Reason : %s", e.getMessage()), e);
             }
-        }else {
+        } else {
             content.insertParameter(IS_VALID, isRightData);
         }
     }
@@ -246,4 +248,51 @@ public class UserReceiverImpl implements UserReceiver {
         }
     }
 
+//    client part
+
+    @Override
+    public void changePassword(RequestContent requestContent) throws ReceiverException {
+
+        UserDAO dao = new UserDAOImpl();
+        boolean isPasswordChanged = false;
+        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+        String oldPassword = (String) requestContent.getRequestParameters().get("old_password");
+        String newPassword1 = (String) requestContent.getRequestParameters().get("new_password1");
+        String newPassword2 = (String) requestContent.getRequestParameters().get("new_password2");
+        Pattern pattern = Pattern.compile("[\\w!()*&^%$@]{1,12}");
+        Matcher matcherForOldPassword = pattern.matcher(oldPassword);
+        Matcher matcherForNewPassword1 = pattern.matcher(newPassword1);
+        try {
+            String oldPasswordFromDB = dao.getPassword(libraryCard);
+            String hashedOldPassword = DigestUtils.md5Hex(oldPassword);
+            String hashedNewPassword = DigestUtils.md5Hex(newPassword1);
+            if (newPassword1.equals(newPassword2) && oldPasswordFromDB.equals(hashedOldPassword) && matcherForOldPassword.matches() && matcherForNewPassword1.matches()) {
+                isPasswordChanged = dao.changePassword(libraryCard, hashedNewPassword);
+            }
+            requestContent.insertAttribute("isPasswordChanged", isPasswordChanged);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void changeLogin(RequestContent requestContent) throws ReceiverException {
+        UserDAO dao = new UserDAOImpl();
+        boolean isLoginChanged = false;
+        int userId = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
+        String newLogin = (String) requestContent.getRequestParameters().get("new_login");
+
+        Pattern pattern = Pattern.compile("[^\\W]{1,12}");
+        Matcher matcherForLogin = pattern.matcher(newLogin);
+        try {
+
+            if (matcherForLogin.matches()) {
+                isLoginChanged = dao.changeLogin(userId, newLogin);
+            }
+            requestContent.insertAttribute("isLoginChanged", isLoginChanged);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
 }
+

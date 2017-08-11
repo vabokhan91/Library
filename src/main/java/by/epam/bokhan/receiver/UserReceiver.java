@@ -11,4 +11,8 @@ public interface UserReceiver extends Receiver {
 
     void login(RequestContent content) throws ReceiverException;
     void signOut(RequestContent content) throws ReceiverException;
+
+    void changePassword(RequestContent requestContent) throws ReceiverException;
+
+    void changeLogin(RequestContent requestContent) throws ReceiverException;
 }

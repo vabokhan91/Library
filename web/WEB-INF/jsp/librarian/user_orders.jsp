@@ -4,7 +4,7 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2}">
+<c:if test="${user.role.ordinal()!=2 && user.role.ordinal()!=1}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -44,6 +44,7 @@
                 <td>${item.orderDate}</td>
                 <td>${item.expirationDate}</td>
                 <td>${item.returnDate}</td>
+                <c:if test="${user.role.ordinal() == 2}">
                 <c:choose>
                     <c:when test="${empty item.returnDate}">
                         <td>
@@ -56,11 +57,24 @@
                         </td>
                     </c:when>
                 </c:choose>
+                </c:if>
 
             </tr>
         </c:forEach>
 
     </table>
+
+
+    <c:choose>
+        <c:when test="${user.role.ordinal()==2}">
+            <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
+        </c:when>
+        <c:when test="${user.role.ordinal()==1}">
+            <a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
+        </c:when>
+    </c:choose>
+
+    <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
 
 </head>
 <body>

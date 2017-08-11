@@ -34,6 +34,10 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "where orders.user_id = ?";
 
     private static final String SQL_EDIT_USER_INFO = "UPDATE user SET library_card = ?, name =?, surname=?, patronymic=?,address =?, role_id=?, login =?, mobile_phone=? where library_card = ?";
+    private static final String SQL_GET_PASSWORD = "SELECT password FROM user where library_card = ?";
+    private static final String SQL_SET_NEW_PASSWORD = "UPDATE user SET password = ? where user.library_card = ?";
+    private static final String SQL_SET_NEW_LOGIN = "UPDATE user SET login = ? where user.library_card = ?";
+
 
     private final String LIBRARY_CARD = "library_card";
     private final String USER_NAME = "user.name";
@@ -428,4 +432,72 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    @Override
+    public String getPassword(int libraryCard) throws DAOException {
+        String password = "";
+        Connection connection = null;
+        PreparedStatement st = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            st = connection.prepareStatement(SQL_GET_PASSWORD);
+            st.setInt(1, libraryCard);
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                password = rs.getString("password");
+            }
+            return password;
+        } catch (SQLException e) {
+            throw new DAOException(String.format("Can not get password. Reason : %s", e.getMessage()), e);
+        } finally {
+            closeStatement(st);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean changePassword(int libraryCard, String newPassword) throws DAOException {
+        boolean isPasswordChanged = false;
+        Connection connection = null;
+        PreparedStatement setNewPassword = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            setNewPassword = connection.prepareStatement(SQL_SET_NEW_PASSWORD);
+            setNewPassword.setString(1, newPassword);
+            setNewPassword.setInt(2, libraryCard);
+            int res = setNewPassword.executeUpdate();
+            if (res > 0) {
+                isPasswordChanged = true;
+            }
+            return isPasswordChanged;
+        } catch (SQLException e) {
+            throw new DAOException(String.format("Can not change password. Reason : %s", e.getMessage()), e);
+        } finally {
+            closeStatement(setNewPassword);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean changeLogin(int userId, String login) throws DAOException {
+        boolean isLoginChanged = false;
+        Connection connection = null;
+        PreparedStatement setNewLoginStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            setNewLoginStatement = connection.prepareStatement(SQL_SET_NEW_LOGIN);
+            setNewLoginStatement.setString(1, login);
+            setNewLoginStatement.setInt(2, userId);
+            int res = setNewLoginStatement.executeUpdate();
+            if (res > 0) {
+                isLoginChanged = true;
+            }
+            return isLoginChanged;
+        } catch (SQLException e) {
+            throw new DAOException(String.format("Can not change login. Reason : %s", e.getMessage()), e);
+        } finally {
+            closeStatement(setNewLoginStatement);
+            closeConnection(connection);
+        }
+    }
 }

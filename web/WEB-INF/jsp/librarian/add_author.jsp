@@ -32,10 +32,10 @@
 </form>
 
 <c:choose>
-    <c:when test="${not empty sessionScope.isAuthorAdded || sessionScope.isAuthorAdded eq true}">
+    <c:when test="${not empty sessionScope.isAuthorAdded && sessionScope.isAuthorAdded eq true}">
         <fmt:message key="label.book.author_is_added" bundle="${messages}"/>
     </c:when>
-    <c:when test="${not empty sessionScope.isAuthorAdded || sessionScope.isAuthorAdded eq false}">
+    <c:when test="${not empty sessionScope.isAuthorAdded && sessionScope.isAuthorAdded eq false}">
         <fmt:message key="label.book.author_not_added" bundle="${messages}"/>
     </c:when>
 </c:choose><br/>

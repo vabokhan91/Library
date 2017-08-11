@@ -37,7 +37,7 @@ class ConnectionCreator {
     }
 
     static ProxyConnection getConnection() throws ConnectionPoolException{
-        Connection connection = null;
+        Connection connection ;
         try {
             connection = DriverManager.getConnection(url, login, password);
 

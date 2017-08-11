@@ -80,6 +80,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_BOOK_GENRE = "INSERT INTO book_genre (book_id,genre_id) VALUES (?,?)";
     private static final String SQL_ADD_GENRE = "INSERT INTO genre (genre.name) VALUES (?)";
     private static final String SQL_ADD_BOOK_AUTHOR = "INSERT INTO book_author (book_id,author_id) VALUES (?,?)";
+    private static final String SQL_IS_BOOK_IN_STORAGE = "SELECT * from book where book.id = ? and book.location = 'storage'";
     private static final String SQL_DELETE_BOOK = "DELETE FROM book where book.id = ?";
     private static final String SQL_ADD_ORDER = "INSERT INTO ORDERS (orders.user_id, orders.book_id, orders.order_date, orders.expiration_date, orders.return_date, orders.librarian_id) VALUES (?,?,now(),addtime(now(), '30 0:0:0.0'), null,?)";
     private static final String SQL_BOOK_LOCATION_SUBSCRIPTION = "Update book set location = 'subscription' where book.id = ?";
@@ -868,14 +869,21 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         boolean isBookDeleted = false;
         Connection connection = null;
         PreparedStatement st = null;
+        PreparedStatement isBookInStorage = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_DELETE_BOOK);
-            st.setInt(1, bookId);
-            int res = st.executeUpdate();
-            if (res > 0) {
-                isBookDeleted = true;
+            isBookInStorage = connection.prepareStatement(SQL_IS_BOOK_IN_STORAGE);
+            isBookInStorage.setInt(1, bookId);
+            ResultSet rs = isBookInStorage.executeQuery();
+            if (rs.next()) {
+                st = connection.prepareStatement(SQL_DELETE_BOOK);
+                st.setInt(1, bookId);
+                int res = st.executeUpdate();
+                if (res > 0) {
+                    isBookDeleted = true;
+                }
             }
+
             return isBookDeleted;
         } catch (SQLException e) {
             throw new DAOException(e);

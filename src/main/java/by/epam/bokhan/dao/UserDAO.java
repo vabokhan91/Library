@@ -24,4 +24,12 @@ public interface UserDAO {
     User getUserByLogin(String login) throws DAOException;
 
     ArrayList<User> getAllUsers() throws DAOException;
+
+    boolean changePassword(int libraryCard, String newPassword) throws DAOException ;
+
+    String getPassword(int libraryCard) throws DAOException;
+
+    boolean changeLogin(int userId, String login) throws DAOException;
+
+
 }

@@ -13,10 +13,10 @@
 <body>
 
 <c:choose>
-    <c:when test="${not empty sessionScope.isOrderAdded || sessionScope.isOrderAdded eq true}">
+    <c:when test="${not empty sessionScope.isOrderAdded && sessionScope.isOrderAdded eq true}">
         <fmt:message key="message.order_added_successfully" bundle="${messages}"/>
     </c:when>
-    <c:when test="${not empty sessionScope.isOrderAdded || sessionScope.isOrderAdded eq false}">
+    <c:when test="${not empty sessionScope.isOrderAdded && sessionScope.isOrderAdded eq false}">
         <fmt:message key="message.order_was_not_added" bundle="${messages}"/>
     </c:when>
 </c:choose>

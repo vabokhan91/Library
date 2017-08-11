@@ -14,11 +14,11 @@
 
 
 <c:choose>
-    <c:when test="${not empty sessionScope.isBookReturned || sessionScope.isBookReturned eq true}">
+    <c:when test="${not empty sessionScope.isBookReturned && sessionScope.isBookReturned eq true}">
         <fmt:message key="label.book.return_success" bundle="${messages}"/>
         <a href="/controller?command=to_find_user_orders_page"><fmt:message key="label.book.return_one_more_book" bundle="${messages}"/> </a><br/>
     </c:when>
-    <c:when test="${not empty sessionScope.isBookReturned || sessionScope.isBookReturned eq false}">
+    <c:when test="${not empty sessionScope.isBookReturned && sessionScope.isBookReturned eq false}">
         <fmt:message key="label.book_was_not_returned" bundle="${messages}"/>
         <a href="/controller?command=to_find_user_orders_page"><fmt:message key="label.try.once.again" bundle="${messages}"/> </a><br/>
     </c:when>
