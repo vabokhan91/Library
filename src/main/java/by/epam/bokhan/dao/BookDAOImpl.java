@@ -96,7 +96,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_ONLINE_ORDER = "INSERT INTO online_orders (online_orders.user_id, online_orders.book_id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date, online_orders.order_status) \n" +
             "VALUES (?,?,now(),addtime(now(), '3 0:0:0.0'), null,'booked')";
 
-    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name,authors.surname, authors.patronymic, user.library_card, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date\n" +
+    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name,authors.surname, authors.patronymic, user.library_card, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
             "from online_orders \n" +
             "right join user\n" +
             "on online_orders.user_id = user.library_card\n" +
@@ -104,6 +104,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "left join (select book_author.book_id as b_id, author.name, author.surname, author.patronymic from author join book_author on book_author.author_id = author.id) as authors\n" +
             "on authors.b_id = online_orders.book_id\n" +
             "where user.library_card = ?";
+    private static final String SQL_CANCEL_ONLINE_ORDER = "Update online_orders set online_orders.order_execution_date = now(), order_status = 'canceled' where online_orders.id = ?";
+    private static final String SQL_ONLINE_ORDER_STATUS = "SELECT order_status from online_orders where online_orders.id = ?";
+
+
 
     @Override
     public List<Book> getAllBooks() throws DAOException {
@@ -1129,7 +1133,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 book.setId(bookId);
                 book.setTitle(bookTitle);
                 book.setIsbn(bookIsbn);
-                Order order = new Order();
+                OnlineOrder order = new OnlineOrder();
+                String orderStatus = rs.getString("online_orders.order_status");
+                order.setStatus(orderStatus);
                 order.setBook(book);
                 order.setId(ordersId);
                 User user = new User();
@@ -1152,6 +1158,72 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             throw new DAOException(e);
         } finally {
             closeStatement(st);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean cancelOnlineOrder(int orderId, int bookId) throws DAOException {
+        boolean isOnlineOrderCancelled = false;
+        Connection connection = null;
+        PreparedStatement cancelOnlineOrderStatement = null;
+        PreparedStatement changeBookStatusStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            cancelOnlineOrderStatement = connection.prepareStatement(SQL_CANCEL_ONLINE_ORDER);
+            cancelOnlineOrderStatement.setInt(1, orderId);
+            int cancelOnlineOrderResult = cancelOnlineOrderStatement.executeUpdate();
+
+            changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_STORAGE);
+            changeBookStatusStatement.setInt(1, bookId);
+
+            int changeBookStatusRes = changeBookStatusStatement.executeUpdate();
+            if (cancelOnlineOrderResult > 0 && changeBookStatusRes > 0) {
+                isOnlineOrderCancelled = true;
+                connection.commit();
+            } else {
+                connection.rollback();
+            }
+            return isOnlineOrderCancelled;
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+                throw new DAOException(e);
+            } catch (SQLException e1) {
+                throw new DAOException(e1);
+            }
+
+        } finally {
+            closeStatement(changeBookStatusStatement);
+            closeStatement(cancelOnlineOrderStatement);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public OnlineOrder onlineOrderStatus(int orderId) throws DAOException {
+        OnlineOrder order = new OnlineOrder();
+        Connection connection = null;
+        PreparedStatement orderStatusStatement= null;
+
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+
+            orderStatusStatement = connection.prepareStatement(SQL_ONLINE_ORDER_STATUS);
+            orderStatusStatement.setInt(1, orderId);
+
+            ResultSet rs = orderStatusStatement.executeQuery();
+            rs.next();
+            String orderStatus = rs.getString("online_orders.order_status");
+            order.setStatus(orderStatus);
+
+            return order;
+        } catch (SQLException e) {
+                throw new DAOException(e);
+
+        } finally {
+            closeStatement(orderStatusStatement);
             closeConnection(connection);
         }
     }

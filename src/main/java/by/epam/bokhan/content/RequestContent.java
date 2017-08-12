@@ -24,6 +24,13 @@ public class RequestContent {
             this.requestParameters.put(name, value);
         }
 
+        Enumeration sessionAttributes = request.getSession().getAttributeNames();
+        while (sessionAttributes.hasMoreElements()) {
+            String name = (String) sessionAttributes.nextElement();
+            Object value = request.getSession().getAttribute(name);
+            this.sessionAttributes.put(name, value);
+        }
+
         Enumeration requestParameterValues = request.getParameterNames();
         while (requestParameterValues.hasMoreElements()) {
             String name = (String) requestParameterValues.nextElement();

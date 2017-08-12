@@ -96,6 +96,7 @@ public class Controller extends HttpServlet {
             request.setAttribute(first, second);
 
         }
+
         HashMap<String, Object> attributes = content.getSessionAttributes();
         for (Map.Entry<String, Object> a : attributes.entrySet()) {
             String first = a.getKey();

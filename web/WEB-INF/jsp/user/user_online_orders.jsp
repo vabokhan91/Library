@@ -23,6 +23,7 @@
             <th><fmt:message key="label.book.author" bundle="${messages}"/></th>
             <th><fmt:message key="label.book.order_date" bundle="${messages}"/></th>
             <th><fmt:message key="label.book.expiration_online_order_date" bundle="${messages}"/></th>
+            <th><fmt:message key="label.book.order_status" bundle="${messages}"/></th>
 
         </tr>
 
@@ -37,11 +38,38 @@
                 </td>
                 <td>${item.orderDate}</td>
                 <td>${item.expirationDate}</td>
+                <td>${item.status}</td>
+
+                <c:if test="${empty item.returnDate}">
+                    <td>
+                        <form method="post" action="/controller" accept-charset="UTF-8">
+                            <input type="hidden" name="command" value="cancel_online_order"/>
+                            <input type="hidden" name="order_id" value="${item.id}"/>
+                            <input type="hidden" name="book_id" value="${item.book.id}"/>
+                            <input type="submit" name="submit" value=<fmt:message key="label.button.book.cancel_online_order"
+                                                                                  bundle="${messages}"/>/>
+                        </form>
+                    </td>
+                </c:if>
 
             </tr>
         </c:forEach>
 
     </table>
+
+
+    <c:choose>
+        <c:when test="${not empty sessionScope.isOnlineOrderCancelled && sessionScope.isOnlineOrderCancelled eq true}">
+            <fmt:message key="label.book.online_order_cancelled" bundle="${messages}"/>
+        </c:when>
+        <c:when test="${not empty sessionScope.isOnlineOrderCancelled && sessionScope.isOnlineOrderCancelled eq false}">
+            <fmt:message key="label.book.online_order_not_cancelled" bundle="${messages}"/>
+        </c:when>
+    </c:choose><br/>
+
+    <c:if test="${not empty sessionScope.isOnlineOrderCancelled}">
+        <c:remove var="isOnlineOrderCancelled" scope="session" />
+    </c:if>
 
     <a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
 

@@ -393,11 +393,27 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         List<Order> userOrders;
         try {
-            int userId;
-            userId = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
+            int userId = ((User) requestContent.getSessionAttributes().get("user")).getId();
             userOrders = bookDAO.getUserOnlineOrders(userId);
 
             requestContent.insertParameter("userOrders", userOrders);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void cancelOnlineOrder(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        boolean isOnlineOrderCancelled = false;
+        try {
+            int orderId = Integer.parseInt((String) requestContent.getRequestParameters().get("order_id"));
+            String orderStatus = bookDAO.onlineOrderStatus(orderId).getStatus();
+            if (!orderStatus.equals("canceled")) {
+                int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
+                isOnlineOrderCancelled = bookDAO.cancelOnlineOrder(orderId, bookId);
+            }
+            requestContent.insertAttribute("isOnlineOrderCancelled", isOnlineOrderCancelled);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
