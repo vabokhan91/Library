@@ -24,7 +24,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_INSERT_LIBRARY_CARD = "INSERT INTO library_card (user_id, address, mobile_phone) VALUES " +
             "(?,?,?)";
     private static final String SQL_REMOVE_USER_BY_LIBRARY_CARD = "DELETE FROM USER where library_card = ?";
-    private static final String SQL_GET_ALL_USERS = "SELECT library_card, user.name, surname, patronymic, address, role.name, login, mobile_phone, blocked from user left join role on user.role_id = role.id";
+    private static final String SQL_GET_ALL_USERS = "SELECT user.id, user.name, surname, patronymic, address, role.name, login, mobile_phone, blocked \n" +
+            "from user left join role on user.role_id = role.id\n" +
+            "left join library_card on user.id = library_card.user_id";
     private static final String SQL_FIND_USER_BY_LIBRARY_CARD = "SELECT library_card, user.name,surname,patronymic,address,role.name,login,mobile_phone, blocked from user left join role on user.role_id = role.id where library_card = ?";
     private static final String SQL_FIND_USER_BY_LOGIN = "SELECT library_card, user.name,surname,patronymic,address,role.name,login,mobile_phone, blocked from user left join role on user.role_id = role.id where login = ?";
     private static final String SQL_CHECK_IF_USER_EXIST = "SELECT login FROM user where login = ?";
@@ -159,7 +161,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             ResultSet resultSet = statement.executeQuery(SQL_GET_ALL_USERS);
             while (resultSet.next()) {
                 User user = new User();
-                user.setId(resultSet.getInt(LIBRARY_CARD));
+                user.setId(resultSet.getInt(USER_ID));
                 user.setName(resultSet.getString(USER_NAME));
                 user.setSurname(resultSet.getString(USER_SURNAME));
                 user.setPatronymic(resultSet.getString(USER_PATRONYMIC));
