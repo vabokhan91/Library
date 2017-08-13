@@ -97,7 +97,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "left join book on book.id = orders.book_id\n" +
             "where library_card.id = ?";
     private static final String SQL_RETURN_BOOK = "UPDATE orders set orders.return_date = now() where orders.id = ?";
-    private static final String SQL_ADD_ONLINE_ORDER = "INSERT INTO online_orders (online_orders.user_id, online_orders.book_id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date, online_orders.order_status) \n" +
+    private static final String SQL_ADD_ONLINE_ORDER = "INSERT INTO online_orders (online_orders.library_card_id, online_orders.book_id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date, online_orders.order_status) \n" +
             "VALUES (?,?,now(),addtime(now(), '3 0:0:0.0'), null,'booked')";
 
     private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name,authors.surname, authors.patronymic, user.library_card, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
@@ -1069,7 +1069,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public boolean addOnlineOrder(int bookId, int userId) throws DAOException {
+    public boolean addOnlineOrder(int bookId, int libraryCard) throws DAOException {
         boolean isOnlineOrderAdded = false;
         Connection connection = null;
         PreparedStatement addOnlineOrderStatement = null;
@@ -1078,7 +1078,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
             addOnlineOrderStatement = connection.prepareStatement(SQL_ADD_ONLINE_ORDER);
-            addOnlineOrderStatement.setInt(1, userId);
+            addOnlineOrderStatement.setInt(1, libraryCard);
             addOnlineOrderStatement.setInt(2, bookId);
             int onlineOrderResult = addOnlineOrderStatement.executeUpdate();
 

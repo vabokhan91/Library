@@ -53,7 +53,7 @@ public interface BookDAO {
 
     boolean deletePublisher(int[] publishersIds) throws DAOException;
 
-    boolean addOnlineOrder(int bookId, int userId) throws DAOException;
+    boolean addOnlineOrder(int bookId, int libraryCard) throws DAOException;
 
     List<Order> getUserOnlineOrders(int userId) throws DAOException;
 

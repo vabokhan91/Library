@@ -31,7 +31,7 @@
     <form method="post" action="/controller" accept-charset="UTF-8">
         <input type="hidden" name="command" value="add_online_order"/>
         <input type="hidden" name="book_id" value="${item.id}"/>
-        <input type="hidden" name="user_id" value="${sessionScope.user.id}"/>
+        <input type="hidden" name="library_card" value="${sessionScope.user.libraryCardNumber}"/>
         <input type="submit" name="submit" value=<fmt:message key="label.button.book.order"
                                                               bundle="${messages}"/>>
     </form>

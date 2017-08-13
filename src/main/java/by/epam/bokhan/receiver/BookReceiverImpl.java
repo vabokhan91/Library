@@ -379,8 +379,8 @@ public class BookReceiverImpl implements BookReceiver {
         boolean isOnlineOrderAdded;
         try {
             int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
-            int userId = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
-            isOnlineOrderAdded = bookDAO.addOnlineOrder(bookId, userId);
+            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            isOnlineOrderAdded = bookDAO.addOnlineOrder(bookId, libraryCard);
             requestContent.insertAttribute("isOnlineOrderAdded", isOnlineOrderAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
