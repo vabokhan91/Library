@@ -33,7 +33,7 @@
     <c:forEach items="${users}" var="item">
         <tbody>
         <tr>
-            <td>${item.id}</td>
+            <td>${item.libraryCardNumber}</td>
             <td>${item.name}</td>
             <td>${item.surname}</td>
             <td>${item.patronymic}</td>
@@ -42,7 +42,7 @@
 
             <td><form method="post" action="/controller" accept-charset="UTF-8">
                 <input type="hidden" name="command" value="remove_user"/>
-                <input type = "hidden" name = "remove_query_value" value="${item.id}"/><br/>
+                <input type = "hidden" name = "user_id" value="${item.id}"/><br/>
                 <input type="submit" name="submit" value=<fmt:message key="label.remove_user" bundle="${messages}"/>/>
             </form> </td>
 

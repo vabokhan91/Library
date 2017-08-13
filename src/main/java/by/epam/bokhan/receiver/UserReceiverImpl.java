@@ -41,6 +41,7 @@ public class UserReceiverImpl implements UserReceiver {
     private final String IS_USER_BLOCKED = "isUserBlocked";
     private final String UNBLOCK_QUERY_VALUE = "unblock_query_value";
     private final String IS_USER_UNBLOCKED = "isUserUnblocked";
+    protected final String USER_ID = "user_id";
 
     @Override
     public void login(RequestContent content) throws ReceiverException {
@@ -126,11 +127,11 @@ public class UserReceiverImpl implements UserReceiver {
 
     public void removeUser(RequestContent content) throws ReceiverException {
         UserDAOImpl dao = new UserDAOImpl();
-        int libraryCard;
+        int userId;
         boolean isUserDeleted = false;
         try {
-            libraryCard = Integer.parseInt((String) content.getRequestParameters().get(REMOVE_QUERY_VALUE));
-            isUserDeleted = dao.removeUserByLibraryCard(libraryCard);
+            userId = Integer.parseInt((String) content.getRequestParameters().get(USER_ID));
+            isUserDeleted = dao.removeUserByLibraryCard(userId);
             content.insertParameter(IS_USER_DELETED, isUserDeleted);
         } catch (DAOException e) {
             content.insertParameter(IS_USER_DELETED, isUserDeleted);

@@ -9,10 +9,7 @@ import by.epam.bokhan.entity.User;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_SELECT_USER_BY_LOGIN = "SELECT user.id, user.name, surname, patronymic, address, role.name, login, password,address, mobile_phone, blocked  \n" +
@@ -23,8 +20,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "(?,?,?,?,?,?)";
     private static final String SQL_INSERT_LIBRARY_CARD = "INSERT INTO library_card (user_id, address, mobile_phone) VALUES " +
             "(?,?,?)";
-    private static final String SQL_REMOVE_USER_BY_LIBRARY_CARD = "DELETE FROM USER where library_card = ?";
-    private static final String SQL_GET_ALL_USERS = "SELECT user.id, user.name, surname, patronymic, address, role.name, login, mobile_phone, blocked \n" +
+    private static final String SQL_REMOVE_USER_BY_ID = "DELETE FROM USER where user.id = ?";
+    private static final String SQL_GET_ALL_USERS = "SELECT user.id,library_card.id, user.name, surname, patronymic, address, role.name, login, mobile_phone, blocked \n" +
             "from user left join role on user.role_id = role.id\n" +
             "left join library_card on user.id = library_card.user_id";
     private static final String SQL_FIND_USER_BY_LIBRARY_CARD = "SELECT library_card, user.name,surname,patronymic,address,role.name,login,mobile_phone, blocked from user left join role on user.role_id = role.id where library_card = ?";
@@ -46,7 +43,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_SET_NEW_LOGIN = "UPDATE user SET login = ? where user.library_card = ?";
 
 
-    private final String LIBRARY_CARD = "library_card";
+
     private final String USER_NAME = "user.name";
     private final String USER_SURNAME = "surname";
     private final String USER_PATRONYMIC = "patronymic";
@@ -56,7 +53,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private final String MOBILE_PHONE = "mobile_phone";
     private final String BLOCK_FIELD = "blocked";
     private final String PASSWORD = "password";
-    private final String USER_ID = "user.id";
+    protected final String USER_ID = "user.id";
+    private final String LIBRARY_CARD = "library_card.id";
 
     public User getUserByLogin(String login) throws DAOException {
         User user = new User();
@@ -170,6 +168,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 user.setLogin(resultSet.getString(LOGIN));
                 user.setMobilePhone(resultSet.getString(MOBILE_PHONE));
                 user.setBlocked(resultSet.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(resultSet.getInt(LIBRARY_CARD));
                 users.add(user);
             }
             return users;
@@ -187,7 +186,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_REMOVE_USER_BY_LIBRARY_CARD);
+            st = connection.prepareStatement(SQL_REMOVE_USER_BY_ID);
             st.setInt(1, id);
             int res = st.executeUpdate();
             if (res > 0) {

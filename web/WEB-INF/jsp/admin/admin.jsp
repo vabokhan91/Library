@@ -22,7 +22,7 @@
 
         <a href="/controller?command=get_users_for_removal" ><fmt:message key="label.remove_user" bundle="${messages}"/> </a><br/>
 
-        <a href="/controller?command=to_Find_User_Page" ><fmt:message key="label.button.find_user" bundle="${messages}"/> </a><br/>
+        <a href="/controller?command=to_find_user_page" ><fmt:message key="label.button.find_user" bundle="${messages}"/> </a><br/>
 
         <form method="get" action="/controller" accept-charset="UTF-8">
                 <input type="hidden" name="command" value="get_not_blocked_users"/>
