@@ -26,6 +26,8 @@ public interface UserDAO {
 
     boolean unblockUser(int userId) throws DAOException;
 
+    User getExplicitUserInfo(int libraryCard) throws DAOException;
+
     User getUserByLogin(String login) throws DAOException;
 
     ArrayList<User> getAllUsers() throws DAOException;

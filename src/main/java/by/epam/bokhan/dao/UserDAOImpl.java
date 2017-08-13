@@ -50,7 +50,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_GET_USERS_ORDER_INFO = "Select orders.id, orders.book_id, book.title, orders.order_date, orders.expiration_date, orders.return_date \n" +
             "from orders\n" +
             "left join book on orders.book_id = book.id\n" +
-            "where orders.user_id = ?";
+            "where orders.library_card_id = ?";
 
     private static final String SQL_EDIT_USER_INFO = "UPDATE user SET library_card = ?, name =?, surname=?, patronymic=?,address =?, role_id=?, login =?, mobile_phone=? where library_card = ?";
     private static final String SQL_GET_PASSWORD = "SELECT password FROM user where library_card = ?";
@@ -70,6 +70,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     protected final String USER_ID = "user.id";
     private final String LIBRARY_CARD = "library_card.id";
     private final String ROLE = "role.name";
+    private final String ORDER_ID = "orders.id";
+    private final String BOOK_OREDER_ID = "orders.book_id";
+    private final String BOOK_TITLE = "book.title";
+    private final String ORDER_DATE = "orders.order_date";
+    private final String EXPIRATION_DATE = "orders.expiration_date";
+    private final String RETURN_DATE = "orders.return_date";
 
     public User getUserByLogin(String login) throws DAOException {
         User user = new User();
@@ -410,57 +416,60 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
     public User getExplicitUserInfo(int libraryCard) throws DAOException {
         User user = new User();
-        ArrayList<Order> orders = new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
         Connection connection = null;
-        PreparedStatement st = null;
-        PreparedStatement ordersInfo = null;
+        PreparedStatement getUserStatement = null;
+        PreparedStatement getUserOrdersStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_FIND_USER_BY_LIBRARY_CARD);
-            st.setInt(1, libraryCard);
-            ResultSet resultSet = st.executeQuery();
-            resultSet.next();
-            user.setId(resultSet.getInt(LIBRARY_CARD));
-            user.setName(resultSet.getString(USER_NAME));
-            user.setSurname(resultSet.getString(USER_SURNAME));
-            user.setPatronymic(resultSet.getString(USER_PATRONYMIC));
-            user.setAddress(resultSet.getString(ADDRESS));
-            user.setLogin(resultSet.getString(LOGIN));
-            Role userRole = Role.valueOf(resultSet.getString("role.name").toUpperCase());
-            user.setRole(userRole);
-            user.setMobilePhone(resultSet.getString(MOBILE_PHONE));
-            user.setBlocked(resultSet.getInt(BLOCK_FIELD));
+            getUserStatement = connection.prepareStatement(SQL_FIND_USER_BY_LIBRARY_CARD);
+            getUserStatement.setInt(1, libraryCard);
+            ResultSet resultSet = getUserStatement.executeQuery();
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt(USER_ID));
+                user.setName(resultSet.getString(USER_NAME));
+                user.setSurname(resultSet.getString(USER_SURNAME));
+                user.setPatronymic(resultSet.getString(USER_PATRONYMIC));
+                user.setAddress(resultSet.getString(ADDRESS));
+                user.setLogin(resultSet.getString(LOGIN));
+                Role userRole = Role.valueOf(resultSet.getString(ROLE).toUpperCase());
+                user.setRole(userRole);
+                user.setMobilePhone(resultSet.getString(MOBILE_PHONE));
+                user.setBlocked(resultSet.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(resultSet.getInt(LIBRARY_CARD));
+                getUserOrdersStatement = connection.prepareStatement(SQL_GET_USERS_ORDER_INFO);
+                getUserOrdersStatement.setInt(1, libraryCard);
+                ResultSet ordersInfoResult = getUserOrdersStatement.executeQuery();
+                while (ordersInfoResult.next()) {
+                    Order order = new Order();
+                    Book book = new Book();
+                    order.setId(ordersInfoResult.getInt(ORDER_ID));
+                    book.setId(ordersInfoResult.getInt(BOOK_OREDER_ID));
+                    book.setTitle(ordersInfoResult.getString(BOOK_TITLE));
+                    order.setBook(book);
+                    Timestamp timestamp = ordersInfoResult.getTimestamp(ORDER_DATE);
+                    LocalDate orderDate = timestamp.toLocalDateTime().toLocalDate();
+                    order.setOrderDate(orderDate);
 
-            ordersInfo = connection.prepareStatement(SQL_GET_USERS_ORDER_INFO);
-            ordersInfo.setInt(1, libraryCard);
-            ResultSet ordersInfoResult = ordersInfo.executeQuery();
-            while (ordersInfoResult.next()) {
-                Order order = new Order();
-                Book book = new Book();
-                order.setId(ordersInfoResult.getInt("orders.id"));
-                book.setId(ordersInfoResult.getInt("orders.book_id"));
-                book.setTitle(ordersInfoResult.getString("book.title"));
-                order.setBook(book);
-                Timestamp timestamp = ordersInfoResult.getTimestamp("orders.order_date");
-                LocalDate orderDate = timestamp.toLocalDateTime().toLocalDate();
-                order.setOrderDate(orderDate);
-
-                LocalDate expirationDate = ordersInfoResult.getTimestamp("orders.expiration_date").toLocalDateTime().toLocalDate();
-                order.setExpirationDate(expirationDate);
-                Timestamp returnDateTimeStamp = ordersInfoResult.getTimestamp("orders.return_date");
-                LocalDate returnDate;
-                returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setReturnDate(returnDate);
-                orders.add(order);
+                    LocalDate expirationDate = ordersInfoResult.getTimestamp(EXPIRATION_DATE).toLocalDateTime().toLocalDate();
+                    order.setExpirationDate(expirationDate);
+                    Timestamp returnDateTimeStamp = ordersInfoResult.getTimestamp(RETURN_DATE);
+                    LocalDate returnDate;
+                    returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                    order.setReturnDate(returnDate);
+                    orders.add(order);
+                }
+                user.setOrders(orders);
             }
-            user.setOrders(orders);
+
+
             return user;
 
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not get user. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(st);
-            closeStatement(ordersInfo);
+            closeStatement(getUserStatement);
+            closeStatement(getUserOrdersStatement);
             closeConnection(connection);
         }
     }

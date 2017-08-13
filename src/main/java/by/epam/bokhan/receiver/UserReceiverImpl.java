@@ -45,6 +45,7 @@ public class UserReceiverImpl implements UserReceiver {
     private final String BY_SURNAME = "by_surname";
     private final String NOT_BLOCKED_USERS = "not_blocked_users";
     private final String BLOCKED_USERS = "blocked_users";
+    private final String LIBRARY_CARD = "library_card";
 
     @Override
     public void login(RequestContent content) throws ReceiverException {
@@ -212,12 +213,12 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     public void getExplicitUserInfo(RequestContent requestContent) throws ReceiverException {
-        UserDAOImpl dao = new UserDAOImpl();
+        UserDAO dao = new UserDAOImpl();
         User user;
-        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
         try {
             user = dao.getExplicitUserInfo(libraryCard);
-            requestContent.insertParameter("foundUser", user);
+            requestContent.insertParameter(FOUND_USER, user);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }

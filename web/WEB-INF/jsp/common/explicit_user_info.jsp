@@ -13,7 +13,7 @@
 <body>
 
 
-<fmt:message key="label.library_card" bundle="${messages}"/> : ${foundUser.id}<br/>
+<fmt:message key="label.library_card" bundle="${messages}"/> : ${foundUser.libraryCardNumber}<br/>
 <fmt:message key="label.name" bundle="${messages}"/> : ${foundUser.name} <br/>
 <fmt:message key="label.surname" bundle="${messages}"/> : ${foundUser.surname} <br/>
 <fmt:message key="label.patronymic" bundle="${messages}"/> : ${foundUser.patronymic} <br/>

@@ -19,7 +19,6 @@
     <th><fmt:message key="label.surname" bundle="${messages}"/> </th>
     <th><fmt:message key="label.patronymic" bundle="${messages}"/> </th>
     <th><fmt:message key="label.role" bundle="${messages}"/> </th>
-    <th><fmt:message key="label.login" bundle="${messages}"/></th>
 
     </tr>
 
@@ -30,17 +29,17 @@
             <td>${item.surname}</td>
             <td>${item.patronymic}</td>
             <td>${item.role}</td>
-            <td>${item.login}</td>
+
 
             <td><form method="post" action="/controller" accept-charset="UTF-8">
                 <input type="hidden" name="command" value="get_explicit_user_info"/>
-                <input type = "hidden" name = "library_card" value="${item.id}"/><br/>
+                <input type = "hidden" name = "library_card" value="${item.libraryCardNumber}"/><br/>
                 <input type="submit" name="submit" value=<fmt:message key="label.button.show_explicit_info" bundle="${messages}"/>/>
             </form></td>
 
             <td><form method="post" action="/controller" accept-charset="UTF-8">
                 <input type="hidden" name="command" value="get_user_for_editing"/>
-                <input type = "hidden" name = "library_card" value="${item.id}"/><br/>
+                <input type = "hidden" name = "user_id" value="${item.id}"/><br/>
                 <input type="submit" name="submit" value=<fmt:message key="label.user.edit_user" bundle="${messages}"/>/>
             </form> </td>
 

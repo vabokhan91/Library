@@ -1,6 +1,7 @@
 package by.epam.bokhan.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by vbokh on 13.07.2017.
@@ -16,7 +17,7 @@ public class User {
     private String password;
     private String mobilePhone;
     private boolean isBlocked;
-    private ArrayList<Order> orders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
     private int libraryCardNumber;
 
     public User() {
@@ -104,11 +105,11 @@ public class User {
         } else isBlocked = true;
     }
 
-    public ArrayList<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(ArrayList<Order> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
