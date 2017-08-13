@@ -17,8 +17,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "from user left join role on user.role_id = role.id \n" +
             "left join library_card on user.id = library_card.user_id\n" +
             "where login = ?";
-    private static final String SQL_INSERT_USER = "INSERT INTO USER (user.name ,surname, patronymic,role_id,login,password) VALUES " +
-            "(?,?,?,?,?,?)";
+    private static final String SQL_INSERT_USER = "INSERT INTO USER (user.name ,surname, patronymic,role_id) VALUES " +
+            "(?,?,?,?)";
     private static final String SQL_INSERT_LIBRARY_CARD = "INSERT INTO library_card (user_id, address, mobile_phone) VALUES " +
             "(?,?,?)";
     private static final String SQL_REMOVE_USER_BY_ID = "DELETE FROM USER where user.id = ?";
@@ -130,8 +130,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 insertUserStatement.setString(2, user.getSurname());
                 insertUserStatement.setString(3, user.getPatronymic());
                 insertUserStatement.setInt(4, roleId);
-                insertUserStatement.setString(5, user.getLogin());
-                insertUserStatement.setString(6, user.getPassword());
+                /*insertUserStatement.setString(5, user.getLogin());
+                insertUserStatement.setString(6, user.getPassword());*/
 
                 int insertUserRes = insertUserStatement.executeUpdate();
                 int insertLibraryCardResult = 0;

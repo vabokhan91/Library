@@ -35,14 +35,14 @@
                 <option value="1"><fmt:message key="label.user.client" bundle="${messages}"/> </option>
             </select><br/>
 
-            <fmt:message key="label.login" bundle="${messages}"/> :
+           <%-- <fmt:message key="label.login" bundle="${messages}"/> :
             <input type = "text" name = "login" value="" pattern="[^\W]{1,12}"/><br/>
 
             <fmt:message key="label.password"  bundle="${messages}"/> :
             <input type = "password" name = "user_password" placeholder="Password" id="password" value="" pattern="[\w!()*&^%$@]{1,12}"/><br/>
 
             <fmt:message key="label.password" bundle="${messages}"/> :
-            <input type = "password" name = "confirm_password" placeholder="Confirm password" id="confirm_password" value="" pattern="[\w!()*&^%$@]{1,12}"/>
+            <input type = "password" name = "confirm_password" placeholder="Confirm password" id="confirm_password" value="" pattern="[\w!()*&^%$@]{1,12}"/>--%>
         </c:when>
         <c:otherwise>
             <input type = "hidden" name = "user_role" value="1"/>

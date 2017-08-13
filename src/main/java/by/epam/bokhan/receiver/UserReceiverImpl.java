@@ -90,27 +90,27 @@ public class UserReceiverImpl implements UserReceiver {
         String patronymic = (String) requestContent.getRequestParameters().get(USER_PATRONYMIC);
         String address = (String) requestContent.getRequestParameters().get(USER_ADDRESS);
         int role = Integer.parseInt((String) requestContent.getRequestParameters().get(USER_ROLE));
-        String login = (String) requestContent.getRequestParameters().get(LOGIN);
-        String password = (String) requestContent.getRequestParameters().get(USER_PASSWORD);
+        /*String login = (String) requestContent.getRequestParameters().get(LOGIN);
+        String password = (String) requestContent.getRequestParameters().get(USER_PASSWORD);*/
         String confirmPassword = (String) requestContent.getRequestParameters().get(CONFIRM_PASSWORD);
         try {
-            if (password.equals(confirmPassword)) {
+            /*if (password.equals(confirmPassword)) {
                 String hashedPassword = null;
                 if (password != null) {
                     hashedPassword = DigestUtils.md5Hex(password);
-                }
+                }*/
                 String phone = (String) requestContent.getRequestParameters().get(USER_MOBILE_PHONE);
                 User user = new User();
                 user.setName(name);
                 user.setSurname(surname);
                 user.setPatronymic(patronymic);
                 user.setAddress(address);
-                user.setLogin(login);
-                user.setPassword(hashedPassword);
+                /*user.setLogin(login);
+                user.setPassword(hashedPassword);*/
                 user.setMobilePhone(phone);
 
                 isUserAdded = userDAO.addUser(user, role);
-            }
+
             requestContent.insertAttribute(USER_IS_ADDED, isUserAdded);
         } catch (DAOException e) {
             requestContent.insertParameter(USER_IS_ADDED, isUserAdded);

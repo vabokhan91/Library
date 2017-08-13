@@ -39,7 +39,7 @@
 <fmt:message key="label.book.latest_order_information" bundle="${messages}"/> : <br/>
 
 <c:forEach items="${foundOrder}" var="item">
-    <fmt:message key="label.library_card" bundle="${messages}"/> : ${item.user.id}<br/>
+    <fmt:message key="label.library_card" bundle="${messages}"/> : ${item.user.libraryCardNumber}<br/>
 
     <fmt:message key="label.name" bundle="${messages}"/> : ${item.user.name}<br/>
 

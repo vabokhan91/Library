@@ -59,11 +59,13 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "on book.id = genres.book_id\n" +
             " where book.id = ?";
 
-    private static final String SQL_GET_BOOKS_LAST_ORDER = "SELECT orders.book_id,orders.user_id,orders.order_date, orders.expiration_date, orders.return_date,\n" +
-            "user.library_card as library_card, user.name as user_name, user.surname as user_surname, user.patronymic as user_patronymic, user.mobile_phone as mobile_phone from orders\n" +
-            "left join user \n" +
-            "on orders.user_id = user.library_card\n" +
-            "where orders.order_date = (select max(order_date) from orders where orders.book_id = ?)";
+    private static final String SQL_GET_BOOKS_LAST_ORDER = "SELECT orders.book_id,orders.library_card_id,orders.order_date, orders.expiration_date, orders.return_date,\n" +
+            "user.id, user.name, user.surname, user.patronymic,library_card.id, library_card.mobile_phone\n" +
+            "from orders\n" +
+            "left join library_card on library_card.id = orders.library_card_id\n" +
+            "left join user\n" +
+            "on library_card.user_id = user.id\n" +
+            "where orders.order_date = (select max(order_date) from orders where orders.book_id = ?) and orders.book_id = ?";
 
     private static final String SQL_GET_ALL_GENRES = "Select * from genre";
     private static final String SQL_EDIT_BOOK = "Update book set title = ?, pages = ?, isbn = ?, year = ?,publisher_id = ? where id = ?";
@@ -108,7 +110,15 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_CANCEL_ONLINE_ORDER = "Update online_orders set online_orders.order_execution_date = now(), order_status = 'canceled' where online_orders.id = ?";
     private static final String SQL_ONLINE_ORDER_STATUS = "SELECT order_status from online_orders where online_orders.id = ?";
     private static final String SQL_EXECUTE_ONLINE_ORDER ="Update online_orders SET online_orders.order_execution_date = now(), online_orders.order_status = 'executed' where online_orders.id = ?";
-
+    private final String ORDER_DATE = "orders.order_date";
+    private final String EXPIRATION_DATE = "orders.expiration_date";
+    private final String RETURN_DATE = "orders.return_date";
+    private final String USER_NAME = "user.name";
+    private final String USER_SURNAME = "user.surname";
+    private final String USER_PATRONYMIC = "user.patronymic";
+    private final String MOBILE_PHONE = "library_card.mobile_phone";
+    private final String USER_ID = "user.id";
+    private final String LIBRARY_CARD = "library_card.id";
 
 
     @Override
@@ -389,32 +399,34 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     @Override
     public List<Order> getBooksLastOrder(int bookId) throws DAOException {
-        LinkedList<Order> orders = new LinkedList<>();
+        List<Order> orders = new LinkedList<>();
         Connection connection = null;
         PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_GET_BOOKS_LAST_ORDER);
             st.setInt(1, bookId);
+            st.setInt(2,bookId);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 Order order = new Order();
-                Timestamp lastOrderTimeStamp = rs.getTimestamp("orders.order_date");
+                Timestamp lastOrderTimeStamp = rs.getTimestamp(ORDER_DATE);
                 LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setOrderDate(lastOrderDate);
-                Timestamp expirationDateTimeStamp = rs.getTimestamp("orders.expiration_date");
+                Timestamp expirationDateTimeStamp = rs.getTimestamp(EXPIRATION_DATE);
                 LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setExpirationDate(expirationDate);
-                Timestamp returnDateTimeStamp = rs.getTimestamp("orders.return_date");
+                Timestamp returnDateTimeStamp = rs.getTimestamp(RETURN_DATE);
                 LocalDate returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setReturnDate(returnDate);
                 User user = new User();
-                user.setName(rs.getString("user_name"));
-                user.setSurname(rs.getString("user_surname"));
-                user.setPatronymic(rs.getString("user_patronymic"));
-                user.setMobilePhone(rs.getString("mobile_phone"));
-                user.setId(rs.getInt("library_card"));
+                user.setName(rs.getString(USER_NAME));
+                user.setSurname(rs.getString(USER_SURNAME));
+                user.setPatronymic(rs.getString(USER_PATRONYMIC));
+                user.setMobilePhone(rs.getString(MOBILE_PHONE));
+                user.setId(rs.getInt(USER_ID));
+                user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
                 order.setUser(user);
                 orders.add(order);
             }
