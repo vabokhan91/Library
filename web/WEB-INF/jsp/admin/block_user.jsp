@@ -27,7 +27,7 @@
 
     <c:forEach items="${not_blocked_users}" var="item">
         <tr>
-            <td>${item.id}</td>
+            <td>${item.libraryCardNumber}</td>
             <td>${item.name}</td>
             <td>${item.surname}</td>
             <td>${item.patronymic}</td>

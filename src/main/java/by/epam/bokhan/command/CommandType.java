@@ -102,11 +102,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).blockUser(content);
         }
-    },BLOCK_USER_FAILED_PAGE(new ToBlockFailedPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },BLOCK_USER_SUCCESS_PAGE(new ToBlockSuccessPage(new UserReceiverImpl())) {
+    },TO_BLOCK_STATUS_PAGE(new ToBlockStatusPage(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }

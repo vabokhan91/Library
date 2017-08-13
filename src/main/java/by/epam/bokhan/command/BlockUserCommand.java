@@ -10,24 +10,17 @@ import by.epam.bokhan.receiver.Receiver;
  */
 public class BlockUserCommand extends AbstractCommand{
 
+    private final String TO_BLOCK_STATUS_PAGE = "/controller?command=to_block_status_page";
+
     public BlockUserCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException{
-
-
             super.execute(content);
-            String page;
-            if ((Boolean) content.getRequestParameters().get(IS_USER_BLOCKED) ) {
-                page = TO_BLOCK_USER_SUCCESS_PAGE_COMMAND;
-            }
-            else {
-                page = TO_BLOCK_USER_FAILED_PAGE_COMMAND;
-            }
+            String page = TO_BLOCK_STATUS_PAGE;
             content.insertParameter(PAGE, page);
             content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
-
-        content.insertParameter(INVALIDATE, false);
+            content.insertParameter(INVALIDATE, false);
     }
 }

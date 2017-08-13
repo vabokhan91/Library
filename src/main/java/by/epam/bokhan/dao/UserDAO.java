@@ -18,7 +18,9 @@ public interface UserDAO {
 
     List<User> findUserBySurname(String surname) throws DAOException ;
 
-    boolean blockUserByLibraryCard(int librarianCard) throws DAOException;
+    List<User> getNotBlockedUsers() throws DAOException;
+
+    boolean blockUserById(int userId) throws DAOException;
 
     boolean unblockUser(int libraryCard) throws DAOException ;
 

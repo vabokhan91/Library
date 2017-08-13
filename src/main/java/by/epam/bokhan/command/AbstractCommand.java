@@ -1,11 +1,8 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;
-
-import java.sql.SQLException;
 
 /**
  * Created by vbokh on 13.07.2017.
@@ -48,7 +45,7 @@ public abstract class AbstractCommand {
     protected final String FIND_USER_PAGE = "path.page.find_user";
     protected final String REGISTRATION_PAGE = "path.page.registration_page";
     protected final String BLOCK_USER_FAILED_PAGE = "path.page.block_failed";
-    protected final String TO_BLOCK_SUCCESS_USER_PAGE = "path.page.block_success";
+    protected final String TO_BLOCK_STATUS_PAGE = "path.page.block_status";
     protected final String BLOCK_USER_PAGE = "path.page.block_user";
     protected final String TO_FAIL_USER_REMOVE_PAGE = "path.page.fail_user_remove";
     protected final String REMOVE_USER_PAGE = "path.page.remove_user";

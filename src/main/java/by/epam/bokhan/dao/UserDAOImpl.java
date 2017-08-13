@@ -35,11 +35,18 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "left join role on user.role_id = role.id \n" +
             "where user.surname LIKE ?";
     private static final String SQL_CHECK_IF_USER_EXIST = "SELECT login FROM user where login = ?";
-    private static final String SQL_BLOCK_USER_BY_CARD = "UPDATE user SET blocked = 1 WHERE library_card = ?";
+    private static final String SQL_BLOCK_USER_BY_ID = "UPDATE user SET blocked = 1 WHERE user.id = ?";
     private static final String SQL_UNBLOCK_USER_BY_CARD = "UPDATE user SET blocked = 0 WHERE library_card = ?";
     private static final String SQL_BLOCK_STATUS_BY_LIBRARY_CARD = "SELECT blocked FROM user WHERE library_card = ?";
-    private static final String SQL_GET_BLOCKED_USERS = "Select library_card, user.name, surname, patronymic, role.name, login, blocked from USER left join role on user.role_id = role.id where blocked = 1";
-    private static final String SQL_GET_NOT_BLOCKED_USERS = "Select library_card, user.name, surname, patronymic, role.name, login, blocked from USER left join role on user.role_id = role.id where blocked = 0";
+    private static final String SQL_GET_BLOCKED_USERS = "Select user.id, library_card.id, user.name, surname, patronymic, role.name, login, blocked\n" +
+            "from USER left join role on user.role_id = role.id\n" +
+            "left join library_card on user.id = library_card.user_id \n" +
+            "where blocked = 1";
+    private static final String SQL_GET_NOT_BLOCKED_USERS = "Select user.id, library_card.id, user.name, surname, patronymic, role.name, login, blocked \n" +
+            "from USER \n" +
+            "left join role on user.role_id = role.id \n" +
+            "left join library_card on library_card.user_id = user.id\n" +
+            "where blocked = 0";
     private static final String SQL_GET_USERS_ORDER_INFO = "Select orders.id, orders.book_id, book.title, orders.order_date, orders.expiration_date, orders.return_date \n" +
             "from orders\n" +
             "left join book on orders.book_id = book.id\n" +
@@ -278,16 +285,15 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
-    public boolean blockUserByLibraryCard(int librarianCard) throws DAOException {
+    public boolean blockUserById(int userId) throws DAOException {
         boolean isBlocked = false;
         Connection connection = null;
         PreparedStatement st = null;
-
         try {
             connection = ConnectionPool.getInstance().getConnection();
 
-            st = connection.prepareStatement(SQL_BLOCK_USER_BY_CARD);
-            st.setInt(1, librarianCard);
+            st = connection.prepareStatement(SQL_BLOCK_USER_BY_ID);
+            st.setInt(1, userId);
             int res = st.executeUpdate();
             if (res > 0) {
                 isBlocked = true;
@@ -296,7 +302,6 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not block user. Reason : %s", e.getMessage()), e);
         } finally {
-
             closeStatement(st);
             closeConnection(connection);
         }
@@ -343,7 +348,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 User user = new User();
-                user.setId(rs.getInt(LIBRARY_CARD));
+                user.setId(rs.getInt(USER_ID));
                 user.setName(rs.getString(USER_NAME));
                 user.setSurname(rs.getString(USER_SURNAME));
                 user.setPatronymic(rs.getString(USER_PATRONYMIC));
@@ -351,6 +356,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 user.setRole(userRole);
                 user.setLogin(rs.getString(LOGIN));
                 user.setBlocked(rs.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
                 blockedUsers.add(user);
             }
             return blockedUsers;
@@ -362,8 +368,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
-    public ArrayList<User> getNotBlockedUsers() throws DAOException {
-        ArrayList<User> notBlockedUsers = new ArrayList<>();
+    @Override
+    public List<User> getNotBlockedUsers() throws DAOException {
+        List<User> notBlockedUsers = new ArrayList<>();
         Connection connection = null;
         PreparedStatement st = null;
         try {
@@ -372,14 +379,15 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 User user = new User();
-                user.setId(rs.getInt(LIBRARY_CARD));
+                user.setId(rs.getInt(USER_ID));
                 user.setName(rs.getString(USER_NAME));
                 user.setSurname(rs.getString(USER_SURNAME));
                 user.setPatronymic(rs.getString(USER_PATRONYMIC));
-                Role userRole = Role.valueOf(rs.getString("role.name").toUpperCase());
+                Role userRole = Role.valueOf(rs.getString(ROLE).toUpperCase());
                 user.setRole(userRole);
                 user.setLogin(rs.getString(LOGIN));
                 user.setBlocked(rs.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
                 notBlockedUsers.add(user);
             }
             return notBlockedUsers;

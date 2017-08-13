@@ -43,6 +43,7 @@ public class UserReceiverImpl implements UserReceiver {
     private final String IS_USER_UNBLOCKED = "isUserUnblocked";
     protected final String USER_ID = "user_id";
     private final String BY_SURNAME = "by_surname";
+    private final String NOT_BLOCKED_USERS = "not_blocked_users";
 
     @Override
     public void login(RequestContent content) throws ReceiverException {
@@ -155,11 +156,6 @@ public class UserReceiverImpl implements UserReceiver {
                 user = dao.findUserBySurname(surname);
             }
             requestContent.insertParameter(FOUND_USER, user);
-            /*if (user != null) {
-
-            } else {
-                requestContent.insertParameter(FOUND_USER, null);
-            }*/
         } catch (DAOException e) {
             requestContent.insertParameter(FOUND_USER, null);
             throw new ReceiverException(String.format("Can not find user. Reason : %s", e.getMessage()), e);
@@ -168,15 +164,15 @@ public class UserReceiverImpl implements UserReceiver {
 
     public void blockUser(RequestContent requestContent) throws ReceiverException {
         UserDAOImpl dao = new UserDAOImpl();
-        int libraryCard;
+        int userId;
         boolean isUserBlocked = false;
         try {
-            libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(BLOCK_QUERY_VALUE));
-            isUserBlocked = dao.blockUserByLibraryCard(libraryCard);
-            requestContent.insertParameter(IS_USER_BLOCKED, isUserBlocked);
+            userId = Integer.parseInt((String) requestContent.getRequestParameters().get(BLOCK_QUERY_VALUE));
+            isUserBlocked = dao.blockUserById(userId);
+            requestContent.insertAttribute(IS_USER_BLOCKED, isUserBlocked);
         } catch (DAOException e) {
             requestContent.insertParameter(IS_USER_BLOCKED, isUserBlocked);
-            throw new ReceiverException(String.format("Can not block user. Reason : %s", e.getMessage()), e);
+            throw new ReceiverException(e);
         }
     }
 
@@ -206,11 +202,11 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     public void getNotBlockedUsers(RequestContent requestContent) throws ReceiverException {
-        UserDAOImpl dao = new UserDAOImpl();
-        List<User> blockedUsers;
+        UserDAO dao = new UserDAOImpl();
+        List<User> notBlockedUsers;
         try {
-            blockedUsers = dao.getNotBlockedUsers();
-            requestContent.insertParameter("not_blocked_users", blockedUsers);
+            notBlockedUsers = dao.getNotBlockedUsers();
+            requestContent.insertParameter(NOT_BLOCKED_USERS, notBlockedUsers);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }

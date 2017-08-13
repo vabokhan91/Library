@@ -23,12 +23,10 @@
         <th><fmt:message key="label.role" bundle="${messages}"/></th>
         <th><fmt:message key="label.login" bundle="${messages}"/></th>
         <th><fmt:message key="label.mobile_phone" bundle="${messages}"/></th>
-
     </tr>
 
     <c:forEach items="${foundUser}" var="item">
         <tr>
-
             <td>${item.libraryCardNumber}</td>
             <td>${item.name}</td>
             <td>${item.surname}</td>
@@ -37,13 +35,10 @@
             <td>${item.role}</td>
             <td>${item.login}</td>
             <td>${item.mobilePhone}</td>
-
-            
         </tr>
     </c:forEach>
 
 </table>
-
 
 <c:choose>
     <c:when test="${user.role.ordinal()==3}">
@@ -56,8 +51,6 @@
 
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 
-
-<%--<a href = "jsp/add_user.jsp">Add User</a>--%>
 <br/>
 <a href = "/controller?command=logout">Log Out</a>
 </body>

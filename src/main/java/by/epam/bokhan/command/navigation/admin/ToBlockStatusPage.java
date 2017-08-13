@@ -8,16 +8,14 @@ import by.epam.bokhan.receiver.Receiver;
 /**
  * Created by vbokh on 24.07.2017.
  */
-public class ToBlockSuccessPage extends AbstractCommand{
+public class ToBlockStatusPage extends AbstractCommand{
 
-
-
-    public ToBlockSuccessPage(Receiver receiver) {
+    public ToBlockStatusPage(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content)  {
-        String page = ConfigurationManager.getProperty(TO_BLOCK_SUCCESS_USER_PAGE);
+        String page = ConfigurationManager.getProperty(TO_BLOCK_STATUS_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);
     }
