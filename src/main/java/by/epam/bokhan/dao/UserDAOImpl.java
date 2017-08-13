@@ -10,6 +10,7 @@ import by.epam.bokhan.entity.User;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_SELECT_USER_BY_LOGIN = "SELECT user.id, user.name, surname, patronymic, address, role.name, login, password,address, mobile_phone, blocked  \n" +
@@ -24,8 +25,15 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_GET_ALL_USERS = "SELECT user.id,library_card.id, user.name, surname, patronymic, address, role.name, login, mobile_phone, blocked \n" +
             "from user left join role on user.role_id = role.id\n" +
             "left join library_card on user.id = library_card.user_id";
-    private static final String SQL_FIND_USER_BY_LIBRARY_CARD = "SELECT library_card, user.name,surname,patronymic,address,role.name,login,mobile_phone, blocked from user left join role on user.role_id = role.id where library_card = ?";
-    private static final String SQL_FIND_USER_BY_LOGIN = "SELECT library_card, user.name,surname,patronymic,address,role.name,login,mobile_phone, blocked from user left join role on user.role_id = role.id where login = ?";
+    private static final String SQL_FIND_USER_BY_LIBRARY_CARD = "SELECT user.id,library_card.id, user.name, user.surname, user.patronymic, address, role.name, login, mobile_phone, blocked \n" +
+            "from library_card left join user on user.id = library_card.user_id\n" +
+            "left join role on user.role_id = role.id \n" +
+            "where library_card.id = ?";
+    private static final String SQL_FIND_USER_BY_SURNAME = "SELECT user.id,library_card.id, user.name, user.surname, user.patronymic, address, role.name, login, mobile_phone, blocked\n" +
+            "from library_card\n" +
+            "left join user on library_card.user_id = user.id\n" +
+            "left join role on user.role_id = role.id \n" +
+            "where user.surname LIKE ?";
     private static final String SQL_CHECK_IF_USER_EXIST = "SELECT login FROM user where login = ?";
     private static final String SQL_BLOCK_USER_BY_CARD = "UPDATE user SET blocked = 1 WHERE library_card = ?";
     private static final String SQL_UNBLOCK_USER_BY_CARD = "UPDATE user SET blocked = 0 WHERE library_card = ?";
@@ -55,6 +63,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private final String PASSWORD = "password";
     protected final String USER_ID = "user.id";
     private final String LIBRARY_CARD = "library_card.id";
+    private final String ROLE = "role.name";
 
     public User getUserByLogin(String login) throws DAOException {
         User user = new User();
@@ -180,7 +189,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
-    public boolean removeUserByLibraryCard(int id) throws DAOException {
+    public boolean removeUserById(int id) throws DAOException {
         boolean result = false;
         Connection connection = null;
         PreparedStatement st = null;
@@ -201,8 +210,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
-    public User findUserByLibraryCard(int libraryCard) throws DAOException {
-        User user = new User();
+    public List<User> findUserByLibraryCard(int libraryCard) throws DAOException {
+        List<User> user = new ArrayList<>();
         Connection connection = null;
         PreparedStatement st = null;
         try {
@@ -210,17 +219,22 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             st = connection.prepareStatement(SQL_FIND_USER_BY_LIBRARY_CARD);
             st.setInt(1, libraryCard);
             ResultSet rs = st.executeQuery();
-            rs.next();
-            user.setId(rs.getInt(LIBRARY_CARD));
-            user.setName(rs.getString(USER_NAME));
-            user.setSurname(rs.getString(USER_SURNAME));
-            user.setPatronymic(rs.getString(USER_PATRONYMIC));
-            user.setAddress(rs.getString(ADDRESS));
-            user.setLogin(rs.getString(LOGIN));
-            Role userRole = Role.valueOf(rs.getString("role.name").toUpperCase());
-            user.setRole(userRole);
-            user.setMobilePhone(rs.getString(MOBILE_PHONE));
-            user.setBlocked(rs.getInt(BLOCK_FIELD));
+            while (rs.next()) {
+                User foundUser = new User();
+                foundUser.setId(rs.getInt(USER_ID));
+                foundUser.setName(rs.getString(USER_NAME));
+                foundUser.setSurname(rs.getString(USER_SURNAME));
+                foundUser.setPatronymic(rs.getString(USER_PATRONYMIC));
+                foundUser.setAddress(rs.getString(ADDRESS));
+                foundUser.setLogin(rs.getString(LOGIN));
+                Role userRole = Role.valueOf(rs.getString("role.name").toUpperCase());
+                foundUser.setRole(userRole);
+                foundUser.setMobilePhone(rs.getString(MOBILE_PHONE));
+                foundUser.setBlocked(rs.getInt(BLOCK_FIELD));
+                foundUser.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
+                user.add(foundUser);
+            }
+
             return user;
         } catch (SQLException e) {
             throw new DAOException(e);
@@ -229,28 +243,33 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             closeConnection(connection);
         }
     }
+    @Override
+    public List<User> findUserBySurname(String surname) throws DAOException {
+        List<User> users = new ArrayList<>();
 
-    public User findUserByLogin(String login) throws DAOException {
-        User user = new User();
         Connection connection = null;
         PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_FIND_USER_BY_LOGIN);
-            st.setString(1, login);
+            st = connection.prepareStatement(SQL_FIND_USER_BY_SURNAME);
+            st.setString(1, "%" +surname + "%");
             ResultSet rs = st.executeQuery();
-            rs.next();
-            user.setId(rs.getInt(LIBRARY_CARD));
-            user.setName(rs.getString(USER_NAME));
-            user.setSurname(rs.getString(USER_SURNAME));
-            user.setPatronymic(rs.getString(USER_PATRONYMIC));
-            user.setAddress(rs.getString(ADDRESS));
-            user.setLogin(rs.getString(LOGIN));
-            Role userRole = Role.valueOf(rs.getString("role.name").toUpperCase());
-            user.setRole(userRole);
-            user.setMobilePhone(rs.getString(MOBILE_PHONE));
-            user.setBlocked(rs.getInt(BLOCK_FIELD));
-            return user;
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt(USER_ID));
+                user.setName(rs.getString(USER_NAME));
+                user.setSurname(rs.getString(USER_SURNAME));
+                user.setPatronymic(rs.getString(USER_PATRONYMIC));
+                user.setAddress(rs.getString(ADDRESS));
+                user.setLogin(rs.getString(LOGIN));
+                Role userRole = Role.valueOf(rs.getString(ROLE).toUpperCase());
+                user.setRole(userRole);
+                user.setMobilePhone(rs.getString(MOBILE_PHONE));
+                user.setBlocked(rs.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
+                users.add(user);
+            }
+            return users;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

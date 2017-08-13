@@ -4,6 +4,7 @@ import by.epam.bokhan.entity.User;
 import by.epam.bokhan.exception.DAOException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by vbokh on 25.07.2017.
@@ -11,11 +12,11 @@ import java.util.ArrayList;
 public interface UserDAO {
     boolean addUser(User user, int roleId) throws DAOException;
 
-    boolean removeUserByLibraryCard(int id) throws DAOException;
+    boolean removeUserById(int id) throws DAOException;
 
-    User findUserByLibraryCard(int libraryCard) throws DAOException ;
+    List<User> findUserByLibraryCard(int libraryCard) throws DAOException ;
 
-    User findUserByLogin(String login) throws DAOException ;
+    List<User> findUserBySurname(String surname) throws DAOException ;
 
     boolean blockUserByLibraryCard(int librarianCard) throws DAOException;
 

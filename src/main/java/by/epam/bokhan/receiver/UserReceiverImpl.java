@@ -42,6 +42,7 @@ public class UserReceiverImpl implements UserReceiver {
     private final String UNBLOCK_QUERY_VALUE = "unblock_query_value";
     private final String IS_USER_UNBLOCKED = "isUserUnblocked";
     protected final String USER_ID = "user_id";
+    private final String BY_SURNAME = "by_surname";
 
     @Override
     public void login(RequestContent content) throws ReceiverException {
@@ -131,7 +132,7 @@ public class UserReceiverImpl implements UserReceiver {
         boolean isUserDeleted = false;
         try {
             userId = Integer.parseInt((String) content.getRequestParameters().get(USER_ID));
-            isUserDeleted = dao.removeUserByLibraryCard(userId);
+            isUserDeleted = dao.removeUserById(userId);
             content.insertParameter(IS_USER_DELETED, isUserDeleted);
         } catch (DAOException e) {
             content.insertParameter(IS_USER_DELETED, isUserDeleted);
@@ -141,23 +142,24 @@ public class UserReceiverImpl implements UserReceiver {
 
     public void findUser(RequestContent requestContent) throws ReceiverException {
         UserDAOImpl dao = new UserDAOImpl();
-        int libraryCard;
-        String login;
-        User user = null;
+        int libraryCardId;
+        String surname;
+        List<User> user = new ArrayList<>();
         String typeOfSearch = (String) requestContent.getRequestParameters().get(TYPE_OF_SEARCH);
         try {
             if (typeOfSearch.equalsIgnoreCase(BY_LIBRARY_CARD)) {
-                libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(FIND_QUERY_VALUE));
-                user = dao.findUserByLibraryCard(libraryCard);
-            } else if (typeOfSearch.equalsIgnoreCase(BY_LOGIN)) {
-                login = (String) requestContent.getRequestParameters().get(FIND_QUERY_VALUE);
-                user = dao.findUserByLogin(login);
+                libraryCardId = Integer.parseInt((String) requestContent.getRequestParameters().get(FIND_QUERY_VALUE));
+                user = dao.findUserByLibraryCard(libraryCardId);
+            } else if (typeOfSearch.equalsIgnoreCase(BY_SURNAME)) {
+                surname = (String) requestContent.getRequestParameters().get(FIND_QUERY_VALUE);
+                user = dao.findUserBySurname(surname);
             }
-            if (user != null) {
-                requestContent.insertParameter(FOUND_USER, user);
+            requestContent.insertParameter(FOUND_USER, user);
+            /*if (user != null) {
+
             } else {
                 requestContent.insertParameter(FOUND_USER, null);
-            }
+            }*/
         } catch (DAOException e) {
             requestContent.insertParameter(FOUND_USER, null);
             throw new ReceiverException(String.format("Can not find user. Reason : %s", e.getMessage()), e);
@@ -229,7 +231,7 @@ public class UserReceiverImpl implements UserReceiver {
     public void getUser(RequestContent requestContent) throws ReceiverException {
         UserDAOImpl dao = new UserDAOImpl();
         int libraryCard;
-        User user = null;
+        List<User> user = new ArrayList<>();
         try {
 
             libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));

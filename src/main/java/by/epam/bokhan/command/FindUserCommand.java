@@ -16,16 +16,9 @@ public class FindUserCommand extends AbstractCommand {
     }
 
     public void execute(RequestContent content) throws ReceiverException{
-
             super.execute(content);
             String page = ConfigurationManager.getProperty(USER_INFO_PAGE);
             content.insertParameter(PAGE, page);
-            if (content.getRequestParameters().get(FOUND_USER) != null) {
-                content.insertParameter(USER_FOUND_STATUS, MessageManager.getProperty(MESSAGE_FOUND_USER_TRUE));
-            } else {
-                content.insertParameter(USER_FOUND_STATUS, MessageManager.getProperty(MESSAGE_FOUND_USER_FALSE));
-            }
-
-        content.insertParameter(INVALIDATE, false);
+            content.insertParameter(INVALIDATE, false);
     }
 }
