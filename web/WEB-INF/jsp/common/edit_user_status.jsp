@@ -8,11 +8,25 @@
 </c:if>
 <html>
 <head>
-    <title>Editing done</title>
+    <title>Edit status</title>
 </head>
 <body>
-<fmt:message key="label.user.edit_success" bundle="${messages}"/><br/>
+
+<c:choose>
+    <c:when test="${not empty sessionScope.isUserEdited && sessionScope.isUserEdited eq true}">
+        <fmt:message key="label.user.edit_success" bundle="${messages}"/><br/>
+    </c:when>
+    <c:when test="${not empty sessionScope.isUserEdited && sessionScope.isUserEdited eq false}">
+        <fmt:message key="label.user.edit_failed" bundle="${messages}"/>
+    </c:when>
+</c:choose><br/>
+
+<c:if test="${not empty sessionScope.isUserEdited}">
+    <c:remove var="isUserEdited" scope="session" />
+</c:if>
+
 <a href="/controller?command=get_all_users"><fmt:message key="label.user.edit_one_more_user" bundle="${messages}"/> </a><br/>
+
 <c:choose>
     <c:when test="${user.role.ordinal()==3}">
         <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>

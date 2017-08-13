@@ -11,23 +11,13 @@ import by.epam.bokhan.receiver.Receiver;
  */
 public class EditUserCommand extends AbstractCommand {
 
-
-
     public EditUserCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException {
-
-
             super.execute(content);
-            String page;
-            if ((Boolean) content.getRequestParameters().get(IS_USER_EDITED)) {
-                page = TO_USER_EDITED_PAGE_COMMAND;
-            }
-            else {
-                page = TO_USER_NOT_EDITED_PAGE_COMMAND;
-            }
+            String page = "/controller?command=to_user_edit_status";
             content.insertParameter(PAGE, page);
             content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
 

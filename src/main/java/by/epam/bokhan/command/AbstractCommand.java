@@ -52,7 +52,7 @@ public abstract class AbstractCommand {
     protected final String TO_EXPLICIT_USER_INFO_PAGE = "path.page.explicit_user_info";
     protected final String TO_MAIN_PAGE = "path.page.startpage";
     protected final String TO_SHOW_ALL_USERS_PAGE = "path.page.show_all_users";
-    protected final String TO_USER_IS_EDITED_PAGE = "path.page.user_is_edited";
+    protected final String TO_USER_EDIT_STATUS_PAGE = "path.page.edit_user_status";
     protected final String TO_USER_NOT_EDITED_PAGE = "path.page.user_not_edited";
     protected final String IS_USER_EDITED = "isUserEdited";
     protected final String TO_USER_EDITED_PAGE_COMMAND = "/controller?command=to_user_edited_page";

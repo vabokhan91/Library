@@ -52,7 +52,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "left join book on orders.book_id = book.id\n" +
             "where orders.library_card_id = ?";
 
-    private static final String SQL_EDIT_USER_INFO = "UPDATE user SET library_card = ?, name =?, surname=?, patronymic=?,address =?, role_id=?, login =?, mobile_phone=? where library_card = ?";
+    private static final String SQL_EDIT_USER_INFO = "UPDATE user SET name =?, surname=?, patronymic=?, role_id=?, login =?  where user.id = ?";
+    private static final String SQL_EDIT_LIBRARY_CARD_INFO = "UPDATE library_card SET address = ?, mobile_phone=? where library_card.id = ?";
     private static final String SQL_GET_PASSWORD = "SELECT password FROM user where library_card = ?";
     private static final String SQL_SET_NEW_PASSWORD = "UPDATE user SET password = ? where user.library_card = ?";
     private static final String SQL_SET_NEW_LOGIN = "UPDATE user SET login = ? where user.library_card = ?";
@@ -473,32 +474,50 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             closeConnection(connection);
         }
     }
-
-    public boolean editUser(int libraryCard, String name, String surname, String patronymic, String address, int role, String login, String mobile_phone) throws DAOException {
+    @Override
+    public boolean editUser(User user) throws DAOException {
         boolean isUserEdited = false;
         Connection connection = null;
-        PreparedStatement st = null;
+        PreparedStatement editUserInfoStatement = null;
+        PreparedStatement editLibraryCardInfoStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_EDIT_USER_INFO);
-            st.setInt(1, libraryCard);
-            st.setString(2, name);
-            st.setString(3, surname);
-            st.setString(4, patronymic);
-            st.setString(5, address);
-            st.setInt(6, role);
-            st.setString(7, login);
-            st.setString(8, mobile_phone);
-            st.setInt(9, libraryCard);
-            int res = st.executeUpdate();
-            if (res > 0) {
-                isUserEdited = true;
+            connection.setAutoCommit(false);
+            editUserInfoStatement = connection.prepareStatement(SQL_EDIT_USER_INFO);
+            editUserInfoStatement.setString(1, user.getName());
+            editUserInfoStatement.setString(2, user.getSurname());
+            editUserInfoStatement.setString(3, user.getPatronymic());
+            editUserInfoStatement.setInt(4, user.getRole().ordinal());
+            editUserInfoStatement.setString(5, user.getLogin());
+            editUserInfoStatement.setInt(6, user.getId());
+            int userUpdateResult = editUserInfoStatement.executeUpdate();
+            if (userUpdateResult > 0) {
+                editLibraryCardInfoStatement = connection.prepareStatement(SQL_EDIT_LIBRARY_CARD_INFO);
+                editLibraryCardInfoStatement.setString(1, user.getAddress());
+                editLibraryCardInfoStatement.setString(2, user.getMobilePhone());
+                editLibraryCardInfoStatement.setInt(3,user.getLibraryCardNumber());
+                int libraryCardUpdateResult = editLibraryCardInfoStatement.executeUpdate();
+                if (libraryCardUpdateResult > 0) {
+                    isUserEdited = true;
+                    connection.commit();
+                }else {
+                    connection.rollback();
+                }
+
+            }else {
+                connection.rollback();
             }
             return isUserEdited;
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(String.format("Can not edit user. Reason : %s", e.getMessage()), e1);
+            }
             throw new DAOException(String.format("Can not edit user. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(st);
+            closeStatement(editUserInfoStatement);
+            closeStatement(editLibraryCardInfoStatement);
             closeConnection(connection);
         }
     }

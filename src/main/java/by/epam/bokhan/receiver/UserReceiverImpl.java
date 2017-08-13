@@ -4,6 +4,7 @@ package by.epam.bokhan.receiver;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.dao.UserDAO;
 import by.epam.bokhan.dao.UserDAOImpl;
+import by.epam.bokhan.entity.Role;
 import by.epam.bokhan.entity.User;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
@@ -46,6 +47,7 @@ public class UserReceiverImpl implements UserReceiver {
     private final String NOT_BLOCKED_USERS = "not_blocked_users";
     private final String BLOCKED_USERS = "blocked_users";
     private final String LIBRARY_CARD = "library_card";
+    private final String IS_USER_EDITED = "isUserEdited";
 
     @Override
     public void login(RequestContent content) throws ReceiverException {
@@ -225,12 +227,12 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     public void getUser(RequestContent requestContent) throws ReceiverException {
-        UserDAOImpl dao = new UserDAOImpl();
+        UserDAO dao = new UserDAOImpl();
         int libraryCard;
         List<User> user = new ArrayList<>();
         try {
 
-            libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
             user = dao.findUserByLibraryCard(libraryCard);
 
             requestContent.insertParameter(FOUND_USER, user);
@@ -241,22 +243,33 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     public void editUser(RequestContent requestContent) throws ReceiverException {
-        UserDAOImpl dao = new UserDAOImpl();
-        boolean isUserEdited = false;
-        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+        UserDAO dao = new UserDAOImpl();
+        boolean isUserEdited;
+        User user = new User();
+        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
+        int userId = Integer.parseInt((String) requestContent.getRequestParameters().get(USER_ID));
         String name = (String) requestContent.getRequestParameters().get(USER_NAME);
         String surname = (String) requestContent.getRequestParameters().get(USER_SURNAME);
         String patronymic = (String) requestContent.getRequestParameters().get(USER_PATRONYMIC);
         String address = (String) requestContent.getRequestParameters().get(USER_ADDRESS);
-        int role = Integer.parseInt((String) requestContent.getRequestParameters().get(USER_ROLE));
+        String role = (String) requestContent.getRequestParameters().get(USER_ROLE);
+        Role userRole = Role.valueOf(role.toUpperCase());
         String login = (String) requestContent.getRequestParameters().get(LOGIN);
         String phone = (String) requestContent.getRequestParameters().get(USER_MOBILE_PHONE);
+        user.setId(userId);
+        user.setLibraryCardNumber(libraryCard);
+        user.setName(name);
+        user.setSurname(surname);
+        user.setPatronymic(patronymic);
+        user.setAddress(address);
+        user.setRole(userRole);
+        user.setLogin(login);
+        user.setMobilePhone(phone);
         try {
-            isUserEdited = dao.editUser(libraryCard, name, surname, patronymic, address, role, login, phone);
-            requestContent.insertParameter("isUserEdited", isUserEdited);
+            isUserEdited = dao.editUser(user);
+            requestContent.insertAttribute(IS_USER_EDITED, isUserEdited);
         } catch (DAOException e) {
-            requestContent.insertParameter("isUserEdited", isUserEdited);
-            throw new ReceiverException(String.format("Can not edit user. Reason : %s", e.getMessage()), e);
+            throw new ReceiverException(e);
         }
     }
 

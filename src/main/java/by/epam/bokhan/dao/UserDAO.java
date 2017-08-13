@@ -32,6 +32,8 @@ public interface UserDAO {
 
     ArrayList<User> getAllUsers() throws DAOException;
 
+    boolean editUser(User user) throws DAOException;
+
     boolean changePassword(int libraryCard, String newPassword) throws DAOException ;
 
     String getPassword(int libraryCard) throws DAOException;

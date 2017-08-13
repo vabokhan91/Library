@@ -8,16 +8,14 @@ import by.epam.bokhan.receiver.Receiver;
 /**
  * Created by vbokh on 31.07.2017.
  */
-public class ToUserEditedPage extends AbstractCommand {
+public class ToUserEditStatus extends AbstractCommand {
 
-
-
-    public ToUserEditedPage(Receiver receiver) {
+    public ToUserEditStatus(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content)  {
-        String page = ConfigurationManager.getProperty(TO_USER_IS_EDITED_PAGE);
+        String page = ConfigurationManager.getProperty(TO_USER_EDIT_STATUS_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);
     }

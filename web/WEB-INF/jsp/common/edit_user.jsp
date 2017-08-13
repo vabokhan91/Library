@@ -14,29 +14,34 @@
 
 <form method="post" action="/controller" accept-charset="UTF-8">
     <input type="hidden" name="command" value="edit_user"/>
-<fmt:message key="label.library_card" bundle="${messages}"/> : <input type="text" name="library_card" value="${foundUser.id}"/><br/>
-<fmt:message key="label.name" bundle="${messages}"/> : <input type="text" name="username" value="${foundUser.name}"/> <br/>
-<fmt:message key="label.surname" bundle="${messages}"/> : <input type="text" name="usersurname" value="${foundUser.surname}"/> <br/>
-<fmt:message key="label.patronymic" bundle="${messages}"/> : <input type="text" name="userpatronymic" value="${foundUser.patronymic}"/> <br/>
+    <c:forEach items="${foundUser}" var="found_user">
+        <fmt:message key="label.library_card" bundle="${messages}"/> : ${found_user.libraryCardNumber}<br/>
+        <fmt:message key="label.name" bundle="${messages}"/> : <input type="text" name="user_name" value="${found_user.name}"/> <br/>
+        <fmt:message key="label.surname" bundle="${messages}"/> : <input type="text" name="user_surname" value="${found_user.surname}"/> <br/>
+        <fmt:message key="label.patronymic" bundle="${messages}"/> : <input type="text" name="user_patronymic" value="${found_user.patronymic}"/> <br/>
 
-<c:choose>
-    <c:when test="${user.role.ordinal() == 3}">
-        <fmt:message key="label.role" bundle="${messages}"/> : ${foundUser.role}
-        <select name="user_role">
-            <option value="1"><fmt:message key="label.user.client" bundle="${messages}"/> </option>
-            <option value="2"><fmt:message key="label.user.librarian" bundle="${messages}"/> </option>
-        </select><br/>
-    </c:when>
-        <c:otherwise>
-        <input type = "hidden" name = "user_role" value="${foundUser.role}"/>
-    </c:otherwise>
+        <c:choose>
+            <c:when test="${user.role.ordinal() == 3}">
+                <fmt:message key="label.role" bundle="${messages}"/> : ${found_user.role}
+                <select name="user_role">
+                    <option value="client"><fmt:message key="label.user.client" bundle="${messages}"/> </option>
+                    <option value="librarian"><fmt:message key="label.user.librarian" bundle="${messages}"/> </option>
+                </select><br/>
+            </c:when>
+            <c:otherwise>
+                <input type = "hidden" name = "user_role" value="${found_user.role}"/>
+            </c:otherwise>
 
-</c:choose><br/>
+        </c:choose><br/>
 
-<fmt:message key="label.address" bundle="${messages}"/> : <input type="text" name="useraddress" value="${foundUser.address}"/> <br/>
-<fmt:message key="label.login" bundle="${messages}"/> : <input type="text" name="login" value="${foundUser.login}"/> <br/>
-<fmt:message key="label.mobile_phone" bundle="${messages}"/> : <input type="text" name="usermobilephone" value="${foundUser.mobilePhone}"/> <br/>
-    <input type="submit" name="submit" value=<fmt:message key="label.user.edit_user" bundle="${messages}"/> />
+        <fmt:message key="label.address" bundle="${messages}"/> : <input type="text" name="user_address" value="${found_user.address}"/> <br/>
+        <fmt:message key="label.login" bundle="${messages}"/> : <input type="text" name="login" value="${found_user.login}"/> <br/>
+        <fmt:message key="label.mobile_phone" bundle="${messages}"/> : <input type="text" name="user_mobilephone" value="${found_user.mobilePhone}"/> <br/>
+        <input type="submit" name="submit" value=<fmt:message key="label.user.edit_user" bundle="${messages}"/> />
+        <input type="hidden" name="library_card" value="${found_user.libraryCardNumber}"/>
+        <input type="hidden" name="user_id" value="${found_user.id}"/>
+    </c:forEach>
+
 </form>
 
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>

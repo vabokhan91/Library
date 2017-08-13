@@ -158,12 +158,8 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).editUser(content);
         }
-    },TO_USER_EDITED_PAGE(new ToUserEditedPage(new UserReceiverImpl())) {
+    },TO_USER_EDIT_STATUS(new ToUserEditStatus(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException{
-
-        }
-    },TO_USER_NOT_EDITED_PAGE(new ToUserNotEditedPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
     },GET_ALL_BOOKS(new GetAllBooksCommand(new BookReceiverImpl())) {
