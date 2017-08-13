@@ -38,7 +38,7 @@ public abstract class AbstractCommand {
     protected final String BLOCK_USER_PAGE = "path.page.block_user";
     protected final String TO_FAIL_USER_REMOVE_PAGE = "path.page.fail_user_remove";
     protected final String REMOVE_USER_PAGE = "path.page.remove_user";
-    protected final String TO_SUCCESS_USER_REMOVE_PAGE = "path.page.success_user_remove";
+    protected final String TO_REMOVE_STATUS_PAGE = "path.page.remove_user_status";
     protected final String TO_UNBLOCK_STATUS_PAGE = "path.page.unblock_status";
     protected final String TO_UNBLOCK_USER_PAGE = "path.page.unblock_user";
     protected final String TO_ADD_USER_PAGE = "path.page.adduser";

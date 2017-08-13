@@ -205,12 +205,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     public boolean removeUserById(int id) throws DAOException {
         boolean result = false;
         Connection connection = null;
-        PreparedStatement st = null;
+        PreparedStatement removeUserStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_REMOVE_USER_BY_ID);
-            st.setInt(1, id);
-            int res = st.executeUpdate();
+            removeUserStatement = connection.prepareStatement(SQL_REMOVE_USER_BY_ID);
+            removeUserStatement.setInt(1, id);
+            int res = removeUserStatement.executeUpdate();
             if (res > 0) {
                 result = true;
             }
@@ -218,7 +218,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            closeStatement(st);
+            closeStatement(removeUserStatement);
             closeConnection(connection);
         }
     }

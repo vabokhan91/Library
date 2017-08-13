@@ -132,15 +132,14 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     public void removeUser(RequestContent content) throws ReceiverException {
-        UserDAOImpl dao = new UserDAOImpl();
+        UserDAO dao = new UserDAOImpl();
         int userId;
-        boolean isUserDeleted = false;
+        boolean isUserDeleted;
         try {
             userId = Integer.parseInt((String) content.getRequestParameters().get(USER_ID));
             isUserDeleted = dao.removeUserById(userId);
-            content.insertParameter(IS_USER_DELETED, isUserDeleted);
+            content.insertAttribute(IS_USER_DELETED, isUserDeleted);
         } catch (DAOException e) {
-            content.insertParameter(IS_USER_DELETED, isUserDeleted);
             throw new ReceiverException(String.format("Can not remove user. Reason : %s", e.getMessage()), e);
         }
     }

@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by vbokh on 13.07.2017.
- */
+
 public enum CommandType {
     LOGIN(new LoginCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException{
@@ -35,18 +33,20 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).addUser(content);
         }
-    },
-    REMOVE_USER(new RemoveUserCommand(new UserReceiverImpl())) {
+    },REMOVE_USER(new RemoveUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).removeUser(content);
+        }
+    },TO_REMOVE_USER_STATUS_PAGE(new ToRemoveUserStatusPage(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
         }
     },
     FIND_USER(new FindUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).findUser(content);
         }
-    },
-    REGISTER(new RegisterUserCommand(new UserReceiverImpl())) {
+    },REGISTER(new RegisterUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).addUser(content);
         }
@@ -67,14 +67,6 @@ public enum CommandType {
 
         }
     },TO_ADMIN_PAGE(new ToAdminPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },TO_SUCCESS_REMOVE_USER_PAGE(new ToSuccessRemoveUser(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },TO_FAIL_REMOVE_USER_PAGE(new ToRemoveFailUserPage(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
