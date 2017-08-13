@@ -36,8 +36,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "where user.surname LIKE ?";
     private static final String SQL_CHECK_IF_USER_EXIST = "SELECT login FROM user where login = ?";
     private static final String SQL_BLOCK_USER_BY_ID = "UPDATE user SET blocked = 1 WHERE user.id = ?";
-    private static final String SQL_UNBLOCK_USER_BY_CARD = "UPDATE user SET blocked = 0 WHERE library_card = ?";
-    private static final String SQL_BLOCK_STATUS_BY_LIBRARY_CARD = "SELECT blocked FROM user WHERE library_card = ?";
+    private static final String SQL_UNBLOCK_USER = "UPDATE user SET blocked = 0 WHERE user.id = ?";
+    private static final String SQL_BLOCK_STATUS = "SELECT blocked FROM user WHERE user.id = ?";
     private static final String SQL_GET_BLOCKED_USERS = "Select user.id, library_card.id, user.name, surname, patronymic, role.name, login, blocked\n" +
             "from USER left join role on user.role_id = role.id\n" +
             "left join library_card on user.id = library_card.user_id \n" +
@@ -56,7 +56,6 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_GET_PASSWORD = "SELECT password FROM user where library_card = ?";
     private static final String SQL_SET_NEW_PASSWORD = "UPDATE user SET password = ? where user.library_card = ?";
     private static final String SQL_SET_NEW_LOGIN = "UPDATE user SET login = ? where user.library_card = ?";
-
 
 
     private final String USER_NAME = "user.name";
@@ -143,7 +142,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 if (insertUserRes > 0 && insertLibraryCardResult > 0) {
                     result = true;
                     connection.commit();
-                }else {
+                } else {
                     connection.rollback();
                 }
             } else {
@@ -250,6 +249,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             closeConnection(connection);
         }
     }
+
     @Override
     public List<User> findUserBySurname(String surname) throws DAOException {
         List<User> users = new ArrayList<>();
@@ -259,7 +259,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         try {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_FIND_USER_BY_SURNAME);
-            st.setString(1, "%" +surname + "%");
+            st.setString(1, "%" + surname + "%");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 User user = new User();
@@ -285,61 +285,70 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
-    public boolean blockUserById(int userId) throws DAOException {
+    public boolean blockUser(int userId) throws DAOException {
         boolean isBlocked = false;
         Connection connection = null;
-        PreparedStatement st = null;
+        PreparedStatement userBlockStatement = null;
+        PreparedStatement userBlockStatus = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-
-            st = connection.prepareStatement(SQL_BLOCK_USER_BY_ID);
-            st.setInt(1, userId);
-            int res = st.executeUpdate();
-            if (res > 0) {
-                isBlocked = true;
+            userBlockStatus = connection.prepareStatement(SQL_BLOCK_STATUS);
+            userBlockStatus.setInt(1, userId);
+            ResultSet resultSet = userBlockStatus.executeQuery();
+            if (resultSet.next()) {
+                int status = resultSet.getInt(BLOCK_FIELD);
+                if (status != 1) {
+                    userBlockStatement = connection.prepareStatement(SQL_BLOCK_USER_BY_ID);
+                    userBlockStatement.setInt(1, userId);
+                    int res = userBlockStatement.executeUpdate();
+                    if (res > 0) {
+                        isBlocked = true;
+                    }
+                }
             }
             return isBlocked;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not block user. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(st);
+            closeStatement(userBlockStatement);
             closeConnection(connection);
         }
     }
 
-    public boolean unblockUser(int libraryCard) throws DAOException {
+    @Override
+    public boolean unblockUser(int userId) throws DAOException {
         boolean isUnblocked = false;
         Connection connection = null;
-        PreparedStatement st = null;
-        PreparedStatement userUnblockedStatus = null;
+        PreparedStatement unblockUserStatement = null;
+        PreparedStatement userBlockStatus = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-           /* userUnblockedStatus = connection.prepareStatement(SQL_BLOCK_STATUS_BY_LIBRARY_CARD);
-            userUnblockedStatus.setInt(1, libraryCard);
-            ResultSet resultSet = userUnblockedStatus.executeQuery();
-            resultSet.next();
-            int status = resultSet.getInt(BLOCK_FIELD);
-            if (status == 0) {
-                throw new SQLException("Already unblocked");
-            }*/
-            st = connection.prepareStatement(SQL_UNBLOCK_USER_BY_CARD);
-            st.setInt(1, libraryCard);
-            int res = st.executeUpdate();
-            if (res > 0) {
-                isUnblocked = true;
+            userBlockStatus = connection.prepareStatement(SQL_BLOCK_STATUS);
+            userBlockStatus.setInt(1, userId);
+            ResultSet resultSet = userBlockStatus.executeQuery();
+            if (resultSet.next()) {
+                int status = resultSet.getInt(BLOCK_FIELD);
+                if (status != 0) {
+                    unblockUserStatement = connection.prepareStatement(SQL_UNBLOCK_USER);
+                    unblockUserStatement.setInt(1, userId);
+                    int res = unblockUserStatement.executeUpdate();
+                    if (res > 0) {
+                        isUnblocked = true;
+                    }
+                }
             }
             return isUnblocked;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not unblock user. Reason : %s", e.getMessage()), e);
         } finally {
-//            closeStatement(userUnblockedStatus);
-            closeStatement(st);
+            closeStatement(userBlockStatus);
+            closeStatement(unblockUserStatement);
             closeConnection(connection);
         }
     }
 
-    public ArrayList<User> getBlockedUsers() throws DAOException {
-        ArrayList<User> blockedUsers = new ArrayList<>();
+    public List<User> getBlockedUsers() throws DAOException {
+        List<User> blockedUsers = new ArrayList<>();
         Connection connection = null;
         PreparedStatement st = null;
         try {

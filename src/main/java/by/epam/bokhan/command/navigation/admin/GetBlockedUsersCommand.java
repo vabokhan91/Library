@@ -19,7 +19,6 @@ public class GetBlockedUsersCommand extends AbstractCommand{
             super.execute(content);
             String page = TO_UNBLOCK_USER_PAGE_COMMAND;
             content.insertParameter(PAGE, page);
-
-        content.insertParameter(INVALIDATE, false);
+            content.insertParameter(INVALIDATE, false);
     }
 }

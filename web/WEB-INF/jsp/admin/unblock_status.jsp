@@ -8,10 +8,25 @@
 </c:if>
 <html>
 <head>
-    <title>Unblocking done</title>
+    <title>Unblock status</title>
 </head>
 <body>
-<fmt:message key="label.user.unblocked_true" bundle="${messages}"/><br/>
+
+
+<c:choose>
+    <c:when test="${not empty sessionScope.isUserUnblocked && sessionScope.isUserUnblocked eq true}">
+        <fmt:message key="label.user.unblocked_true" bundle="${messages}"/><br/>
+    </c:when>
+    <c:when test="${not empty sessionScope.isUserUnblocked && sessionScope.isUserUnblocked eq false}">
+        <fmt:message key="label.user.unblocked_false" bundle="${messages}"/>
+    </c:when>
+</c:choose><br/>
+
+<c:if test="${not empty sessionScope.isUserUnblocked}">
+    <c:remove var="isUserUnblocked" scope="session" />
+</c:if>
+
+
 
 <form method="get" action="/controller" accept-charset="UTF-8">
     <input type="hidden" name="command" value="get_blocked_users"/>
@@ -24,3 +39,4 @@
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 </body>
 </html>
+

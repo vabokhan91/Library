@@ -1,7 +1,6 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;
 
@@ -10,18 +9,15 @@ import by.epam.bokhan.receiver.Receiver;
  */
 public class UnblockUserCommand extends AbstractCommand {
 
+    private final String TO_UNBLOCK_STATUS_PAGE = "/controller?command=to_unblock_status_page";
+
     public UnblockUserCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException{
             super.execute(content);
-            String page;
-            if ((Boolean) content.getRequestParameters().get(IS_USER_UNBLOCKED)) {
-                page = TO_UNBLOCK_USER_SUCCESS_PAGE_COMMAND;
-            } else {
-                page = TO_UNBLOCK_USER_FAILED_PAGE_COMMAND;
-            }
+            String page = TO_UNBLOCK_STATUS_PAGE;
             content.insertParameter(PAGE, page);
             content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
             content.insertParameter(INVALIDATE, false);

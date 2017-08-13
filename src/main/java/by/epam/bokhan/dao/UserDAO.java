@@ -20,9 +20,11 @@ public interface UserDAO {
 
     List<User> getNotBlockedUsers() throws DAOException;
 
-    boolean blockUserById(int userId) throws DAOException;
+    List<User> getBlockedUsers() throws DAOException;
 
-    boolean unblockUser(int libraryCard) throws DAOException ;
+    boolean blockUser(int userId) throws DAOException;
+
+    boolean unblockUser(int userId) throws DAOException;
 
     User getUserByLogin(String login) throws DAOException;
 

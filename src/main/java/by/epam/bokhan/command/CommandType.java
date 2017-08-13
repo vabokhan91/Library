@@ -114,11 +114,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).unblockUser(content);
         }
-    },UNBLOCK_USER_SUCCESS_PAGE(new UnblockSuccessPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },UNBLOCK_USER_FAILED_PAGE(new UnblockFailedPage(new UserReceiverImpl())) {
+    },TO_UNBLOCK_STATUS_PAGE(new UnblockStatusPage(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }

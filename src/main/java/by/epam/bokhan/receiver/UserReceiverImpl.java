@@ -44,6 +44,7 @@ public class UserReceiverImpl implements UserReceiver {
     protected final String USER_ID = "user_id";
     private final String BY_SURNAME = "by_surname";
     private final String NOT_BLOCKED_USERS = "not_blocked_users";
+    private final String BLOCKED_USERS = "blocked_users";
 
     @Override
     public void login(RequestContent content) throws ReceiverException {
@@ -157,7 +158,6 @@ public class UserReceiverImpl implements UserReceiver {
             }
             requestContent.insertParameter(FOUND_USER, user);
         } catch (DAOException e) {
-            requestContent.insertParameter(FOUND_USER, null);
             throw new ReceiverException(String.format("Can not find user. Reason : %s", e.getMessage()), e);
         }
     }
@@ -165,37 +165,36 @@ public class UserReceiverImpl implements UserReceiver {
     public void blockUser(RequestContent requestContent) throws ReceiverException {
         UserDAOImpl dao = new UserDAOImpl();
         int userId;
-        boolean isUserBlocked = false;
+        boolean isUserBlocked;
         try {
             userId = Integer.parseInt((String) requestContent.getRequestParameters().get(BLOCK_QUERY_VALUE));
-            isUserBlocked = dao.blockUserById(userId);
+            isUserBlocked = dao.blockUser(userId);
             requestContent.insertAttribute(IS_USER_BLOCKED, isUserBlocked);
         } catch (DAOException e) {
-            requestContent.insertParameter(IS_USER_BLOCKED, isUserBlocked);
             throw new ReceiverException(e);
         }
     }
 
     public void unblockUser(RequestContent requestContent) throws ReceiverException {
         UserDAOImpl dao = new UserDAOImpl();
-        int libraryCard;
+        int userId;
         boolean isUserUnblocked = false;
         try {
-            libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(UNBLOCK_QUERY_VALUE));
-            isUserUnblocked = dao.unblockUser(libraryCard);
-            requestContent.insertParameter(IS_USER_UNBLOCKED, isUserUnblocked);
+            userId = Integer.parseInt((String) requestContent.getRequestParameters().get(UNBLOCK_QUERY_VALUE));
+            isUserUnblocked = dao.unblockUser(userId);
+            requestContent.insertAttribute(IS_USER_UNBLOCKED, isUserUnblocked);
         } catch (DAOException e) {
-            requestContent.insertParameter(IS_USER_UNBLOCKED, isUserUnblocked);
+            requestContent.insertAttribute(IS_USER_UNBLOCKED, isUserUnblocked);
             throw new ReceiverException(e);
         }
     }
 
     public void getBlockedUsers(RequestContent requestContent) throws ReceiverException {
-        UserDAOImpl dao = new UserDAOImpl();
+        UserDAO dao = new UserDAOImpl();
         List<User> blockedUsers;
         try {
             blockedUsers = dao.getBlockedUsers();
-            requestContent.insertParameter("blocked_users", blockedUsers);
+            requestContent.insertParameter(BLOCKED_USERS, blockedUsers);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }

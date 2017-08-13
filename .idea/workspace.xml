@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7fd0963-556a-444e-a4b4-b3735092d7e9" name="Default" comment="execute online order command added for librarian">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_status.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_status.jsp" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/ToFindUserPageCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/ToMainPageCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/ToRegistrationPageCommand.class" afterPath="" />
@@ -20,7 +20,7 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/commoncommand/ToUserAddedPage.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/commoncommand/ToUserNotAddedPage.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/pagecommand/librariancommand/ToLibrarianMainPageCommand.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockFailedPage.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/UnblockFailedPage.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/EmptyCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/pagecommand/ToFindUserPageCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/pagecommand/ToMainPageCommand.class" afterPath="" />
@@ -37,7 +37,9 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/pagecommand/commoncommand/ToUserNotAddedPage.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/command/pagecommand/librariancommand/ToLibrarianMainPageCommand.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/by/epam/bokhan/dao/LoginDAO.class" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockSuccessPage.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockStatusPage.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_failed.jsp" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_success.jsp" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/UnblockSuccessPage.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/UnblockStatusPage.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/AbstractCommand.class" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/AbstractCommand.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/AddUserCommand.class" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/AddUserCommand.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/BlockUserCommand.class" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/classes/by/epam/bokhan/command/BlockUserCommand.class" />
@@ -145,9 +147,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/jsp/removeuser.jsp" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/jsp/removeuser.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/jsp/userinfo.jsp" afterPath="$PROJECT_DIR$/out/artifacts/library/WEB-INF/jsp/userinfo.jsp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AbstractCommand.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AbstractCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/BlockUserCommand.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/BlockUserCommand.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/GetNotBlockedUsersCommand.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/GetNotBlockedUsersCommand.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/UnblockUserCommand.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/UnblockUserCommand.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/GetBlockedUsersCommand.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/GetBlockedUsersCommand.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAO.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAO.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAOImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java" afterPath="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java" />
@@ -156,8 +158,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/resource/language.properties" afterPath="$PROJECT_DIR$/target/classes/resource/language.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/resource/language_en_US.properties" afterPath="$PROJECT_DIR$/target/classes/resource/language_en_US.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/resource/language_ru_RU.properties" afterPath="$PROJECT_DIR$/target/classes/resource/language_ru_RU.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_user.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_user.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/userinfo.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/userinfo.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_user.jsp" afterPath="$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_user.jsp" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -174,73 +175,53 @@
       <file leaf-file-name="CommandType.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="105" column="25" lean-forward="true" selection-start-line="105" selection-start-column="25" selection-end-line="105" selection-end-column="25" />
+            <state relative-caret-position="-480">
+              <caret line="116" column="40" lean-forward="false" selection-start-line="116" selection-start-column="40" selection-end-line="116" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MessageManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/manager/MessageManager.java">
+      <file leaf-file-name="ConfigurationManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/manager/ConfigurationManager.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
               <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding>
-                <element signature="e#437#438#0" expanded="true" />
+                <element signature="e#443#444#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommandFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/factory/CommandFactory.java">
+      <file leaf-file-name="UnblockStatusPage.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/UnblockStatusPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/controller/Controller.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockUserCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/BlockUserCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+            <state relative-caret-position="238">
+              <caret line="17" column="65" lean-forward="false" selection-start-line="17" selection-start-column="65" selection-end-line="17" selection-end-column="65" />
               <folding>
-                <element signature="e#463#464#0" expanded="true" />
-                <element signature="e#494#495#0" expanded="true" />
+                <element signature="e#385#386#0" expanded="true" />
+                <element signature="e#416#417#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ToBlockStatusPage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockStatusPage.java">
+      <file leaf-file-name="unblock_status.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_status.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="17" column="66" lean-forward="false" selection-start-line="17" selection-start-column="66" selection-end-line="17" selection-end-column="66" />
+            <state relative-caret-position="340">
+              <caret line="20" column="52" lean-forward="false" selection-start-line="20" selection-start-column="52" selection-end-line="20" selection-end-column="52" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ToBlockUserPage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockUserPage.java">
+      <file leaf-file-name="block_status.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_status.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="21" column="51" lean-forward="false" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
+            <state relative-caret-position="362">
+              <caret line="24" column="44" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -249,8 +230,8 @@
       <file leaf-file-name="AbstractCommand.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AbstractCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="157">
-              <caret line="47" column="57" lean-forward="false" selection-start-line="47" selection-start-column="57" selection-end-line="47" selection-end-column="57" />
+            <state relative-caret-position="-913">
+              <caret line="13" column="41" lean-forward="true" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -261,19 +242,64 @@
       <file leaf-file-name="config.properties" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/resource/config.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="157">
-              <caret line="18" column="56" lean-forward="false" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="56" />
+            <state relative-caret-position="225">
+              <caret line="22" column="16" lean-forward="true" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="block_user.jsp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_user.jsp">
+      <file leaf-file-name="UserReceiverImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="36" column="66" lean-forward="false" selection-start-line="36" selection-start-column="66" selection-end-line="36" selection-end-column="66" />
+            <state relative-caret-position="217">
+              <caret line="184" column="77" lean-forward="false" selection-start-line="184" selection-start-column="62" selection-end-line="184" selection-end-column="77" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserDAOImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAOImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="132">
+              <caret line="318" column="25" lean-forward="false" selection-start-line="318" selection-start-column="25" selection-end-line="318" selection-end-column="25" />
+              <folding>
+                <marker date="1502650039283" expanded="true" signature="485:780" ph="SELECT libra... user" />
+                <marker date="1502650039283" expanded="true" signature="834:944" ph="INSERT INTO USER... " />
+                <marker date="1502650039283" expanded="true" signature="1006:1095" ph="INSERT INTO USER... " />
+                <marker date="1502650039283" expanded="true" signature="1155:1189" ph="DELETE FROM " />
+                <marker date="1502650039283" expanded="true" signature="1245:1502" ph="SELECT libra... user" />
+                <marker date="1502650039283" expanded="true" signature="1570:1881" ph="SELECT libra... user" />
+                <marker date="1502650039283" expanded="true" signature="1570:1882" ph="SELECT user.... library_card" />
+                <marker date="1502650039283" expanded="true" signature="1945:2273" ph="SELECT libra... user" />
+                <marker date="1502650039283" expanded="true" signature="1945:2274" ph="SELECT user.... library_card" />
+                <marker date="1502650039283" expanded="true" signature="2336:2374" ph="SELECT login... user" />
+                <marker date="1502650039283" expanded="true" signature="2433:2478" ph="UPDATE user " />
+                <marker date="1502650039283" expanded="true" signature="2533:2578" ph="UPDATE user " />
+                <marker date="1502650039283" expanded="true" signature="2633:2675" ph="SELECT block... user" />
+                <marker date="1502650039283" expanded="true" signature="2735:3006" ph="Select libra... USER" />
+                <marker date="1502650039283" expanded="true" signature="3070:3361" ph="Select libra... USER" />
+                <marker date="1502650039283" expanded="true" signature="3424:3666" ph="Select order... orders" />
+                <marker date="1502650039283" expanded="true" signature="3724:3861" ph="UPDATE user " />
+                <marker date="1502650039283" expanded="true" signature="3916:3964" ph="SELECT login... user" />
+                <marker date="1502650039283" expanded="true" signature="4023:4079" ph="UPDATE user " />
+                <marker date="1502650039283" expanded="true" signature="4135:4188" ph="UPDATE user " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UnblockUserCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/UnblockUserCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="175">
+              <caret line="13" column="11" lean-forward="false" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#420#421#0" expanded="true" />
+                <element signature="e#451#452#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -317,11 +343,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/user/add_online_order.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Location.java" />
-        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_info.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/user/ToCancelOnlineOrderCommand.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/user/ToOnlineOrdersPageCommand.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/user/authorized_user.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/controller/Controller.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/content/RequestContent.java" />
@@ -343,7 +364,6 @@
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/librarian/execute_online_order_status.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AbstractCommand.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/main.jsp" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/registration.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AddUserCommand.java" />
@@ -359,15 +379,21 @@
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/userinfo.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/GetNotBlockedUsersCommand.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_user.jsp" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAOImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java" />
         <option value="$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_status.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockSuccessPage.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/ToBlockStatusPage.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/resource/config.properties" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/BlockUserCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/GetBlockedUsersCommand.java" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_user.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/UnblockUserCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAOImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_status.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/UnblockStatusPage.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/resource/config.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AbstractCommand.java" />
       </list>
     </option>
   </component>
@@ -1848,7 +1874,7 @@
       <workItem from="1501514917739" duration="115941000" />
       <workItem from="1502115788495" duration="96232000" />
       <workItem from="1502377998953" duration="26687000" />
-      <workItem from="1502464639310" duration="58448000" />
+      <workItem from="1502464639310" duration="60744000" />
     </task>
     <task id="LOCAL-00001" summary="21.07. log4j, changes to connection pool, commands">
       <created>1500669292977</created>
@@ -1990,11 +2016,18 @@
       <option name="project" value="LOCAL" />
       <updated>1502646098151</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="block user command fixed">
+      <created>1502648075126</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1502648075126</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="595894000" />
+    <option name="totallyTimeSpent" value="598190000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -2073,32 +2106,27 @@
     <MESSAGE value="get all users command fixed" />
     <MESSAGE value="remove user fixed" />
     <MESSAGE value="find user by library card/surname fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="find user by library card/surname fixed" />
+    <MESSAGE value="block user command fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="block user command fixed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/GetBlockedUsersCommand.java</url>
-          <line>19</line>
-          <properties />
-          <option name="timeStamp" value="81" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAOImpl.java</url>
-          <line>447</line>
+          <line>456</line>
           <properties />
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAOImpl.java</url>
-          <line>463</line>
+          <line>472</line>
           <properties />
           <option name="timeStamp" value="92" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java</url>
-          <line>245</line>
+          <line>244</line>
           <properties />
           <option name="timeStamp" value="93" />
         </line-breakpoint>
@@ -2149,58 +2177,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="62" column="1" lean-forward="false" selection-start-line="62" selection-start-column="1" selection-end-line="62" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/librarian/ToExecuteOnlineOrderStatusPageCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="56" lean-forward="false" selection-start-line="16" selection-start-column="56" selection-end-line="16" selection-end-column="95" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#429#430#0" expanded="false" />
-            <element signature="e#460#461#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/book_return_status.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="39" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/find_users_online_orders.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="19" column="21" lean-forward="false" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/librarian.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="45" column="55" lean-forward="false" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/execute_online_order.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/librarian/execute_online_order_status.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -2491,14 +2467,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/admin.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="27" column="66" lean-forward="false" selection-start-line="27" selection-start-column="65" selection-end-line="27" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/GetNotBlockedUsersCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -2506,42 +2474,6 @@
           <folding>
             <element signature="e#400#401#0" expanded="true" />
             <element signature="e#431#432#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="22" column="36" lean-forward="false" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAOImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="287" column="23" lean-forward="false" selection-start-line="287" selection-start-column="23" selection-end-line="287" selection-end-column="23" />
-          <folding>
-            <marker date="1502647425930" expanded="true" signature="485:780" ph="SELECT libra... user" />
-            <marker date="1502647425930" expanded="true" signature="834:944" ph="INSERT INTO USER... " />
-            <marker date="1502647425930" expanded="true" signature="1006:1095" ph="INSERT INTO USER... " />
-            <marker date="1502647425930" expanded="true" signature="1155:1189" ph="DELETE FROM " />
-            <marker date="1502647425930" expanded="true" signature="1245:1502" ph="SELECT libra... user" />
-            <marker date="1502647425930" expanded="true" signature="1570:1881" ph="SELECT libra... user" />
-            <marker date="1502647425930" expanded="true" signature="1570:1882" ph="SELECT user.... library_card" />
-            <marker date="1502647425930" expanded="true" signature="1945:2273" ph="SELECT libra... user" />
-            <marker date="1502647425930" expanded="true" signature="1945:2274" ph="SELECT user.... library_card" />
-            <marker date="1502647425930" expanded="true" signature="2336:2374" ph="SELECT login... user" />
-            <marker date="1502647425930" expanded="true" signature="2433:2478" ph="UPDATE user " />
-            <marker date="1502647425930" expanded="true" signature="2541:2591" ph="UPDATE user " />
-            <marker date="1502647425930" expanded="true" signature="2769:3040" ph="Select libra... USER" />
-            <marker date="1502647425930" expanded="true" signature="3104:3395" ph="Select libra... USER" />
-            <marker date="1502647425930" expanded="true" signature="3458:3700" ph="Select order... orders" />
-            <marker date="1502647425930" expanded="true" signature="3758:3895" ph="UPDATE user " />
-            <marker date="1502647425930" expanded="true" signature="3950:3998" ph="SELECT login... user" />
-            <marker date="1502647425930" expanded="true" signature="4057:4113" ph="UPDATE user " />
-            <marker date="1502647425930" expanded="true" signature="4169:4222" ph="UPDATE user " />
           </folding>
         </state>
       </provider>
@@ -2558,40 +2490,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
           <caret line="26" column="7" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="26" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_status.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="24" column="44" lean-forward="false" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="164" column="21" lean-forward="false" selection-start-line="164" selection-start-column="21" selection-end-line="164" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AbstractCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="47" column="57" lean-forward="false" selection-start-line="47" selection-start-column="57" selection-end-line="47" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/resource/config.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="18" column="56" lean-forward="false" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="56" />
           <folding />
         </state>
       </provider>
@@ -2665,10 +2563,149 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/admin.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="16" column="31" lean-forward="true" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/GetBlockedUsersCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="20" column="48" lean-forward="true" selection-start-line="20" selection-start-column="48" selection-end-line="20" selection-end-column="48" />
+          <folding>
+            <element signature="e#394#395#0" expanded="true" />
+            <element signature="e#425#426#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_user.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="36" column="62" lean-forward="false" selection-start-line="36" selection-start-column="62" selection-end-line="36" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="26" column="55" lean-forward="false" selection-start-line="26" selection-start-column="55" selection-end-line="26" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/UserDAOImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="318" column="25" lean-forward="false" selection-start-line="318" selection-start-column="25" selection-end-line="318" selection-end-column="25" />
+          <folding>
+            <marker date="1502650039283" expanded="true" signature="485:780" ph="SELECT libra... user" />
+            <marker date="1502650039283" expanded="true" signature="834:944" ph="INSERT INTO USER... " />
+            <marker date="1502650039283" expanded="true" signature="1006:1095" ph="INSERT INTO USER... " />
+            <marker date="1502650039283" expanded="true" signature="1155:1189" ph="DELETE FROM " />
+            <marker date="1502650039283" expanded="true" signature="1245:1502" ph="SELECT libra... user" />
+            <marker date="1502650039283" expanded="true" signature="1570:1881" ph="SELECT libra... user" />
+            <marker date="1502650039283" expanded="true" signature="1570:1882" ph="SELECT user.... library_card" />
+            <marker date="1502650039283" expanded="true" signature="1945:2273" ph="SELECT libra... user" />
+            <marker date="1502650039283" expanded="true" signature="1945:2274" ph="SELECT user.... library_card" />
+            <marker date="1502650039283" expanded="true" signature="2336:2374" ph="SELECT login... user" />
+            <marker date="1502650039283" expanded="true" signature="2433:2478" ph="UPDATE user " />
+            <marker date="1502650039283" expanded="true" signature="2533:2578" ph="UPDATE user " />
+            <marker date="1502650039283" expanded="true" signature="2633:2675" ph="SELECT block... user" />
+            <marker date="1502650039283" expanded="true" signature="2735:3006" ph="Select libra... USER" />
+            <marker date="1502650039283" expanded="true" signature="3070:3361" ph="Select libra... USER" />
+            <marker date="1502650039283" expanded="true" signature="3424:3666" ph="Select order... orders" />
+            <marker date="1502650039283" expanded="true" signature="3724:3861" ph="UPDATE user " />
+            <marker date="1502650039283" expanded="true" signature="3916:3964" ph="SELECT login... user" />
+            <marker date="1502650039283" expanded="true" signature="4023:4079" ph="UPDATE user " />
+            <marker date="1502650039283" expanded="true" signature="4135:4188" ph="UPDATE user " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/block_status.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="24" column="44" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/UserReceiverImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="184" column="77" lean-forward="false" selection-start-line="184" selection-start-column="62" selection-end-line="184" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/unblock_status.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="52" lean-forward="false" selection-start-line="20" selection-start-column="52" selection-end-line="20" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/UnblockUserCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="13" column="11" lean-forward="false" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#420#421#0" expanded="true" />
+            <element signature="e#451#452#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/manager/ConfigurationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding>
+            <element signature="e#443#444#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/navigation/admin/UnblockStatusPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="17" column="65" lean-forward="false" selection-start-line="17" selection-start-column="65" selection-end-line="17" selection-end-column="65" />
+          <folding>
+            <element signature="e#385#386#0" expanded="true" />
+            <element signature="e#416#417#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/resource/config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="22" column="16" lean-forward="true" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/AbstractCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-913">
+          <caret line="13" column="41" lean-forward="true" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/command/CommandType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="105" column="25" lean-forward="true" selection-start-line="105" selection-start-column="25" selection-end-line="105" selection-end-column="25" />
+        <state relative-caret-position="-480">
+          <caret line="116" column="40" lean-forward="false" selection-start-line="116" selection-start-column="40" selection-end-line="116" selection-end-column="40" />
           <folding />
         </state>
       </provider>
