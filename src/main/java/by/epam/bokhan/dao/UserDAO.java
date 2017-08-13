@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by vbokh on 25.07.2017.
  */
 public interface UserDAO {
-    boolean addUser(String name, String surname, String patronymic, String address, int roleId, String login, String password, String mobilephone) throws DAOException;
+    boolean addUser(User user, int roleId) throws DAOException;
 
     boolean removeUserByLibraryCard(int id) throws DAOException;
 

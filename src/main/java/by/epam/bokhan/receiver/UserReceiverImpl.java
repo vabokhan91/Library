@@ -21,13 +21,14 @@ public class UserReceiverImpl implements UserReceiver {
     private final String USER = "user";
     private final String INVALIDATE = "invalidate";
     private final boolean TRUE = true;
-    private final String USER_NAME = "username";
-    private final String USER_SURNAME = "usersurname";
-    private final String USER_PATRONYMIC = "userpatronymic";
-    private final String USER_ADDRESS = "useraddress";
+    private final String USER_NAME = "user_name";
+    private final String USER_SURNAME = "user_surname";
+    private final String USER_PATRONYMIC = "user_patronymic";
+    private final String USER_ADDRESS = "user_address";
     private final String USER_ROLE = "user_role";
-    private final String USER_PASSWORD = "userpassword";
-    private final String USER_MOBILE_PHONE = "usermobilephone";
+    private final String USER_PASSWORD = "user_password";
+    private final String CONFIRM_PASSWORD = "confirm_password";
+    private final String USER_MOBILE_PHONE = "user_mobilephone";
     private final String USER_IS_ADDED = "userIsAdded";
     private final String TYPE_OF_SEARCH = "type_of_search";
     private final String BY_LIBRARY_CARD = "by_library_card";
@@ -84,17 +85,29 @@ public class UserReceiverImpl implements UserReceiver {
         int role = Integer.parseInt((String) requestContent.getRequestParameters().get(USER_ROLE));
         String login = (String) requestContent.getRequestParameters().get(LOGIN);
         String password = (String) requestContent.getRequestParameters().get(USER_PASSWORD);
-        String hashedPassword = null;
-        if (password != null) {
-            hashedPassword = DigestUtils.md5Hex(password);
-        }
-        String phone = (String) requestContent.getRequestParameters().get(USER_MOBILE_PHONE);
+        String confirmPassword = (String) requestContent.getRequestParameters().get(CONFIRM_PASSWORD);
         try {
-            isUserAdded = userDAO.addUser(name, surname, patronymic, address, role, login, hashedPassword, phone);
-            requestContent.insertParameter(USER_IS_ADDED, isUserAdded);
+            if (password.equals(confirmPassword)) {
+                String hashedPassword = null;
+                if (password != null) {
+                    hashedPassword = DigestUtils.md5Hex(password);
+                }
+                String phone = (String) requestContent.getRequestParameters().get(USER_MOBILE_PHONE);
+                User user = new User();
+                user.setName(name);
+                user.setSurname(surname);
+                user.setPatronymic(patronymic);
+                user.setAddress(address);
+                user.setLogin(login);
+                user.setPassword(hashedPassword);
+                user.setMobilePhone(phone);
+
+                isUserAdded = userDAO.addUser(user, role);
+            }
+            requestContent.insertAttribute(USER_IS_ADDED, isUserAdded);
         } catch (DAOException e) {
             requestContent.insertParameter(USER_IS_ADDED, isUserAdded);
-            throw new ReceiverException(String.format("Can not add user. Reason : %s", e.getMessage()), e);
+            throw new ReceiverException(e);
         }
 
 

@@ -17,6 +17,7 @@ public class User {
     private String mobilePhone;
     private boolean isBlocked;
     private ArrayList<Order> orders = new ArrayList<>();
+    private int libraryCardNumber;
 
     public User() {
     }
@@ -109,6 +110,14 @@ public class User {
 
     public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
+    }
+
+    public int getLibraryCardNumber() {
+        return libraryCardNumber;
+    }
+
+    public void setLibraryCardNumber(int libraryCardNumber) {
+        this.libraryCardNumber = libraryCardNumber;
     }
 
     @Override

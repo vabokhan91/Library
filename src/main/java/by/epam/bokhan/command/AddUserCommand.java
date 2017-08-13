@@ -1,7 +1,6 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
@@ -19,13 +18,8 @@ public class AddUserCommand extends AbstractCommand {
 
 
             super.execute(content);
-            String page;
-            if ((Boolean) content.getRequestParameters().get(USER_IS_ADDED)) {
-                page = TO_USER_ADDED_PAGE_COMMAND;
-            }
-            else {
-                page = TO_USER_NOT_ADDED_PAGE_COMMAND;
-            }
+            String page = "/controller?command=to_add_user_page";
+
             content.insertParameter(PAGE, page);
             content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
 
