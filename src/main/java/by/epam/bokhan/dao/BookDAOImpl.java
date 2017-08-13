@@ -84,17 +84,18 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_BOOK_AUTHOR = "INSERT INTO book_author (book_id,author_id) VALUES (?,?)";
     private static final String SQL_IS_BOOK_IN_STORAGE = "SELECT * from book where book.id = ? and book.location = 'storage'";
     private static final String SQL_DELETE_BOOK = "DELETE FROM book where book.id = ?";
-    private static final String SQL_ADD_ORDER_ON_READING_ROOM = "INSERT INTO ORDERS (orders.user_id, orders.book_id, orders.order_date, orders.expiration_date, orders.return_date, orders.librarian_id) VALUES (?,?,now(),addtime(now(), '1 0:0:0.0'), null,?)";
-    private static final String SQL_ADD_ORDER_ON_SUBSCRIPTION = "INSERT INTO ORDERS (orders.user_id, orders.book_id, orders.order_date, orders.expiration_date, orders.return_date, orders.librarian_id) VALUES (?,?,now(),addtime(now(), '30 0:0:0.0'), null,?)";
+    private static final String SQL_ADD_ORDER_ON_READING_ROOM = "INSERT INTO ORDERS (orders.library_card_id, orders.book_id, orders.order_date, orders.expiration_date, orders.return_date, orders.librarian_id) VALUES (?,?,now(),addtime(now(), '1 0:0:0.0'), null,?)";
+    private static final String SQL_ADD_ORDER_ON_SUBSCRIPTION = "INSERT INTO ORDERS (orders.library_card_id, orders.book_id, orders.order_date, orders.expiration_date, orders.return_date, orders.librarian_id) VALUES (?,?,now(),addtime(now(), '30 0:0:0.0'), null,?)";
     private static final String SQL_BOOK_LOCATION_SUBSCRIPTION = "Update book set location = 'subscription' where book.id = ?";
     private static final String SQL_BOOK_LOCATION_READING_ROOM = "Update book set location = 'reading_room' where book.id = ?";
     private static final String SQL_BOOK_LOCATION_STORAGE = "Update book set location = 'storage' where book.id = ?";
     private static final String SQL_BOOK_LOCATION_ONLINE_ORDER = "Update book set location = 'online_order' where book.id = ?";
-    private static final String SQL_GET_USER_ORDERS = "Select orders.id, book.id, book.title, book.isbn, user.library_card, user.name, user.surname, user.patronymic, user.mobile_phone, orders.order_date, orders.expiration_date, orders.return_date from orders \n" +
-            "right join user\n" +
-            "on orders.user_id = user.library_card\n" +
+    private static final String SQL_GET_USER_ORDERS = "Select orders.id, book.id, book.title, book.isbn, user.id,library_card.id, user.name, user.surname, user.patronymic, library_card.mobile_phone, orders.order_date, orders.expiration_date, orders.return_date \n" +
+            "from orders \n" +
+            "right join library_card on orders.library_card_id = library_card.id\n" +
+            "left join user on user.id = library_card.user_id\n" +
             "left join book on book.id = orders.book_id\n" +
-            "where user.library_card = ?";
+            "where library_card.id = ?";
     private static final String SQL_RETURN_BOOK = "UPDATE orders set orders.return_date = now() where orders.id = ?";
     private static final String SQL_ADD_ONLINE_ORDER = "INSERT INTO online_orders (online_orders.user_id, online_orders.book_id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date, online_orders.order_status) \n" +
             "VALUES (?,?,now(),addtime(now(), '3 0:0:0.0'), null,'booked')";
@@ -918,6 +919,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
+            closeStatement(isBookInStorage);
             closeStatement(st);
             closeConnection(connection);
         }
@@ -986,12 +988,14 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 int orderId = Integer.parseInt(rs.getString("orders.id"));
                 order.setId(orderId);
                 User user = new User();
-                int userLibraryCard = Integer.parseInt(rs.getString("user.library_card"));
+                int userId = Integer.parseInt(rs.getString(USER_ID));
+                int userLibraryCard = Integer.parseInt(rs.getString(LIBRARY_CARD));
                 String userName = rs.getString("user.name");
                 String userSurname = rs.getString("user.surname");
                 String userPatronymic = rs.getString("user.patronymic");
-                String userMobilePhone = rs.getString("user.mobile_phone");
-                user.setId(userLibraryCard);
+                String userMobilePhone = rs.getString(MOBILE_PHONE);
+                user.setId(userId);
+                user.setLibraryCardNumber(userLibraryCard);
                 user.setName(userName);
                 user.setSurname(userSurname);
                 user.setPatronymic(userPatronymic);

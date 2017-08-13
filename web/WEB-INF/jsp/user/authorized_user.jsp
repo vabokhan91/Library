@@ -19,7 +19,7 @@
 
 <form method="post" action="/controller">
     <input type="hidden" name="command" value="get_user_orders">
-    <input type="hidden" name="library_card" value="${sessionScope.user.id}">
+    <input type="hidden" name="library_card" value="${sessionScope.user.libraryCardNumber}">
 
     <input type="submit" value="<fmt:message key="label.order.watch_orders" bundle="${messages}"/> ">
 </form>

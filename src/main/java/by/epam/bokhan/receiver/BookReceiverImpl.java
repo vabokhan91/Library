@@ -350,8 +350,7 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         List<Order> userOrders;
         try {
-            int libraryCard;
-            libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
             userOrders = bookDAO.getUserOrders(libraryCard);
 
             requestContent.insertAttribute("userOrders", userOrders);

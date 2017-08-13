@@ -11,8 +11,7 @@
 <head>
     <title>User orders</title>
 
-
-        <fmt:message key="label.library_card" bundle="${messages}"/> : ${userOrders.get(0).user.id}<br/>
+        <fmt:message key="label.library_card" bundle="${messages}"/> : ${userOrders.get(0).user.libraryCardNumber}<br/>
 
         <fmt:message key="label.name" bundle="${messages}"/> : ${userOrders.get(0).user.name}<br/>
 

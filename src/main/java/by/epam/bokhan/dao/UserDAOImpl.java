@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOImpl extends AbstractDAO implements UserDAO {
-    private static final String SQL_SELECT_USER_BY_LOGIN = "SELECT user.id, user.name, surname, patronymic, address, role.name, login, password,address, mobile_phone, blocked  \n" +
+    private static final String SQL_SELECT_USER_BY_LOGIN = "SELECT user.id,library_card.id, user.name, surname, patronymic, address, role.name, login, password,address, mobile_phone, blocked  \n" +
             "from user left join role on user.role_id = role.id \n" +
             "left join library_card on user.id = library_card.user_id\n" +
             "where login = ?";
@@ -100,6 +100,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 user.setRole(userRole);
                 user.setMobilePhone(rs.getString(MOBILE_PHONE));
                 user.setBlocked(rs.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
 
             }
             return user;
