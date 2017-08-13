@@ -5,21 +5,15 @@
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <fmt:setBundle basename="resource.config" var="config"/>
-<%--<script>
-    function checkPass(e) {
-        if (document.getElementById('userpassword').value !== document.getElementById('userpassword2').value) {
-            alert('Passwords do not match');
-            e.preventDefault();
-            return false;
-        } else return true;
-    }
 
-</script>--%>
 <html>
 <head>
     <title>Registration</title>
 </head>
 <body>
+
+
+
 
 <form method="post" action="/controller" accept-charset="UTF-8">
     <input type="hidden" name="command" value="register" />
@@ -40,10 +34,10 @@
     <input type = "text" name = "login" value="" pattern="[^\W]{1,12}" required/><br/>
 
     <fmt:message key="label.password" bundle="${messages}"/> :
-    <input type = "password" name = "userpassword" value="" pattern="[\w!()*&^%$@]{1,12}" required/><br/>
+    <input type = "password" name="user_password" placeholder="Password" id="password"  value="" pattern="[\w!()*&^%$@]{1,12}" required/><br/>
 
-    <fmt:message key="label.password" bundle="${messages}"/> :
-    <input type = "password" name = "userpassword2" value="" pattern="[\w!()*&^%$@]{1,12}" required/><br/>
+    <fmt:message key="label.confirm_password" bundle="${messages}"/> :
+    <input type = "password" name = "confirm_password" placeholder="Confirm Password" id="confirm_password" value="" pattern="[\w!()*&^%$@]{1,12}" required/><br/>
 
     <fmt:message key="label.mobile_phone" bundle="${messages}"/> :
     <input type = "text" name = "usermobilephone" value="" pattern="^((\+)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$"/><br/>
@@ -51,5 +45,23 @@
     <input type="submit" name="submit" value=<fmt:message key="label.add_user" bundle="${messages}"/> />
 </form>
 
+
+
+<script>
+    var password = document.getElementById("password")
+        , confirm_password = document.getElementById("confirm_password");
+
+    function validatePassword(){
+        debugger
+        if(password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Passwords Don't Match");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+</script>
 </body>
 </html>

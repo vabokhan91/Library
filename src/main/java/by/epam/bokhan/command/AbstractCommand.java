@@ -1,7 +1,6 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;

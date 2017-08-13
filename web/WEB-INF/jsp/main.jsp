@@ -35,8 +35,10 @@
             <input type="submit" name="submit" value=<fmt:message key="label.button.login" bundle="${messages}"/> />
         </form>
         <br />
-
-        <a href="/controller?command=to_Registration_Page" bundle="${config}"/><fmt:message key="label.registration" bundle="${messages}"/> </a>
+        <form action="/controller">
+            <input type = "hidden" name = "command" value = "to_registration_page"/>
+            <input type="submit" name="submit" value=<fmt:message key="label.registration" bundle="${messages}"/> />
+        </form>
     </c:when>
     <c:otherwise>
         <ctg:welcome-tag/>

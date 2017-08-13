@@ -358,6 +358,22 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).cancelOnlineOrder(content);
         }
+    },TO_FIND_USER_ONLINE_ORDERS(new ToFindUserOnlineOrdersCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },TO_EXECUTE_ONLINE_ORDER_PAGE(new ToExecuteOnlineOrderPage(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getExplicitBookInfo(content);
+        }
+    },EXECUTE_ONLINE_ORDER(new ExecuteOnlineOrderCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).executeOnlineOrder(content);
+        }
+    },TO_EXECUTE_ONLINE_ORDER_STATUS_PAGE(new ToExecuteOnlineOrderStatusPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
     };
 
 

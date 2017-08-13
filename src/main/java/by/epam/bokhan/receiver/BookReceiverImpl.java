@@ -393,7 +393,7 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         List<Order> userOrders;
         try {
-            int userId = ((User) requestContent.getSessionAttributes().get("user")).getId();
+            int userId = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
             userOrders = bookDAO.getUserOnlineOrders(userId);
 
             requestContent.insertParameter("userOrders", userOrders);
@@ -414,6 +414,29 @@ public class BookReceiverImpl implements BookReceiver {
                 isOnlineOrderCancelled = bookDAO.cancelOnlineOrder(orderId, bookId);
             }
             requestContent.insertAttribute("isOnlineOrderCancelled", isOnlineOrderCancelled);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+
+    @Override
+    public void executeOnlineOrder(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        boolean isOnlineOrderExecuted = false;
+        try {
+            int onlineOrderId = Integer.parseInt((String) requestContent.getRequestParameters().get("online_order_id"));
+
+            String orderStatus = bookDAO.onlineOrderStatus(onlineOrderId).getStatus();
+            if (orderStatus.equals("booked")) {
+                int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
+                int userId = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
+                int librarianId = Integer.parseInt((String) requestContent.getRequestParameters().get("librarian_id"));
+                String typeOfOrder = (String) requestContent.getRequestParameters().get("type_of_order");
+                isOnlineOrderExecuted = bookDAO.executeOnlineOrder(onlineOrderId,typeOfOrder, bookId, userId, librarianId);
+
+            }
+            requestContent.insertAttribute("isOnlineOrderExecuted", isOnlineOrderExecuted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }

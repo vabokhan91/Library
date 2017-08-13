@@ -4,7 +4,7 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=1}">
+<c:if test="${user.role.ordinal()!=1 && user.role.ordinal()!=2}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -39,6 +39,35 @@
                 <td>${item.orderDate}</td>
                 <td>${item.expirationDate}</td>
                 <td>${item.status}</td>
+
+                <c:if test="${user.role.ordinal()==2 && item.status eq 'booked'}">
+                    <td>
+                        <form method="post" action="/controller" accept-charset="UTF-8">
+                            <input type="hidden" name="command" value="to_execute_online_order_page"/>
+                            <input type="hidden" name="online_order_id" value="${item.id}"/>
+                            <input type="hidden" name="type_of_search" value="by_id">
+                            <input type="hidden" name="book_id" value="${item.book.id}"/>
+                            <input type="hidden" name="user_id" value="${item.user.id}"/>
+                            <input type="submit" name="submit" value=<fmt:message key="label.button.book.execute_online_order"
+                                                                                  bundle="${messages}"/>/>
+                        </form>
+                    </td>
+                </c:if>
+
+
+                <%--<c:if test="${item.getLocation().getName() eq 'storage'}">
+                    <td>
+                        <form method="post" action="/controller" accept-charset="UTF-8">
+                            <input type="hidden" name="command" value="to_add_order_page"/>
+                            <input type="hidden" name="book_id" value="${item.id}"/>
+                            <input type="hidden" name="type_of_search" value="by_id">
+                            <input type="submit" name="submit" value=<fmt:message key="label.button.book.add_order"
+                                                                                  bundle="${messages}"/>/>
+                        </form>
+                    </td>
+                </c:if>--%>
+
+
 
                 <c:if test="${empty item.returnDate}">
                     <td>

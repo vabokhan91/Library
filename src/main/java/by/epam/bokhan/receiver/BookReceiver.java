@@ -56,4 +56,8 @@ public interface BookReceiver extends Receiver {
     void getUserOnlineOrders(RequestContent requestContent) throws ReceiverException;
 
     void cancelOnlineOrder(RequestContent requestContent) throws ReceiverException;
+
+    void executeOnlineOrder(RequestContent requestContent) throws ReceiverException;
+
+//    void getOnlineOrderInfo(RequestContent requestContent) throws ReceiverException;
 }

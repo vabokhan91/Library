@@ -43,5 +43,7 @@
 
 <a href="/controller?command=to_find_user_orders_page" ><fmt:message key="label.button.book.return_book" bundle="${messages}"/> </a><br/>
 
+<a href="/controller?command=to_find_user_online_orders" ><fmt:message key="label.order.execute_online_order" bundle="${messages}"/> </a><br/>
+
 </body>
 </html>

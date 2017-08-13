@@ -82,7 +82,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_BOOK_AUTHOR = "INSERT INTO book_author (book_id,author_id) VALUES (?,?)";
     private static final String SQL_IS_BOOK_IN_STORAGE = "SELECT * from book where book.id = ? and book.location = 'storage'";
     private static final String SQL_DELETE_BOOK = "DELETE FROM book where book.id = ?";
-    private static final String SQL_ADD_ORDER = "INSERT INTO ORDERS (orders.user_id, orders.book_id, orders.order_date, orders.expiration_date, orders.return_date, orders.librarian_id) VALUES (?,?,now(),addtime(now(), '30 0:0:0.0'), null,?)";
+    private static final String SQL_ADD_ORDER_ON_READING_ROOM = "INSERT INTO ORDERS (orders.user_id, orders.book_id, orders.order_date, orders.expiration_date, orders.return_date, orders.librarian_id) VALUES (?,?,now(),addtime(now(), '1 0:0:0.0'), null,?)";
+    private static final String SQL_ADD_ORDER_ON_SUBSCRIPTION = "INSERT INTO ORDERS (orders.user_id, orders.book_id, orders.order_date, orders.expiration_date, orders.return_date, orders.librarian_id) VALUES (?,?,now(),addtime(now(), '30 0:0:0.0'), null,?)";
     private static final String SQL_BOOK_LOCATION_SUBSCRIPTION = "Update book set location = 'subscription' where book.id = ?";
     private static final String SQL_BOOK_LOCATION_READING_ROOM = "Update book set location = 'reading_room' where book.id = ?";
     private static final String SQL_BOOK_LOCATION_STORAGE = "Update book set location = 'storage' where book.id = ?";
@@ -106,6 +107,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "where user.library_card = ?";
     private static final String SQL_CANCEL_ONLINE_ORDER = "Update online_orders set online_orders.order_execution_date = now(), order_status = 'canceled' where online_orders.id = ?";
     private static final String SQL_ONLINE_ORDER_STATUS = "SELECT order_status from online_orders where online_orders.id = ?";
+    private static final String SQL_EXECUTE_ONLINE_ORDER ="Update online_orders SET online_orders.order_execution_date = now(), online_orders.order_status = 'executed' where online_orders.id = ?";
 
 
 
@@ -915,23 +917,24 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         Connection connection = null;
         PreparedStatement addOrderStatement = null;
         PreparedStatement changeBookStatus = null;
-
         try {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
-            addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER);
+
+            if (typeOfOrder.equalsIgnoreCase(Location.SUBSCRIPTION.getName())) {
+                addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_SUBSCRIPTION);
+                changeBookStatus = connection.prepareStatement(SQL_BOOK_LOCATION_SUBSCRIPTION);
+
+            } else if (typeOfOrder.equalsIgnoreCase(Location.READING_ROOM.getName())) {
+                addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_READING_ROOM);
+                changeBookStatus = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
+
+            }
             addOrderStatement.setInt(1, libraryCard);
             addOrderStatement.setInt(2, bookId);
             addOrderStatement.setInt(3, librarianId);
+            changeBookStatus.setInt(1, bookId);
             int resultOrderInsert = addOrderStatement.executeUpdate();
-
-            if (typeOfOrder.equalsIgnoreCase(Location.SUBSCRIPTION.getName())) {
-                changeBookStatus = connection.prepareStatement(SQL_BOOK_LOCATION_SUBSCRIPTION);
-                changeBookStatus.setInt(1, bookId);
-            } else if (typeOfOrder.equalsIgnoreCase(Location.READING_ROOM.getName())) {
-                changeBookStatus = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
-                changeBookStatus.setInt(1, bookId);
-            }
 
             int bookChangeLocationResult = changeBookStatus.executeUpdate();
             if (resultOrderInsert > 0 && bookChangeLocationResult > 0) {
@@ -1205,7 +1208,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     public OnlineOrder onlineOrderStatus(int orderId) throws DAOException {
         OnlineOrder order = new OnlineOrder();
         Connection connection = null;
-        PreparedStatement orderStatusStatement= null;
+        PreparedStatement orderStatusStatement = null;
 
         try {
             connection = ConnectionPool.getInstance().getConnection();
@@ -1220,10 +1223,73 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
             return order;
         } catch (SQLException e) {
-                throw new DAOException(e);
+            throw new DAOException(e);
 
         } finally {
             closeStatement(orderStatusStatement);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean executeOnlineOrder(int onlineOrderId, String typeOfOrder, int bookId, int userId, int librarianId) throws DAOException {
+        boolean isOnlineOrderExecuted = false;
+        Connection connection = null;
+        PreparedStatement executeOnlineOrderStatement = null;
+        PreparedStatement addOrderStatement = null;
+        PreparedStatement changeBookStatus = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            connection.setAutoCommit(false);
+            executeOnlineOrderStatement = connection.prepareStatement(SQL_EXECUTE_ONLINE_ORDER);
+            executeOnlineOrderStatement.setInt(1, onlineOrderId);
+            int executeOnlineOrderResult = executeOnlineOrderStatement.executeUpdate();
+
+
+            if (executeOnlineOrderResult > 0) {
+
+
+
+
+                if (typeOfOrder.equals(Location.SUBSCRIPTION.getName())) {
+                    addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_SUBSCRIPTION);
+                    changeBookStatus = connection.prepareStatement(SQL_BOOK_LOCATION_SUBSCRIPTION);
+
+                } else if (typeOfOrder.equalsIgnoreCase(Location.READING_ROOM.getName())) {
+                    addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_READING_ROOM);
+                    changeBookStatus = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
+
+                }
+                addOrderStatement.setInt(1, userId);
+                addOrderStatement.setInt(2, bookId);
+                addOrderStatement.setInt(3, librarianId);
+                changeBookStatus.setInt(1, bookId);
+
+                int orderResultInsert = addOrderStatement.executeUpdate();
+                int bookChangeLocationResult = changeBookStatus.executeUpdate();
+                if (orderResultInsert > 0 && bookChangeLocationResult > 0) {
+                    isOnlineOrderExecuted = true;
+                    connection.commit();
+                } else {
+                    connection.rollback();
+                }
+            } else {
+                connection.rollback();
+            }
+            return isOnlineOrderExecuted;
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+                throw new DAOException(e);
+            } catch (SQLException e1) {
+                throw new DAOException(e1);
+            }
+
+        } finally {
+
+            closeStatement(executeOnlineOrderStatement);
+            closeStatement(changeBookStatus);
+            closeStatement(addOrderStatement);
             closeConnection(connection);
         }
     }
