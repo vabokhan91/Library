@@ -17,7 +17,7 @@
     <input type="hidden" name="command" value="to_get_online_orders_page">
     <fmt:message key="label.book.enter_users_library_card" bundle="${messages}"/> :
 
-    <input type="text" name="user_id" value="">
+    <input type="text" name="library_card" value="">
     <input type="submit" value="<fmt:message key="label.find" bundle="${messages}"/> ">
 </form>
 

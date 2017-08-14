@@ -15,8 +15,7 @@ public class CancelOnlineOrderCommand extends AbstractCommand {
 
     public void execute(RequestContent content) throws ReceiverException {
         super.execute(content);
-        String page = "/controller?command=to_get_online_orders_page";
-
+        String page = "/controller?command=to_cancel_online_order_status_page";
         content.insertParameter(PAGE, page);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
 

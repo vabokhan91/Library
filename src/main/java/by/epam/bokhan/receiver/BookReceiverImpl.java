@@ -392,8 +392,8 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         List<Order> userOrders;
         try {
-            int userId = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
-            userOrders = bookDAO.getUserOnlineOrders(userId);
+            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            userOrders = bookDAO.getUserOnlineOrders(libraryCard);
 
             requestContent.insertParameter("userOrders", userOrders);
         } catch (DAOException e) {

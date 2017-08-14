@@ -338,6 +338,10 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).cancelOnlineOrder(content);
         }
+    },TO_CANCEL_ONLINE_ORDER_STATUS_PAGE(new ToCancelOnlineOrderStatusCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
     },TO_FIND_USER_ONLINE_ORDERS(new ToFindUserOnlineOrdersCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 

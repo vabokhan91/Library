@@ -8,6 +8,7 @@
 
 <html>
 <head>
+
     <title>Registration</title>
 </head>
 <body>
@@ -46,7 +47,6 @@
 </form>
 
 
-
 <script>
     var password = document.getElementById("password")
         , confirm_password = document.getElementById("confirm_password");
@@ -63,5 +63,6 @@
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
 </script>
+
 </body>
 </html>

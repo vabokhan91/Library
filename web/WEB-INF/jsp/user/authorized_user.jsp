@@ -39,7 +39,7 @@
 
 <form method="post" action="/controller">
     <input type="hidden" name="command" value="to_get_online_orders_page">
-    <input type="hidden" name="user_id" value="${sessionScope.user.id}">
+    <input type="hidden" name="library_card" value="${sessionScope.user.libraryCardNumber}">
     <input type="submit" value="<fmt:message key="label.book.cancel_online_order" bundle="${messages}"/> ">
 </form>
 
