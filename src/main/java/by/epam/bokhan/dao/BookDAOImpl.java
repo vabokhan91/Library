@@ -100,14 +100,15 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_ONLINE_ORDER = "INSERT INTO online_orders (online_orders.library_card_id, online_orders.book_id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date, online_orders.order_status) \n" +
             "VALUES (?,?,now(),addtime(now(), '3 0:0:0.0'), null,'booked')";
 
-    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name,authors.surname, authors.patronymic, user.library_card, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
-            "from online_orders \n" +
+    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name,authors.surname, authors.patronymic, user.id,library_card.id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
+            "from online_orders\n" +
+            "left join library_card on online_orders.library_card_id = library_card.id\n" +
             "right join user\n" +
-            "on online_orders.user_id = user.library_card\n" +
+            "on library_card.user_id = user.id\n" +
             "left join book on book.id = online_orders.book_id\n" +
             "left join (select book_author.book_id as b_id, author.name, author.surname, author.patronymic from author join book_author on book_author.author_id = author.id) as authors\n" +
             "on authors.b_id = online_orders.book_id\n" +
-            "where user.library_card = ?";
+            "where library_card.id = ?";
     private static final String SQL_CANCEL_ONLINE_ORDER = "Update online_orders set online_orders.order_execution_date = now(), order_status = 'canceled' where online_orders.id = ?";
     private static final String SQL_ONLINE_ORDER_STATUS = "SELECT order_status from online_orders where online_orders.id = ?";
     private static final String SQL_EXECUTE_ONLINE_ORDER ="Update online_orders SET online_orders.order_execution_date = now(), online_orders.order_status = 'executed' where online_orders.id = ?";
@@ -1109,17 +1110,16 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public List<Order> getUserOnlineOrders(int userId) throws DAOException {
+    public List<Order> getUserOnlineOrders(int libraryCard) throws DAOException {
         LinkedList<Order> userOrders = new LinkedList<>();
         Connection connection = null;
         PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_GET_USER_ONLINE_ORDERS);
-            st.setInt(1, userId);
+            st.setInt(1, libraryCard);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-
                 Book book = new Book();
                 int ordersId = Integer.parseInt(rs.getString("online_orders.id"));
                 int bookId = Integer.parseInt(rs.getString("book.id"));
@@ -1158,8 +1158,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 order.setBook(book);
                 order.setId(ordersId);
                 User user = new User();
-                int userLibraryCard = Integer.parseInt(rs.getString("user.library_card"));
-                user.setId(userLibraryCard);
+                int userId = Integer.parseInt(rs.getString("user.id"));
+                int userLibraryCard = Integer.parseInt(rs.getString(LIBRARY_CARD));
+                user.setId(userId);
+                user.setLibraryCardNumber(userLibraryCard);
                 order.setUser(user);
                 Timestamp lastOrderTimeStamp = rs.getTimestamp("online_orders.order_date");
                 LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
