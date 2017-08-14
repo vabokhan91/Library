@@ -25,7 +25,7 @@ public abstract class AbstractCommand {
     protected final String ERROR_LOGIN_PASS_MESSAGE = "errorLoginPassMessage";
     protected final String LOGIN_ERROR_MESSAGE = "message.loginerror";
     protected final String INDEX_PAGE = "path.page.index";
-    protected final String SUCCESS_REGISTRATION_PAGE = "path.page.successregistration";
+    protected final String REGISTRATION_RESULT = "path.page.registration_result_page";
     protected final String USER_INSERT_STATUS = "user_insert_status";
     protected final String MESSAGE_ADD_USER_TRUE = "message.add_user_true";
     protected final String MESSAGE_ADD_USER_FALSE = "message.add_user_false";

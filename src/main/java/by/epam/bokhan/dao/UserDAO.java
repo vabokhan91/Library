@@ -12,6 +12,8 @@ import java.util.List;
 public interface UserDAO {
     boolean addUser(User user, int roleId) throws DAOException;
 
+    boolean registerUser(User user) throws DAOException;
+
     boolean removeUserById(int id) throws DAOException;
 
     List<User> findUserByLibraryCard(int libraryCard) throws DAOException ;

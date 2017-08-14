@@ -81,6 +81,31 @@ public class UserReceiverImpl implements UserReceiver {
         content.insertParameter(INVALIDATE, TRUE);
     }
 
+    @Override
+    public void registerUser(RequestContent requestContent) throws ReceiverException {
+        UserDAO userDAO = new UserDAOImpl();
+        boolean isUserRegistered = false;
+        String name = (String) requestContent.getRequestParameters().get(USER_NAME);
+        String surname = (String) requestContent.getRequestParameters().get(USER_SURNAME);
+        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
+        String login = (String) requestContent.getRequestParameters().get(LOGIN);
+        String password = (String) requestContent.getRequestParameters().get(USER_PASSWORD);
+        String confirmPassword = (String) requestContent.getRequestParameters().get(CONFIRM_PASSWORD);
+        try {
+            User user = userDAO.getExplicitUserInfo(libraryCard);
+            if (name.equalsIgnoreCase(user.getName()) && surname.equalsIgnoreCase(user.getSurname()) && password.equals(confirmPassword)) {
+                String hashedPassword = DigestUtils.md5Hex(password);
+                user.setPassword(hashedPassword);
+                user.setLogin(login);
+                isUserRegistered = userDAO.registerUser(user);
+            }
+            requestContent.insertAttribute("isUserRegistered", isUserRegistered);
+
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
     public void addUser(RequestContent requestContent) throws ReceiverException {
 //        make validation
         UserDAO userDAO = new UserDAOImpl();
@@ -99,17 +124,17 @@ public class UserReceiverImpl implements UserReceiver {
                 if (password != null) {
                     hashedPassword = DigestUtils.md5Hex(password);
                 }*/
-                String phone = (String) requestContent.getRequestParameters().get(USER_MOBILE_PHONE);
-                User user = new User();
-                user.setName(name);
-                user.setSurname(surname);
-                user.setPatronymic(patronymic);
-                user.setAddress(address);
+            String phone = (String) requestContent.getRequestParameters().get(USER_MOBILE_PHONE);
+            User user = new User();
+            user.setName(name);
+            user.setSurname(surname);
+            user.setPatronymic(patronymic);
+            user.setAddress(address);
                 /*user.setLogin(login);
                 user.setPassword(hashedPassword);*/
-                user.setMobilePhone(phone);
+            user.setMobilePhone(phone);
 
-                isUserAdded = userDAO.addUser(user, role);
+            isUserAdded = userDAO.addUser(user, role);
 
             requestContent.insertAttribute(USER_IS_ADDED, isUserAdded);
         } catch (DAOException e) {

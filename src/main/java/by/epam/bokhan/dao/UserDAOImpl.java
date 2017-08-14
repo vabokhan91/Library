@@ -19,6 +19,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "where login = ?";
     private static final String SQL_INSERT_USER = "INSERT INTO USER (user.name ,surname, patronymic,role_id) VALUES " +
             "(?,?,?,?)";
+    private static final String SQL_REGISTER_USER = "UPDATE USER SET user.login = ?, user.password = ? where user.id = ?";
     private static final String SQL_INSERT_LIBRARY_CARD = "INSERT INTO library_card (user_id, address, mobile_phone) VALUES " +
             "(?,?,?)";
     private static final String SQL_REMOVE_USER_BY_ID = "DELETE FROM USER where user.id = ?";
@@ -108,6 +109,30 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             throw new DAOException(e);
         } finally {
             closeStatement(st);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean registerUser(User user) throws DAOException {
+        boolean isUserRegistered = false;
+        Connection connection = null;
+        PreparedStatement registerUserStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            registerUserStatement = connection.prepareStatement(SQL_REGISTER_USER);
+            registerUserStatement.setString(1, user.getLogin());
+            registerUserStatement.setString(2, user.getPassword());
+            registerUserStatement.setInt(3, user.getId());
+            int registerUserResult = registerUserStatement.executeUpdate();
+            if (registerUserResult > 0) {
+                isUserRegistered = true;
+            }
+            return isUserRegistered;
+        } catch (SQLException e) {
+            throw new DAOException(String.format("User was not registered: Reason : %s", e.getMessage()),e);
+        } finally {
+            closeStatement(registerUserStatement);
             closeConnection(connection);
         }
     }

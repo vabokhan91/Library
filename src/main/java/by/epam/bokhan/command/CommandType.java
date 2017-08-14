@@ -6,6 +6,7 @@ import by.epam.bokhan.command.navigation.librarian.*;
 import by.epam.bokhan.command.navigation.user.*;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
+import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.BookReceiverImpl;
 import by.epam.bokhan.receiver.UserReceiverImpl;
 
@@ -48,9 +49,13 @@ public enum CommandType {
         }
     },REGISTER(new RegisterUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((UserReceiverImpl) getCommand().getReceiver()).addUser(content);
+            ((UserReceiverImpl) getCommand().getReceiver()).registerUser(content);
         }
     },TO_REGISTRATION_PAGE(new ToRegistrationPage(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    },TO_REGISTRATION_RESULT(new ToRegistrationResultCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }

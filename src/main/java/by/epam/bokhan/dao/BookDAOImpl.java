@@ -986,8 +986,28 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Order order = new Order();
-                int orderId = Integer.parseInt(rs.getString("orders.id"));
-                order.setId(orderId);
+                Book book = new Book();
+                String orderNumber = rs.getString("orders.id");
+                if (orderNumber != null && !orderNumber.isEmpty()) {
+                    int orderId = Integer.parseInt(orderNumber);
+                    order.setId(orderId);
+                    int bookId = Integer.parseInt(rs.getString("book.id"));
+                    String bookTitle = rs.getString("book.title");
+                    String bookIsbn = rs.getString("book.isbn");
+                    book.setId(bookId);
+                    book.setTitle(bookTitle);
+                    book.setIsbn(bookIsbn);
+                    order.setBook(book);
+                    Timestamp lastOrderTimeStamp = rs.getTimestamp("orders.order_date");
+                    LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
+                    order.setOrderDate(lastOrderDate);
+                    Timestamp expirationDateTimeStamp = rs.getTimestamp("orders.expiration_date");
+                    LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                    order.setExpirationDate(expirationDate);
+                    Timestamp returnDateTimeStamp = rs.getTimestamp("orders.return_date");
+                    LocalDate returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                    order.setReturnDate(returnDate);
+                }
                 User user = new User();
                 int userId = Integer.parseInt(rs.getString(USER_ID));
                 int userLibraryCard = Integer.parseInt(rs.getString(LIBRARY_CARD));
@@ -1002,23 +1022,6 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 user.setPatronymic(userPatronymic);
                 user.setMobilePhone(userMobilePhone);
                 order.setUser(user);
-                Book book = new Book();
-                int bookId = Integer.parseInt(rs.getString("book.id"));
-                String bookTitle = rs.getString("book.title");
-                String bookIsbn = rs.getString("book.isbn");
-                book.setId(bookId);
-                book.setTitle(bookTitle);
-                book.setIsbn(bookIsbn);
-                order.setBook(book);
-                Timestamp lastOrderTimeStamp = rs.getTimestamp("orders.order_date");
-                LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setOrderDate(lastOrderDate);
-                Timestamp expirationDateTimeStamp = rs.getTimestamp("orders.expiration_date");
-                LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setExpirationDate(expirationDate);
-                Timestamp returnDateTimeStamp = rs.getTimestamp("orders.return_date");
-                LocalDate returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setReturnDate(returnDate);
                 userOrders.add(order);
             }
             return userOrders;
