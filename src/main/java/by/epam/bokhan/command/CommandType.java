@@ -6,7 +6,6 @@ import by.epam.bokhan.command.navigation.librarian.*;
 import by.epam.bokhan.command.navigation.user.*;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
-import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.BookReceiverImpl;
 import by.epam.bokhan.receiver.UserReceiverImpl;
 

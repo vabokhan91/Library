@@ -5,9 +5,7 @@ import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.UserReceiverImpl;
 
-/**
- * Created by vbokh on 24.07.2017.
- */
+
 public class UnblockUserPage extends AbstractCommand {
 
     public UnblockUserPage(UserReceiverImpl userReceiver) {

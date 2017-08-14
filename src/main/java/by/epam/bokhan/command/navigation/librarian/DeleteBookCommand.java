@@ -6,23 +6,17 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 06.08.2017.
- */
+
 public class DeleteBookCommand extends AbstractCommand {
+
     public DeleteBookCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException {
-
         super.execute(content);
-
-        String page = "/controller?command=to_book_delete_result_page";
-        content.insertParameter(PAGE, page);
+        content.insertParameter(PAGE, TO_DELETE_BOOK_PAGE_RESULT_COMMAND);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
-
         content.insertParameter(INVALIDATE, false);
-
     }
 }

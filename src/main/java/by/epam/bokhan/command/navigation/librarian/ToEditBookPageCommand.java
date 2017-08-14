@@ -5,9 +5,7 @@ import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 05.08.2017.
- */
+
 public class ToEditBookPageCommand extends AbstractCommand {
 
     public ToEditBookPageCommand(Receiver receiver) {
@@ -15,7 +13,7 @@ public class ToEditBookPageCommand extends AbstractCommand {
     }
 
     public void execute(RequestContent content)  {
-        String page = ConfigurationManager.getProperty("path.page.edit_book");
+        String page = ConfigurationManager.getProperty(EDIT_BOOK_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);
     }

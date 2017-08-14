@@ -8,9 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * Created by vbokh on 13.07.2017.
- */
+
 public abstract class AbstractDAO {
     private static final Logger LOGGER = LogManager.getLogger();
 

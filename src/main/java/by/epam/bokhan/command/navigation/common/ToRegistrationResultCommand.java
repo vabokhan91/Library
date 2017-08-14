@@ -6,9 +6,7 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 14.08.2017.
- */
+
 public class ToRegistrationResultCommand extends AbstractCommand {
     public ToRegistrationResultCommand(Receiver receiver) {
         super(receiver);

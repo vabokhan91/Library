@@ -5,13 +5,8 @@ import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 23.07.2017.
- */
 public class ToUserNotAddedPage extends AbstractCommand {
-
-
-
+//    TODO User add status
     public ToUserNotAddedPage(Receiver receiver) {
         super(receiver);
     }

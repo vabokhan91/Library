@@ -39,7 +39,6 @@ public class RequestContent {
         }
     }
 
-
     public void insertParameter(String key, Object value) {
         requestParameters.put(key, value);
     }
@@ -48,33 +47,16 @@ public class RequestContent {
         sessionAttributes.put(key, attribute);
     }
 
-    public void insertParameterValue(String key, Object attribute) {
-        requestParameterValues.put(key, attribute);
-    }
-
-
     public HashMap<String, Object> getRequestParameters() {
         return requestParameters;
-    }
-
-    public void setRequestParameters(HashMap<String, Object> requestParameters) {
-        this.requestParameters = requestParameters;
     }
 
     public HashMap<String, Object> getSessionAttributes() {
         return sessionAttributes;
     }
 
-    public void setSessionAttributes(HashMap<String, Object> sessionAttributes) {
-        this.sessionAttributes = sessionAttributes;
-    }
-
     public HashMap<String, Object> getRequestParameterValues() {
         return requestParameterValues;
-    }
-
-    public void setRequestParameterValues(HashMap<String, Object> requestParameterValues) {
-        this.requestParameterValues = requestParameterValues;
     }
 }
 

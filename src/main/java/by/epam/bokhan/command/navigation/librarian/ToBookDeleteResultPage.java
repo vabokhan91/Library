@@ -9,12 +9,13 @@ import by.epam.bokhan.receiver.Receiver;
  * Created by vbokh on 06.08.2017.
  */
 public class ToBookDeleteResultPage extends AbstractCommand {
+
     public ToBookDeleteResultPage(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content)  {
-        String page = ConfigurationManager.getProperty("path.page.book.delete_book_result");
+        String page = ConfigurationManager.getProperty(DELETE_BOOK_RESULT_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);
     }

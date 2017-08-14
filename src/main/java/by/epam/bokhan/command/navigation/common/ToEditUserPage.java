@@ -6,12 +6,8 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 30.07.2017.
- */
+
 public class ToEditUserPage extends AbstractCommand {
-
-
 
     public ToEditUserPage(Receiver receiver) {
         super(receiver);

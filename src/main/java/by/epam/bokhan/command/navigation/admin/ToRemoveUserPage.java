@@ -6,9 +6,7 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 23.07.2017.
- */
+
 public class ToRemoveUserPage extends AbstractCommand {
 
     public ToRemoveUserPage(Receiver receiver) {

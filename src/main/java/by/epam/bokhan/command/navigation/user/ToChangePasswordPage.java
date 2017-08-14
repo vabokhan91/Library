@@ -6,17 +6,16 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 10.08.2017.
- */
+
 public class ToChangePasswordPage extends AbstractCommand {
+
     public ToChangePasswordPage(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException {
 
-        String page = ConfigurationManager.getProperty("path.page.user.change_password");
+        String page = ConfigurationManager.getProperty(CHANGE_PASSWORD_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);
 

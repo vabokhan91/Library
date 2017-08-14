@@ -6,23 +6,17 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 10.08.2017.
- */
+
 public class ToDeletePublisherPageCommand extends AbstractCommand {
+
     public ToDeletePublisherPageCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException {
-
         super.execute(content);
-
-        String page = ConfigurationManager.getProperty("path.page.delete_publisher");
-
+        String page = ConfigurationManager.getProperty(DELETE_PUBLISHER_PAGE);
         content.insertParameter(PAGE, page);
-
         content.insertParameter(INVALIDATE, false);
-
     }
 }

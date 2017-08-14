@@ -2,13 +2,10 @@ package by.epam.bokhan.controller;
 
 import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.factory.CommandFactory;
 import by.epam.bokhan.manager.ConfigurationManager;
-import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.pool.ConnectionPool;
-import by.epam.bokhan.receiver.Receiver;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,27 +17,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 
-/**
- * Created by vbokh on 13.07.2017.
- */
+
 @WebServlet({"/controller"})
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final String COMMAND = "command";
-    private final String PAGE = "page";
-    private final String TYPE_OF_TRANSITION = "type_of_transition";
-    private final String REDIRECT = "redirect";
-    private final String INVALIDATE = "invalidate";
-    private final String INDEX_PAGE = "path.page.index";
-    private final String USER = "user";
+    private static final String COMMAND = "command";
+    private static final String PAGE = "page";
+    private static final String TYPE_OF_TRANSITION = "type_of_transition";
+    private static final String REDIRECT = "redirect";
+    private static final String INVALIDATE = "invalidate";
+    private static final String INDEX_PAGE = "path.page.index";
+    private final String ERROR_PAGE_COMMAND = "/controller?command=error_page";
 
     public Controller() {
     }
@@ -62,8 +52,9 @@ public class Controller extends HttpServlet {
             AbstractCommand command = factory.defineCommand(content);
             try {
                 command.execute(content);
-                page = (String) content.getRequestParameters().get(PAGE);
+                getParametersFromContent(request,content);
                 getAttributesFromContent(request, content);
+                page = (String) content.getRequestParameters().get(PAGE);
                 if (page != null) {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
                     String typeOfTransition = (String) request.getAttribute(TYPE_OF_TRANSITION);
@@ -76,32 +67,35 @@ public class Controller extends HttpServlet {
                         response.sendRedirect(page);
                     }
                 } else {
-            page = ConfigurationManager.getProperty(INDEX_PAGE);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-            dispatcher.forward(request, response);
+                    page = ConfigurationManager.getProperty(INDEX_PAGE);
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+                    dispatcher.forward(request, response);
 
-        }}catch (ReceiverException e) {
-                page = "/controller?command=error_page";
+                }
+            } catch (ReceiverException e) {
+                page = ERROR_PAGE_COMMAND;
                 LOGGER.log(Level.ERROR, e.getMessage());
                 response.sendRedirect(page);
             }
 
-    }}
+        }
+    }
 
-    private void getAttributesFromContent(HttpServletRequest request, RequestContent content) {
+    private void getParametersFromContent(HttpServletRequest request, RequestContent content) {
         HashMap<String, Object> s = content.getRequestParameters();
         for (Map.Entry<String, Object> p : s.entrySet()) {
             String first = p.getKey();
             Object second = p.getValue();
             request.setAttribute(first, second);
-
         }
+    }
 
+    private void getAttributesFromContent(HttpServletRequest request, RequestContent content) {
         HashMap<String, Object> attributes = content.getSessionAttributes();
         for (Map.Entry<String, Object> a : attributes.entrySet()) {
             String first = a.getKey();
             Object second = a.getValue();
-            request.getSession().setAttribute(first,second);
+            request.getSession().setAttribute(first, second);
         }
     }
 

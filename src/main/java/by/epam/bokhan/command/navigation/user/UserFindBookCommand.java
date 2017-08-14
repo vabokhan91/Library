@@ -6,21 +6,17 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 11.08.2017.
- */
+
 public class UserFindBookCommand extends AbstractCommand {
+
     public UserFindBookCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException {
-
         super.execute(content);
-
-        String page = ConfigurationManager.getProperty("path.page.book.found_book_for_user");
+        String page = ConfigurationManager.getProperty(FOUND_BOOK_FOR_USER_PAGE);
         content.insertParameter(PAGE, page);
-
         content.insertParameter(INVALIDATE, false);
     }
 }

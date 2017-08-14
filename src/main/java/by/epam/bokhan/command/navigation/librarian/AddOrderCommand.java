@@ -6,23 +6,19 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
 
-/**
- * Created by vbokh on 07.08.2017.
- */
+
 public class AddOrderCommand extends AbstractCommand {
+
+
+
     public AddOrderCommand(Receiver receiver) {
         super(receiver);
     }
 
     public void execute(RequestContent content) throws ReceiverException {
-
         super.execute(content);
-
-        String page = "/controller?command=to_order_status_page";
-
-        content.insertParameter(PAGE, page);
+        content.insertParameter(PAGE, TO_ORDER_STATUS_PAGE_COMMAND);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
-
         content.insertParameter(INVALIDATE, false);
 
     }
