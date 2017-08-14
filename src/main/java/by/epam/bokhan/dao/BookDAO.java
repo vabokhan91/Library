@@ -61,5 +61,5 @@ public interface BookDAO {
 
     OnlineOrder onlineOrderStatus(int orderId) throws DAOException;
 
-    boolean executeOnlineOrder(int onlineOrderId,String typeOfOrder, int bookId, int userId, int librarianId) throws DAOException;
+    boolean executeOnlineOrder(int onlineOrderId,String typeOfOrder, int bookId, int libraryCard, int librarianId) throws DAOException;
 }

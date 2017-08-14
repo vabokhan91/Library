@@ -429,10 +429,10 @@ public class BookReceiverImpl implements BookReceiver {
             String orderStatus = bookDAO.onlineOrderStatus(onlineOrderId).getStatus();
             if (orderStatus.equals("booked")) {
                 int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
-                int userId = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
+                int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
                 int librarianId = Integer.parseInt((String) requestContent.getRequestParameters().get("librarian_id"));
                 String typeOfOrder = (String) requestContent.getRequestParameters().get("type_of_order");
-                isOnlineOrderExecuted = bookDAO.executeOnlineOrder(onlineOrderId,typeOfOrder, bookId, userId, librarianId);
+                isOnlineOrderExecuted = bookDAO.executeOnlineOrder(onlineOrderId,typeOfOrder, bookId, libraryCard, librarianId);
 
             }
             requestContent.insertAttribute("isOnlineOrderExecuted", isOnlineOrderExecuted);

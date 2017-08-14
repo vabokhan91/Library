@@ -1250,7 +1250,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public boolean executeOnlineOrder(int onlineOrderId, String typeOfOrder, int bookId, int userId, int librarianId) throws DAOException {
+    public boolean executeOnlineOrder(int onlineOrderId, String typeOfOrder, int bookId, int libraryCard, int librarianId) throws DAOException {
         boolean isOnlineOrderExecuted = false;
         Connection connection = null;
         PreparedStatement executeOnlineOrderStatement = null;
@@ -1263,11 +1263,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             executeOnlineOrderStatement.setInt(1, onlineOrderId);
             int executeOnlineOrderResult = executeOnlineOrderStatement.executeUpdate();
 
-
             if (executeOnlineOrderResult > 0) {
-
-
-
 
                 if (typeOfOrder.equals(Location.SUBSCRIPTION.getName())) {
                     addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_SUBSCRIPTION);
@@ -1278,7 +1274,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     changeBookStatus = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
 
                 }
-                addOrderStatement.setInt(1, userId);
+                addOrderStatement.setInt(1, libraryCard);
                 addOrderStatement.setInt(2, bookId);
                 addOrderStatement.setInt(3, librarianId);
                 changeBookStatus.setInt(1, bookId);

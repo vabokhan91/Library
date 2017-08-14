@@ -47,7 +47,7 @@
                             <input type="hidden" name="online_order_id" value="${item.id}"/>
                             <input type="hidden" name="type_of_search" value="by_id">
                             <input type="hidden" name="book_id" value="${item.book.id}"/>
-                            <input type="hidden" name="user_id" value="${item.user.id}"/>
+                            <input type="hidden" name="library_card" value="${item.user.libraryCardNumber}"/>
                             <input type="submit" name="submit" value=<fmt:message key="label.button.book.execute_online_order"
                                                                                   bundle="${messages}"/>/>
                         </form>
