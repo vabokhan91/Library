@@ -112,6 +112,16 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_CANCEL_ONLINE_ORDER = "Update online_orders set online_orders.order_execution_date = now(), order_status = 'canceled' where online_orders.id = ?";
     private static final String SQL_ONLINE_ORDER_STATUS = "SELECT order_status from online_orders where online_orders.id = ?";
     private static final String SQL_EXECUTE_ONLINE_ORDER ="Update online_orders SET online_orders.order_execution_date = now(), online_orders.order_status = 'executed' where online_orders.id = ?";
+    private static final String SQL_GET_BOOK_BY_GENRE = "SELECT book.id, book.title,book.pages,book.isbn, book.location, book.description, genres.genre_id, genres.genre_name, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year,publisher.id, publisher.name as publisher\n" +
+            "from book \n" +
+            "left join publisher on book.publisher_id = publisher.id\n" +
+            "left join (select book_author.book_id as b,author.name, author.surname, author.patronymic from book_author left join author on book_author.author_id = author.id) as authors\n" +
+            "on book.id = b\n" +
+            "left join (select book_id,genre.id as genre_id, genre.name as genre_name from book_genre left join genre on book_genre.genre_id = genre.id) as genres \n" +
+            "on book.id = genres.book_id\n" +
+            "where genre_name LIKE ?";
+
+
     private final String ORDER_DATE = "orders.order_date";
     private final String EXPIRATION_DATE = "orders.expiration_date";
     private final String RETURN_DATE = "orders.return_date";
@@ -1307,6 +1317,88 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             closeStatement(executeOnlineOrderStatement);
             closeStatement(changeBookStatus);
             closeStatement(addOrderStatement);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public List<Book> getBooksByGenre(Genre genre) throws DAOException {
+        LinkedList<Book> books = new LinkedList<>();
+        Connection connection = null;
+        PreparedStatement getBooksByGenreStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            getBooksByGenreStatement = connection.prepareStatement(SQL_GET_BOOK_BY_GENRE);
+            getBooksByGenreStatement.setString(1, genre.getName());
+            ResultSet resultSet = getBooksByGenreStatement.executeQuery();
+            while (resultSet.next()) {
+                Book book = new Book();
+
+                int bookId = resultSet.getInt("book.id");
+                int lastId = !books.isEmpty() ? books.getLast().getId() : 0;
+                if (lastId == bookId) {
+                    String g = resultSet.getString("genre_name");
+                    int gId = resultSet.getInt("genres.genre_id");
+                    if (g != null && !g.isEmpty()) {
+                        Genre gen = new Genre();
+                        gen.setId(gId);
+                        gen.setName(g);
+                        if (!books.getLast().getGenre().contains(gen)) {
+                            books.getLast().addGenre(gen);
+                        }
+
+                    }
+                    String authorName = resultSet.getString("author_name");
+                    String authorSurname = resultSet.getString("author_surname");
+                    String authorPatronymic = resultSet.getString("author_patronymic");
+                    Author author = new Author();
+                    author.setName(authorName);
+                    author.setSurname(authorSurname);
+                    author.setPatronymic(authorPatronymic);
+                    Book b = books.getLast();
+                    if (!b.getAuthors().contains(author)) {
+                        b.addAuthor(author);
+                    }
+                    continue;
+                }
+                book.setId(bookId);
+                book.setTitle(resultSet.getString("book.title"));
+                book.setPages(resultSet.getInt("book.pages"));
+                book.setIsbn(resultSet.getString("book.isbn"));
+                book.setYear(resultSet.getInt("book.year"));
+                book.setDescription(new String(resultSet.getBytes("book.description"), StandardCharsets.UTF_8));
+                book.setLocation(Location.valueOf(resultSet.getString("book.location").toUpperCase()));
+                Publisher publisher = new Publisher();
+                Integer publisherId = resultSet.getInt("publisher.id");
+                publisher.setId(publisherId);
+                String publisherName = resultSet.getString("publisher");
+                if (publisherName != null && !publisherName.isEmpty()) {
+                    publisher.setName(publisherName);
+                }
+                book.setPublisher(publisher);
+                String g = resultSet.getString("genre_name");
+                int gId = resultSet.getInt("genres.genre_id");
+                if (g != null && !g.isEmpty()) {
+                    Genre gen = new Genre();
+                    gen.setId(gId);
+                    gen.setName(g);
+                    book.addGenre(gen);
+                }
+                String authorName = resultSet.getString("author_name");
+                String authorSurname = resultSet.getString("author_surname");
+                String authorPatronymic = resultSet.getString("author_patronymic");
+                Author author = new Author();
+                author.setName(authorName);
+                author.setSurname(authorSurname);
+                author.setPatronymic(authorPatronymic);
+                book.addAuthor(author);
+                books.add(book);
+            }
+            return books;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            closeStatement(getBooksByGenreStatement);
             closeConnection(connection);
         }
     }

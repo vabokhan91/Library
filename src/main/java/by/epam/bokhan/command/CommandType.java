@@ -363,6 +363,10 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
+    },FIND_BOOK_BY_GENRE(new FindBookByGenreCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).findBookByGenre(content);
+        }
     };
 
 

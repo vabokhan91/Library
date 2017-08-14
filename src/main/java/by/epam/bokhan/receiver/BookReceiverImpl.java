@@ -8,6 +8,7 @@ import by.epam.bokhan.entity.*;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -120,16 +121,16 @@ public class BookReceiverImpl implements BookReceiver {
             book.setPublisher(publisher);
             String[] genreIdStrings = (String[]) requestContent.getRequestParameterValues().get("book_genre");
             int[] genreId = new int[genreIdStrings.length];
-            for(int i = 0; i < genreIdStrings.length;i++) {
+            for (int i = 0; i < genreIdStrings.length; i++) {
                 genreId[i] = Integer.parseInt(genreIdStrings[i]);
             }
             String[] authorsIds = (String[]) requestContent.getRequestParameterValues().get("book_author");
             int[] authorIds = new int[authorsIds.length];
-            for(int i = 0; i < authorsIds.length;i++) {
+            for (int i = 0; i < authorsIds.length; i++) {
                 authorIds[i] = Integer.parseInt(authorsIds[i]);
             }
 
-            isBookEdited = bookDAO.editBook(book,genreId, authorIds);
+            isBookEdited = bookDAO.editBook(book, genreId, authorIds);
             requestContent.insertAttribute("isBookEdited", isBookEdited);
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -172,7 +173,7 @@ public class BookReceiverImpl implements BookReceiver {
         try {
             String[] publishers = (String[]) requestContent.getRequestParameterValues().get("book_publisher");
             int[] publishersIds = new int[publishers.length];
-            for(int i = 0; i < publishers.length; i++) {
+            for (int i = 0; i < publishers.length; i++) {
                 publishersIds[i] = Integer.parseInt(publishers[i]);
             }
             isPublisherDeleted = bookDAO.deletePublisher(publishersIds);
@@ -215,7 +216,7 @@ public class BookReceiverImpl implements BookReceiver {
         try {
             String[] genres = (String[]) requestContent.getRequestParameterValues().get("book_genre");
             int[] genresId = new int[genres.length];
-            for(int i = 0; i < genres.length; i++) {
+            for (int i = 0; i < genres.length; i++) {
                 genresId[i] = Integer.parseInt(genres[i]);
             }
             isGenreDeleted = bookDAO.deleteGenre(genresId);
@@ -244,7 +245,7 @@ public class BookReceiverImpl implements BookReceiver {
         try {
             String[] authors = (String[]) requestContent.getRequestParameterValues().get("book_author");
             int[] authorsIds = new int[authors.length];
-            for(int i = 0; i < authors.length; i++) {
+            for (int i = 0; i < authors.length; i++) {
                 authorsIds[i] = Integer.parseInt(authors[i]);
             }
             isAuthorDeleted = bookDAO.deleteAuthor(authorsIds);
@@ -290,7 +291,7 @@ public class BookReceiverImpl implements BookReceiver {
                 genreId[i] = id;
             }
 
-            String authorsId[]= (String[]) requestContent.getRequestParameterValues().get("book_author");
+            String authorsId[] = (String[]) requestContent.getRequestParameterValues().get("book_author");
             int[] authorId = new int[authorsId.length];
             for (int i = 0; i < authorId.length; i++) {
                 String stringValue = authorsId[i];
@@ -432,10 +433,26 @@ public class BookReceiverImpl implements BookReceiver {
                 int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
                 int librarianId = Integer.parseInt((String) requestContent.getRequestParameters().get("librarian_id"));
                 String typeOfOrder = (String) requestContent.getRequestParameters().get("type_of_order");
-                isOnlineOrderExecuted = bookDAO.executeOnlineOrder(onlineOrderId,typeOfOrder, bookId, libraryCard, librarianId);
+                isOnlineOrderExecuted = bookDAO.executeOnlineOrder(onlineOrderId, typeOfOrder, bookId, libraryCard, librarianId);
 
             }
             requestContent.insertAttribute("isOnlineOrderExecuted", isOnlineOrderExecuted);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+//    find book part
+
+    @Override
+    public void findBookByGenre(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        List<Book> books;
+        try {
+            String bookGenre = (String) requestContent.getRequestParameters().get("genre_name");
+            Genre genre = new Genre();genre.setName(bookGenre);
+            books = bookDAO.getBooksByGenre(genre);
+            requestContent.insertParameter("foundBooks", books);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
