@@ -3,27 +3,26 @@ package by.epam.bokhan.receiver;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.dao.BookDAO;
 import by.epam.bokhan.dao.BookDAOImpl;
-import by.epam.bokhan.dao.UserDAOImpl;
 import by.epam.bokhan.entity.*;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by vbokh on 01.08.2017.
- */
+import static by.epam.bokhan.receiver.ReceiverConstant.*;
+
+
 public class BookReceiverImpl implements BookReceiver {
+
+
 
     @Override
     public void getAllBooks(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
         try {
             List<Book> books = bookDAO.getAllBooks();
-            requestContent.insertParameter("books", books);
+            requestContent.insertParameter(BOOKS, books);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -35,18 +34,18 @@ public class BookReceiverImpl implements BookReceiver {
         int bookId;
         String title;
         List<Book> books = null;
-        String typeOfSearch = (String) requestContent.getRequestParameters().get("type_of_search");
+        String typeOfSearch = (String) requestContent.getRequestParameters().get(TYPE_OF_SEARCH);
         try {
-            if (typeOfSearch.equalsIgnoreCase("by_id")) {
-                bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("find_query_value"));
+            if (typeOfSearch.equalsIgnoreCase(BY_ID)) {
+                bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(FIND_QUERY_VALUE));
                 books = bookDAO.findBookById(bookId);
-            } else if (typeOfSearch.equalsIgnoreCase("by_title")) {
-                title = (String) requestContent.getRequestParameters().get("find_query_value");
+            } else if (typeOfSearch.equalsIgnoreCase(BY_TITLE)) {
+                title = (String) requestContent.getRequestParameters().get(FIND_QUERY_VALUE);
                 books = bookDAO.findBookByTitle(title);
             }
-            requestContent.insertParameter("foundBook", books);
+            requestContent.insertParameter(FOUND_BOOK, books);
         } catch (DAOException e) {
-            requestContent.insertParameter("foundBook", null);
+            requestContent.insertParameter(FOUND_BOOK, null);
             throw new ReceiverException(String.format("Can not find book. Reason : %s", e.getMessage()), e);
         }
     }
@@ -55,12 +54,12 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO dao = new BookDAOImpl();
         List<Book> books;
         List<Order> orders;
-        int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
+        int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_ID));
         try {
             books = dao.getExplicitBookInfo(bookId);
             orders = dao.getBooksLastOrder(bookId);
-            requestContent.insertParameter("foundBook", books);
-            requestContent.insertParameter("foundOrder", orders);
+            requestContent.insertParameter(FOUND_BOOK, books);
+            requestContent.insertParameter(FOUND_ORDER, orders);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -72,16 +71,16 @@ public class BookReceiverImpl implements BookReceiver {
         List<Genre> genres;
         List<Author> authors;
         List<Publisher> publishers;
-        int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
+        int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_ID));
         try {
             books = dao.getBookForEditing(bookId);
-            requestContent.insertParameter("foundBook", books);
+            requestContent.insertParameter(FOUND_BOOK, books);
             genres = dao.getAllGenres();
-            requestContent.insertParameter("genres", genres);
+            requestContent.insertParameter(GENRES, genres);
             authors = dao.getAllAuthors();
-            requestContent.insertParameter("authors", authors);
+            requestContent.insertParameter(AUTHORS, authors);
             publishers = dao.getAllPublishers();
-            requestContent.insertParameter("publishers", publishers);
+            requestContent.insertParameter(PUBLISHERS, publishers);
 
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -94,7 +93,7 @@ public class BookReceiverImpl implements BookReceiver {
         LinkedList<Genre> genres;
         try {
             genres = bookDAO.getAllGenres();
-            requestContent.insertParameter("genres", genres);
+            requestContent.insertParameter(GENRES, genres);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -104,12 +103,12 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isBookEdited;
         try {
-            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
-            String title = (String) requestContent.getRequestParameters().get("book_title");
-            int pages = Integer.parseInt((String) requestContent.getRequestParameters().get("book_pages"));
-            String isbn = (String) requestContent.getRequestParameters().get("book_isbn");
-            int year = Integer.parseInt((String) requestContent.getRequestParameters().get("book_year"));
-            int publisherId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_publisher"));
+            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_ID));
+            String title = (String) requestContent.getRequestParameters().get(BOOK_TITLE);
+            int pages = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_PAGES));
+            String isbn = (String) requestContent.getRequestParameters().get(BOOK_ISBN);
+            int year = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_YEAR));
+            int publisherId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_PUBLISHER));
             Publisher publisher = new Publisher();
             publisher.setId(publisherId);
             Book book = new Book();
@@ -119,19 +118,19 @@ public class BookReceiverImpl implements BookReceiver {
             book.setIsbn(isbn);
             book.setYear(year);
             book.setPublisher(publisher);
-            String[] genreIdStrings = (String[]) requestContent.getRequestParameterValues().get("book_genre");
+            String[] genreIdStrings = (String[]) requestContent.getRequestParameterValues().get(BOOK_GENRE);
             int[] genreId = new int[genreIdStrings.length];
             for (int i = 0; i < genreIdStrings.length; i++) {
                 genreId[i] = Integer.parseInt(genreIdStrings[i]);
             }
-            String[] authorsIds = (String[]) requestContent.getRequestParameterValues().get("book_author");
+            String[] authorsIds = (String[]) requestContent.getRequestParameterValues().get(BOOK_AUTHOR);
             int[] authorIds = new int[authorsIds.length];
             for (int i = 0; i < authorsIds.length; i++) {
                 authorIds[i] = Integer.parseInt(authorsIds[i]);
             }
 
             isBookEdited = bookDAO.editBook(book, genreId, authorIds);
-            requestContent.insertAttribute("isBookEdited", isBookEdited);
+            requestContent.insertAttribute(IS_BOOK_EDITED, isBookEdited);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -141,12 +140,12 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean authorIsAdded;
         try {
-            String name = (String) requestContent.getRequestParameters().get("author_name");
-            String surname = (String) requestContent.getRequestParameters().get("author_surname");
-            String patronymic = (String) requestContent.getRequestParameters().get("author_pathonymic");
-            String dateOfBirth = (String) requestContent.getRequestParameters().get("date_of_birth");
+            String name = (String) requestContent.getRequestParameters().get(AUTHOR_NAME);
+            String surname = (String) requestContent.getRequestParameters().get(AUTHOR_SURNAME);
+            String patronymic = (String) requestContent.getRequestParameters().get(AUTHOR_PATRONYMIC);
+            String dateOfBirth = (String) requestContent.getRequestParameters().get(DATE_OF_BIRTH);
             authorIsAdded = bookDAO.addAuthor(name, surname, patronymic, dateOfBirth);
-            requestContent.insertAttribute("isAuthorAdded", authorIsAdded);
+            requestContent.insertAttribute(IS_AUTHOR_ADDED, authorIsAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -157,10 +156,10 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isPublisherAdded;
         try {
-            String publisherName = (String) requestContent.getRequestParameters().get("publisher_name");
+            String publisherName = (String) requestContent.getRequestParameters().get(PUBLISHER_NAME);
 
             isPublisherAdded = bookDAO.addPublisher(publisherName);
-            requestContent.insertAttribute("isPublisherAdded", isPublisherAdded);
+            requestContent.insertAttribute(IS_PUBLISHER_ADDED, isPublisherAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -171,13 +170,13 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isPublisherDeleted;
         try {
-            String[] publishers = (String[]) requestContent.getRequestParameterValues().get("book_publisher");
+            String[] publishers = (String[]) requestContent.getRequestParameterValues().get(BOOK_PUBLISHER);
             int[] publishersIds = new int[publishers.length];
             for (int i = 0; i < publishers.length; i++) {
                 publishersIds[i] = Integer.parseInt(publishers[i]);
             }
             isPublisherDeleted = bookDAO.deletePublisher(publishersIds);
-            requestContent.insertAttribute("isPublisherDeleted", isPublisherDeleted);
+            requestContent.insertAttribute(IS_PUBLISHER_DELETED, isPublisherDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -189,7 +188,7 @@ public class BookReceiverImpl implements BookReceiver {
         LinkedList<Publisher> publishers;
         try {
             publishers = bookDAO.getAllPublishers();
-            requestContent.insertParameter("publishers", publishers);
+            requestContent.insertParameter(PUBLISHERS, publishers);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -200,10 +199,10 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isGenreAdded;
         try {
-            String genreName = (String) requestContent.getRequestParameters().get("genre_name");
+            String genreName = (String) requestContent.getRequestParameters().get(GENRE_NAME);
 
             isGenreAdded = bookDAO.addGenre(genreName);
-            requestContent.insertAttribute("isGenreAdded", isGenreAdded);
+            requestContent.insertAttribute(IS_GENRE_ADDED, isGenreAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -214,13 +213,13 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isGenreDeleted;
         try {
-            String[] genres = (String[]) requestContent.getRequestParameterValues().get("book_genre");
+            String[] genres = (String[]) requestContent.getRequestParameterValues().get(BOOK_GENRE);
             int[] genresId = new int[genres.length];
             for (int i = 0; i < genres.length; i++) {
                 genresId[i] = Integer.parseInt(genres[i]);
             }
             isGenreDeleted = bookDAO.deleteGenre(genresId);
-            requestContent.insertAttribute("isGenreDeleted", isGenreDeleted);
+            requestContent.insertAttribute(IS_GENRE_DELETED, isGenreDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -232,7 +231,7 @@ public class BookReceiverImpl implements BookReceiver {
         LinkedList<Author> authors;
         try {
             authors = bookDAO.getAllAuthors();
-            requestContent.insertParameter("authors", authors);
+            requestContent.insertParameter(AUTHORS, authors);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -243,13 +242,13 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isAuthorDeleted;
         try {
-            String[] authors = (String[]) requestContent.getRequestParameterValues().get("book_author");
+            String[] authors = (String[]) requestContent.getRequestParameterValues().get(BOOK_AUTHOR);
             int[] authorsIds = new int[authors.length];
             for (int i = 0; i < authors.length; i++) {
                 authorsIds[i] = Integer.parseInt(authors[i]);
             }
             isAuthorDeleted = bookDAO.deleteAuthor(authorsIds);
-            requestContent.insertAttribute("isAuthorDeleted", isAuthorDeleted);
+            requestContent.insertAttribute(IS_AUTHOR_DELETED, isAuthorDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -263,11 +262,11 @@ public class BookReceiverImpl implements BookReceiver {
         LinkedList<Publisher> publishers;
         try {
             genres = bookDAO.getAllGenres();
-            requestContent.insertParameter("genres", genres);
+            requestContent.insertParameter(GENRES, genres);
             authors = bookDAO.getAllAuthors();
-            requestContent.insertParameter("authors", authors);
+            requestContent.insertParameter(AUTHORS, authors);
             publishers = bookDAO.getAllPublishers();
-            requestContent.insertParameter("publishers", publishers);
+            requestContent.insertParameter(PUBLISHERS, publishers);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -278,12 +277,12 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isBookAdded;
         try {
-            String title = (String) requestContent.getRequestParameters().get("book_title");
-            int pages = Integer.parseInt((String) requestContent.getRequestParameters().get("book_pages"));
-            int yearOfPublishing = Integer.parseInt((String) requestContent.getRequestParameters().get("book_year"));
-            String isbn = (String) requestContent.getRequestParameters().get("book_isbn");
-            int publisherId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_publisher"));
-            String genresId[] = (String[]) requestContent.getRequestParameterValues().get("book_genre");
+            String title = (String) requestContent.getRequestParameters().get(BOOK_TITLE);
+            int pages = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_PAGES));
+            int yearOfPublishing = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_YEAR));
+            String isbn = (String) requestContent.getRequestParameters().get(BOOK_ISBN);
+            int publisherId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_PUBLISHER));
+            String genresId[] = (String[]) requestContent.getRequestParameterValues().get(BOOK_GENRE);
             int genreId[] = new int[genresId.length];
             for (int i = 0; i < genreId.length; i++) {
                 String stringValue = genresId[i];
@@ -291,7 +290,7 @@ public class BookReceiverImpl implements BookReceiver {
                 genreId[i] = id;
             }
 
-            String authorsId[] = (String[]) requestContent.getRequestParameterValues().get("book_author");
+            String authorsId[] = (String[]) requestContent.getRequestParameterValues().get(BOOK_AUTHOR);
             int[] authorId = new int[authorsId.length];
             for (int i = 0; i < authorId.length; i++) {
                 String stringValue = authorsId[i];
@@ -299,8 +298,8 @@ public class BookReceiverImpl implements BookReceiver {
                 authorId[i] = id;
 
             }
-            String description = (String) requestContent.getRequestParameters().get("book_description");
-            Location location = Location.valueOf(((String) requestContent.getRequestParameters().get("book_location")).toUpperCase());
+            String description = (String) requestContent.getRequestParameters().get(BOOK_DESCRIPTION);
+            Location location = Location.valueOf(((String) requestContent.getRequestParameters().get(BOOK_LOCATION)).toUpperCase());
             Book book = new Book();
             book.setTitle(title);
             book.setPages(pages);
@@ -310,7 +309,7 @@ public class BookReceiverImpl implements BookReceiver {
             book.setDescription(description);
             book.setLocation(location);
             isBookAdded = bookDAO.addBook(book, publisherId, genreId, authorId);
-            requestContent.insertAttribute("isBookAdded", isBookAdded);
+            requestContent.insertAttribute(IS_BOOK_ADDED, isBookAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -320,9 +319,9 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isBookDeleted;
         try {
-            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
+            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_ID));
             isBookDeleted = bookDAO.deleteBook(bookId);
-            requestContent.insertAttribute("isBookDeleted", isBookDeleted);
+            requestContent.insertAttribute(IS_BOOK_DELETED, isBookDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -333,14 +332,14 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isOrderAdded;
         try {
-            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
-            String typeOfOrder = (String) requestContent.getRequestParameters().get("type_of_order");
-            int librarianId = Integer.parseInt((String) requestContent.getRequestParameters().get("librarian_id"));
-            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_ID));
+            String typeOfOrder = (String) requestContent.getRequestParameters().get(TYPE_OF_ORDER);
+            int librarianId = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARIAN_ID));
+            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
 
             isOrderAdded = bookDAO.addOrder(bookId, typeOfOrder, librarianId, libraryCard);
 
-            requestContent.insertAttribute("isOrderAdded", isOrderAdded);
+            requestContent.insertAttribute(IS_ORDER_ADDED, isOrderAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -351,10 +350,10 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         List<Order> userOrders;
         try {
-            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
             userOrders = bookDAO.getUserOrders(libraryCard);
 
-            requestContent.insertAttribute("userOrders", userOrders);
+            requestContent.insertAttribute(USER_ORDERS, userOrders);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -365,10 +364,10 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isBookReturned;
         try {
-            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
-            int orderId = Integer.parseInt((String) requestContent.getRequestParameters().get("order_id"));
+            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_ID));
+            int orderId = Integer.parseInt((String) requestContent.getRequestParameters().get(ORDER_ID));
             isBookReturned = bookDAO.returnBook(orderId, bookId);
-            requestContent.insertAttribute("isBookReturned", isBookReturned);
+            requestContent.insertAttribute(IS_BOOK_RETURNED, isBookReturned);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -379,10 +378,10 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isOnlineOrderAdded;
         try {
-            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
-            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_ID));
+            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
             isOnlineOrderAdded = bookDAO.addOnlineOrder(bookId, libraryCard);
-            requestContent.insertAttribute("isOnlineOrderAdded", isOnlineOrderAdded);
+            requestContent.insertAttribute(IS_ONLINE_ORDER_ADDED, isOnlineOrderAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -393,10 +392,10 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         List<Order> userOrders;
         try {
-            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
+            int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
             userOrders = bookDAO.getUserOnlineOrders(libraryCard);
 
-            requestContent.insertParameter("userOrders", userOrders);
+            requestContent.insertParameter(USER_ORDERS, userOrders);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -407,13 +406,13 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isOnlineOrderCancelled = false;
         try {
-            int orderId = Integer.parseInt((String) requestContent.getRequestParameters().get("order_id"));
+            int orderId = Integer.parseInt((String) requestContent.getRequestParameters().get(ORDER_ID));
             String orderStatus = bookDAO.onlineOrderStatus(orderId).getStatus();
-            if (!orderStatus.equals("canceled")) {
-                int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
+            if (!orderStatus.equals(STATUS_CANCELED)) {
+                int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_ID));
                 isOnlineOrderCancelled = bookDAO.cancelOnlineOrder(orderId, bookId);
             }
-            requestContent.insertAttribute("isOnlineOrderCancelled", isOnlineOrderCancelled);
+            requestContent.insertAttribute(IS_ONLINE_ORDER_CANCELLED, isOnlineOrderCancelled);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -425,18 +424,18 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isOnlineOrderExecuted = false;
         try {
-            int onlineOrderId = Integer.parseInt((String) requestContent.getRequestParameters().get("online_order_id"));
+            int onlineOrderId = Integer.parseInt((String) requestContent.getRequestParameters().get(ONLINE_ORDER_ID));
 
             String orderStatus = bookDAO.onlineOrderStatus(onlineOrderId).getStatus();
             if (orderStatus.equals("booked")) {
-                int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get("book_id"));
-                int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
-                int librarianId = Integer.parseInt((String) requestContent.getRequestParameters().get("librarian_id"));
-                String typeOfOrder = (String) requestContent.getRequestParameters().get("type_of_order");
+                int bookId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_ID));
+                int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
+                int librarianId = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARIAN_ID));
+                String typeOfOrder = (String) requestContent.getRequestParameters().get(TYPE_OF_ORDER);
                 isOnlineOrderExecuted = bookDAO.executeOnlineOrder(onlineOrderId, typeOfOrder, bookId, libraryCard, librarianId);
 
             }
-            requestContent.insertAttribute("isOnlineOrderExecuted", isOnlineOrderExecuted);
+            requestContent.insertAttribute(IS_ONLINE_ORDER_EXECUTED, isOnlineOrderExecuted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -449,10 +448,10 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         List<Book> books;
         try {
-            String bookGenre = (String) requestContent.getRequestParameters().get("genre_name");
+            String bookGenre = (String) requestContent.getRequestParameters().get(GENRE_NAME);
             Genre genre = new Genre();genre.setName(bookGenre);
             books = bookDAO.getBooksByGenre(genre);
-            requestContent.insertParameter("foundBooks", books);
+            requestContent.insertParameter(FOUND_BOOKS, books);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }

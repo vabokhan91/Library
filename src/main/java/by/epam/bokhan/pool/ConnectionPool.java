@@ -15,9 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Created by vbokh on 14.07.2017.
- */
+
 public class ConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int POOL_SIZE = 10;
@@ -53,7 +51,6 @@ public class ConnectionPool {
     }
 
     private void initConnectionPool() throws SQLException {
-//        Class.forName("com.mysql.jdbc.Driver");
         DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         for (int i = 0; i < POOL_SIZE; i++) {
             createConnectionAndAddToPool();
@@ -113,7 +110,6 @@ public class ConnectionPool {
     }
 
     private void createConnectionAndAddToPool() {
-//        is it good or runtime better?
         try {
             ProxyConnection connection = ConnectionCreator.getConnection();
             connectionQueue.put(connection);

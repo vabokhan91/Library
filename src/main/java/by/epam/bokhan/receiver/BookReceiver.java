@@ -7,9 +7,7 @@ import by.epam.bokhan.exception.ReceiverException;
 
 import java.util.List;
 
-/**
- * Created by vbokh on 01.08.2017.
- */
+
 public interface BookReceiver extends Receiver {
     void getAllBooks(RequestContent requestContent) throws ReceiverException;
 
@@ -61,5 +59,4 @@ public interface BookReceiver extends Receiver {
 
     void findBookByGenre(RequestContent requestContent) throws ReceiverException;
 
-//    void getOnlineOrderInfo(RequestContent requestContent) throws ReceiverException;
 }

@@ -12,9 +12,7 @@ import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-/**
- * Created by vbokh on 13.07.2017.
- */
+
 class ConnectionCreator {
     private static final String DB_URL = "db.url";
     private static final String DB_USER = "db.user";

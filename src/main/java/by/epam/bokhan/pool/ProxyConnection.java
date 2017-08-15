@@ -5,9 +5,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-/**
- * Created by vbokh on 15.07.2017.
- */
+
 class ProxyConnection implements Connection {
     private Connection connection;
 
@@ -26,26 +24,22 @@ class ProxyConnection implements Connection {
 
     @Override
     public Statement createStatement() throws SQLException {
-        Statement st = connection.createStatement();
-        return st;
+        return connection.createStatement();
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        return preparedStatement;
+        return connection.prepareStatement(sql);
     }
 
     @Override
     public CallableStatement prepareCall(String sql) throws SQLException {
-        CallableStatement callableStatement = connection.prepareCall(sql);
-        return callableStatement;
+        return connection.prepareCall(sql);
     }
 
     @Override
     public String nativeSQL(String sql) throws SQLException {
-        String nativeSQL = connection.nativeSQL(sql);
-        return nativeSQL;
+        return connection.nativeSQL(sql);
     }
 
     @Override
@@ -120,14 +114,12 @@ class ProxyConnection implements Connection {
 
     @Override
     public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
-        Statement statement = connection.createStatement(resultSetType,resultSetConcurrency);
-        return statement;
+        return connection.createStatement(resultSetType,resultSetConcurrency);
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(sql, resultSetType, resultSetConcurrency);
-        return preparedStatement;
+        return connection.prepareStatement(sql, resultSetType, resultSetConcurrency);
     }
 
     @Override

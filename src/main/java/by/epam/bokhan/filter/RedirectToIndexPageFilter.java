@@ -6,16 +6,18 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ResourceBundle;
+
+import static by.epam.bokhan.filter.FilterConstant.*;
 
 
 @WebFilter(urlPatterns = {"/jsp/*"},
-        initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp")})
+        initParams = {@WebInitParam(name = INDEX_PATH, value = "/index.jsp")})
 public class RedirectToIndexPageFilter implements Filter {
+
     private String indexPath;
 
     public void init(FilterConfig fConfig) throws ServletException {
-        indexPath = fConfig.getInitParameter("INDEX_PATH");
+        indexPath = fConfig.getInitParameter(INDEX_PATH);
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

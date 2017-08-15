@@ -7,12 +7,9 @@ import by.epam.bokhan.exception.ReceiverException;
 
 import java.sql.SQLException;
 
-/**
- * Created by vbokh on 14.07.2017.
- */
+
 public interface Receiver {
     default void action(CommandType type, RequestContent content) throws ReceiverException {
         type.doReceiver(content);
     }
-
 }

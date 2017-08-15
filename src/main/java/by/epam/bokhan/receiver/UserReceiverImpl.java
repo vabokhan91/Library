@@ -14,40 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static by.epam.bokhan.receiver.ReceiverConstant.*;
 
 public class UserReceiverImpl implements UserReceiver {
-    private static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
-    private final String IS_VALID = "isValid";
-    private final String USER = "user";
-    private final String INVALIDATE = "invalidate";
-    private final boolean TRUE = true;
-    private final String USER_NAME = "user_name";
-    private final String USER_SURNAME = "user_surname";
-    private final String USER_PATRONYMIC = "user_patronymic";
-    private final String USER_ADDRESS = "user_address";
-    private final String USER_ROLE = "user_role";
-    private final String USER_PASSWORD = "user_password";
-    private final String CONFIRM_PASSWORD = "confirm_password";
-    private final String USER_MOBILE_PHONE = "user_mobilephone";
-    private final String USER_IS_ADDED = "userIsAdded";
-    private final String TYPE_OF_SEARCH = "type_of_search";
-    private final String BY_LIBRARY_CARD = "by_library_card";
-    private final String REMOVE_QUERY_VALUE = "remove_query_value";
-    private final String BY_LOGIN = "by_login";
-    private final String IS_USER_DELETED = "isUserDeleted";
-    private final String FIND_QUERY_VALUE = "find_query_value";
-    private final String FOUND_USER = "foundUser";
-    private final String BLOCK_QUERY_VALUE = "block_query_value";
-    private final String IS_USER_BLOCKED = "isUserBlocked";
-    private final String UNBLOCK_QUERY_VALUE = "unblock_query_value";
-    private final String IS_USER_UNBLOCKED = "isUserUnblocked";
-    protected final String USER_ID = "user_id";
-    private final String BY_SURNAME = "by_surname";
-    private final String NOT_BLOCKED_USERS = "not_blocked_users";
-    private final String BLOCKED_USERS = "blocked_users";
-    private final String LIBRARY_CARD = "library_card";
-    private final String IS_USER_EDITED = "isUserEdited";
+
 
     @Override
     public void login(RequestContent content) throws ReceiverException {
@@ -99,7 +69,7 @@ public class UserReceiverImpl implements UserReceiver {
                 user.setLogin(login);
                 isUserRegistered = userDAO.registerUser(user);
             }
-            requestContent.insertAttribute("isUserRegistered", isUserRegistered);
+            requestContent.insertAttribute(IS_USER_REGISTERED, isUserRegistered);
 
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -117,7 +87,7 @@ public class UserReceiverImpl implements UserReceiver {
         int role = Integer.parseInt((String) requestContent.getRequestParameters().get(USER_ROLE));
         /*String login = (String) requestContent.getRequestParameters().get(LOGIN);
         String password = (String) requestContent.getRequestParameters().get(USER_PASSWORD);*/
-        String confirmPassword = (String) requestContent.getRequestParameters().get(CONFIRM_PASSWORD);
+//        String confirmPassword = (String) requestContent.getRequestParameters().get(CONFIRM_PASSWORD);
         try {
             /*if (password.equals(confirmPassword)) {
                 String hashedPassword = null;
@@ -150,7 +120,7 @@ public class UserReceiverImpl implements UserReceiver {
         ArrayList<User> users;
         try {
             users = dao.getAllUsers();
-            requestContent.insertParameter("users", users);
+            requestContent.insertParameter(USERS, users);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -304,10 +274,10 @@ public class UserReceiverImpl implements UserReceiver {
 
         UserDAO dao = new UserDAOImpl();
         boolean isPasswordChanged = false;
-        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get("library_card"));
-        String oldPassword = (String) requestContent.getRequestParameters().get("old_password");
-        String newPassword1 = (String) requestContent.getRequestParameters().get("new_password1");
-        String newPassword2 = (String) requestContent.getRequestParameters().get("new_password2");
+        int libraryCard = Integer.parseInt((String) requestContent.getRequestParameters().get(LIBRARY_CARD));
+        String oldPassword = (String) requestContent.getRequestParameters().get(OLD_PASSWORD);
+        String newPassword1 = (String) requestContent.getRequestParameters().get(NEW_PASSWORD);
+        String newPassword2 = (String) requestContent.getRequestParameters().get(CONFIRM_PASSWORD);
         Pattern pattern = Pattern.compile("[\\w!()*&^%$@]{1,12}");
         Matcher matcherForOldPassword = pattern.matcher(oldPassword);
         Matcher matcherForNewPassword1 = pattern.matcher(newPassword1);
@@ -318,7 +288,7 @@ public class UserReceiverImpl implements UserReceiver {
             if (newPassword1.equals(newPassword2) && oldPasswordFromDB.equals(hashedOldPassword) && matcherForOldPassword.matches() && matcherForNewPassword1.matches()) {
                 isPasswordChanged = dao.changePassword(libraryCard, hashedNewPassword);
             }
-            requestContent.insertAttribute("isPasswordChanged", isPasswordChanged);
+            requestContent.insertAttribute(IS_PASSWORD_CHANGED, isPasswordChanged);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -328,8 +298,8 @@ public class UserReceiverImpl implements UserReceiver {
     public void changeLogin(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
         boolean isLoginChanged = false;
-        int userId = Integer.parseInt((String) requestContent.getRequestParameters().get("user_id"));
-        String newLogin = (String) requestContent.getRequestParameters().get("new_login");
+        int userId = Integer.parseInt((String) requestContent.getRequestParameters().get(USER_ID));
+        String newLogin = (String) requestContent.getRequestParameters().get(NEW_LOGIN);
 
         Pattern pattern = Pattern.compile("[^\\W]{1,12}");
         Matcher matcherForLogin = pattern.matcher(newLogin);
@@ -338,7 +308,7 @@ public class UserReceiverImpl implements UserReceiver {
             if (matcherForLogin.matches()) {
                 isLoginChanged = dao.changeLogin(userId, newLogin);
             }
-            requestContent.insertAttribute("isLoginChanged", isLoginChanged);
+            requestContent.insertAttribute(IS_LOGIN_CHANGED, isLoginChanged);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }

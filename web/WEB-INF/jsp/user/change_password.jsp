@@ -20,10 +20,10 @@
     <input type = "password" name = "old_password" value="" pattern="[\w!()*&^%$@]{1,12}" required/><br/>
 
     <fmt:message key="label.password.enter_new_password" bundle="${messages}"/> :
-    <input type = "password" name = "new_password1" value="" pattern="[\w!()*&^%$@]{1,12}" required/><br/>
+    <input type = "password" name = "new_password" value="" pattern="[\w!()*&^%$@]{1,12}" required/><br/>
 
     <fmt:message key="label.password.repeat_password" bundle="${messages}"/> :
-    <input type = "password" name = "new_password2" value="" pattern="[\w!()*&^%$@]{1,12}" required/><br/>
+    <input type = "password" name = "confirm_password" value="" pattern="[\w!()*&^%$@]{1,12}" required/><br/>
     <input type="hidden" name="library_card" value="${sessionScope.user.id}">
     <input type="submit" name="submit" value=<fmt:message key="label.password.change_password" bundle="${messages}"/> />
 </form>
