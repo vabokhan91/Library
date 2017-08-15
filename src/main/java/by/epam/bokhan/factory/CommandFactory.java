@@ -5,9 +5,7 @@ import by.epam.bokhan.command.CommandType;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.manager.MessageManager;
 
-/**
- * Created by vbokh on 13.07.2017.
- */
+
 public class CommandFactory {
 
     public AbstractCommand defineCommand(RequestContent content) {

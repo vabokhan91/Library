@@ -8,9 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-/**
- * Created by vbokh on 22.07.2017.
- */
+
 @WebFilter(urlPatterns = {"/jsp/*"},
         initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp")})
 public class RedirectToIndexPageFilter implements Filter {

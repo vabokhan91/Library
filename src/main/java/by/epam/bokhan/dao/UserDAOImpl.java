@@ -12,6 +12,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.epam.bokhan.dao.DAOConstant.*;
+
+
 public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_SELECT_USER_BY_LOGIN = "SELECT user.id,library_card.id, user.name, surname, patronymic, address, role.name, login, password,address, mobile_phone, blocked  \n" +
             "from user left join role on user.role_id = role.id \n" +
@@ -60,25 +63,6 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_SET_NEW_LOGIN = "UPDATE user SET login = ? where user.library_card = ?";
 
 
-    private final String USER_NAME = "user.name";
-    private final String USER_SURNAME = "surname";
-    private final String USER_PATRONYMIC = "patronymic";
-    private final String ADDRESS = "address";
-    private final String LOGIN = "login";
-    private final String ROLE_ID = "role_id";
-    private final String MOBILE_PHONE = "mobile_phone";
-    private final String BLOCK_FIELD = "blocked";
-    private final String PASSWORD = "password";
-    protected final String USER_ID = "user.id";
-    private final String LIBRARY_CARD = "library_card.id";
-    private final String ROLE = "role.name";
-    private final String ORDER_ID = "orders.id";
-    private final String BOOK_OREDER_ID = "orders.book_id";
-    private final String BOOK_TITLE = "book.title";
-    private final String ORDER_DATE = "orders.order_date";
-    private final String EXPIRATION_DATE = "orders.expiration_date";
-    private final String RETURN_DATE = "orders.return_date";
-
     public User getUserByLogin(String login) throws DAOException {
         User user = new User();
         Connection connection = null;
@@ -97,7 +81,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 user.setAddress(rs.getString(ADDRESS));
                 user.setLogin(rs.getString(LOGIN));
                 user.setPassword(rs.getString(PASSWORD));
-                Role userRole = Role.valueOf(rs.getString("role.name").toUpperCase());
+                Role userRole = Role.valueOf(rs.getString(ROLE).toUpperCase());
                 user.setRole(userRole);
                 user.setMobilePhone(rs.getString(MOBILE_PHONE));
                 user.setBlocked(rs.getInt(BLOCK_FIELD));
@@ -130,7 +114,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             }
             return isUserRegistered;
         } catch (SQLException e) {
-            throw new DAOException(String.format("User was not registered: Reason : %s", e.getMessage()),e);
+            throw new DAOException(String.format("User was not registered: Reason : %s", e.getMessage()), e);
         } finally {
             closeStatement(registerUserStatement);
             closeConnection(connection);
@@ -212,7 +196,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 user.setSurname(resultSet.getString(USER_SURNAME));
                 user.setPatronymic(resultSet.getString(USER_PATRONYMIC));
                 user.setAddress(resultSet.getString(ADDRESS));
-                user.setRole((Role.valueOf(resultSet.getString("role.name").toUpperCase())));
+                user.setRole((Role.valueOf(resultSet.getString(ROLE).toUpperCase())));
                 user.setLogin(resultSet.getString(LOGIN));
                 user.setMobilePhone(resultSet.getString(MOBILE_PHONE));
                 user.setBlocked(resultSet.getInt(BLOCK_FIELD));
@@ -266,7 +250,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 foundUser.setPatronymic(rs.getString(USER_PATRONYMIC));
                 foundUser.setAddress(rs.getString(ADDRESS));
                 foundUser.setLogin(rs.getString(LOGIN));
-                Role userRole = Role.valueOf(rs.getString("role.name").toUpperCase());
+                Role userRole = Role.valueOf(rs.getString(ROLE).toUpperCase());
                 foundUser.setRole(userRole);
                 foundUser.setMobilePhone(rs.getString(MOBILE_PHONE));
                 foundUser.setBlocked(rs.getInt(BLOCK_FIELD));
@@ -394,7 +378,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 user.setName(rs.getString(USER_NAME));
                 user.setSurname(rs.getString(USER_SURNAME));
                 user.setPatronymic(rs.getString(USER_PATRONYMIC));
-                Role userRole = Role.valueOf(rs.getString("role.name").toUpperCase());
+                Role userRole = Role.valueOf(rs.getString(ROLE).toUpperCase());
                 user.setRole(userRole);
                 user.setLogin(rs.getString(LOGIN));
                 user.setBlocked(rs.getInt(BLOCK_FIELD));
@@ -471,16 +455,16 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                     Order order = new Order();
                     Book book = new Book();
                     order.setId(ordersInfoResult.getInt(ORDER_ID));
-                    book.setId(ordersInfoResult.getInt(BOOK_OREDER_ID));
+                    book.setId(ordersInfoResult.getInt(ORDERS_BOOK_ID));
                     book.setTitle(ordersInfoResult.getString(BOOK_TITLE));
                     order.setBook(book);
                     Timestamp timestamp = ordersInfoResult.getTimestamp(ORDER_DATE);
                     LocalDate orderDate = timestamp.toLocalDateTime().toLocalDate();
                     order.setOrderDate(orderDate);
 
-                    LocalDate expirationDate = ordersInfoResult.getTimestamp(EXPIRATION_DATE).toLocalDateTime().toLocalDate();
+                    LocalDate expirationDate = ordersInfoResult.getTimestamp(ORDER_EXPIRATION_DATE).toLocalDateTime().toLocalDate();
                     order.setExpirationDate(expirationDate);
-                    Timestamp returnDateTimeStamp = ordersInfoResult.getTimestamp(RETURN_DATE);
+                    Timestamp returnDateTimeStamp = ordersInfoResult.getTimestamp(ORDER_RETURN_DATE);
                     LocalDate returnDate;
                     returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                     order.setReturnDate(returnDate);
@@ -488,10 +472,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 }
                 user.setOrders(orders);
             }
-
-
             return user;
-
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not get user. Reason : %s", e.getMessage()), e);
         } finally {
@@ -500,6 +481,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             closeConnection(connection);
         }
     }
+
     @Override
     public boolean editUser(User user) throws DAOException {
         boolean isUserEdited = false;
@@ -521,16 +503,16 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 editLibraryCardInfoStatement = connection.prepareStatement(SQL_EDIT_LIBRARY_CARD_INFO);
                 editLibraryCardInfoStatement.setString(1, user.getAddress());
                 editLibraryCardInfoStatement.setString(2, user.getMobilePhone());
-                editLibraryCardInfoStatement.setInt(3,user.getLibraryCardNumber());
+                editLibraryCardInfoStatement.setInt(3, user.getLibraryCardNumber());
                 int libraryCardUpdateResult = editLibraryCardInfoStatement.executeUpdate();
                 if (libraryCardUpdateResult > 0) {
                     isUserEdited = true;
                     connection.commit();
-                }else {
+                } else {
                     connection.rollback();
                 }
 
-            }else {
+            } else {
                 connection.rollback();
             }
             return isUserEdited;
@@ -560,7 +542,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                password = rs.getString("password");
+                password = rs.getString(PASSWORD);
             }
             return password;
         } catch (SQLException e) {

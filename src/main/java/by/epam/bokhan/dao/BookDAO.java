@@ -6,9 +6,7 @@ import by.epam.bokhan.exception.DAOException;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by vbokh on 01.08.2017.
- */
+
 public interface BookDAO {
     List<Book> getAllBooks() throws DAOException;
 
@@ -17,7 +15,6 @@ public interface BookDAO {
     List<Book> findBookByTitle(String title) throws DAOException;
 
     List<Book> getExplicitBookInfo(int bookId) throws DAOException;
-
 
     List<Order> getBooksLastOrder(int bookId) throws DAOException;
 

@@ -2,9 +2,7 @@ package by.epam.bokhan.entity;
 
 import java.time.LocalDate;
 
-/**
- * Created by vbokh on 03.08.2017.
- */
+
 public class Author {
     private int id;
     private String name;
@@ -54,9 +52,8 @@ public class Author {
 
     @Override
     public String toString() {
-        String t = patronymic!=null?patronymic:"";
-        String s = name + " " + surname+ " " + t + ";";
-        return s;
+        String t = patronymic != null ? patronymic : "";
+        return name + " " + surname + " " + t + ";";
     }
 
     @Override
@@ -65,10 +62,9 @@ public class Author {
         if (o == null || getClass() != o.getClass()) return false;
 
         Author author = (Author) o;
-
-        if (!name.equals(author.name)) return false;
-        if (!surname.equals(author.surname)) return false;
-        return patronymic != null ? patronymic.equals(author.patronymic) : author.patronymic == null;
+        return name.equals(author.name) &&
+                surname.equals(author.surname) &&
+                (patronymic != null ? patronymic.equals(author.patronymic) : author.patronymic == null);
     }
 
     @Override

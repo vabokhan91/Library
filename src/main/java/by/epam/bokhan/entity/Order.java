@@ -1,13 +1,8 @@
 package by.epam.bokhan.entity;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.Locale;
 
-/**
- * Created by vbokh on 29.07.2017.
- */
+
 public class Order {
     private int id;
     private Book book;

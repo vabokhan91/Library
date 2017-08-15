@@ -1,8 +1,6 @@
 package by.epam.bokhan.exception;
 
-/**
- * Created by vbokh on 25.07.2017.
- */
+
 public class ReceiverException extends Exception{
     public ReceiverException() {
         super();

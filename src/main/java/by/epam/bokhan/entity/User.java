@@ -3,9 +3,7 @@ package by.epam.bokhan.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by vbokh on 13.07.2017.
- */
+
 public class User {
     private int id;
     private String name;
@@ -100,9 +98,9 @@ public class User {
     }
 
     public void setBlocked(int blocked) {
-        if (blocked == 0) {
-            isBlocked = false;
-        } else isBlocked = true;
+        if (blocked == 1) {
+            isBlocked = true;
+        }
     }
 
     public List<Order> getOrders() {

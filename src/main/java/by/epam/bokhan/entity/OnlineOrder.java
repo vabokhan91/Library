@@ -1,8 +1,6 @@
 package by.epam.bokhan.entity;
 
-/**
- * Created by vbokh on 12.08.2017.
- */
+
 public class OnlineOrder extends Order {
     private String status;
 

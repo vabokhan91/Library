@@ -1,8 +1,6 @@
 package by.epam.bokhan.entity;
 
-/**
- * Created by vbokh on 06.08.2017.
- */
+
 public class Publisher {
     private int id;
     private String name;

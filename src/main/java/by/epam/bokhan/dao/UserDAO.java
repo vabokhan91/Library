@@ -6,9 +6,7 @@ import by.epam.bokhan.exception.DAOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by vbokh on 25.07.2017.
- */
+
 public interface UserDAO {
     boolean addUser(User user, int roleId) throws DAOException;
 

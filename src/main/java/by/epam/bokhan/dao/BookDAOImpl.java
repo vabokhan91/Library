@@ -6,18 +6,17 @@ import by.epam.bokhan.pool.ConnectionPool;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+
+import static by.epam.bokhan.dao.DAOConstant.*;
 
 
-/**
- * Created by vbokh on 01.08.2017.
- */
 public class BookDAOImpl extends AbstractDAO implements BookDAO {
-    private static final String SQL_GET_ALL_BOOKS = "SELECT book.id, book.title, book.pages,book.isbn, book.year, book.description, book.location,publisher.id, publisher.name as publisher,\n" +
+    private static final String SQL_GET_ALL_BOOKS = "SELECT book.id, book.title, book.pages,book.isbn, book.year, book.description, book.location,publisher.id, publisher.name,\n" +
             "genres.genre_name,genres.genre_id, authors.author_name, authors.author_surname, authors.author_patronymic\n" +
             "from book\n" +
             "left join publisher on book.publisher_id = publisher.id\n" +
@@ -33,11 +32,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "            where book.id = ?";
 
     private static final String SQL_GET_BOOK_FOR_EDITING = "SELECT book.id, book.title,book.pages,book.isbn,  book.location,publisher.id, publisher.name, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year,\n" +
-            "genres.id, genres.name\n" +
+            "genres.genre_id, genre_name\n" +
             "from book\n" +
             "left join (select book_author.book_id as b,author.name , author.surname , author.patronymic  from book_author left join author on book_author.author_id = author.id) as authors\n" +
             "on book.id = b \n" +
-            "left join (select book_genre.book_id as b_id, genre.id, genre.name from book_genre left join genre on book_genre.genre_id = genre.id) as genres\n" +
+            "left join (select book_genre.book_id as b_id, genre.id as genre_id, genre.name as genre_name from book_genre left join genre on book_genre.genre_id = genre.id) as genres\n" +
             "on book.id = b_id\n" +
             "left join publisher\n" +
             "on book.publisher_id = publisher.id\n" +
@@ -50,7 +49,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "            where book.title LIKE ?";
 
 
-    private static final String SQL_GET_EXPLICIT_BOOK_INFO = "SELECT book.id, book.title,book.pages,book.isbn, book.location,genres.genre_id, genres.genre_name, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year,publisher.id, publisher.name as publisher\n" +
+    private static final String SQL_GET_EXPLICIT_BOOK_INFO = "SELECT book.id, book.title,book.pages,book.isbn, book.location,genres.genre_id, genres.genre_name, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year,publisher.id, publisher.name\n" +
             " from book \n" +
             " left join publisher on book.publisher_id = publisher.id\n" +
             " left join (select book_author.book_id as b,author.name, author.surname, author.patronymic from book_author left join author on book_author.author_id = author.id) as authors\n" +
@@ -76,7 +75,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_DELETE_PUBLISHER = "DELETE FROM publisher WHERE publisher.id = ?";
     private static final String SQL_ADD_AUTHOR = "INSERT INTO author (author.name, author.surname, author.patronymic, author.date_of_birth) VALUES (?,?,?,?)";
     private static final String SQL_ADD_PUBLISHER = "INSERT INTO publisher (publisher.name) VALUES (?)";
-    private static final String SQL_GET_ALL_AUTHORS = "Select * from author";
+    private static final String SQL_GET_ALL_AUTHORS = "Select author.id, author.name as author_name, author.surname as author_surname, author.panronymic as author_patronymic from author";
     private static final String SQL_GET_ALL_PUBLISHERS = "Select * from publisher";
     private static final String SQL_ADD_BOOK = "INSERT INTO book (book.title, book.pages,book.isbn, book.year,book.publisher_id,book.description,book.location) VALUES (?,?,?,?,?,?,?)";
     private static final String SQL_ADD_BOOK_GENRE = "INSERT INTO book_genre (book_id,genre_id) VALUES (?,?)";
@@ -100,7 +99,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_ONLINE_ORDER = "INSERT INTO online_orders (online_orders.library_card_id, online_orders.book_id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date, online_orders.order_status) \n" +
             "VALUES (?,?,now(),addtime(now(), '3 0:0:0.0'), null,'booked')";
 
-    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name,authors.surname, authors.patronymic, user.id,library_card.id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
+    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name as author_name,authors.surname as author_surname, authors.patronymic as author_patronymic, user.id,library_card.id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
             "from online_orders\n" +
             "left join library_card on online_orders.library_card_id = library_card.id\n" +
             "right join user\n" +
@@ -111,8 +110,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "where library_card.id = ?";
     private static final String SQL_CANCEL_ONLINE_ORDER = "Update online_orders set online_orders.order_execution_date = now(), order_status = 'canceled' where online_orders.id = ?";
     private static final String SQL_ONLINE_ORDER_STATUS = "SELECT order_status from online_orders where online_orders.id = ?";
-    private static final String SQL_EXECUTE_ONLINE_ORDER ="Update online_orders SET online_orders.order_execution_date = now(), online_orders.order_status = 'executed' where online_orders.id = ?";
-    private static final String SQL_GET_BOOK_BY_GENRE = "SELECT book.id, book.title,book.pages,book.isbn, book.location, book.description, genres.genre_id, genres.genre_name, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year,publisher.id, publisher.name as publisher\n" +
+    private static final String SQL_EXECUTE_ONLINE_ORDER = "Update online_orders SET online_orders.order_execution_date = now(), online_orders.order_status = 'executed' where online_orders.id = ?";
+    private static final String SQL_GET_BOOK_BY_GENRE = "SELECT book.id, book.title,book.pages,book.isbn, book.location, book.description, genres.genre_id, genres.genre_name, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year,publisher.id, publisher.name\n" +
             "from book \n" +
             "left join publisher on book.publisher_id = publisher.id\n" +
             "left join (select book_author.book_id as b,author.name, author.surname, author.patronymic from book_author left join author on book_author.author_id = author.id) as authors\n" +
@@ -120,18 +119,6 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "left join (select book_id,genre.id as genre_id, genre.name as genre_name from book_genre left join genre on book_genre.genre_id = genre.id) as genres \n" +
             "on book.id = genres.book_id\n" +
             "where genre_name LIKE ?";
-
-
-    private final String ORDER_DATE = "orders.order_date";
-    private final String EXPIRATION_DATE = "orders.expiration_date";
-    private final String RETURN_DATE = "orders.return_date";
-    private final String USER_NAME = "user.name";
-    private final String USER_SURNAME = "user.surname";
-    private final String USER_PATRONYMIC = "user.patronymic";
-    private final String MOBILE_PHONE = "library_card.mobile_phone";
-    private final String USER_ID = "user.id";
-    private final String LIBRARY_CARD = "library_card.id";
-
 
     @Override
     public List<Book> getAllBooks() throws DAOException {
@@ -145,11 +132,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             while (rs.next()) {
                 Book book = new Book();
 
-                int bookId = rs.getInt("book.id");
+                int bookId = rs.getInt(BOOK_ID);
                 int lastId = !books.isEmpty() ? books.getLast().getId() : 0;
                 if (lastId == bookId) {
-                    String g = rs.getString("genre_name");
-                    int gId = rs.getInt("genres.genre_id");
+                    String g = rs.getString(GENRES_NAME);
+                    int gId = rs.getInt(GENRES_ID);
                     if (g != null && !g.isEmpty()) {
                         Genre gen = new Genre();
                         gen.setId(gId);
@@ -159,9 +146,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                         }
 
                     }
-                    String authorName = rs.getString("author_name");
-                    String authorSurname = rs.getString("author_surname");
-                    String authorPatronymic = rs.getString("author_patronymic");
+                    String authorName = rs.getString(AUTHOR_NAME);
+                    String authorSurname = rs.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                     Author author = new Author();
                     author.setName(authorName);
                     author.setSurname(authorSurname);
@@ -173,33 +160,33 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     continue;
                 }
                 book.setId(bookId);
-                book.setTitle(rs.getString("book.title"));
-                book.setPages(rs.getInt("book.pages"));
-                book.setIsbn(rs.getString("book.isbn"));
-                book.setYear(rs.getInt("book.year"));
-                book.setDescription(new String(rs.getBytes("book.description"), StandardCharsets.UTF_8));
-                book.setLocation(Location.valueOf(rs.getString("book.location").toUpperCase()));
+                book.setTitle(rs.getString(BOOK_TITLE));
+                book.setPages(rs.getInt(BOOK_PAGES));
+                book.setIsbn(rs.getString(BOOK_ISBN));
+                book.setYear(rs.getInt(BOOK_YEAR));
+                book.setDescription(new String(rs.getBytes(BOOK_DESCRIPTION), StandardCharsets.UTF_8));
+                book.setLocation(Location.valueOf(rs.getString(BOOK_LOCATION).toUpperCase()));
                 Publisher publisher = new Publisher();
-                Integer publisherId = rs.getInt("publisher.id");
+                Integer publisherId = rs.getInt(PUBLISHER_ID);
                 if (publisherId != null) {
                     publisher.setId(publisherId);
                 }
-                String publisherName = rs.getString("publisher");
+                String publisherName = rs.getString(PUBLISHER_NAME);
                 if (publisherName != null && !publisherName.isEmpty()) {
                     publisher.setName(publisherName);
                 }
                 book.setPublisher(publisher);
-                String g = rs.getString("genre_name");
-                int gId = rs.getInt("genres.genre_id");
+                String g = rs.getString(GENRES_NAME);
+                int gId = rs.getInt(GENRES_ID);
                 if (g != null && !g.isEmpty()) {
                     Genre gen = new Genre();
                     gen.setId(gId);
                     gen.setName(g);
                     book.addGenre(gen);
                 }
-                String authorName = rs.getString("author_name");
-                String authorSurname = rs.getString("author_surname");
-                String authorPatronymic = rs.getString("author_patronymic");
+                String authorName = rs.getString(AUTHOR_NAME);
+                String authorSurname = rs.getString(AUTHOR_SURNAME);
+                String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                 Author author = new Author();
                 author.setName(authorName);
                 author.setSurname(authorSurname);
@@ -229,12 +216,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
             while (rs.next()) {
                 book = new Book();
-                int bId = rs.getInt("book.id");
+                int bookIdFromDB = rs.getInt(BOOK_ID);
                 int lastId = !books.isEmpty() ? books.getLast().getId() : 0;
-                if (lastId == bId) {
-                    String authorName = rs.getString("author_name");
-                    String authorSurname = rs.getString("author_surname");
-                    String authorPatronymic = rs.getString("author_patronymic");
+                if (lastId == bookIdFromDB) {
+                    String authorName = rs.getString(AUTHOR_NAME);
+                    String authorSurname = rs.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                     Author author = new Author();
                     author.setName(authorName);
                     author.setSurname(authorSurname);
@@ -245,14 +232,14 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     }
                     continue;
                 }
-                book.setId(bId);
-                book.setTitle(rs.getString("book.title"));
-                book.setPages(rs.getInt("book.pages"));
-                book.setYear(rs.getInt("book.year"));
-                book.setLocation(Location.valueOf(rs.getString("book.location").toUpperCase()));
-                String authorName = rs.getString("author_name");
-                String authorSurname = rs.getString("author_surname");
-                String authorPatronymic = rs.getString("author_patronymic");
+                book.setId(bookIdFromDB);
+                book.setTitle(rs.getString(BOOK_TITLE));
+                book.setPages(rs.getInt(BOOK_PAGES));
+                book.setYear(rs.getInt(BOOK_YEAR));
+                book.setLocation(Location.valueOf(rs.getString(BOOK_LOCATION).toUpperCase()));
+                String authorName = rs.getString(AUTHOR_NAME);
+                String authorSurname = rs.getString(AUTHOR_SURNAME);
+                String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                 Author author = new Author();
                 author.setName(authorName);
                 author.setSurname(authorSurname);
@@ -283,12 +270,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 book = new Book();
-                int bId = rs.getInt("book.id");
+                int bookIdFromDB = rs.getInt(BOOK_ID);
                 int lastId = !books.isEmpty() ? books.getLast().getId() : 0;
-                if (lastId == bId) {
-                    String authorName = rs.getString("author_name");
-                    String authorSurname = rs.getString("author_surname");
-                    String authorPatronymic = rs.getString("author_patronymic");
+                if (lastId == bookIdFromDB) {
+                    String authorName = rs.getString(AUTHOR_NAME);
+                    String authorSurname = rs.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                     Author author = new Author();
                     author.setName(authorName);
                     author.setSurname(authorSurname);
@@ -299,14 +286,14 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     }
                     continue;
                 }
-                book.setId(bId);
-                book.setTitle(rs.getString("book.title"));
-                book.setPages(rs.getInt("book.pages"));
-                book.setYear(rs.getInt("book.year"));
-                book.setLocation(Location.valueOf(rs.getString("book.location").toUpperCase()));
-                String authorName = rs.getString("author_name");
-                String authorSurname = rs.getString("author_surname");
-                String authorPatronymic = rs.getString("author_patronymic");
+                book.setId(bookIdFromDB);
+                book.setTitle(rs.getString(BOOK_TITLE));
+                book.setPages(rs.getInt(BOOK_PAGES));
+                book.setYear(rs.getInt(BOOK_YEAR));
+                book.setLocation(Location.valueOf(rs.getString(BOOK_LOCATION).toUpperCase()));
+                String authorName = rs.getString(AUTHOR_NAME);
+                String authorSurname = rs.getString(AUTHOR_SURNAME);
+                String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                 Author author = new Author();
                 author.setName(authorName);
                 author.setSurname(authorSurname);
@@ -337,11 +324,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             while (rs.next()) {
                 Book book = new Book();
                 Genre genre;
-                int bId = rs.getInt("book.id");
+                int bId = rs.getInt(BOOK_ID);
                 int lastId = !books.isEmpty() ? books.getLast().getId() : 0;
                 if (lastId == bId) {
-                    String g = rs.getString("genre_name");
-                    int gId = rs.getInt("genres.genre_id");
+                    String g = rs.getString(GENRES_NAME);
+                    int gId = rs.getInt(GENRES_ID);
                     if (g != null && !g.isEmpty()) {
                         genre = new Genre();
                         genre.setId(gId);
@@ -351,9 +338,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                         }
 
                     }
-                    String authorName = rs.getString("author_name");
-                    String authorSurname = rs.getString("author_surname");
-                    String authorPatronymic = rs.getString("author_patronymic");
+                    String authorName = rs.getString(AUTHOR_NAME);
+                    String authorSurname = rs.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                     Author author = new Author();
                     author.setName(authorName);
                     author.setSurname(authorSurname);
@@ -365,34 +352,32 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     continue;
                 }
                 book.setId(bookId);
-                book.setTitle(rs.getString("book.title"));
-                book.setPages(rs.getInt("book.pages"));
-                book.setIsbn(rs.getString("book.isbn"));
-                book.setYear(rs.getInt("book.year"));
-                book.setLocation(Location.valueOf(rs.getString("book.location").toUpperCase()));
+                book.setTitle(rs.getString(BOOK_TITLE));
+                book.setPages(rs.getInt(BOOK_PAGES));
+                book.setIsbn(rs.getString(BOOK_ISBN));
+                book.setYear(rs.getInt(BOOK_YEAR));
+                book.setLocation(Location.valueOf(rs.getString(BOOK_LOCATION).toUpperCase()));
                 Publisher publisher = new Publisher();
-                Integer publisherId = rs.getInt("publisher.id");
+                Integer publisherId = rs.getInt(PUBLISHER_ID);
                 if (publisherId != null) {
                     publisher.setId(publisherId);
                 }
-                String publisherName = rs.getString("publisher");
+                String publisherName = rs.getString(PUBLISHER_NAME);
                 if (publisherName != null && !publisherName.isEmpty()) {
                     publisher.setName(publisherName);
                 }
-                publisher.setId(rs.getInt("publisher.id"));
-                publisher.setName(rs.getString("publisher"));
                 book.setPublisher(publisher);
-                String g = rs.getString("genre_name");
-                int gId = rs.getInt("genres.genre_id");
-                if (g != null && !g.isEmpty()) {
+                String genreName = rs.getString(GENRES_NAME);
+                int genreId = rs.getInt(GENRES_ID);
+                if (genreName != null && !genreName.isEmpty()) {
                     genre = new Genre();
-                    genre.setId(gId);
-                    genre.setName(g);
+                    genre.setId(genreId);
+                    genre.setName(genreName);
                     book.addGenre(genre);
                 }
-                String authorName = rs.getString("author_name");
-                String authorSurname = rs.getString("author_surname");
-                String authorPatronymic = rs.getString("author_patronymic");
+                String authorName = rs.getString(AUTHOR_NAME);
+                String authorSurname = rs.getString(AUTHOR_SURNAME);
+                String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                 Author author = new Author();
                 author.setName(authorName);
                 author.setSurname(authorSurname);
@@ -418,7 +403,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_GET_BOOKS_LAST_ORDER);
             st.setInt(1, bookId);
-            st.setInt(2,bookId);
+            st.setInt(2, bookId);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -426,10 +411,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 Timestamp lastOrderTimeStamp = rs.getTimestamp(ORDER_DATE);
                 LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setOrderDate(lastOrderDate);
-                Timestamp expirationDateTimeStamp = rs.getTimestamp(EXPIRATION_DATE);
+                Timestamp expirationDateTimeStamp = rs.getTimestamp(ORDER_EXPIRATION_DATE);
                 LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setExpirationDate(expirationDate);
-                Timestamp returnDateTimeStamp = rs.getTimestamp(RETURN_DATE);
+                Timestamp returnDateTimeStamp = rs.getTimestamp(ORDER_RETURN_DATE);
                 LocalDate returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setReturnDate(returnDate);
                 User user = new User();
@@ -464,11 +449,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             while (rs.next()) {
                 book = new Book();
                 Genre genre;
-                int bId = rs.getInt("book.id");
+                int bId = rs.getInt(BOOK_ID);
                 int lastId = !books.isEmpty() ? books.getLast().getId() : 0;
                 if (lastId == bId) {
-                    String g = rs.getString("genres.name");
-                    int gId = rs.getInt("genres.id");
+                    String g = rs.getString(GENRES_NAME);
+                    int gId = rs.getInt(GENRES_ID);
                     if (g != null && !g.isEmpty()) {
                         genre = new Genre();
                         genre.setId(gId);
@@ -478,9 +463,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                         }
 
                     }
-                    String authorName = rs.getString("author_name");
-                    String authorSurname = rs.getString("author_surname");
-                    String authorPatronymic = rs.getString("author_patronymic");
+                    String authorName = rs.getString(AUTHOR_NAME);
+                    String authorSurname = rs.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                     Author author = new Author();
                     author.setName(authorName);
                     author.setSurname(authorSurname);
@@ -492,31 +477,31 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     continue;
                 }
                 book.setId(bId);
-                book.setTitle(rs.getString("book.title"));
-                book.setPages(rs.getInt("book.pages"));
-                book.setYear(rs.getInt("book.year"));
-                String g = rs.getString("genres.name");
-                int gId = rs.getInt("genres.id");
+                book.setTitle(rs.getString(BOOK_TITLE));
+                book.setPages(rs.getInt(BOOK_PAGES));
+                book.setYear(rs.getInt(BOOK_YEAR));
+                String g = rs.getString(GENRES_NAME);
+                int gId = rs.getInt(GENRES_ID);
                 if (g != null && !g.isEmpty()) {
                     genre = new Genre();
                     genre.setId(gId);
                     genre.setName(g);
                     book.addGenre(genre);
                 }
-                book.setIsbn(rs.getString("book.isbn"));
+                book.setIsbn(rs.getString(BOOK_ISBN));
                 Publisher publisher = new Publisher();
-                Integer publisherId = rs.getInt("publisher.id");
+                Integer publisherId = rs.getInt(PUBLISHER_ID);
                 if (publisherId != null) {
                     publisher.setId(publisherId);
                 }
-                String publisherName = rs.getString("publisher.name");
+                String publisherName = rs.getString(PUBLISHER_NAME);
                 if (publisherName != null && !publisherName.isEmpty()) {
                     publisher.setName(publisherName);
                 }
                 book.setPublisher(publisher);
-                String authorName = rs.getString("author_name");
-                String authorSurname = rs.getString("author_surname");
-                String authorPatronymic = rs.getString("author_patronymic");
+                String authorName = rs.getString(AUTHOR_NAME);
+                String authorSurname = rs.getString(AUTHOR_SURNAME);
+                String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                 Author author = new Author();
                 author.setName(authorName);
                 author.setSurname(authorSurname);
@@ -542,8 +527,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             st = connection.createStatement();
             ResultSet rs = st.executeQuery(SQL_GET_ALL_GENRES);
             while (rs.next()) {
-                String name = rs.getString("name");
-                int gId = rs.getInt("id");
+                String name = rs.getString(GENRE_NAME);
+                int gId = rs.getInt(GENRE_ID);
                 Genre genre = new Genre();
                 genre.setId(gId);
                 genre.setName(name);
@@ -705,7 +690,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             ResultSet rs = allGenresStatement.executeQuery(SQL_GET_ALL_GENRES);
             boolean genreExist = false;
             while (rs.next()) {
-                if (rs.getString("genre.name").equalsIgnoreCase(genreName)) {
+                if (rs.getString(GENRE_NAME).equalsIgnoreCase(genreName)) {
                     genreExist = true;
                 }
             }
@@ -788,11 +773,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             ResultSet rs = st.executeQuery(SQL_GET_ALL_AUTHORS);
             while (rs.next()) {
                 Author author = new Author();
-                int authorId = Integer.parseInt(rs.getString("author.id"));
-                String name = rs.getString("author.name");
-                String surname = rs.getString("author.surname");
-                String patronymic = rs.getString("author.patronymic");
-                String date = rs.getString("author.date_of_birth");
+                int authorId = Integer.parseInt(rs.getString(AUTHOR_ID));
+                String name = rs.getString(AUTHOR_NAME);
+                String surname = rs.getString(AUTHOR_SURNAME);
+                String patronymic = rs.getString(AUTHOR_PATRONYMIC);
+                String date = rs.getString(AUTHOR_DATE_OF_BIRTH);
                 LocalDate dateOfBirth = LocalDate.parse(date);
                 author.setId(authorId);
                 author.setName(name);
@@ -822,8 +807,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             ResultSet rs = st.executeQuery(SQL_GET_ALL_PUBLISHERS);
             while (rs.next()) {
                 Publisher publisher = new Publisher();
-                int publisherId = Integer.parseInt(rs.getString("publisher.id"));
-                String publisherName = rs.getString("publisher.name");
+                int publisherId = Integer.parseInt(rs.getString(PUBLISHER_ID));
+                String publisherName = rs.getString(PUBLISHER_NAME);
                 publisher.setId(publisherId);
                 publisher.setName(publisherName);
                 publishers.add(publisher);
@@ -997,33 +982,33 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             while (rs.next()) {
                 Order order = new Order();
                 Book book = new Book();
-                String orderNumber = rs.getString("orders.id");
+                String orderNumber = rs.getString(ORDER_ID);
                 if (orderNumber != null && !orderNumber.isEmpty()) {
                     int orderId = Integer.parseInt(orderNumber);
                     order.setId(orderId);
-                    int bookId = Integer.parseInt(rs.getString("book.id"));
-                    String bookTitle = rs.getString("book.title");
-                    String bookIsbn = rs.getString("book.isbn");
+                    int bookId = Integer.parseInt(rs.getString(BOOK_ID));
+                    String bookTitle = rs.getString(BOOK_TITLE);
+                    String bookIsbn = rs.getString(BOOK_ISBN);
                     book.setId(bookId);
                     book.setTitle(bookTitle);
                     book.setIsbn(bookIsbn);
                     order.setBook(book);
-                    Timestamp lastOrderTimeStamp = rs.getTimestamp("orders.order_date");
+                    Timestamp lastOrderTimeStamp = rs.getTimestamp(ORDER_DATE);
                     LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
                     order.setOrderDate(lastOrderDate);
-                    Timestamp expirationDateTimeStamp = rs.getTimestamp("orders.expiration_date");
+                    Timestamp expirationDateTimeStamp = rs.getTimestamp(ORDER_EXPIRATION_DATE);
                     LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                     order.setExpirationDate(expirationDate);
-                    Timestamp returnDateTimeStamp = rs.getTimestamp("orders.return_date");
+                    Timestamp returnDateTimeStamp = rs.getTimestamp(ORDER_RETURN_DATE);
                     LocalDate returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                     order.setReturnDate(returnDate);
                 }
                 User user = new User();
                 int userId = Integer.parseInt(rs.getString(USER_ID));
                 int userLibraryCard = Integer.parseInt(rs.getString(LIBRARY_CARD));
-                String userName = rs.getString("user.name");
-                String userSurname = rs.getString("user.surname");
-                String userPatronymic = rs.getString("user.patronymic");
+                String userName = rs.getString(USER_NAME);
+                String userSurname = rs.getString(USER_SURNAME);
+                String userPatronymic = rs.getString(USER_PATRONYMIC);
                 String userMobilePhone = rs.getString(MOBILE_PHONE);
                 user.setId(userId);
                 user.setLibraryCardNumber(userLibraryCard);
@@ -1134,13 +1119,13 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Book book = new Book();
-                int ordersId = Integer.parseInt(rs.getString("online_orders.id"));
-                int bookId = Integer.parseInt(rs.getString("book.id"));
+                int ordersId = Integer.parseInt(rs.getString(ONLINE_ORDER_ID));
+                int bookId = Integer.parseInt(rs.getString(BOOK_ID));
                 int lastId = !userOrders.isEmpty() ? userOrders.getLast().getId() : 0;
                 if (lastId == ordersId) {
-                    String authorName = rs.getString("authors.name");
-                    String authorSurname = rs.getString("authors.surname");
-                    String authorPatronymic = rs.getString("authors.patronymic");
+                    String authorName = rs.getString(AUTHOR_NAME);
+                    String authorSurname = rs.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                     Author author = new Author();
                     author.setName(authorName);
                     author.setSurname(authorSurname);
@@ -1152,11 +1137,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     continue;
                 }
 
-                String bookTitle = rs.getString("book.title");
-                String bookIsbn = rs.getString("book.isbn");
-                String authorName = rs.getString("authors.name");
-                String authorSurname = rs.getString("authors.surname");
-                String authorPatronymic = rs.getString("authors.patronymic");
+                String bookTitle = rs.getString(BOOK_TITLE);
+                String bookIsbn = rs.getString(BOOK_ISBN);
+                String authorName = rs.getString(AUTHOR_NAME);
+                String authorSurname = rs.getString(AUTHOR_SURNAME);
+                String authorPatronymic = rs.getString(AUTHOR_PATRONYMIC);
                 Author author = new Author();
                 author.setName(authorName);
                 author.setSurname(authorSurname);
@@ -1166,23 +1151,23 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 book.setTitle(bookTitle);
                 book.setIsbn(bookIsbn);
                 OnlineOrder order = new OnlineOrder();
-                String orderStatus = rs.getString("online_orders.order_status");
+                String orderStatus = rs.getString(ONLINE_ORDER_STATUS);
                 order.setStatus(orderStatus);
                 order.setBook(book);
                 order.setId(ordersId);
                 User user = new User();
-                int userId = Integer.parseInt(rs.getString("user.id"));
+                int userId = Integer.parseInt(rs.getString(USER_ID));
                 int userLibraryCard = Integer.parseInt(rs.getString(LIBRARY_CARD));
                 user.setId(userId);
                 user.setLibraryCardNumber(userLibraryCard);
                 order.setUser(user);
-                Timestamp lastOrderTimeStamp = rs.getTimestamp("online_orders.order_date");
+                Timestamp lastOrderTimeStamp = rs.getTimestamp(ONLINE_ORDER_DATE_OF_ORDER);
                 LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setOrderDate(lastOrderDate);
-                Timestamp expirationDateTimeStamp = rs.getTimestamp("online_orders.expiration_date");
+                Timestamp expirationDateTimeStamp = rs.getTimestamp(ONLINE_ORDER_EXPIRATION_DATE);
                 LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setExpirationDate(expirationDate);
-                Timestamp returnDateTimeStamp = rs.getTimestamp("online_orders.order_execution_date");
+                Timestamp returnDateTimeStamp = rs.getTimestamp(ONLINE_ORDER_EXECUTION_DATE);
                 LocalDate executionDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setReturnDate(executionDate);
                 userOrders.add(order);
@@ -1249,7 +1234,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
             ResultSet rs = orderStatusStatement.executeQuery();
             rs.next();
-            String orderStatus = rs.getString("online_orders.order_status");
+            String orderStatus = rs.getString(ONLINE_ORDER_STATUS);
             order.setStatus(orderStatus);
 
             return order;
@@ -1334,11 +1319,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             while (resultSet.next()) {
                 Book book = new Book();
 
-                int bookId = resultSet.getInt("book.id");
+                int bookId = resultSet.getInt(BOOK_ID);
                 int lastId = !books.isEmpty() ? books.getLast().getId() : 0;
                 if (lastId == bookId) {
-                    String g = resultSet.getString("genre_name");
-                    int gId = resultSet.getInt("genres.genre_id");
+                    String g = resultSet.getString(GENRES_NAME);
+                    int gId = resultSet.getInt(GENRES_ID);
                     if (g != null && !g.isEmpty()) {
                         Genre gen = new Genre();
                         gen.setId(gId);
@@ -1348,9 +1333,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                         }
 
                     }
-                    String authorName = resultSet.getString("author_name");
-                    String authorSurname = resultSet.getString("author_surname");
-                    String authorPatronymic = resultSet.getString("author_patronymic");
+                    String authorName = resultSet.getString(AUTHOR_NAME);
+                    String authorSurname = resultSet.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = resultSet.getString(AUTHOR_PATRONYMIC);
                     Author author = new Author();
                     author.setName(authorName);
                     author.setSurname(authorSurname);
@@ -1362,31 +1347,31 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     continue;
                 }
                 book.setId(bookId);
-                book.setTitle(resultSet.getString("book.title"));
-                book.setPages(resultSet.getInt("book.pages"));
-                book.setIsbn(resultSet.getString("book.isbn"));
-                book.setYear(resultSet.getInt("book.year"));
-                book.setDescription(new String(resultSet.getBytes("book.description"), StandardCharsets.UTF_8));
-                book.setLocation(Location.valueOf(resultSet.getString("book.location").toUpperCase()));
+                book.setTitle(resultSet.getString(BOOK_TITLE));
+                book.setPages(resultSet.getInt(BOOK_PAGES));
+                book.setIsbn(resultSet.getString(BOOK_ISBN));
+                book.setYear(resultSet.getInt(BOOK_YEAR));
+                book.setDescription(new String(resultSet.getBytes(BOOK_DESCRIPTION), StandardCharsets.UTF_8));
+                book.setLocation(Location.valueOf(resultSet.getString(BOOK_LOCATION).toUpperCase()));
                 Publisher publisher = new Publisher();
-                Integer publisherId = resultSet.getInt("publisher.id");
+                Integer publisherId = resultSet.getInt(PUBLISHER_ID);
                 publisher.setId(publisherId);
-                String publisherName = resultSet.getString("publisher");
+                String publisherName = resultSet.getString(PUBLISHER_NAME);
                 if (publisherName != null && !publisherName.isEmpty()) {
                     publisher.setName(publisherName);
                 }
                 book.setPublisher(publisher);
-                String g = resultSet.getString("genre_name");
-                int gId = resultSet.getInt("genres.genre_id");
+                String g = resultSet.getString(GENRES_NAME);
+                int gId = resultSet.getInt(GENRES_ID);
                 if (g != null && !g.isEmpty()) {
                     Genre gen = new Genre();
                     gen.setId(gId);
                     gen.setName(g);
                     book.addGenre(gen);
                 }
-                String authorName = resultSet.getString("author_name");
-                String authorSurname = resultSet.getString("author_surname");
-                String authorPatronymic = resultSet.getString("author_patronymic");
+                String authorName = resultSet.getString(AUTHOR_NAME);
+                String authorSurname = resultSet.getString(AUTHOR_SURNAME);
+                String authorPatronymic = resultSet.getString(AUTHOR_PATRONYMIC);
                 Author author = new Author();
                 author.setName(authorName);
                 author.setSurname(authorSurname);

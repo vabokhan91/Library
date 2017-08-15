@@ -1,8 +1,6 @@
 package by.epam.bokhan.exception;
 
-/**
- * Created by vbokh on 21.07.2017.
- */
+
 public class ConnectionPoolException extends Exception {
     public ConnectionPoolException() {
         super();
