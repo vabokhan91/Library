@@ -22,7 +22,7 @@ public interface BookDAO {
 
     LinkedList<Genre> getAllGenres() throws DAOException;
 
-    boolean editBook(Book book, int[] genreId, int[] authorId) throws DAOException;
+    boolean editBook(Book book) throws DAOException;
 
     boolean addAuthor(String name, String surname, String patronymic, String dateOfBirth) throws DAOException;
 
