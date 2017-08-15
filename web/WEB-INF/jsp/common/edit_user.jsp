@@ -35,7 +35,9 @@
         </c:choose><br/>
 
         <fmt:message key="label.address" bundle="${messages}"/> : <input type="text" name="user_address" value="${found_user.address}"/> <br/>
+        <c:if test="${user.role.ordinal()==3}">
         <fmt:message key="label.login" bundle="${messages}"/> : <input type="text" name="login" value="${found_user.login}"/> <br/>
+        </c:if>
         <fmt:message key="label.mobile_phone" bundle="${messages}"/> : <input type="text" name="user_mobilephone" value="${found_user.mobilePhone}"/> <br/>
         <input type="submit" name="submit" value=<fmt:message key="label.user.edit_user" bundle="${messages}"/> />
         <input type="hidden" name="library_card" value="${found_user.libraryCardNumber}"/>
