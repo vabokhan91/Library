@@ -30,7 +30,7 @@ public interface BookDAO {
 
     LinkedList<Publisher> getAllPublishers() throws DAOException;
 
-    boolean addBook(Book book,int publisherId, int genreId[], int[] authorId) throws DAOException;
+    boolean addBook(Book book) throws DAOException;
 
     boolean deleteBook(int bookId) throws DAOException;
 

@@ -1,6 +1,7 @@
 package by.epam.bokhan.validator;
 
 import by.epam.bokhan.entity.Author;
+import by.epam.bokhan.entity.Location;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,6 +22,7 @@ public class BookValidator {
     private static final String REGEX_FOR_NAME = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
     private static final String REGEX_FOR_SURNAME = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
     private static final String REGEX_FOR_PATRONYMIC = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
+    private static final String REGEX_FOR_BOOK_LOCATION = "[a-zA-Zа-яА-Я_]{1,30}";
 
 
     public static boolean isBookIdValid(String bookId) {
@@ -181,5 +183,22 @@ public class BookValidator {
         Pattern patternForPatronymic = Pattern.compile(REGEX_FOR_PATRONYMIC);
         Matcher matcherForPatronymic = patternForPatronymic.matcher(patronymic);
         return patronymic == null || patronymic.isEmpty() || matcherForPatronymic.matches();
+    }
+
+    public static boolean isBookLocationValid(String locationValue) {
+        boolean isLocationValid = false;
+        if (locationValue != null) {
+            Pattern patternForLocation = Pattern.compile(REGEX_FOR_BOOK_LOCATION);
+            Matcher matcherForLocation = patternForLocation.matcher(locationValue);
+            if (matcherForLocation.matches()) {
+                Location[] locationValues = Location.values();
+                for (Location location : locationValues) {
+                    if (location.equals(Location.valueOf(locationValue.toUpperCase()))) {
+                        isLocationValid = true;
+                    }
+                }
+            }
+        }
+        return isLocationValid;
     }
 }

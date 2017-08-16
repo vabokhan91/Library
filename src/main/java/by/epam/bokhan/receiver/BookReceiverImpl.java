@@ -316,40 +316,47 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void addBook(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        boolean isBookAdded;
+        boolean isBookAdded = false;
         try {
             String title = (String) requestContent.getRequestParameters().get(BOOK_TITLE);
-            int pages = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_PAGES));
-            int yearOfPublishing = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_YEAR));
+            String pageValue = (String) requestContent.getRequestParameters().get(BOOK_PAGES);
+            String yearValue = (String) requestContent.getRequestParameters().get(BOOK_YEAR);
+            String publisherIdValue = (String) requestContent.getRequestParameters().get(BOOK_PUBLISHER);
             String isbn = (String) requestContent.getRequestParameters().get(BOOK_ISBN);
-            int publisherId = Integer.parseInt((String) requestContent.getRequestParameters().get(BOOK_PUBLISHER));
-            String genresId[] = (String[]) requestContent.getRequestParameterValues().get(BOOK_GENRE);
-            int genreId[] = new int[genresId.length];
-            for (int i = 0; i < genreId.length; i++) {
-                String stringValue = genresId[i];
-                int id = Integer.parseInt(stringValue);
-                genreId[i] = id;
-            }
-
-            String authorsId[] = (String[]) requestContent.getRequestParameterValues().get(BOOK_AUTHOR);
-            int[] authorId = new int[authorsId.length];
-            for (int i = 0; i < authorId.length; i++) {
-                String stringValue = authorsId[i];
-                int id = Integer.parseInt(stringValue);
-                authorId[i] = id;
-
-            }
+            String genresIdValues[] = (String[]) requestContent.getRequestParameterValues().get(BOOK_GENRE);
+            String authorsIdValues[] = (String[]) requestContent.getRequestParameterValues().get(BOOK_AUTHOR);
             String description = (String) requestContent.getRequestParameters().get(BOOK_DESCRIPTION);
-            Location location = Location.valueOf(((String) requestContent.getRequestParameters().get(BOOK_LOCATION)).toUpperCase());
-            Book book = new Book();
-            book.setTitle(title);
-            book.setPages(pages);
-            book.setYear(yearOfPublishing);
-            book.setIsbn(isbn);
-
-            book.setDescription(description);
-            book.setLocation(location);
-            isBookAdded = bookDAO.addBook(book, publisherId, genreId, authorId);
+            String locationValue = (String) requestContent.getRequestParameters().get(BOOK_LOCATION);
+            if (isBookTitleValid(title) && isBookPageValid(pageValue) && isBookYearValid(yearValue) && isBookPublisherIdValid(publisherIdValue)
+                    && isBookIsbnValid(isbn) && isBookGenreIdValid(genresIdValues) && isBookAuthorIdValid(authorsIdValues) && isBookLocationValid(locationValue)) {
+                Book book = new Book();
+                int pages = Integer.parseInt(pageValue);
+                int yearOfPublishing = Integer.parseInt(yearValue);
+                Publisher publisher = new Publisher();
+                publisher.setId(Integer.parseInt(publisherIdValue));
+                Location location = Location.valueOf((locationValue).toUpperCase());
+                List<Genre> genres = new ArrayList<>();
+                for (String genreIdValue : genresIdValues) {
+                    Genre genre = new Genre();
+                    genre.setId(Integer.parseInt(genreIdValue));
+                    genres.add(genre);
+                }
+                List<Author> authors = new ArrayList<>();
+                for (String authorIdValue : authorsIdValues) {
+                    Author author = new Author();
+                    author.setId(Integer.parseInt(authorIdValue));
+                    authors.add(author);
+                }
+                book.setTitle(title);
+                book.setPages(pages);
+                book.setYear(yearOfPublishing);
+                book.setIsbn(isbn);
+                book.setDescription(description);
+                book.setLocation(location);
+                book.setGenre(genres);
+                book.setAuthors(authors);
+                isBookAdded = bookDAO.addBook(book);
+            }
             requestContent.insertAttribute(IS_BOOK_ADDED, isBookAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);

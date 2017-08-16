@@ -791,7 +791,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             authors.sort(Comparator.comparing(a -> a.getSurname()));
             return authors;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DAOException(String.format("Can not get authors. Reason: %s", e.getMessage()),e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -818,7 +818,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             Collections.sort(publishers, Comparator.comparing(a -> a.getName()));
             return publishers;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DAOException(String.format("Can not get publishers. Reason: %s", e.getMessage()),e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -826,7 +826,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public boolean addBook(Book book, int publisherId, int genreId[], int[] authorId) throws DAOException {
+    public boolean addBook(Book book) throws DAOException {
         boolean isBookAdded = false;
         Connection connection = null;
         PreparedStatement addBookStatement = null;
@@ -847,7 +847,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             addBookStatement.setInt(2, bookPages);
             addBookStatement.setString(3, bookIsbn);
             addBookStatement.setInt(4, bookYear);
-            addBookStatement.setInt(5, publisherId);
+            addBookStatement.setInt(5, book.getPublisher().getId());
             addBookStatement.setString(6, bookDescription);
             addBookStatement.setString(7, location);
             int resultBookInsert = addBookStatement.executeUpdate();
@@ -856,16 +856,18 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 int lastBookId = keys.getInt(1);
                 addGenreStatement = connection.prepareStatement(SQL_ADD_BOOK_GENRE);
                 int resultGenreInsert = 0;
-                for (int id : genreId) {
+                List<Genre> genres = book.getGenre();
+                for (Genre genre : genres) {
                     addGenreStatement.setInt(1, lastBookId);
-                    addGenreStatement.setInt(2, id);
+                    addGenreStatement.setInt(2, genre.getId());
                     resultGenreInsert += addGenreStatement.executeUpdate();
                 }
                 addAuthorStatement = connection.prepareStatement(SQL_ADD_BOOK_AUTHOR);
                 int resultAuthorInsert = 0;
-                for (int id : authorId) {
+                List<Author> authors = book.getAuthors();
+                for (Author author : authors) {
                     addAuthorStatement.setInt(1, lastBookId);
-                    addAuthorStatement.setInt(2, id);
+                    addAuthorStatement.setInt(2, author.getId());
                     resultAuthorInsert += addAuthorStatement.executeUpdate();
                 }
 
@@ -880,11 +882,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         } catch (SQLException e) {
             try {
                 connection.rollback();
-                throw new DAOException(e);
+                throw new DAOException(String.format("Can not add book. Reason: %s", e.getMessage()),e);
             } catch (SQLException e1) {
-                throw new DAOException(e1);
+                throw new DAOException(String.format("Can not make rollback. Reason: %s", e.getMessage()),e1);
             }
-
         } finally {
             closeStatement(addBookStatement);
             closeStatement(addAuthorStatement);
