@@ -179,11 +179,12 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void addPublisher(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        boolean isPublisherAdded;
+        boolean isPublisherAdded = false;
         try {
-            String publisherName = (String) requestContent.getRequestParameters().get(PUBLISHER_NAME);
-
-            isPublisherAdded = bookDAO.addPublisher(publisherName);
+            String publisherNameValue = (String) requestContent.getRequestParameters().get(PUBLISHER_NAME);
+            if (isBookPublisherValid(publisherNameValue)) {
+                isPublisherAdded = bookDAO.addPublisher(publisherNameValue);
+            }
             requestContent.insertAttribute(IS_PUBLISHER_ADDED, isPublisherAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -195,12 +196,16 @@ public class BookReceiverImpl implements BookReceiver {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isPublisherDeleted;
         try {
-            String[] publishers = (String[]) requestContent.getRequestParameterValues().get(BOOK_PUBLISHER);
-            int[] publishersIds = new int[publishers.length];
-            for (int i = 0; i < publishers.length; i++) {
-                publishersIds[i] = Integer.parseInt(publishers[i]);
+            String[] publisherIdValues = (String[]) requestContent.getRequestParameterValues().get(BOOK_PUBLISHER);
+            List<Publisher> publishers = new ArrayList<>();
+            for (String publisherId : publisherIdValues) {
+                if (isBookPublisherIdValid(publisherId)) {
+                    Publisher publisher = new Publisher();
+                    publisher.setId(Integer.parseInt(publisherId));
+                    publishers.add(publisher);
+                }
             }
-            isPublisherDeleted = bookDAO.deletePublisher(publishersIds);
+            isPublisherDeleted = bookDAO.deletePublisher(publishers);
             requestContent.insertAttribute(IS_PUBLISHER_DELETED, isPublisherDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);

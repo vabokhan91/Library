@@ -249,7 +249,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return books;
         } catch (SQLException e) {
-            throw new DAOException(String.format("Can not find book. Reason : %s", e.getMessage()),e);
+            throw new DAOException(String.format("Can not find book. Reason : %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -303,7 +303,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return books;
         } catch (SQLException e) {
-            throw new DAOException(String.format("Can not find book. Reason : %s", e.getMessage()),e);
+            throw new DAOException(String.format("Can not find book. Reason : %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -648,7 +648,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return isPublisherAdded;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DAOException(String.format("Can not add publisher. Reason: %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -656,7 +656,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public boolean deletePublisher(int[] publishersIds) throws DAOException {
+    public boolean deletePublisher(List<Publisher> publishers) throws DAOException {
         boolean isPublisherDeleted = false;
         Connection connection = null;
         PreparedStatement st = null;
@@ -664,8 +664,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_DELETE_PUBLISHER);
             int res = 0;
-            for (int id : publishersIds) {
-                st.setInt(1, id);
+            for (Publisher publisher : publishers) {
+                st.setInt(1, publisher.getId());
                 res += st.executeUpdate();
             }
             if (res > 0) {
@@ -673,7 +673,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return isPublisherDeleted;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DAOException(String.format("Can not delete publisher. Reason: %s", e.getMessage()),e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
