@@ -176,8 +176,8 @@
       <file leaf-file-name="BookReceiverImpl.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="98">
-              <caret line="157" column="0" lean-forward="false" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
+            <state relative-caret-position="-294">
+              <caret line="289" column="13" lean-forward="true" selection-start-line="289" selection-start-column="13" selection-end-line="289" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -211,8 +211,8 @@
       <file leaf-file-name="BookValidator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/validator/BookValidator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="631">
-              <caret line="174" column="5" lean-forward="false" selection-start-line="174" selection-start-column="5" selection-end-line="174" selection-end-column="5" />
+            <state relative-caret-position="148">
+              <caret line="137" column="26" lean-forward="false" selection-start-line="137" selection-start-column="26" selection-end-line="137" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -248,60 +248,60 @@
       <file leaf-file-name="BookDAOImpl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="628" column="98" lean-forward="false" selection-start-line="628" selection-start-column="98" selection-end-line="628" selection-end-column="98" />
+            <state relative-caret-position="284">
+              <caret line="759" column="71" lean-forward="false" selection-start-line="759" selection-start-column="71" selection-end-line="759" selection-end-column="71" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1502877201849" expanded="true" signature="521:1391" ph="SELECT book.... book" />
-                <marker date="1502877201849" expanded="true" signature="899:1026" ph="select book_... book_genre" />
-                <marker date="1502877201849" expanded="true" signature="1114:1332" ph="select book_... book_author" />
-                <marker date="1502877201849" expanded="true" signature="1449:1957" ph="SELECT book.... book" />
-                <marker date="1502877201849" expanded="true" signature="1699:1851" ph="select book_... book_author" />
-                <marker date="1502877201849" expanded="true" signature="2021:2883" ph="SELECT book.... book" />
-                <marker date="1502877201849" expanded="true" signature="2021:2884" ph="SELECT book.... book" />
-                <marker date="1502877201849" expanded="true" signature="2334:2486" ph="select book_... book_author" />
-                <marker date="1502877201849" expanded="true" signature="2562:2709" ph="select book_... book_genre" />
-                <marker date="1502877201849" expanded="true" signature="2946:3460" ph="SELECT book.... book" />
-                <marker date="1502877201849" expanded="true" signature="3196:3348" ph="select book_... book_author" />
-                <marker date="1502877201849" expanded="true" signature="3527:4352" ph="SELECT book.... book" />
-                <marker date="1502877201849" expanded="true" signature="3905:4054" ph="select book_... book_author" />
-                <marker date="1502877201849" expanded="true" signature="4130:4257" ph="select book_... book_genre" />
-                <marker date="1502877201849" expanded="true" signature="4416:4963" ph="SELECT order... orders" />
-                <marker date="1502877201849" expanded="true" signature="4880:4939" ph="select max(o... orders" />
-                <marker date="1502877201849" expanded="true" signature="5021:5040" ph="Select * fro... genre" />
-                <marker date="1502877201849" expanded="true" signature="5092:5178" ph="Update book " />
-                <marker date="1502877201849" expanded="true" signature="5239:5290" ph="DELETE FROM " />
-                <marker date="1502877201849" expanded="true" signature="5352:5405" ph="DELETE FROM " />
-                <marker date="1502877201849" expanded="true" signature="5460:5496" ph="DELETE FROM " />
-                <marker date="1502877201849" expanded="true" signature="5552:5590" ph="DELETE FROM " />
-                <marker date="1502877201849" expanded="true" signature="5649:5693" ph="DELETE FROM " />
-                <marker date="1502877201849" expanded="true" signature="5746:5852" ph="INSERT INTO author... " />
-                <marker date="1502877201849" expanded="true" signature="5908:5957" ph="INSERT INTO publisher... " />
-                <marker date="1502877201849" expanded="true" signature="6015:6167" ph="Select * fro... author" />
-                <marker date="1502877201849" expanded="true" signature="6228:6251" ph="Select * fro... publisher" />
-                <marker date="1502877201849" expanded="true" signature="6302:6436" ph="INSERT INTO book... " />
-                <marker date="1502877201849" expanded="true" signature="6493:6547" ph="INSERT INTO book_genre... " />
-                <marker date="1502877201849" expanded="true" signature="6599:6640" ph="INSERT INTO genre... " />
-                <marker date="1502877201849" expanded="true" signature="6698:6754" ph="INSERT INTO book_author... " />
-                <marker date="1502877201849" expanded="true" signature="6815:6881" ph="SELECT * fro... book" />
-                <marker date="1502877201849" expanded="true" signature="6935:6969" ph="DELETE FROM " />
-                <marker date="1502877201849" expanded="true" signature="7037:7235" ph="INSERT INTO ORDERS... " />
-                <marker date="1502877201849" expanded="true" signature="7303:7502" ph="INSERT INTO ORDERS... " />
-                <marker date="1502877201849" expanded="true" signature="7571:7630" ph="Update book " />
-                <marker date="1502877201849" expanded="true" signature="7699:7758" ph="Update book " />
-                <marker date="1502877201849" expanded="true" signature="7822:7876" ph="Update book " />
-                <marker date="1502877201849" expanded="true" signature="7945:8004" ph="Update book " />
-                <marker date="1502877201849" expanded="true" signature="8062:8557" ph="Select order... orders" />
-                <marker date="1502877201849" expanded="true" signature="8611:8675" ph="UPDATE order... " />
-                <marker date="1502877201849" expanded="true" signature="8734:9016" ph="INSERT INTO online_orders... " />
-                <marker date="1502877201849" expanded="true" signature="9082:9961" ph="Select onlin... online_orders" />
-                <marker date="1502877201849" expanded="true" signature="9699:9847" ph="select book_... author" />
-                <marker date="1502877201849" expanded="true" signature="10023:10144" ph="Update onlin... " />
-                <marker date="1502877201849" expanded="true" signature="10206:10271" ph="SELECT order... online_orders" />
-                <marker date="1502877201849" expanded="true" signature="10334:10469" ph="Update onlin... " />
-                <marker date="1502877201849" expanded="true" signature="10529:11374" ph="SELECT book.... book" />
-                <marker date="1502877201849" expanded="true" signature="10923:11072" ph="select book_... book_author" />
-                <marker date="1502877201849" expanded="true" signature="11147:11274" ph="select book_... book_genre" />
+                <marker date="1502879961288" expanded="true" signature="521:1391" ph="SELECT book.... book" />
+                <marker date="1502879961288" expanded="true" signature="899:1026" ph="select book_... book_genre" />
+                <marker date="1502879961288" expanded="true" signature="1114:1332" ph="select book_... book_author" />
+                <marker date="1502879961288" expanded="true" signature="1449:1957" ph="SELECT book.... book" />
+                <marker date="1502879961288" expanded="true" signature="1699:1851" ph="select book_... book_author" />
+                <marker date="1502879961288" expanded="true" signature="2021:2883" ph="SELECT book.... book" />
+                <marker date="1502879961288" expanded="true" signature="2021:2884" ph="SELECT book.... book" />
+                <marker date="1502879961288" expanded="true" signature="2334:2486" ph="select book_... book_author" />
+                <marker date="1502879961288" expanded="true" signature="2562:2709" ph="select book_... book_genre" />
+                <marker date="1502879961288" expanded="true" signature="2946:3460" ph="SELECT book.... book" />
+                <marker date="1502879961288" expanded="true" signature="3196:3348" ph="select book_... book_author" />
+                <marker date="1502879961288" expanded="true" signature="3527:4352" ph="SELECT book.... book" />
+                <marker date="1502879961288" expanded="true" signature="3905:4054" ph="select book_... book_author" />
+                <marker date="1502879961288" expanded="true" signature="4130:4257" ph="select book_... book_genre" />
+                <marker date="1502879961288" expanded="true" signature="4416:4963" ph="SELECT order... orders" />
+                <marker date="1502879961288" expanded="true" signature="4880:4939" ph="select max(o... orders" />
+                <marker date="1502879961288" expanded="true" signature="5021:5040" ph="Select * fro... genre" />
+                <marker date="1502879961288" expanded="true" signature="5092:5178" ph="Update book " />
+                <marker date="1502879961288" expanded="true" signature="5239:5290" ph="DELETE FROM " />
+                <marker date="1502879961288" expanded="true" signature="5352:5405" ph="DELETE FROM " />
+                <marker date="1502879961288" expanded="true" signature="5460:5496" ph="DELETE FROM " />
+                <marker date="1502879961288" expanded="true" signature="5552:5590" ph="DELETE FROM " />
+                <marker date="1502879961288" expanded="true" signature="5649:5693" ph="DELETE FROM " />
+                <marker date="1502879961288" expanded="true" signature="5746:5852" ph="INSERT INTO author... " />
+                <marker date="1502879961288" expanded="true" signature="5908:5957" ph="INSERT INTO publisher... " />
+                <marker date="1502879961288" expanded="true" signature="6015:6167" ph="Select * fro... author" />
+                <marker date="1502879961288" expanded="true" signature="6228:6251" ph="Select * fro... publisher" />
+                <marker date="1502879961288" expanded="true" signature="6302:6436" ph="INSERT INTO book... " />
+                <marker date="1502879961288" expanded="true" signature="6493:6547" ph="INSERT INTO book_genre... " />
+                <marker date="1502879961288" expanded="true" signature="6599:6640" ph="INSERT INTO genre... " />
+                <marker date="1502879961288" expanded="true" signature="6698:6754" ph="INSERT INTO book_author... " />
+                <marker date="1502879961288" expanded="true" signature="6815:6881" ph="SELECT * fro... book" />
+                <marker date="1502879961288" expanded="true" signature="6935:6969" ph="DELETE FROM " />
+                <marker date="1502879961288" expanded="true" signature="7037:7235" ph="INSERT INTO ORDERS... " />
+                <marker date="1502879961288" expanded="true" signature="7303:7502" ph="INSERT INTO ORDERS... " />
+                <marker date="1502879961288" expanded="true" signature="7571:7630" ph="Update book " />
+                <marker date="1502879961288" expanded="true" signature="7699:7758" ph="Update book " />
+                <marker date="1502879961288" expanded="true" signature="7822:7876" ph="Update book " />
+                <marker date="1502879961288" expanded="true" signature="7945:8004" ph="Update book " />
+                <marker date="1502879961288" expanded="true" signature="8062:8557" ph="Select order... orders" />
+                <marker date="1502879961288" expanded="true" signature="8611:8675" ph="UPDATE order... " />
+                <marker date="1502879961288" expanded="true" signature="8734:9016" ph="INSERT INTO online_orders... " />
+                <marker date="1502879961288" expanded="true" signature="9082:9961" ph="Select onlin... online_orders" />
+                <marker date="1502879961288" expanded="true" signature="9699:9847" ph="select book_... author" />
+                <marker date="1502879961288" expanded="true" signature="10023:10144" ph="Update onlin... " />
+                <marker date="1502879961288" expanded="true" signature="10206:10271" ph="SELECT order... online_orders" />
+                <marker date="1502879961288" expanded="true" signature="10334:10469" ph="Update onlin... " />
+                <marker date="1502879961288" expanded="true" signature="10529:11374" ph="SELECT book.... book" />
+                <marker date="1502879961288" expanded="true" signature="10923:11072" ph="select book_... book_author" />
+                <marker date="1502879961288" expanded="true" signature="11147:11274" ph="select book_... book_genre" />
               </folding>
             </state>
           </provider>
@@ -310,8 +310,8 @@
       <file leaf-file-name="BookDAO.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="86">
-              <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
+            <state relative-caret-position="358">
+              <caret line="48" column="45" lean-forward="false" selection-start-line="48" selection-start-column="45" selection-end-line="48" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -1828,7 +1828,7 @@
       <workItem from="1501514917739" duration="115941000" />
       <workItem from="1502115788495" duration="96232000" />
       <workItem from="1502377998953" duration="26687000" />
-      <workItem from="1502464639310" duration="138507000" />
+      <workItem from="1502464639310" duration="141073000" />
     </task>
     <task id="LOCAL-00001" summary="21.07. log4j, changes to connection pool, commands">
       <created>1500669292977</created>
@@ -2103,11 +2103,25 @@
       <option name="project" value="LOCAL" />
       <updated>1502834558457</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="add author fixed">
+      <created>1502877407549</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1502877407549</updated>
+    </task>
+    <task id="LOCAL-00041" summary="delete publisher fixed">
+      <created>1502878642853</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1502878642853</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="675953000" />
+    <option name="totallyTimeSpent" value="678519000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -2166,8 +2180,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cancel order command added, watch orders command modified" />
-    <MESSAGE value="add user command fixed" />
     <MESSAGE value="get all users command fixed" />
     <MESSAGE value="remove user fixed" />
     <MESSAGE value="find user by library card/surname fixed" />
@@ -2191,22 +2203,18 @@
     <MESSAGE value="Receiver constant class added, some refactoring" />
     <MESSAGE value="user validator added, user receiver login fixed" />
     <MESSAGE value="Book validator added, edit book fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Book validator added, edit book fixed" />
+    <MESSAGE value="add author fixed" />
+    <MESSAGE value="delete publisher fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete publisher fixed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java</url>
-          <line>377</line>
+          <line>393</line>
           <properties />
           <option name="timeStamp" value="151" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java</url>
-          <line>229</line>
-          <properties />
-          <option name="timeStamp" value="172" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java</url>
@@ -2268,14 +2276,8 @@
           <properties />
           <option name="timeStamp" value="204" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java</url>
-          <line>157</line>
-          <properties />
-          <option name="timeStamp" value="207" />
-        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="208" />
+      <option name="time" value="209" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
@@ -2696,84 +2698,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="628" column="98" lean-forward="false" selection-start-line="628" selection-start-column="98" selection-end-line="628" selection-end-column="98" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1502877201849" expanded="true" signature="521:1391" ph="SELECT book.... book" />
-            <marker date="1502877201849" expanded="true" signature="899:1026" ph="select book_... book_genre" />
-            <marker date="1502877201849" expanded="true" signature="1114:1332" ph="select book_... book_author" />
-            <marker date="1502877201849" expanded="true" signature="1449:1957" ph="SELECT book.... book" />
-            <marker date="1502877201849" expanded="true" signature="1699:1851" ph="select book_... book_author" />
-            <marker date="1502877201849" expanded="true" signature="2021:2883" ph="SELECT book.... book" />
-            <marker date="1502877201849" expanded="true" signature="2021:2884" ph="SELECT book.... book" />
-            <marker date="1502877201849" expanded="true" signature="2334:2486" ph="select book_... book_author" />
-            <marker date="1502877201849" expanded="true" signature="2562:2709" ph="select book_... book_genre" />
-            <marker date="1502877201849" expanded="true" signature="2946:3460" ph="SELECT book.... book" />
-            <marker date="1502877201849" expanded="true" signature="3196:3348" ph="select book_... book_author" />
-            <marker date="1502877201849" expanded="true" signature="3527:4352" ph="SELECT book.... book" />
-            <marker date="1502877201849" expanded="true" signature="3905:4054" ph="select book_... book_author" />
-            <marker date="1502877201849" expanded="true" signature="4130:4257" ph="select book_... book_genre" />
-            <marker date="1502877201849" expanded="true" signature="4416:4963" ph="SELECT order... orders" />
-            <marker date="1502877201849" expanded="true" signature="4880:4939" ph="select max(o... orders" />
-            <marker date="1502877201849" expanded="true" signature="5021:5040" ph="Select * fro... genre" />
-            <marker date="1502877201849" expanded="true" signature="5092:5178" ph="Update book " />
-            <marker date="1502877201849" expanded="true" signature="5239:5290" ph="DELETE FROM " />
-            <marker date="1502877201849" expanded="true" signature="5352:5405" ph="DELETE FROM " />
-            <marker date="1502877201849" expanded="true" signature="5460:5496" ph="DELETE FROM " />
-            <marker date="1502877201849" expanded="true" signature="5552:5590" ph="DELETE FROM " />
-            <marker date="1502877201849" expanded="true" signature="5649:5693" ph="DELETE FROM " />
-            <marker date="1502877201849" expanded="true" signature="5746:5852" ph="INSERT INTO author... " />
-            <marker date="1502877201849" expanded="true" signature="5908:5957" ph="INSERT INTO publisher... " />
-            <marker date="1502877201849" expanded="true" signature="6015:6167" ph="Select * fro... author" />
-            <marker date="1502877201849" expanded="true" signature="6228:6251" ph="Select * fro... publisher" />
-            <marker date="1502877201849" expanded="true" signature="6302:6436" ph="INSERT INTO book... " />
-            <marker date="1502877201849" expanded="true" signature="6493:6547" ph="INSERT INTO book_genre... " />
-            <marker date="1502877201849" expanded="true" signature="6599:6640" ph="INSERT INTO genre... " />
-            <marker date="1502877201849" expanded="true" signature="6698:6754" ph="INSERT INTO book_author... " />
-            <marker date="1502877201849" expanded="true" signature="6815:6881" ph="SELECT * fro... book" />
-            <marker date="1502877201849" expanded="true" signature="6935:6969" ph="DELETE FROM " />
-            <marker date="1502877201849" expanded="true" signature="7037:7235" ph="INSERT INTO ORDERS... " />
-            <marker date="1502877201849" expanded="true" signature="7303:7502" ph="INSERT INTO ORDERS... " />
-            <marker date="1502877201849" expanded="true" signature="7571:7630" ph="Update book " />
-            <marker date="1502877201849" expanded="true" signature="7699:7758" ph="Update book " />
-            <marker date="1502877201849" expanded="true" signature="7822:7876" ph="Update book " />
-            <marker date="1502877201849" expanded="true" signature="7945:8004" ph="Update book " />
-            <marker date="1502877201849" expanded="true" signature="8062:8557" ph="Select order... orders" />
-            <marker date="1502877201849" expanded="true" signature="8611:8675" ph="UPDATE order... " />
-            <marker date="1502877201849" expanded="true" signature="8734:9016" ph="INSERT INTO online_orders... " />
-            <marker date="1502877201849" expanded="true" signature="9082:9961" ph="Select onlin... online_orders" />
-            <marker date="1502877201849" expanded="true" signature="9699:9847" ph="select book_... author" />
-            <marker date="1502877201849" expanded="true" signature="10023:10144" ph="Update onlin... " />
-            <marker date="1502877201849" expanded="true" signature="10206:10271" ph="SELECT order... online_orders" />
-            <marker date="1502877201849" expanded="true" signature="10334:10469" ph="Update onlin... " />
-            <marker date="1502877201849" expanded="true" signature="10529:11374" ph="SELECT book.... book" />
-            <marker date="1502877201849" expanded="true" signature="10923:11072" ph="select book_... book_author" />
-            <marker date="1502877201849" expanded="true" signature="11147:11274" ph="select book_... book_genre" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/validator/BookValidator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
-          <caret line="174" column="5" lean-forward="false" selection-start-line="174" selection-start-column="5" selection-end-line="174" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/entity/Author.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
@@ -2793,10 +2717,88 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/validator/BookValidator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="137" column="26" lean-forward="false" selection-start-line="137" selection-start-column="26" selection-end-line="137" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="48" column="45" lean-forward="false" selection-start-line="48" selection-start-column="45" selection-end-line="48" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/dao/BookDAOImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="759" column="71" lean-forward="false" selection-start-line="759" selection-start-column="71" selection-end-line="759" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1502879961288" expanded="true" signature="521:1391" ph="SELECT book.... book" />
+            <marker date="1502879961288" expanded="true" signature="899:1026" ph="select book_... book_genre" />
+            <marker date="1502879961288" expanded="true" signature="1114:1332" ph="select book_... book_author" />
+            <marker date="1502879961288" expanded="true" signature="1449:1957" ph="SELECT book.... book" />
+            <marker date="1502879961288" expanded="true" signature="1699:1851" ph="select book_... book_author" />
+            <marker date="1502879961288" expanded="true" signature="2021:2883" ph="SELECT book.... book" />
+            <marker date="1502879961288" expanded="true" signature="2021:2884" ph="SELECT book.... book" />
+            <marker date="1502879961288" expanded="true" signature="2334:2486" ph="select book_... book_author" />
+            <marker date="1502879961288" expanded="true" signature="2562:2709" ph="select book_... book_genre" />
+            <marker date="1502879961288" expanded="true" signature="2946:3460" ph="SELECT book.... book" />
+            <marker date="1502879961288" expanded="true" signature="3196:3348" ph="select book_... book_author" />
+            <marker date="1502879961288" expanded="true" signature="3527:4352" ph="SELECT book.... book" />
+            <marker date="1502879961288" expanded="true" signature="3905:4054" ph="select book_... book_author" />
+            <marker date="1502879961288" expanded="true" signature="4130:4257" ph="select book_... book_genre" />
+            <marker date="1502879961288" expanded="true" signature="4416:4963" ph="SELECT order... orders" />
+            <marker date="1502879961288" expanded="true" signature="4880:4939" ph="select max(o... orders" />
+            <marker date="1502879961288" expanded="true" signature="5021:5040" ph="Select * fro... genre" />
+            <marker date="1502879961288" expanded="true" signature="5092:5178" ph="Update book " />
+            <marker date="1502879961288" expanded="true" signature="5239:5290" ph="DELETE FROM " />
+            <marker date="1502879961288" expanded="true" signature="5352:5405" ph="DELETE FROM " />
+            <marker date="1502879961288" expanded="true" signature="5460:5496" ph="DELETE FROM " />
+            <marker date="1502879961288" expanded="true" signature="5552:5590" ph="DELETE FROM " />
+            <marker date="1502879961288" expanded="true" signature="5649:5693" ph="DELETE FROM " />
+            <marker date="1502879961288" expanded="true" signature="5746:5852" ph="INSERT INTO author... " />
+            <marker date="1502879961288" expanded="true" signature="5908:5957" ph="INSERT INTO publisher... " />
+            <marker date="1502879961288" expanded="true" signature="6015:6167" ph="Select * fro... author" />
+            <marker date="1502879961288" expanded="true" signature="6228:6251" ph="Select * fro... publisher" />
+            <marker date="1502879961288" expanded="true" signature="6302:6436" ph="INSERT INTO book... " />
+            <marker date="1502879961288" expanded="true" signature="6493:6547" ph="INSERT INTO book_genre... " />
+            <marker date="1502879961288" expanded="true" signature="6599:6640" ph="INSERT INTO genre... " />
+            <marker date="1502879961288" expanded="true" signature="6698:6754" ph="INSERT INTO book_author... " />
+            <marker date="1502879961288" expanded="true" signature="6815:6881" ph="SELECT * fro... book" />
+            <marker date="1502879961288" expanded="true" signature="6935:6969" ph="DELETE FROM " />
+            <marker date="1502879961288" expanded="true" signature="7037:7235" ph="INSERT INTO ORDERS... " />
+            <marker date="1502879961288" expanded="true" signature="7303:7502" ph="INSERT INTO ORDERS... " />
+            <marker date="1502879961288" expanded="true" signature="7571:7630" ph="Update book " />
+            <marker date="1502879961288" expanded="true" signature="7699:7758" ph="Update book " />
+            <marker date="1502879961288" expanded="true" signature="7822:7876" ph="Update book " />
+            <marker date="1502879961288" expanded="true" signature="7945:8004" ph="Update book " />
+            <marker date="1502879961288" expanded="true" signature="8062:8557" ph="Select order... orders" />
+            <marker date="1502879961288" expanded="true" signature="8611:8675" ph="UPDATE order... " />
+            <marker date="1502879961288" expanded="true" signature="8734:9016" ph="INSERT INTO online_orders... " />
+            <marker date="1502879961288" expanded="true" signature="9082:9961" ph="Select onlin... online_orders" />
+            <marker date="1502879961288" expanded="true" signature="9699:9847" ph="select book_... author" />
+            <marker date="1502879961288" expanded="true" signature="10023:10144" ph="Update onlin... " />
+            <marker date="1502879961288" expanded="true" signature="10206:10271" ph="SELECT order... online_orders" />
+            <marker date="1502879961288" expanded="true" signature="10334:10469" ph="Update onlin... " />
+            <marker date="1502879961288" expanded="true" signature="10529:11374" ph="SELECT book.... book" />
+            <marker date="1502879961288" expanded="true" signature="10923:11072" ph="select book_... book_author" />
+            <marker date="1502879961288" expanded="true" signature="11147:11274" ph="select book_... book_genre" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/by/epam/bokhan/receiver/BookReceiverImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="157" column="0" lean-forward="false" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
+        <state relative-caret-position="-294">
+          <caret line="289" column="13" lean-forward="true" selection-start-line="289" selection-start-column="13" selection-end-line="289" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

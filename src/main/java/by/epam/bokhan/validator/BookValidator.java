@@ -85,24 +85,32 @@ public class BookValidator {
         return publisherId == null || publisherId.isEmpty() || matcherForBookPublisherId.matches();
     }
 
-    public static boolean isBookGenreValid(String[] genres) {
+    public static boolean isBookGenreNameValid(String genreName) {
         boolean isBookGenreValid = false;
-        if (genres != null) {
+        if (genreName != null) {
             Pattern patternForBookGenre = Pattern.compile(REGEX_FOR_BOOK_GENRE);
-            for (String genre : genres) {
-                Matcher matcherForBookGenre = patternForBookGenre.matcher(genre);
-                isBookGenreValid = matcherForBookGenre.matches();
-            }
+            Matcher matcherForBookGenre = patternForBookGenre.matcher(genreName);
+            isBookGenreValid = matcherForBookGenre.matches();
         }
         return isBookGenreValid;
     }
 
-    public static boolean isBookGenreIdValid(String[] genres) {
+    public static boolean isBookGenreIdValid(String genreId) {
         boolean isBookGenreIdValid = false;
-        if (genres != null) {
+        if (genreId != null) {
             Pattern patternForBookGenreId = Pattern.compile(REGEX_FOR_BOOK_GENRE_ID);
-            for (String genre : genres) {
-                Matcher matcherForBookGenreId = patternForBookGenreId.matcher(genre);
+            Matcher matcherForBookGenreId = patternForBookGenreId.matcher(genreId);
+            isBookGenreIdValid = matcherForBookGenreId.matches();
+        }
+        return isBookGenreIdValid;
+    }
+
+    public static boolean isBookGenreIdValid(String[] genreIdValues) {
+        boolean isBookGenreIdValid = false;
+        if (genreIdValues != null) {
+            for (String genreIdValue : genreIdValues) {
+                Pattern patternForBookGenreId = Pattern.compile(REGEX_FOR_BOOK_GENRE_ID);
+                Matcher matcherForBookGenreId = patternForBookGenreId.matcher(genreIdValue);
                 isBookGenreIdValid = matcherForBookGenreId.matches();
             }
         }
@@ -148,6 +156,7 @@ public class BookValidator {
         }
         return isDateOfBirthValid;
     }
+
     public static boolean isAuthorNameValid(String name) {
         boolean isNameValid = false;
         if (name != null) {

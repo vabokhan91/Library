@@ -681,7 +681,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public boolean addGenre(String genreName) throws DAOException {
+    public boolean addGenre(Genre genre) throws DAOException {
         boolean isGenreAdded = false;
         Connection connection = null;
         PreparedStatement st = null;
@@ -692,13 +692,13 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             ResultSet rs = allGenresStatement.executeQuery(SQL_GET_ALL_GENRES);
             boolean genreExist = false;
             while (rs.next()) {
-                if (rs.getString(GENRE_NAME).equalsIgnoreCase(genreName)) {
+                if (rs.getString(GENRE_NAME).equalsIgnoreCase(genre.getName())) {
                     genreExist = true;
                 }
             }
             if (!genreExist) {
                 st = connection.prepareStatement(SQL_ADD_GENRE);
-                st.setString(1, genreName);
+                st.setString(1, genre.getName());
                 int res = st.executeUpdate();
                 if (res > 0) {
                     isGenreAdded = true;
@@ -706,7 +706,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return isGenreAdded;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DAOException(String.format("Can not add genre. Reason: %s", e.getMessage()),e);
         } finally {
             closeStatement(allGenresStatement);
             closeStatement(st);
@@ -715,7 +715,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public boolean deleteGenre(int[] genreId) throws DAOException {
+    public boolean deleteGenre(List<Genre> genres) throws DAOException {
         boolean isGenreDeleted = false;
         Connection connection = null;
         PreparedStatement st = null;
@@ -723,8 +723,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_DELETE_GENRE);
             int res = 0;
-            for (int id : genreId) {
-                st.setInt(1, id);
+            for (Genre genre : genres) {
+                st.setInt(1, genre.getId());
                 res += st.executeUpdate();
             }
             if (res > 0) {
@@ -732,7 +732,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return isGenreDeleted;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DAOException(String.format("Can not delete genre. Reason: %s", e.getMessage()),e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -740,7 +740,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public boolean deleteAuthor(int[] authorIds) throws DAOException {
+    public boolean deleteAuthor(List<Author> authors) throws DAOException {
         boolean isAuthorDeleted = false;
         Connection connection = null;
         PreparedStatement st = null;
@@ -748,8 +748,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_DELETE_AUTHOR);
             int res = 0;
-            for (int id : authorIds) {
-                st.setInt(1, id);
+            for (Author author : authors) {
+                st.setInt(1, author.getId());
                 res += st.executeUpdate();
             }
             if (res > 0) {
@@ -757,7 +757,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return isAuthorDeleted;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DAOException(String.format("Can not delete author. Reason: %s", e.getMessage()),e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
