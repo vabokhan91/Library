@@ -7,6 +7,7 @@ import by.epam.bokhan.entity.*;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -106,6 +107,7 @@ public class BookReceiverImpl implements BookReceiver {
         }
     }
 
+    @Override
     public void editBook(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isBookEdited = false;
@@ -124,7 +126,6 @@ public class BookReceiverImpl implements BookReceiver {
                 int pages = Integer.parseInt(pageValue);
                 int year = Integer.parseInt(yearValue);
                 int publisherId = Integer.parseInt(publisherIdValue);
-
                 Book book = new Book();
                 book.setId(bookId);
                 book.setTitle(title);
@@ -154,13 +155,21 @@ public class BookReceiverImpl implements BookReceiver {
 
     public void addAuthor(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        boolean authorIsAdded;
+        boolean authorIsAdded = false;
         try {
             String name = (String) requestContent.getRequestParameters().get(AUTHOR_NAME);
             String surname = (String) requestContent.getRequestParameters().get(AUTHOR_SURNAME);
             String patronymic = (String) requestContent.getRequestParameters().get(AUTHOR_PATRONYMIC);
-            String dateOfBirth = (String) requestContent.getRequestParameters().get(DATE_OF_BIRTH);
-            authorIsAdded = bookDAO.addAuthor(name, surname, patronymic, dateOfBirth);
+            String dateOfBirthValue = (String) requestContent.getRequestParameters().get(DATE_OF_BIRTH);
+            if (isAuthorNameValid(name) && isAuthorSurnameValid(surname) && isAuthorPatronymicValid(patronymic) && isDateOfBirthValid(dateOfBirthValue)) {
+                Author author = new Author();
+                author.setName(name);
+                author.setSurname(surname);
+                author.setPatronymic(patronymic);
+                LocalDate dateOfBirth = LocalDate.parse(dateOfBirthValue);
+                author.setDateOfBirth(dateOfBirth);
+                authorIsAdded = bookDAO.addAuthor(author);
+            }
             requestContent.insertAttribute(IS_AUTHOR_ADDED, authorIsAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);

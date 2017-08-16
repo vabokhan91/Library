@@ -24,7 +24,7 @@ public interface BookDAO {
 
     boolean editBook(Book book) throws DAOException;
 
-    boolean addAuthor(String name, String surname, String patronymic, String dateOfBirth) throws DAOException;
+    boolean addAuthor(Author author) throws DAOException;
 
     LinkedList<Author> getAllAuthors() throws DAOException;
 

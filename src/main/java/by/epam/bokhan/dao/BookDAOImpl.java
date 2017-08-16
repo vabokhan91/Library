@@ -608,25 +608,25 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         }
     }
 
-    public boolean addAuthor(String name, String surname, String patronymic, String dateOfBirth) throws DAOException {
+    @Override
+    public boolean addAuthor(Author author) throws DAOException {
         boolean isAuthorAdded = false;
         Connection connection = null;
         PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_ADD_AUTHOR);
-            st.setString(1, name);
-            st.setString(2, surname);
-            st.setString(3, patronymic);
-            LocalDate date = LocalDate.parse(dateOfBirth);
-            st.setObject(4, date);
+            st.setString(1, author.getName());
+            st.setString(2, author.getSurname());
+            st.setString(3, author.getPatronymic());
+            st.setObject(4, author.getDateOfBirth());
             int res = st.executeUpdate();
             if (res > 0) {
                 isAuthorAdded = true;
             }
             return isAuthorAdded;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DAOException(String.format("Can not add author. Reason : %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
