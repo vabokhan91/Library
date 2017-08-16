@@ -119,6 +119,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "left join (select book_id,genre.id as genre_id, genre.name as genre_name from book_genre left join genre on book_genre.genre_id = genre.id) as genres \n" +
             "on book.id = genres.book_id\n" +
             "where genre_name LIKE ?";
+    private static final int FIRST_INDEX = 0;
 
     @Override
     public List<Book> getAllBooks() throws DAOException {
@@ -673,7 +674,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return isPublisherDeleted;
         } catch (SQLException e) {
-            throw new DAOException(String.format("Can not delete publisher. Reason: %s", e.getMessage()),e);
+            throw new DAOException(String.format("Can not delete publisher. Reason: %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -706,7 +707,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return isGenreAdded;
         } catch (SQLException e) {
-            throw new DAOException(String.format("Can not add genre. Reason: %s", e.getMessage()),e);
+            throw new DAOException(String.format("Can not add genre. Reason: %s", e.getMessage()), e);
         } finally {
             closeStatement(allGenresStatement);
             closeStatement(st);
@@ -732,7 +733,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return isGenreDeleted;
         } catch (SQLException e) {
-            throw new DAOException(String.format("Can not delete genre. Reason: %s", e.getMessage()),e);
+            throw new DAOException(String.format("Can not delete genre. Reason: %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -757,7 +758,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
             return isAuthorDeleted;
         } catch (SQLException e) {
-            throw new DAOException(String.format("Can not delete author. Reason: %s", e.getMessage()),e);
+            throw new DAOException(String.format("Can not delete author. Reason: %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -791,7 +792,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             authors.sort(Comparator.comparing(a -> a.getSurname()));
             return authors;
         } catch (SQLException e) {
-            throw new DAOException(String.format("Can not get authors. Reason: %s", e.getMessage()),e);
+            throw new DAOException(String.format("Can not get authors. Reason: %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -818,7 +819,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             Collections.sort(publishers, Comparator.comparing(a -> a.getName()));
             return publishers;
         } catch (SQLException e) {
-            throw new DAOException(String.format("Can not get publishers. Reason: %s", e.getMessage()),e);
+            throw new DAOException(String.format("Can not get publishers. Reason: %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -882,9 +883,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         } catch (SQLException e) {
             try {
                 connection.rollback();
-                throw new DAOException(String.format("Can not add book. Reason: %s", e.getMessage()),e);
+                throw new DAOException(String.format("Can not add book. Reason: %s", e.getMessage()), e);
             } catch (SQLException e1) {
-                throw new DAOException(String.format("Can not make rollback. Reason: %s", e.getMessage()),e1);
+                throw new DAOException(String.format("Can not make rollback. Reason: %s", e.getMessage()), e1);
             }
         } finally {
             closeStatement(addBookStatement);
@@ -925,7 +926,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public boolean addOrder(int bookId, String typeOfOrder, int librarianId, int libraryCard) throws DAOException {
+    public boolean addOrder(Book book, String typeOfOrder) throws DAOException {
         boolean isOrderAdded = false;
         Connection connection = null;
         PreparedStatement addOrderStatement = null;
@@ -943,10 +944,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 changeBookStatus = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
 
             }
-            addOrderStatement.setInt(1, libraryCard);
-            addOrderStatement.setInt(2, bookId);
-            addOrderStatement.setInt(3, librarianId);
-            changeBookStatus.setInt(1, bookId);
+            addOrderStatement.setInt(1, book.getOrders().get(FIRST_INDEX).getUser().getId());
+            addOrderStatement.setInt(2, book.getId());
+            addOrderStatement.setInt(3, book.getOrders().get(FIRST_INDEX).getLibrarian().getId());
+            changeBookStatus.setInt(1, book.getId());
             int resultOrderInsert = addOrderStatement.executeUpdate();
 
             int bookChangeLocationResult = changeBookStatus.executeUpdate();
@@ -960,9 +961,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         } catch (SQLException e) {
             try {
                 connection.rollback();
-                throw new DAOException(e);
+                throw new DAOException(String.format("Can not add order. Reason: %s", e.getMessage()),e);
             } catch (SQLException e1) {
-                throw new DAOException(e1);
+                throw new DAOException(String.format("Can not make rollback. Reason: %s", e.getMessage()),e1);
             }
 
         } finally {
@@ -1251,7 +1252,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public boolean executeOnlineOrder(int onlineOrderId, String typeOfOrder, int bookId, int libraryCard, int librarianId) throws DAOException {
+    public boolean executeOnlineOrder(OnlineOrder onlineOrder, String typeOfOrder) throws DAOException {
         boolean isOnlineOrderExecuted = false;
         Connection connection = null;
         PreparedStatement executeOnlineOrderStatement = null;
@@ -1261,7 +1262,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
             executeOnlineOrderStatement = connection.prepareStatement(SQL_EXECUTE_ONLINE_ORDER);
-            executeOnlineOrderStatement.setInt(1, onlineOrderId);
+            executeOnlineOrderStatement.setInt(1, onlineOrder.getId());
             int executeOnlineOrderResult = executeOnlineOrderStatement.executeUpdate();
 
             if (executeOnlineOrderResult > 0) {
@@ -1275,10 +1276,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     changeBookStatus = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
 
                 }
-                addOrderStatement.setInt(1, libraryCard);
-                addOrderStatement.setInt(2, bookId);
-                addOrderStatement.setInt(3, librarianId);
-                changeBookStatus.setInt(1, bookId);
+                addOrderStatement.setInt(1, onlineOrder.getUser().getLibraryCardNumber());
+                addOrderStatement.setInt(2, onlineOrder.getBook().getId());
+                addOrderStatement.setInt(3, onlineOrder.getLibrarian().getId());
+                changeBookStatus.setInt(1, onlineOrder.getBook().getId());
 
                 int orderResultInsert = addOrderStatement.executeUpdate();
                 int bookChangeLocationResult = changeBookStatus.executeUpdate();
@@ -1301,7 +1302,6 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             }
 
         } finally {
-
             closeStatement(executeOnlineOrderStatement);
             closeStatement(changeBookStatus);
             closeStatement(addOrderStatement);

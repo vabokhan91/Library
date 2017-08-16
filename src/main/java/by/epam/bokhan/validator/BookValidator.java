@@ -23,6 +23,8 @@ public class BookValidator {
     private static final String REGEX_FOR_SURNAME = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
     private static final String REGEX_FOR_PATRONYMIC = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
     private static final String REGEX_FOR_BOOK_LOCATION = "[a-zA-Zа-яА-Я_]{1,30}";
+    private static final String REGEX_FOR_ORDER_ID = "\\d{1,5}";
+    private static final String REGEX_FOR_ONLINE_ORDER_ID = "\\d{1,5}";
 
 
     public static boolean isBookIdValid(String bookId) {
@@ -200,5 +202,27 @@ public class BookValidator {
             }
         }
         return isLocationValid;
+    }
+
+    public static boolean isOrderIdValid(String orderIdValue) {
+        boolean isOrderIdValid = false;
+        if (orderIdValue != null) {
+            Pattern patternForOrderId = Pattern.compile(REGEX_FOR_ORDER_ID);
+                Matcher matcherForOrderId = patternForOrderId.matcher(orderIdValue);
+                isOrderIdValid = matcherForOrderId.matches();
+
+        }
+        return isOrderIdValid;
+    }
+
+    public static boolean isOnlineOrderIdValid(String onlineOrderIdValue) {
+        boolean isOnlineOrderIdValid = false;
+        if (onlineOrderIdValue != null) {
+            Pattern patternForOnlineOrderId = Pattern.compile(REGEX_FOR_ONLINE_ORDER_ID);
+            Matcher matcherForOnlineOrderId = patternForOnlineOrderId.matcher(onlineOrderIdValue);
+            isOnlineOrderIdValid = matcherForOnlineOrderId.matches();
+
+        }
+        return isOnlineOrderIdValid;
     }
 }
