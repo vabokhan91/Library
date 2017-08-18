@@ -7,10 +7,12 @@ import by.epam.bokhan.entity.*;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 
+import javax.servlet.http.Part;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static by.epam.bokhan.receiver.ReceiverConstant.*;
 import static by.epam.bokhan.validator.BookValidator.*;
@@ -19,8 +21,7 @@ import static by.epam.bokhan.validator.UserValidator.*;
 
 public class BookReceiverImpl implements BookReceiver {
 
-
-    private final String STATUS_BOOKED = "booked";
+    private final String BOOK_IMAGE = "book_image";
 
     @Override
     public void getAllBooks(RequestContent requestContent) throws ReceiverException {
@@ -123,21 +124,24 @@ public class BookReceiverImpl implements BookReceiver {
             String publisherIdValue = (String) requestContent.getRequestParameters().get(BOOK_PUBLISHER);
             String[] genreIdValues = (String[]) requestContent.getRequestParameterValues().get(BOOK_GENRE);
             String[] authorIdValues = (String[]) requestContent.getRequestParameterValues().get(BOOK_AUTHOR);
+            Part bookImage = (Part) requestContent.getMultiTypeParts().get(BOOK_IMAGE);
             if (isBookIdValid(bookIdValue) && isBookTitleValid(title) && isBookIsbnValid(isbn) && isBookPageValid(pageValue) && isBookYearValid(yearValue)
                     && isBookPublisherIdValid(publisherIdValue) && isBookGenreIdValid(genreIdValues) && isBookAuthorIdValid(authorIdValues)) {
+                Book book = new Book();
                 int bookId = Integer.parseInt(bookIdValue);
                 int pages = Integer.parseInt(pageValue);
                 int year = Integer.parseInt(yearValue);
-                int publisherId = Integer.parseInt(publisherIdValue);
-                Book book = new Book();
+                if (publisherIdValue != null && !publisherIdValue.isEmpty()) {
+                    int publisherId = Integer.parseInt(publisherIdValue);
+                    Publisher publisher = new Publisher();
+                    publisher.setId(publisherId);
+                    book.setPublisher(publisher);
+                }
                 book.setId(bookId);
                 book.setTitle(title);
                 book.setPages(pages);
                 book.setIsbn(isbn);
                 book.setYear(year);
-                Publisher publisher = new Publisher();
-                publisher.setId(publisherId);
-                book.setPublisher(publisher);
                 for (String genreId : genreIdValues) {
                     Genre genre = new Genre();
                     genre.setId(Integer.parseInt(genreId));
@@ -148,11 +152,25 @@ public class BookReceiverImpl implements BookReceiver {
                     author.setId(Integer.parseInt(authorId));
                     book.addAuthor(author);
                 }
+                if (bookImage != null) {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    InputStream is = bookImage.getInputStream();
+                    int reads = is.read();
+                    while (reads != -1) {
+                        baos.write(reads);
+                        reads = is.read();
+                    }
+                    byte[] b = baos.toByteArray();
+                    String image = Base64.getEncoder().encodeToString(b);
+                    book.setImage(image);
+                }
                 isBookEdited = bookDAO.editBook(book);
             }
             requestContent.insertAttribute(IS_BOOK_EDITED, isBookEdited);
         } catch (DAOException e) {
             throw new ReceiverException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -330,13 +348,19 @@ public class BookReceiverImpl implements BookReceiver {
             String authorsIdValues[] = (String[]) requestContent.getRequestParameterValues().get(BOOK_AUTHOR);
             String description = (String) requestContent.getRequestParameters().get(BOOK_DESCRIPTION);
             String locationValue = (String) requestContent.getRequestParameters().get(BOOK_LOCATION);
+            Part bookImage = (Part) requestContent.getMultiTypeParts().get(BOOK_IMAGE);
+
             if (isBookTitleValid(title) && isBookPageValid(pageValue) && isBookYearValid(yearValue) && isBookPublisherIdValid(publisherIdValue)
-                    && isBookIsbnValid(isbn) && isBookGenreIdValid(genresIdValues) && isBookAuthorIdValid(authorsIdValues) && isBookLocationValid(locationValue)) {
+                    && isBookIsbnValid(isbn) && isBookGenreIdValid(genresIdValues) && isBookAuthorIdValid(authorsIdValues)
+                    && isBookLocationValid(locationValue)) {
                 Book book = new Book();
                 int pages = Integer.parseInt(pageValue);
                 int yearOfPublishing = Integer.parseInt(yearValue);
-                Publisher publisher = new Publisher();
-                publisher.setId(Integer.parseInt(publisherIdValue));
+                if (publisherIdValue != null && !publisherIdValue.isEmpty()) {
+                    Publisher publisher = new Publisher();
+                    publisher.setId(Integer.parseInt(publisherIdValue));
+                    book.setPublisher(publisher);
+                }
                 Location location = Location.valueOf((locationValue).toUpperCase());
                 List<Genre> genres = new ArrayList<>();
                 for (String genreIdValue : genresIdValues) {
@@ -349,6 +373,18 @@ public class BookReceiverImpl implements BookReceiver {
                     Author author = new Author();
                     author.setId(Integer.parseInt(authorIdValue));
                     authors.add(author);
+                }
+                if (bookImage != null) {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    InputStream is = bookImage.getInputStream();
+                    int reads = is.read();
+                    while (reads != -1) {
+                        baos.write(reads);
+                        reads = is.read();
+                    }
+                    byte[] b = baos.toByteArray();
+                    String image = Base64.getEncoder().encodeToString(b);
+                    book.setImage(image);
                 }
                 book.setTitle(title);
                 book.setPages(pages);
@@ -363,8 +399,11 @@ public class BookReceiverImpl implements BookReceiver {
             requestContent.insertAttribute(IS_BOOK_ADDED, isBookAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
     @Override
     public void deleteBook(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();

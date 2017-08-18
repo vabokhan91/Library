@@ -44,6 +44,7 @@
                 ${authors.toString()}
             </c:forEach> </td>
 
+
             <%--<td><form method="post" action="/controller" accept-charset="UTF-8">
                 <input type="hidden" name="command" value="get_explicit_user_info"/>
                 <input type = "hidden" name = "library_card" value="${item.id}"/><br/>

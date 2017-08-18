@@ -4,13 +4,14 @@ import by.epam.bokhan.entity.*;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.pool.ConnectionPool;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static by.epam.bokhan.dao.DAOConstant.*;
 
@@ -42,7 +43,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "on book.publisher_id = publisher.id\n" +
             "where book.id = ?";
 
-    private static final String SQL_FIND_BOOK_BY_TITLE = "SELECT book.id, book.title,book.pages, book.location, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year\n" +
+    private static final String SQL_FIND_BOOK_BY_TITLE = "SELECT book.id, book.title,book.pages, book.location,book.image, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year\n" +
             "            from book\n" +
             "            left join (select book_author.book_id as b,author.name , author.surname , author.patronymic  from book_author left join author on book_author.author_id = author.id) as authors\n" +
             "            on book.id = b \n" +
@@ -67,7 +68,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "where orders.order_date = (select max(order_date) from orders where orders.book_id = ?) and orders.book_id = ?";
 
     private static final String SQL_GET_ALL_GENRES = "Select * from genre";
-    private static final String SQL_EDIT_BOOK = "Update book set title = ?, pages = ?, isbn = ?, year = ?,publisher_id = ? where id = ?";
+    private static final String SQL_EDIT_BOOK = "Update book set title = ?, pages = ?, isbn = ?, year = ?,publisher_id = ?, image = ? where id = ?";
     private static final String SQL_DELETE_BOOKS_GENRE = "DELETE FROM book_genre WHERE book_genre.book_id = ?";
     private static final String SQL_DELETE_BOOKS_AUTHOR = "DELETE FROM book_author WHERE book_author.book_id = ?";
     private static final String SQL_DELETE_GENRE = "DELETE FROM genre WHERE genre.id = ?";
@@ -77,7 +78,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_PUBLISHER = "INSERT INTO publisher (publisher.name) VALUES (?)";
     private static final String SQL_GET_ALL_AUTHORS = "Select author.id, author.name as author_name, author.surname as author_surname, author.patronymic as author_patronymic, author.date_of_birth from author";
     private static final String SQL_GET_ALL_PUBLISHERS = "Select * from publisher";
-    private static final String SQL_ADD_BOOK = "INSERT INTO book (book.title, book.pages,book.isbn, book.year,book.publisher_id,book.description,book.location) VALUES (?,?,?,?,?,?,?)";
+    private static final String SQL_ADD_BOOK = "INSERT INTO book (book.title, book.pages,book.isbn, book.year,book.publisher_id,book.description,book.location, book.image) VALUES (?,?,?,?,?,?,?,?)";
     private static final String SQL_ADD_BOOK_GENRE = "INSERT INTO book_genre (book_id,genre_id) VALUES (?,?)";
     private static final String SQL_ADD_GENRE = "INSERT INTO genre (genre.name) VALUES (?)";
     private static final String SQL_ADD_BOOK_AUTHOR = "INSERT INTO book_author (book_id,author_id) VALUES (?,?)";
@@ -300,6 +301,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 author.setSurname(authorSurname);
                 author.setPatronymic(authorPatronymic);
                 book.addAuthor(author);
+                Blob imageBlob = rs.getBlob("book.image");
+                if (imageBlob != null) {
+                    book.setImage(new String(imageBlob.getBytes(1l, (int) imageBlob.length())));
+                }
                 books.add(book);
             }
             return books;
@@ -562,7 +567,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             st.setString(3, book.getIsbn());
             st.setInt(4, book.getYear());
             st.setInt(5, book.getPublisher().getId());
-            st.setInt(6, book.getId());
+            st.setString(6, book.getImage());
+            st.setInt(7, book.getId());
             int editBookRes = st.executeUpdate();
 
             deleteGenreStatement = connection.prepareStatement(SQL_DELETE_BOOKS_GENRE);
@@ -851,6 +857,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             addBookStatement.setInt(5, book.getPublisher().getId());
             addBookStatement.setString(6, bookDescription);
             addBookStatement.setString(7, location);
+            addBookStatement.setString(8, book.getImage());
             int resultBookInsert = addBookStatement.executeUpdate();
             ResultSet keys = addBookStatement.getGeneratedKeys();
             if (keys.next()) {
@@ -879,7 +886,6 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             } else {
                 connection.rollback();
             }
-            return isBookAdded;
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -893,6 +899,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             closeStatement(addGenreStatement);
             closeConnection(connection);
         }
+        return isBookAdded;
     }
 
     @Override
@@ -961,9 +968,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         } catch (SQLException e) {
             try {
                 connection.rollback();
-                throw new DAOException(String.format("Can not add order. Reason: %s", e.getMessage()),e);
+                throw new DAOException(String.format("Can not add order. Reason: %s", e.getMessage()), e);
             } catch (SQLException e1) {
-                throw new DAOException(String.format("Can not make rollback. Reason: %s", e.getMessage()),e1);
+                throw new DAOException(String.format("Can not make rollback. Reason: %s", e.getMessage()), e1);
             }
 
         } finally {

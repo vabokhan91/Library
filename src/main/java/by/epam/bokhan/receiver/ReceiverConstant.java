@@ -84,4 +84,5 @@ class ReceiverConstant {
     static final String IS_PASSWORD_CHANGED = "isPasswordChanged";
     static final String NEW_LOGIN = "new_login";
     static final String IS_LOGIN_CHANGED = "isLoginChanged";
+    static final String STATUS_BOOKED = "booked";
 }

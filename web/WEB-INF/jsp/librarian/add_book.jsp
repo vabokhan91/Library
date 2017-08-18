@@ -11,7 +11,7 @@
     <title>Add Book</title>
 </head>
 <body>
-<form method="post" action="/controller" accept-charset="UTF-8">
+<form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
     <input type="hidden" name="command" value="add_book"/>
     <fmt:message key="label.book.book_title" bundle="${messages}"/> : <input type="text" name="book_title" value="" required/><br/>
 
@@ -19,7 +19,7 @@
 
     <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : <input type="text" name="book_year" value="" required><br/>
 
-    <fmt:message key="label.book.isbn" bundle="${messages}"/> : <input type="text" name="book_isbn" value="" required pattern="\d+-\d+-\d+"><br/>
+    <fmt:message key="label.book.isbn" bundle="${messages}"/> : <input type="text" name="book_isbn" value="" required pattern="(\d+-\d+-\d+-\d+-\d+)|(\d+-\d+-\d+-\d+)"><br/>
 
     <fmt:message key="label.book.publisher" bundle="${messages}"/> : <select name="book_publisher">
         <c:forEach items="${publishers}" var="publisher">
@@ -43,6 +43,10 @@
 
     <fmt:message key="label.book.description" bundle="${messages}"/> :<br/> <textarea name="book_description" id="book_description" cols="30"
                                                                                  rows="10"></textarea><br/>
+
+    <fmt:message key="label.book.image" bundle="${messages}"/> :
+    <input type="file" name="book_image" size="50"/>
+<br/>
     <input type="hidden" name="book_location" value="storage">
     <input type="submit" name="submit" value=<fmt:message key="label.button.add_book" bundle="${messages}"/> />
 </form>

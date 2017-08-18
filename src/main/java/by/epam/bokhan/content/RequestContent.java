@@ -1,6 +1,10 @@
 package by.epam.bokhan.content;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 
@@ -9,11 +13,13 @@ public class RequestContent {
     private HashMap<String, Object> requestParameters;
     private HashMap<String, Object> sessionAttributes;
     private HashMap<String, Object> requestParameterValues;
+    private HashMap<String, Object> multiTypeParts;
 
     public RequestContent() {
         requestParameters = new HashMap<>();
         sessionAttributes = new HashMap<>();
         requestParameterValues = new HashMap<>();
+        multiTypeParts = new HashMap<>();
     }
 
     public void extractValues(HttpServletRequest request) {
@@ -37,6 +43,22 @@ public class RequestContent {
             Object value = request.getParameterValues(name);
             this.requestParameterValues.put(name, value);
         }
+
+        try {
+            if (request.getContentType() != null && request.getContentType().toLowerCase().contains("multipart/form-data")) {
+                Collection<Part> multitypeValues = request.getParts();
+                for (Part part : multitypeValues) {
+                    String name = part.getName();
+                    multiTypeParts.put(name, part);
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void insertParameter(String key, Object value) {
@@ -57,6 +79,14 @@ public class RequestContent {
 
     public HashMap<String, Object> getRequestParameterValues() {
         return requestParameterValues;
+    }
+
+    public HashMap<String, Object> getMultiTypeParts() {
+        return multiTypeParts;
+    }
+
+    public void setMultiTypeParts(HashMap<String, Object> multiTypeParts) {
+        this.multiTypeParts = multiTypeParts;
     }
 }
 

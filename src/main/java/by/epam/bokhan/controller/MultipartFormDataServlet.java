@@ -21,10 +21,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-
-@WebServlet({"/controller"})
+/**
+ * Created by vbokh on 18.08.2017.
+ */
+@WebServlet({"/multipartdata"})
 @MultipartConfig
-public class Controller extends HttpServlet {
+public class MultipartFormDataServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String COMMAND = "command";
     private static final String PAGE = "page";
@@ -33,9 +35,6 @@ public class Controller extends HttpServlet {
     private static final String INVALIDATE = "invalidate";
     private static final String INDEX_PAGE = "path.page.index";
     private final String ERROR_PAGE_COMMAND = "/controller?command=error_page";
-
-    public Controller() {
-    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.processRequest(request, response);
@@ -46,7 +45,7 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter(COMMAND) != null) {
+
             String page;
             CommandFactory factory = new CommandFactory();
             RequestContent content = new RequestContent();
@@ -81,7 +80,6 @@ public class Controller extends HttpServlet {
             }
 
         }
-    }
 
     private void getParametersFromContent(HttpServletRequest request, RequestContent content) {
         HashMap<String, Object> s = content.getRequestParameters();

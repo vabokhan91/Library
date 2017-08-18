@@ -18,6 +18,7 @@ public class Book {
     private Location location;
     private List<Author> authors;
     private List<Order> orders;
+    private String image;
 
     public Book() {
         genre = new ArrayList<>();
@@ -124,6 +125,14 @@ public class Book {
 
     public void addOrder(Order order) {
         orders.add(order);
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

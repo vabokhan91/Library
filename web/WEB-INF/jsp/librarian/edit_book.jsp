@@ -14,7 +14,7 @@
 
 
 
-<form method="post" action="/controller" accept-charset="UTF-8">
+<form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
     <input type="hidden" name="command" value="edit_book"/>
 <c:forEach items="${foundBook}" var="item">
     <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.id}<br/>
@@ -52,6 +52,9 @@
     </select>
     <br/>
 </c:forEach>
+
+    <fmt:message key="label.book.upload_new_image" bundle="${messages}"/> :
+    <input type="file" name="book_image" size="50"/>
 
     <input type="submit" name="submit" value="<fmt:message key="label.book.edit_book" bundle="${messages}"/>" />
 </form>

@@ -40,6 +40,7 @@
                 ${genres.getName()}
             </c:forEach></td>
             <td>${item.location}</td>
+            <td><img src="data:image/jpg;base64,${item.image}" width="400px" height="200px"></td>
 
             <td>
                 <form method="post" action="/controller" accept-charset="UTF-8">
