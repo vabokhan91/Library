@@ -25,4 +25,6 @@ public interface UserReceiver extends Receiver {
     void getAllUsers(RequestContent requestContent) throws ReceiverException;
 
     void addUser(RequestContent requestContent) throws ReceiverException;
+
+    void uploadPhoto(RequestContent requestContent) throws ReceiverException;
 }

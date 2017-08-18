@@ -12,6 +12,31 @@
     <title>User</title>
 </head>
 <body>
+<div>
+    <img src="data:image/jpg;base64,${user.photo}"width="100px" height="150px"/>
+</div>
+
+<form method="post" action="/controller" enctype="multipart/form-data">
+    <input type="hidden" name="command" value="upload_user_photo"/>
+    <input type="hidden" name="user_id" value="${sessionScope.user.id}"/>
+    <input type="file" name="user_photo" size="50"/>
+
+    <input type="submit" value="<fmt:message key="label.upload_new_photo" bundle="${messages}"/> ">
+</form>
+
+<c:choose>
+    <c:when test="${not empty sessionScope.isPhotoUploaded && sessionScope.isPhotoUploaded eq true}">
+        <fmt:message key="label.user.photo_uploaded" bundle="${messages}"/>
+    </c:when>
+    <c:when test="${not empty sessionScope.isPhotoUploaded && sessionScope.isPhotoUploaded eq false}">
+        <fmt:message key="label.user.photo_not_uploaded" bundle="${messages}"/>
+    </c:when>
+</c:choose><br/>
+
+<c:if test="${not empty sessionScope.isPhotoUploaded}">
+    <c:remove var="isPhotoUploaded" scope="session" />
+</c:if>
+
 
 <a href="/controller?command=to_change_password_page"><fmt:message key="label.user.change_password" bundle="${messages}"/> </a><br/>
 

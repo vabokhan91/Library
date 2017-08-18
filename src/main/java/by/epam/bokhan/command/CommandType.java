@@ -314,6 +314,10 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).changeLogin(content);
         }
+    },UPLOAD_USER_PHOTO(new UploadUserPhotoCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).uploadPhoto(content);
+        }
     },TO_USER_FIND_BOOK_PAGE(new ToUserFindBookCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 

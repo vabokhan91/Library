@@ -1,5 +1,8 @@
 package by.epam.bokhan.validator;
 
+import by.epam.bokhan.entity.Location;
+import by.epam.bokhan.entity.Role;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +17,7 @@ public class UserValidator {
     private static final String REGEX_FOR_MOBILE_PHONE = "^((\\+)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$";
     private static final String REGEX_FOR_LIBRARY_CARD = "\\d{1,5}";
     private static final String REGEX_FOR_USER_ID = "\\d{1,5}";
+    private static final String REGEX_FOR_USER_ROLE = "[a-zA-Zа-яА-Я_]{1,30}";
 
     public static boolean isPasswordValid(String password) {
         boolean isPasswordValid = false;
@@ -100,5 +104,22 @@ public class UserValidator {
             isUserIdValid = matcherForUserId.matches();
         }
         return isUserIdValid;
+    }
+
+    public static boolean isUserRoleValid(String roleValue) {
+        boolean isRoleValid = false;
+        if (roleValue != null) {
+            Pattern patternForUserRole = Pattern.compile(REGEX_FOR_USER_ROLE);
+            Matcher matcherForUserRole = patternForUserRole.matcher(roleValue);
+            if (matcherForUserRole.matches()) {
+                Role[] roles = Role.values();
+                for (Role role : roles) {
+                    if (role.equals(Role.valueOf(roleValue.toUpperCase()))) {
+                        isRoleValid = true;
+                    }
+                }
+            }
+        }
+        return isRoleValid;
     }
 }

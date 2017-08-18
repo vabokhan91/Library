@@ -17,6 +17,7 @@ public class User {
     private boolean isBlocked;
     private List<Order> orders = new ArrayList<>();
     private int libraryCardNumber;
+    private  String photo;
 
     public User() {
     }
@@ -117,6 +118,14 @@ public class User {
 
     public void setLibraryCardNumber(int libraryCardNumber) {
         this.libraryCardNumber = libraryCardNumber;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     @Override

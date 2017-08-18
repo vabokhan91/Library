@@ -42,4 +42,5 @@ class DAOConstant {
     static final String PASSWORD = "password";
     static final String ROLE = "role.name";
     static final String ORDERS_BOOK_ID = "orders.book_id";
+    static final String USER_PHOTO = "user.photo";
 }

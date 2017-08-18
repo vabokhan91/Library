@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public interface UserDAO {
-    boolean addUser(User user, int roleId) throws DAOException;
+    boolean addUser(User user) throws DAOException;
 
     boolean registerUser(User user) throws DAOException;
 
@@ -40,5 +40,6 @@ public interface UserDAO {
 
     boolean changeLogin(int userId, String login) throws DAOException;
 
+    boolean changePhoto(User user) throws DAOException;
 
 }

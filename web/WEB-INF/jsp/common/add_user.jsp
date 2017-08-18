@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<form method="post" action="/controller" accept-charset="UTF-8">
+<form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
     <input type="hidden" name="command" value="add_user"/>
     <%--<input type = "hidden" name = "user_role" value="2"/><br/>--%>
 
@@ -31,8 +31,8 @@
         <c:when test="${user.role.ordinal() == 3}">
             <fmt:message key="label.role" bundle="${messages}"/> :
             <select name="user_role">
-                <option  value="2"><fmt:message key="label.user.librarian" bundle="${messages}"/> </option>
-                <option value="1"><fmt:message key="label.user.client" bundle="${messages}"/> </option>
+                <option  value="librarian"><fmt:message key="label.user.librarian" bundle="${messages}"/> </option>
+                <option value="client"><fmt:message key="label.user.client" bundle="${messages}"/> </option>
             </select><br/>
 
             <fmt:message key="label.login" bundle="${messages}"/> :
@@ -45,12 +45,15 @@
             <input type = "password" name = "confirm_password" placeholder="Confirm password" id="confirm_password" value="" pattern="[\w!()*&^%$@]{1,12}"/>
         </c:when>
         <c:otherwise>
-            <input type = "hidden" name = "user_role" value="1"/>
+            <input type = "hidden" name = "user_role" value="client"/>
         </c:otherwise>
     </c:choose><br/>
     <fmt:message key="label.mobile_phone" bundle="${messages}"/> :
     <input type = "text" name = "user_mobilephone" value="" pattern="^((\+)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$"/><br/>
-
+    <c:if test="${user.role.ordinal()==3}">
+        <fmt:message key="label.upload_new_photo" bundle="${messages}"/>
+    <input type = "file" name = "user_photo" size="50"/><br/>
+    </c:if>
     <input type="submit" name="submit" value=<fmt:message key="label.add_user" bundle="${messages}"/> />
 </form>
 
