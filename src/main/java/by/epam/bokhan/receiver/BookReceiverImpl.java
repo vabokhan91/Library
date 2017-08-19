@@ -24,7 +24,6 @@ import static by.epam.bokhan.validator.UserValidator.*;
 
 public class BookReceiverImpl implements BookReceiver {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final String BOOK_IMAGE = "book_image";
 
     @Override
     public void getAllBooks(RequestContent requestContent) throws ReceiverException {

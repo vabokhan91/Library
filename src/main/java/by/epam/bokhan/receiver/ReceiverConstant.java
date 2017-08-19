@@ -3,10 +3,7 @@ package by.epam.bokhan.receiver;
 
 class ReceiverConstant {
     static final String BOOKS = "books";
-    static final String TYPE_OF_SEARCH = "type_of_search";
     static final String FIND_QUERY_VALUE = "find_query_value";
-    static final String BY_ID = "by_id";
-    static final String BY_TITLE = "by_title";
     static final String FOUND_BOOK = "foundBook";
     static final String BOOK_ID = "book_id";
     static final String FOUND_ORDER = "foundOrder";
@@ -65,15 +62,11 @@ class ReceiverConstant {
     static final String CONFIRM_PASSWORD = "confirm_password";
     static final String USER_MOBILE_PHONE = "user_mobilephone";
     static final String USER_IS_ADDED = "userIsAdded";
-    static final String BY_LIBRARY_CARD = "by_library_card";
     static final String IS_USER_DELETED = "isUserDeleted";
     static final String FOUND_USER = "foundUser";
-    static final String BLOCK_QUERY_VALUE = "block_query_value";
     static final String IS_USER_BLOCKED = "isUserBlocked";
-    static final String UNBLOCK_QUERY_VALUE = "unblock_query_value";
     static final String IS_USER_UNBLOCKED = "isUserUnblocked";
     static final String USER_ID = "user_id";
-    static final String BY_SURNAME = "by_surname";
     static final String NOT_BLOCKED_USERS = "not_blocked_users";
     static final String BLOCKED_USERS = "blocked_users";
     static final String IS_USER_EDITED = "isUserEdited";
@@ -86,4 +79,6 @@ class ReceiverConstant {
     static final String IS_LOGIN_CHANGED = "isLoginChanged";
     static final String STATUS_BOOKED = "booked";
     static final String USER_PHOTO = "user_photo";
+    static final String BOOK_IMAGE = "book_image";
+    static final String IS_PHOTO_UPLOADED = "isPhotoUploaded";
 }

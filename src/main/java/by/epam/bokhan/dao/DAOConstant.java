@@ -43,4 +43,7 @@ class DAOConstant {
     static final String ROLE = "role.name";
     static final String ORDERS_BOOK_ID = "orders.book_id";
     static final String USER_PHOTO = "user.photo";
+    static final int BLOCKED_VALUE = 1;
+    static final int UNBLOCKED_VALUE = 0;
+    static final int POSITIVE_RESULT_VALUE = 1;
 }

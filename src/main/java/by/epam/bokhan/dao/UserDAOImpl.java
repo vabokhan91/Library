@@ -33,12 +33,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "from library_card left join user on user.id = library_card.user_id\n" +
             "left join role on user.role_id = role.id \n" +
             "where library_card.id = ?";
-    private static final String SQL_FIND_USER_BY_SURNAME = "SELECT user.id,library_card.id, user.name, user.surname, user.patronymic, address, role.name, login, mobile_phone, blocked\n" +
+    private static final String SQL_FIND_USER_BY_SURNAME = "SELECT user.id,library_card.id, user.name, user.surname, user.patronymic, address, role.name, login, mobile_phone, blocked, user.photo\n" +
             "from library_card\n" +
             "left join user on library_card.user_id = user.id\n" +
             "left join role on user.role_id = role.id \n" +
             "where user.surname LIKE ?";
-    private static final String SQL_CHECK_IF_USER_EXIST = "SELECT login FROM user where login = ?";
+    private static final String SQL_CHECK_IF_LOGIN_EXIST = "SELECT login FROM user where login = ?";
     private static final String SQL_BLOCK_USER_BY_ID = "UPDATE user SET blocked = 1 WHERE user.id = ?";
     private static final String SQL_UNBLOCK_USER = "UPDATE user SET blocked = 0 WHERE user.id = ?";
     private static final String SQL_BLOCK_STATUS = "SELECT blocked FROM user WHERE user.id = ?";
@@ -62,40 +62,38 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_SET_NEW_PASSWORD = "UPDATE user SET password = ? where user.id = ?";
     private static final String SQL_SET_NEW_LOGIN = "UPDATE user SET login = ? where user.id = ?";
     private static final String SQL_CHANGE_USER_PHOTO = "UPDATE user SET photo = ? where user.id = ?";
-    private final String USER_PHOTO = "user.photo";
 
-
+    @Override
     public User getUserByLogin(String login) throws DAOException {
         User user = new User();
         Connection connection = null;
-        PreparedStatement st = null;
+        PreparedStatement getUserByLoginStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN);
-            st.setString(1, login);
-            ResultSet rs;
-            rs = st.executeQuery();
-            if (rs.next()) {
-                user.setId(rs.getInt(USER_ID));
-                user.setName(rs.getString(USER_NAME));
-                user.setSurname(rs.getString(USER_SURNAME));
-                user.setPatronymic(rs.getString(USER_PATRONYMIC));
-                user.setAddress(rs.getString(ADDRESS));
-                user.setLogin(rs.getString(LOGIN));
-                user.setPassword(rs.getString(PASSWORD));
-                Role userRole = Role.valueOf(rs.getString(ROLE).toUpperCase());
+            getUserByLoginStatement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN);
+            getUserByLoginStatement.setString(1, login);
+            ResultSet resultSet = getUserByLoginStatement.executeQuery();
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt(USER_ID));
+                user.setName(resultSet.getString(USER_NAME));
+                user.setSurname(resultSet.getString(USER_SURNAME));
+                user.setPatronymic(resultSet.getString(USER_PATRONYMIC));
+                user.setAddress(resultSet.getString(ADDRESS));
+                user.setLogin(resultSet.getString(LOGIN));
+                user.setPassword(resultSet.getString(PASSWORD));
+                Role userRole = Role.valueOf(resultSet.getString(ROLE).toUpperCase());
                 user.setRole(userRole);
-                user.setMobilePhone(rs.getString(MOBILE_PHONE));
-                user.setBlocked(rs.getInt(BLOCK_FIELD));
-                user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
-                user.setPhoto(rs.getString(DAOConstant.USER_PHOTO));
+                user.setMobilePhone(resultSet.getString(MOBILE_PHONE));
+                user.setBlocked(resultSet.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(resultSet.getInt(LIBRARY_CARD));
+                user.setPhoto(resultSet.getString(DAOConstant.USER_PHOTO));
 
             }
             return user;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not log in. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(st);
+            closeStatement(getUserByLoginStatement);
             closeConnection(connection);
         }
     }
@@ -126,17 +124,17 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
     @Override
     public boolean addUser(User user) throws DAOException {
-        boolean result = false;
+        boolean isUserAdded = false;
         Connection connection = null;
-        PreparedStatement statementFindUser = null;
+        PreparedStatement findUserStatement = null;
         PreparedStatement insertUserStatement = null;
         PreparedStatement insertLibraryCardStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
-            statementFindUser = connection.prepareStatement(SQL_CHECK_IF_USER_EXIST);
-            statementFindUser.setString(1, user.getLogin());
-            ResultSet foundUser = statementFindUser.executeQuery();
+            findUserStatement = connection.prepareStatement(SQL_CHECK_IF_LOGIN_EXIST);
+            findUserStatement.setString(1, user.getLogin());
+            ResultSet foundUser = findUserStatement.executeQuery();
             if (!foundUser.next()) {
                 insertUserStatement = connection.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS);
                 insertUserStatement.setString(1, user.getName());
@@ -168,7 +166,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                     insertLibraryCardResult = insertLibraryCardStatement.executeUpdate();
                 }
                 if (insertUserRes > 0 && insertLibraryCardResult > 0) {
-                    result = true;
+                    isUserAdded = true;
                     connection.commit();
                 } else {
                     connection.rollback();
@@ -176,30 +174,31 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             } else {
                 connection.rollback();
             }
-            return result;
+            return isUserAdded;
         } catch (SQLException e) {
             try {
                 connection.rollback();
             } catch (SQLException e1) {
-                throw new DAOException(String.format("Can not add user. Reason : %s", e1.getMessage()), e1);
+                throw new DAOException(String.format("Can not make rollback. Reason : %s", e1.getMessage()), e1);
             }
             throw new DAOException(String.format("Can not add user. Reason : %s", e.getMessage()), e);
         } finally {
             closeStatement(insertLibraryCardStatement);
-            closeStatement(statementFindUser);
+            closeStatement(findUserStatement);
             closeStatement(insertUserStatement);
             closeConnection(connection);
         }
     }
 
-    public ArrayList<User> getAllUsers() throws DAOException {
+    @Override
+    public List<User> getAllUsers() throws DAOException {
         ArrayList<User> users = new ArrayList<>();
         Connection connection = null;
-        Statement statement = null;
+        Statement getAllUsersStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_GET_ALL_USERS);
+            getAllUsersStatement = connection.createStatement();
+            ResultSet resultSet = getAllUsersStatement.executeQuery(SQL_GET_ALL_USERS);
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt(USER_ID));
@@ -218,13 +217,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not get users. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(statement);
+            closeStatement(getAllUsersStatement);
             closeConnection(connection);
         }
     }
 
+    @Override
     public boolean removeUserById(int id) throws DAOException {
-        boolean result = false;
+        boolean isUserRemoved = false;
         Connection connection = null;
         PreparedStatement removeUserStatement = null;
         try {
@@ -233,9 +233,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             removeUserStatement.setInt(1, id);
             int res = removeUserStatement.executeUpdate();
             if (res > 0) {
-                result = true;
+                isUserRemoved = true;
             }
-            return result;
+            return isUserRemoved;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not remove user. Reason : %s", e.getMessage()), e);
         } finally {
@@ -244,15 +244,16 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    @Override
     public List<User> findUserByLibraryCard(int libraryCard) throws DAOException {
         List<User> user = new ArrayList<>();
         Connection connection = null;
-        PreparedStatement st = null;
+        PreparedStatement findUserBLibraryCardStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_FIND_USER_BY_LIBRARY_CARD);
-            st.setInt(1, libraryCard);
-            ResultSet rs = st.executeQuery();
+            findUserBLibraryCardStatement = connection.prepareStatement(SQL_FIND_USER_BY_LIBRARY_CARD);
+            findUserBLibraryCardStatement.setInt(1, libraryCard);
+            ResultSet rs = findUserBLibraryCardStatement.executeQuery();
             while (rs.next()) {
                 User foundUser = new User();
                 foundUser.setId(rs.getInt(USER_ID));
@@ -266,14 +267,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 foundUser.setMobilePhone(rs.getString(MOBILE_PHONE));
                 foundUser.setBlocked(rs.getInt(BLOCK_FIELD));
                 foundUser.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
-                foundUser.setPhoto(rs.getString("user.photo"));
+                foundUser.setPhoto(rs.getString(USER_PHOTO));
                 user.add(foundUser);
             }
             return user;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not find user. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(st);
+            closeStatement(findUserBLibraryCardStatement);
             closeConnection(connection);
         }
     }
@@ -281,55 +282,56 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     @Override
     public List<User> findUserBySurname(String surname) throws DAOException {
         List<User> users = new ArrayList<>();
-
         Connection connection = null;
-        PreparedStatement st = null;
+        PreparedStatement findUserBySurnameStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_FIND_USER_BY_SURNAME);
-            st.setString(1, "%" + surname + "%");
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
+            findUserBySurnameStatement = connection.prepareStatement(SQL_FIND_USER_BY_SURNAME);
+            findUserBySurnameStatement.setString(1, "%" + surname + "%");
+            ResultSet resultSet = findUserBySurnameStatement.executeQuery();
+            while (resultSet.next()) {
                 User user = new User();
-                user.setId(rs.getInt(USER_ID));
-                user.setName(rs.getString(USER_NAME));
-                user.setSurname(rs.getString(USER_SURNAME));
-                user.setPatronymic(rs.getString(USER_PATRONYMIC));
-                user.setAddress(rs.getString(ADDRESS));
-                user.setLogin(rs.getString(LOGIN));
-                Role userRole = Role.valueOf(rs.getString(ROLE).toUpperCase());
+                user.setId(resultSet.getInt(USER_ID));
+                user.setName(resultSet.getString(USER_NAME));
+                user.setSurname(resultSet.getString(USER_SURNAME));
+                user.setPatronymic(resultSet.getString(USER_PATRONYMIC));
+                user.setAddress(resultSet.getString(ADDRESS));
+                user.setLogin(resultSet.getString(LOGIN));
+                Role userRole = Role.valueOf(resultSet.getString(ROLE).toUpperCase());
                 user.setRole(userRole);
-                user.setMobilePhone(rs.getString(MOBILE_PHONE));
-                user.setBlocked(rs.getInt(BLOCK_FIELD));
-                user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
+                user.setMobilePhone(resultSet.getString(MOBILE_PHONE));
+                user.setBlocked(resultSet.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(resultSet.getInt(LIBRARY_CARD));
+                user.setPhoto(resultSet.getString(USER_PHOTO));
                 users.add(user);
             }
             return users;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not find user. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(st);
+            closeStatement(findUserBySurnameStatement);
             closeConnection(connection);
         }
     }
 
+    @Override
     public boolean blockUser(int userId) throws DAOException {
         boolean isBlocked = false;
         Connection connection = null;
         PreparedStatement userBlockStatement = null;
-        PreparedStatement userBlockStatus = null;
+        PreparedStatement userBlockStatusStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            userBlockStatus = connection.prepareStatement(SQL_BLOCK_STATUS);
-            userBlockStatus.setInt(1, userId);
-            ResultSet resultSet = userBlockStatus.executeQuery();
+            userBlockStatusStatement = connection.prepareStatement(SQL_BLOCK_STATUS);
+            userBlockStatusStatement.setInt(1, userId);
+            ResultSet resultSet = userBlockStatusStatement.executeQuery();
             if (resultSet.next()) {
                 int status = resultSet.getInt(BLOCK_FIELD);
-                if (status != 1) {
+                if (status != BLOCKED_VALUE) {
                     userBlockStatement = connection.prepareStatement(SQL_BLOCK_USER_BY_ID);
                     userBlockStatement.setInt(1, userId);
-                    int res = userBlockStatement.executeUpdate();
-                    if (res > 0) {
+                    int blockResult = userBlockStatement.executeUpdate();
+                    if (blockResult > 0) {
                         isBlocked = true;
                     }
                 }
@@ -338,6 +340,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not block user. Reason : %s", e.getMessage()), e);
         } finally {
+            closeStatement(userBlockStatusStatement);
             closeStatement(userBlockStatement);
             closeConnection(connection);
         }
@@ -348,19 +351,19 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         boolean isUnblocked = false;
         Connection connection = null;
         PreparedStatement unblockUserStatement = null;
-        PreparedStatement userBlockStatus = null;
+        PreparedStatement userBlockStatusStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            userBlockStatus = connection.prepareStatement(SQL_BLOCK_STATUS);
-            userBlockStatus.setInt(1, userId);
-            ResultSet resultSet = userBlockStatus.executeQuery();
+            userBlockStatusStatement = connection.prepareStatement(SQL_BLOCK_STATUS);
+            userBlockStatusStatement.setInt(1, userId);
+            ResultSet resultSet = userBlockStatusStatement.executeQuery();
             if (resultSet.next()) {
                 int status = resultSet.getInt(BLOCK_FIELD);
-                if (status != 0) {
+                if (status != UNBLOCKED_VALUE) {
                     unblockUserStatement = connection.prepareStatement(SQL_UNBLOCK_USER);
                     unblockUserStatement.setInt(1, userId);
-                    int res = unblockUserStatement.executeUpdate();
-                    if (res > 0) {
+                    int unblockResult = unblockUserStatement.executeUpdate();
+                    if (unblockResult > 0) {
                         isUnblocked = true;
                     }
                 }
@@ -369,38 +372,39 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not unblock user. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(userBlockStatus);
+            closeStatement(userBlockStatusStatement);
             closeStatement(unblockUserStatement);
             closeConnection(connection);
         }
     }
 
+    @Override
     public List<User> getBlockedUsers() throws DAOException {
         List<User> blockedUsers = new ArrayList<>();
         Connection connection = null;
-        PreparedStatement st = null;
+        PreparedStatement getBlockedUsersStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_GET_BLOCKED_USERS);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
+            getBlockedUsersStatement = connection.prepareStatement(SQL_GET_BLOCKED_USERS);
+            ResultSet resultSet = getBlockedUsersStatement.executeQuery();
+            while (resultSet.next()) {
                 User user = new User();
-                user.setId(rs.getInt(USER_ID));
-                user.setName(rs.getString(USER_NAME));
-                user.setSurname(rs.getString(USER_SURNAME));
-                user.setPatronymic(rs.getString(USER_PATRONYMIC));
-                Role userRole = Role.valueOf(rs.getString(ROLE).toUpperCase());
+                user.setId(resultSet.getInt(USER_ID));
+                user.setName(resultSet.getString(USER_NAME));
+                user.setSurname(resultSet.getString(USER_SURNAME));
+                user.setPatronymic(resultSet.getString(USER_PATRONYMIC));
+                Role userRole = Role.valueOf(resultSet.getString(ROLE).toUpperCase());
                 user.setRole(userRole);
-                user.setLogin(rs.getString(LOGIN));
-                user.setBlocked(rs.getInt(BLOCK_FIELD));
-                user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
+                user.setLogin(resultSet.getString(LOGIN));
+                user.setBlocked(resultSet.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(resultSet.getInt(LIBRARY_CARD));
                 blockedUsers.add(user);
             }
             return blockedUsers;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not get users. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(st);
+            closeStatement(getBlockedUsersStatement);
             closeConnection(connection);
         }
     }
@@ -409,33 +413,34 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     public List<User> getNotBlockedUsers() throws DAOException {
         List<User> notBlockedUsers = new ArrayList<>();
         Connection connection = null;
-        PreparedStatement st = null;
+        PreparedStatement getNotBlockedUsersStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_GET_NOT_BLOCKED_USERS);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
+            getNotBlockedUsersStatement = connection.prepareStatement(SQL_GET_NOT_BLOCKED_USERS);
+            ResultSet resultSet = getNotBlockedUsersStatement.executeQuery();
+            while (resultSet.next()) {
                 User user = new User();
-                user.setId(rs.getInt(USER_ID));
-                user.setName(rs.getString(USER_NAME));
-                user.setSurname(rs.getString(USER_SURNAME));
-                user.setPatronymic(rs.getString(USER_PATRONYMIC));
-                Role userRole = Role.valueOf(rs.getString(ROLE).toUpperCase());
+                user.setId(resultSet.getInt(USER_ID));
+                user.setName(resultSet.getString(USER_NAME));
+                user.setSurname(resultSet.getString(USER_SURNAME));
+                user.setPatronymic(resultSet.getString(USER_PATRONYMIC));
+                Role userRole = Role.valueOf(resultSet.getString(ROLE).toUpperCase());
                 user.setRole(userRole);
-                user.setLogin(rs.getString(LOGIN));
-                user.setBlocked(rs.getInt(BLOCK_FIELD));
-                user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
+                user.setLogin(resultSet.getString(LOGIN));
+                user.setBlocked(resultSet.getInt(BLOCK_FIELD));
+                user.setLibraryCardNumber(resultSet.getInt(LIBRARY_CARD));
                 notBlockedUsers.add(user);
             }
             return notBlockedUsers;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not get users. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(st);
+            closeStatement(getNotBlockedUsersStatement);
             closeConnection(connection);
         }
     }
 
+    @Override
     public User getExplicitUserInfo(int libraryCard) throws DAOException {
         User user = new User();
         List<Order> orders = new ArrayList<>();
@@ -473,7 +478,6 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                     Timestamp timestamp = ordersInfoResult.getTimestamp(ORDER_DATE);
                     LocalDate orderDate = timestamp.toLocalDateTime().toLocalDate();
                     order.setOrderDate(orderDate);
-
                     LocalDate expirationDate = ordersInfoResult.getTimestamp(ORDER_EXPIRATION_DATE).toLocalDateTime().toLocalDate();
                     order.setExpirationDate(expirationDate);
                     Timestamp returnDateTimeStamp = ordersInfoResult.getTimestamp(ORDER_RETURN_DATE);
@@ -520,7 +524,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 changeUserPassword.setInt(2, user.getId());
                 changePasswordResult = changeUserPassword.executeUpdate();
             }else {
-                changePasswordResult = 1;
+                changePasswordResult = POSITIVE_RESULT_VALUE;
             }
             int changePhotoResult;
             if (user.getPhoto() != null && !user.getPhoto().isEmpty()) {
@@ -529,7 +533,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 uploadPhotoStatement.setInt(2,user.getId());
                 changePhotoResult = uploadPhotoStatement.executeUpdate();
             }else {
-                changePhotoResult = 1;
+                changePhotoResult = POSITIVE_RESULT_VALUE;
             }
             if (userUpdateResult > 0 && changePasswordResult > 0 && changePhotoResult > 0) {
                 editLibraryCardInfoStatement = connection.prepareStatement(SQL_EDIT_LIBRARY_CARD_INFO);
@@ -567,20 +571,20 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     public String getUserPassword(int libraryCard) throws DAOException {
         String password = null;
         Connection connection = null;
-        PreparedStatement st = null;
+        PreparedStatement getUsersPasswordStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            st = connection.prepareStatement(SQL_GET_PASSWORD);
-            st.setInt(1, libraryCard);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                password = rs.getString(PASSWORD);
+            getUsersPasswordStatement = connection.prepareStatement(SQL_GET_PASSWORD);
+            getUsersPasswordStatement.setInt(1, libraryCard);
+            ResultSet resultSet = getUsersPasswordStatement.executeQuery();
+            if (resultSet.next()) {
+                password = resultSet.getString(PASSWORD);
             }
             return password;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not get password. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(st);
+            closeStatement(getUsersPasswordStatement);
             closeConnection(connection);
         }
     }
@@ -589,21 +593,21 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     public boolean changePassword(int libraryCard, String newPassword) throws DAOException {
         boolean isPasswordChanged = false;
         Connection connection = null;
-        PreparedStatement setNewPassword = null;
+        PreparedStatement setNewPasswordStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            setNewPassword = connection.prepareStatement(SQL_SET_NEW_PASSWORD);
-            setNewPassword.setString(1, newPassword);
-            setNewPassword.setInt(2, libraryCard);
-            int res = setNewPassword.executeUpdate();
-            if (res > 0) {
+            setNewPasswordStatement = connection.prepareStatement(SQL_SET_NEW_PASSWORD);
+            setNewPasswordStatement.setString(1, newPassword);
+            setNewPasswordStatement.setInt(2, libraryCard);
+            int setNewPasswordResult = setNewPasswordStatement.executeUpdate();
+            if (setNewPasswordResult > 0) {
                 isPasswordChanged = true;
             }
             return isPasswordChanged;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not change password. Reason : %s", e.getMessage()), e);
         } finally {
-            closeStatement(setNewPassword);
+            closeStatement(setNewPasswordStatement);
             closeConnection(connection);
         }
     }
@@ -618,8 +622,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             setNewLoginStatement = connection.prepareStatement(SQL_SET_NEW_LOGIN);
             setNewLoginStatement.setString(1, login);
             setNewLoginStatement.setInt(2, userId);
-            int res = setNewLoginStatement.executeUpdate();
-            if (res > 0) {
+            int setNewLoginResult = setNewLoginStatement.executeUpdate();
+            if (setNewLoginResult > 0) {
                 isLoginChanged = true;
             }
             return isLoginChanged;
@@ -641,8 +645,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             setNewPhotoStatement = connection.prepareStatement(SQL_CHANGE_USER_PHOTO);
             setNewPhotoStatement.setString(1, user.getPhoto());
             setNewPhotoStatement.setInt(2, user.getId());
-            int res = setNewPhotoStatement.executeUpdate();
-            if (res > 0) {
+            int setNewPhotoResult = setNewPhotoStatement.executeUpdate();
+            if (setNewPhotoResult > 0) {
                 isPhotoChanged = true;
             }
             return isPhotoChanged;

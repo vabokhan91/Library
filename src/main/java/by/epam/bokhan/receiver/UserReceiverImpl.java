@@ -26,7 +26,7 @@ import static by.epam.bokhan.validator.UserValidator.*;
 
 public class UserReceiverImpl implements UserReceiver {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final String IS_PHOTO_UPLOADED = "isPhotoUploaded";
+
 
     @Override
     public void login(RequestContent content) throws ReceiverException {
@@ -128,7 +128,7 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public void getAllUsers(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
-        ArrayList<User> users;
+        List<User> users;
         try {
             users = dao.getAllUsers();
             requestContent.insertParameter(USERS, users);

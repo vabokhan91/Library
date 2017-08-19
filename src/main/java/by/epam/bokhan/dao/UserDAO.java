@@ -30,7 +30,7 @@ public interface UserDAO {
 
     User getUserByLogin(String login) throws DAOException;
 
-    ArrayList<User> getAllUsers() throws DAOException;
+    List<User> getAllUsers() throws DAOException;
 
     boolean editUser(User user) throws DAOException;
 
