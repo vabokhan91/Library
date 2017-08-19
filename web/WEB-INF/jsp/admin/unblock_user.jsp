@@ -34,7 +34,7 @@
 
             <td><form method="post" action="/controller" accept-charset="UTF-8">
                 <input type="hidden" name="command" value="unblock_user"/>
-                <input type = "hidden" name = "unblock_query_value" value="${item.id}"/><br/>
+                <input type = "hidden" name = "user_id" value="${item.id}"/><br/>
                 <input type="submit" name="submit" value=<fmt:message key="label.user.unblock_user" bundle="${messages}"/>/>
             </form> </td>
 

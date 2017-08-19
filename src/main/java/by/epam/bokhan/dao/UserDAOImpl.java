@@ -62,7 +62,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_SET_NEW_PASSWORD = "UPDATE user SET password = ? where user.id = ?";
     private static final String SQL_SET_NEW_LOGIN = "UPDATE user SET login = ? where user.id = ?";
     private static final String SQL_CHANGE_USER_PHOTO = "UPDATE user SET photo = ? where user.id = ?";
-
+    private final String USER_PHOTO = "user.photo";
 
 
     public User getUserByLogin(String login) throws DAOException {
@@ -88,12 +88,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 user.setMobilePhone(rs.getString(MOBILE_PHONE));
                 user.setBlocked(rs.getInt(BLOCK_FIELD));
                 user.setLibraryCardNumber(rs.getInt(LIBRARY_CARD));
-                user.setPhoto(rs.getString(USER_PHOTO));
+                user.setPhoto(rs.getString(DAOConstant.USER_PHOTO));
 
             }
             return user;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            throw new DAOException(String.format("Can not log in. Reason : %s", e.getMessage()), e);
         } finally {
             closeStatement(st);
             closeConnection(connection);
@@ -151,7 +151,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                     insertUserStatement.setString(5, null);
                     insertUserStatement.setString(6, null);
                 }
-                if (user.getPhoto() != null) {
+                if (user.getPhoto() != null && !user.getPhoto().isEmpty()) {
                     insertUserStatement.setString(7, user.getPhoto());
                 }else {
                     insertUserStatement.setString(7,null);
@@ -459,6 +459,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 user.setMobilePhone(resultSet.getString(MOBILE_PHONE));
                 user.setBlocked(resultSet.getInt(BLOCK_FIELD));
                 user.setLibraryCardNumber(resultSet.getInt(LIBRARY_CARD));
+                user.setPhoto(resultSet.getString(USER_PHOTO));
                 getUserOrdersStatement = connection.prepareStatement(SQL_GET_USERS_ORDER_INFO);
                 getUserOrdersStatement.setInt(1, libraryCard);
                 ResultSet ordersInfoResult = getUserOrdersStatement.executeQuery();
@@ -542,7 +543,6 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                 } else {
                     connection.rollback();
                 }
-
             } else {
                 connection.rollback();
             }
@@ -564,15 +564,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     }
 
     @Override
-    public String getPassword(int libraryCard) throws DAOException {
-        String password = "";
+    public String getUserPassword(int libraryCard) throws DAOException {
+        String password = null;
         Connection connection = null;
         PreparedStatement st = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             st = connection.prepareStatement(SQL_GET_PASSWORD);
             st.setInt(1, libraryCard);
-
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 password = rs.getString(PASSWORD);

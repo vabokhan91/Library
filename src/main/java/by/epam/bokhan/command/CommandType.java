@@ -22,7 +22,7 @@ public enum CommandType {
     },
     LOGOUT(new LogoutCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) {
-            ((UserReceiverImpl) getCommand().getReceiver()).signOut(content);
+            ((UserReceiverImpl) getCommand().getReceiver()).logout(content);
         }
     },
     ERROR_PAGE(new ErrorPage(new UserReceiverImpl())) {
@@ -144,7 +144,7 @@ public enum CommandType {
         }
     },GET_USER_FOR_EDITING(new GetUserForEditingCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((UserReceiverImpl) getCommand().getReceiver()).getUser(content);
+            ((UserReceiverImpl) getCommand().getReceiver()).findUser(content);
         }
     },TO_EDIT_USER_PAGE(new ToEditUserPage(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {

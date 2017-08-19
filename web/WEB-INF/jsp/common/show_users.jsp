@@ -39,7 +39,7 @@
 
             <td><form method="post" action="/controller" accept-charset="UTF-8">
                 <input type="hidden" name="command" value="get_user_for_editing"/>
-                <input type = "hidden" name = "library_card" value="${item.libraryCardNumber}"/><br/>
+                <input type = "hidden" name = "find_query_value" value="${item.libraryCardNumber}"/><br/>
                 <input type="submit" name="submit" value=<fmt:message key="label.user.edit_user" bundle="${messages}"/>/>
             </form> </td>
 

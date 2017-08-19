@@ -68,7 +68,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "where orders.order_date = (select max(order_date) from orders where orders.book_id = ?) and orders.book_id = ?";
 
     private static final String SQL_GET_ALL_GENRES = "Select * from genre";
-    private static final String SQL_EDIT_BOOK = "Update book set title = ?, pages = ?, isbn = ?, year = ?,publisher_id = ?, image = ? where id = ?";
+    private static final String SQL_EDIT_BOOK = "Update book set title = ?, pages = ?, isbn = ?, year = ?,publisher_id = ?, where id = ?";
+    private static final String SQL_CHANGE_BOOK_IMAGE = "Update book set image = ? where id = ?";
     private static final String SQL_DELETE_BOOKS_GENRE = "DELETE FROM book_genre WHERE book_genre.book_id = ?";
     private static final String SQL_DELETE_BOOKS_AUTHOR = "DELETE FROM book_author WHERE book_author.book_id = ?";
     private static final String SQL_DELETE_GENRE = "DELETE FROM genre WHERE genre.id = ?";
@@ -555,6 +556,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         Connection connection = null;
         PreparedStatement st = null;
         PreparedStatement deleteGenreStatement = null;
+        PreparedStatement changeBookImageStatement = null;
         PreparedStatement addGenreStatement = null;
         PreparedStatement deleteAuthorStatement = null;
         PreparedStatement addAuthorStatement = null;
@@ -567,36 +569,48 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             st.setString(3, book.getIsbn());
             st.setInt(4, book.getYear());
             st.setInt(5, book.getPublisher().getId());
-            st.setString(6, book.getImage());
-            st.setInt(7, book.getId());
+            st.setInt(6, book.getId());
             int editBookRes = st.executeUpdate();
-
+            int changeBookImageResult;
+            if (book.getImage() != null && !book.getImage().isEmpty()) {
+                changeBookImageStatement = connection.prepareStatement(SQL_CHANGE_BOOK_IMAGE);
+                changeBookImageStatement.setString(1, book.getImage());
+                changeBookImageStatement.setInt(2, book.getId());
+                changeBookImageResult = changeBookImageStatement.executeUpdate();
+            } else {
+                changeBookImageResult = 1;
+            }
             deleteGenreStatement = connection.prepareStatement(SQL_DELETE_BOOKS_GENRE);
             deleteGenreStatement.setInt(1, book.getId());
-            deleteGenreStatement.executeUpdate();
+            int deleteGenreResult = deleteGenreStatement.executeUpdate();
             addGenreStatement = connection.prepareStatement(SQL_ADD_BOOK_GENRE);
             int addGenreRes = 0;
             List<Genre> genres = book.getGenre();
             for (Genre genre : genres) {
                 addGenreStatement.setInt(1, book.getId());
                 addGenreStatement.setInt(2, genre.getId());
-                addGenreRes += addGenreStatement.executeUpdate();
+                addGenreRes = addGenreStatement.executeUpdate();
+                if (addGenreRes == 0) {
+                    break;
+                }
             }
-
             deleteAuthorStatement = connection.prepareStatement(SQL_DELETE_BOOKS_AUTHOR);
             deleteAuthorStatement.setInt(1, book.getId());
-            deleteAuthorStatement.executeUpdate();
-
+            int deleteAuthorResult = deleteAuthorStatement.executeUpdate();
             addAuthorStatement = connection.prepareStatement(SQL_ADD_BOOK_AUTHOR);
-            int addAuthorRes = 0;
+            int addAuthorResult = 0;
             List<Author> authors = book.getAuthors();
             for (Author author : authors) {
                 addAuthorStatement.setInt(1, book.getId());
                 addAuthorStatement.setInt(2, author.getId());
-                addAuthorRes += addAuthorStatement.executeUpdate();
+                addAuthorResult = addAuthorStatement.executeUpdate();
+                if (addAuthorResult == 0) {
+                    break;
+                }
             }
 
-            if (editBookRes > 0 && addGenreRes > 0 && addAuthorRes > 0) {
+            if (editBookRes > 0 && changeBookImageResult > 0 && deleteGenreResult > 0
+                    && addGenreRes > 0 && deleteAuthorResult > 0 && addAuthorResult > 0) {
                 isBookEdited = true;
                 connection.commit();
             } else {
@@ -611,6 +625,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             closeStatement(addGenreStatement);
             closeStatement(deleteAuthorStatement);
             closeStatement(addAuthorStatement);
+            closeStatement(changeBookImageStatement);
             closeConnection(connection);
         }
     }

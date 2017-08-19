@@ -36,7 +36,7 @@ public interface UserDAO {
 
     boolean changePassword(int libraryCard, String newPassword) throws DAOException ;
 
-    String getPassword(int libraryCard) throws DAOException;
+    String getUserPassword(int libraryCard) throws DAOException;
 
     boolean changeLogin(int userId, String login) throws DAOException;
 

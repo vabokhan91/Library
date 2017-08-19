@@ -6,6 +6,9 @@ import by.epam.bokhan.dao.BookDAOImpl;
 import by.epam.bokhan.entity.*;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.Part;
 import java.io.ByteArrayOutputStream;
@@ -20,7 +23,7 @@ import static by.epam.bokhan.validator.UserValidator.*;
 
 
 public class BookReceiverImpl implements BookReceiver {
-
+    private static final Logger LOGGER = LogManager.getLogger();
     private final String BOOK_IMAGE = "book_image";
 
     @Override
@@ -153,15 +156,7 @@ public class BookReceiverImpl implements BookReceiver {
                     book.addAuthor(author);
                 }
                 if (bookImage != null) {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    InputStream is = bookImage.getInputStream();
-                    int reads = is.read();
-                    while (reads != -1) {
-                        baos.write(reads);
-                        reads = is.read();
-                    }
-                    byte[] b = baos.toByteArray();
-                    String image = Base64.getEncoder().encodeToString(b);
+                    String image = convertImageToString(bookImage);
                     book.setImage(image);
                 }
                 isBookEdited = bookDAO.editBook(book);
@@ -169,11 +164,11 @@ public class BookReceiverImpl implements BookReceiver {
             requestContent.insertAttribute(IS_BOOK_EDITED, isBookEdited);
         } catch (DAOException e) {
             throw new ReceiverException(e);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
+
+    @Override
     public void addAuthor(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
         boolean authorIsAdded = false;
@@ -265,18 +260,18 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void deleteGenre(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        boolean isGenreDeleted;
+        boolean isGenreDeleted = false;
         try {
             String[] genreIdValues = (String[]) requestContent.getRequestParameterValues().get(BOOK_GENRE);
             List<Genre> genres = new ArrayList<>();
-            for (String genreIdValue : genreIdValues) {
-                if (isBookGenreIdValid(genreIdValue)) {
+            if (isBookGenreIdValid(genreIdValues)) {
+                for (String genreIdValue : genreIdValues) {
                     Genre genre = new Genre();
                     genre.setId(Integer.parseInt(genreIdValue));
                     genres.add(genre);
                 }
+                isGenreDeleted = bookDAO.deleteGenre(genres);
             }
-            isGenreDeleted = bookDAO.deleteGenre(genres);
             requestContent.insertAttribute(IS_GENRE_DELETED, isGenreDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -298,7 +293,7 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void deleteAuthor(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        boolean isAuthorDeleted;
+        boolean isAuthorDeleted = false;
         try {
             String[] authorIdValues = (String[]) requestContent.getRequestParameterValues().get(BOOK_AUTHOR);
             List<Author> authors = new ArrayList<>();
@@ -308,8 +303,8 @@ public class BookReceiverImpl implements BookReceiver {
                     author.setId(Integer.parseInt(authorIdValue));
                     authors.add(author);
                 }
+                isAuthorDeleted = bookDAO.deleteAuthor(authors);
             }
-            isAuthorDeleted = bookDAO.deleteAuthor(authors);
             requestContent.insertAttribute(IS_AUTHOR_DELETED, isAuthorDeleted);
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -349,7 +344,6 @@ public class BookReceiverImpl implements BookReceiver {
             String description = (String) requestContent.getRequestParameters().get(BOOK_DESCRIPTION);
             String locationValue = (String) requestContent.getRequestParameters().get(BOOK_LOCATION);
             Part bookImage = (Part) requestContent.getMultiTypeParts().get(BOOK_IMAGE);
-
             if (isBookTitleValid(title) && isBookPageValid(pageValue) && isBookYearValid(yearValue) && isBookPublisherIdValid(publisherIdValue)
                     && isBookIsbnValid(isbn) && isBookGenreIdValid(genresIdValues) && isBookAuthorIdValid(authorsIdValues)
                     && isBookLocationValid(locationValue)) {
@@ -375,16 +369,10 @@ public class BookReceiverImpl implements BookReceiver {
                     authors.add(author);
                 }
                 if (bookImage != null) {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    InputStream is = bookImage.getInputStream();
-                    int reads = is.read();
-                    while (reads != -1) {
-                        baos.write(reads);
-                        reads = is.read();
+                    String image = convertImageToString(bookImage);
+                    if (!image.isEmpty()) {
+                        book.setImage(image);
                     }
-                    byte[] b = baos.toByteArray();
-                    String image = Base64.getEncoder().encodeToString(b);
-                    book.setImage(image);
                 }
                 book.setTitle(title);
                 book.setPages(pages);
@@ -399,8 +387,6 @@ public class BookReceiverImpl implements BookReceiver {
             requestContent.insertAttribute(IS_BOOK_ADDED, isBookAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -570,7 +556,6 @@ public class BookReceiverImpl implements BookReceiver {
                     librarian.setId(librarianId);
                     onlineOrder.setLibrarian(librarian);
                     isOnlineOrderExecuted = bookDAO.executeOnlineOrder(onlineOrder, typeOfOrder);
-
                 }
             }
             requestContent.insertAttribute(IS_ONLINE_ORDER_EXECUTED, isOnlineOrderExecuted);
@@ -578,8 +563,6 @@ public class BookReceiverImpl implements BookReceiver {
             throw new ReceiverException(e);
         }
     }
-
-//    find book part
 
     @Override
     public void findBookByGenre(RequestContent requestContent) throws ReceiverException {
@@ -596,5 +579,31 @@ public class BookReceiverImpl implements BookReceiver {
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
+    }
+
+    private String convertImageToString(Part bookImage) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        InputStream is = null;
+        String image = null;
+        try {
+            is = bookImage.getInputStream();
+            int reads = is.read();
+            while (reads != -1) {
+                baos.write(reads);
+                reads = is.read();
+            }
+            byte[] b = baos.toByteArray();
+            image = Base64.getEncoder().encodeToString(b);
+        } catch (IOException e) {
+            LOGGER.log(Level.ERROR, String.format("Can not convert to string. Reason : %s", e));
+        }finally {
+            try {
+                is.close();
+                baos.close();
+            } catch (IOException e) {
+                LOGGER.log(Level.ERROR, String.format("Can not close stream. Reason : %s", e));
+            }
+        }
+        return image;
     }
 }
