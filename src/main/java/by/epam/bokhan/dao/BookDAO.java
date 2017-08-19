@@ -20,15 +20,15 @@ public interface BookDAO {
 
     List<Book> getBookForEditing(int bookId) throws DAOException;
 
-    LinkedList<Genre> getAllGenres() throws DAOException;
+    List<Genre> getAllGenres() throws DAOException;
 
     boolean editBook(Book book) throws DAOException;
 
     boolean addAuthor(Author author) throws DAOException;
 
-    LinkedList<Author> getAllAuthors() throws DAOException;
+    List<Author> getAllAuthors() throws DAOException;
 
-    LinkedList<Publisher> getAllPublishers() throws DAOException;
+    List<Publisher> getAllPublishers() throws DAOException;
 
     boolean addBook(Book book) throws DAOException;
 

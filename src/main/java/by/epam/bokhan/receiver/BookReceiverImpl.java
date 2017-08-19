@@ -104,7 +104,7 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void getAllGenres(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        LinkedList<Genre> genres;
+        List<Genre> genres;
         try {
             genres = bookDAO.getAllGenres();
             requestContent.insertParameter(GENRES, genres);
@@ -230,7 +230,7 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void getAllPublishers(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        LinkedList<Publisher> publishers;
+        List<Publisher> publishers;
         try {
             publishers = bookDAO.getAllPublishers();
             requestContent.insertParameter(PUBLISHERS, publishers);
@@ -280,7 +280,7 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void getAllAuthors(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        LinkedList<Author> authors;
+        List<Author> authors;
         try {
             authors = bookDAO.getAllAuthors();
             requestContent.insertParameter(AUTHORS, authors);
@@ -313,9 +313,9 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void getGenresAuthorsPublishers(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        LinkedList<Genre> genres;
-        LinkedList<Author> authors;
-        LinkedList<Publisher> publishers;
+        List<Genre> genres;
+        List<Author> authors;
+        List<Publisher> publishers;
         try {
             genres = bookDAO.getAllGenres();
             requestContent.insertParameter(GENRES, genres);

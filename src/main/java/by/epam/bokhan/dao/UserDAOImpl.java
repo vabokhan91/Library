@@ -110,7 +110,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             registerUserStatement.setString(2, user.getPassword());
             registerUserStatement.setInt(3, user.getId());
             int registerUserResult = registerUserStatement.executeUpdate();
-            if (registerUserResult > 0) {
+            if (registerUserResult > POSITIVE_RESULT_VALUE) {
                 isUserRegistered = true;
             }
             return isUserRegistered;

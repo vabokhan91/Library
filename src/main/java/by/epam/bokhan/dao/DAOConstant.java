@@ -37,7 +37,6 @@ class DAOConstant {
     static final String ONLINE_ORDER_EXECUTION_DATE = "online_orders.order_execution_date";
     static final String ADDRESS = "address";
     static final String LOGIN = "login";
-    static final String ROLE_ID = "role_id";
     static final String BLOCK_FIELD = "blocked";
     static final String PASSWORD = "password";
     static final String ROLE = "role.name";
@@ -46,4 +45,6 @@ class DAOConstant {
     static final int BLOCKED_VALUE = 1;
     static final int UNBLOCKED_VALUE = 0;
     static final int POSITIVE_RESULT_VALUE = 1;
+    static final int FIRST_INDEX = 0;
+    static final String BOOK_IMAGE = "book.image";
 }
