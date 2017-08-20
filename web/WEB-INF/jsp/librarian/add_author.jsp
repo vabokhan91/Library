@@ -10,7 +10,7 @@
 </c:if>
 <html>
 <head>
-    <title>Add Author</title>
+    <title><fmt:message key="label.book.add_author" bundle="${messages}"/> </title>
 </head>
 <body>
 
@@ -18,13 +18,13 @@
     <input type="hidden" name="command" value="add_author"/>
 
     <fmt:message key="label.name" bundle="${messages}"/> :
-    <input type = "text" name = "author_name" value="" required/><br/>
+    <input type = "text" name = "author_name" value="" pattern="[^\d\W]{1,40}|([а-яА-Я]{1,40})" required/><br/>
 
     <fmt:message key="label.surname" bundle="${messages}"/> :
-    <input type = "text" name = "author_surname" value="" required/><br/>
+    <input type = "text" name = "author_surname" value="" pattern="[^\d\W]{1,40}|([а-яА-Я]{1,40})" required/><br/>
 
     <fmt:message key="label.patronymic" bundle="${messages}"/> :
-    <input type = "text" name = "author_patronymic" value="" /><br/>
+    <input type = "text" name = "author_patronymic" value="" pattern="[^\d\W]{1,40}|([а-яА-Я]{1,40})"/><br/>
 
     <fmt:message key="label.date_of_birth" bundle="${messages}"/> :
     <input type = "date" name = "date_of_birth" value="" required/><br/>

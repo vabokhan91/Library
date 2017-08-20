@@ -39,7 +39,7 @@
 
 <a href="/controller?command=to_delete_author_page" ><fmt:message key="label.book.delete_author" bundle="${messages}"/> </a><br/>
 
-<a href="/controller?command=to_add_genre_page" ><fmt:message key="label.button.add_genre" bundle="${messages}"/> </a><br/>
+<a href="/controller?command=to_add_genre_page" ><fmt:message key="label.genre.add_genre" bundle="${messages}"/> </a><br/>
 
 <a href="/controller?command=to_delete_genre_page" ><fmt:message key="label.button.delete_genre" bundle="${messages}"/> </a><br/>
 

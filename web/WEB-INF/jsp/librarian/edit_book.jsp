@@ -1,6 +1,8 @@
 <%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=2}">
@@ -8,20 +10,18 @@
 </c:if>
 <html>
 <head>
-    <title>Edit book</title>
+    <title><fmt:message key="label.book.edit_book" bundle="${messages}"/> </title>
 </head>
 <body>
 
-
-
 <form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
     <input type="hidden" name="command" value="edit_book"/>
-<c:forEach items="${foundBook}" var="item">
+    <c:forEach items="${foundBook}" var="item">
     <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.id}<br/>
-    <fmt:message key="label.book.title" bundle="${messages}"/> : <input type="text" name="book_title" value="${item.title}"/> <br/>
-    <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : <input type="text" name="book_pages" value="${item.pages}"/> <br/>
-    <fmt:message key="label.book.isbn" bundle="${messages}"/> : <input type="text" name="book_isbn" value="${item.isbn}"/> <br/>
-    <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : <input type="text" name="book_year" value="${item.year}"/> <br/>
+    <fmt:message key="label.book.title" bundle="${messages}"/> : <input type="text" name="book_title" value="${item.title}" pattern="[\d\w\W[а-яА-Я}]]+"/> <br/>
+    <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : <input type="text" name="book_pages" value="${item.pages}" pattern="\d{1,5}"/> <br/>
+    <fmt:message key="label.book.isbn" bundle="${messages}"/> : <input type="text" name="book_isbn" value="${item.isbn}" pattern="(\d+-\d+-\d+-\d+-\d+)|(\d+-\d+-\d+-\d+)"/> <br/>
+    <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : <input type="text" name="book_year" value="${item.year}" pattern="\d{1,5}"/> <br/>
     <input type="hidden" name="book_id" value="${item.id}">
 
     <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher.name}
@@ -58,8 +58,14 @@
 
     <input type="submit" name="submit" value="<fmt:message key="label.book.edit_book" bundle="${messages}"/>" />
 </form>
+<br/>
 
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
+<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu"
+                                                                  bundle="${messages}"/> </a><br/>
+
+<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
+
+<a href="/controller?command=logout"><fmt:message key="label.logout" bundle="${messages}"/> </a>
 
 
 

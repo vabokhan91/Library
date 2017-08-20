@@ -2,20 +2,22 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2 && user.role.ordinal()!=1}">
+<c:if test="${user.role.ordinal()==0}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
 <head>
-    <title>Book Explicit Info</title>
+    <title><fmt:message key="label.book.explicit_info" bundle="${messages}"/> </title>
 </head>
 <body>
 
 
 <c:forEach items="${foundBook}" var="item">
-    <c:if test="${user.role.ordinal()==2}">
+    <c:if test="${user.role.ordinal()!=1}">
     <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.id}<br/>
     </c:if>
     <fmt:message key="label.book.title" bundle="${messages}"/> : ${item.title}<br/>
@@ -31,11 +33,11 @@
     <c:forEach items="${item.genre}" var="genres">
         ${genres.getName()}
     </c:forEach><br/>
-    <c:if test="${user.role.ordinal()==2}">
+    <c:if test="${user.role.ordinal()!=1}">
     <fmt:message key="label.book.location" bundle="${messages}"/> : ${item.location}<br/>
     </c:if>
 </c:forEach><br/>
-<c:if test="${user.role.ordinal()==2}">
+<c:if test="${user.role.ordinal()!=1}">
 <fmt:message key="label.book.latest_order_information" bundle="${messages}"/> : <br/>
 
 <c:forEach items="${foundOrder}" var="item">
@@ -58,6 +60,9 @@
 </c:if>
 
 <c:choose>
+    <c:when test="${user.role.ordinal()==3}">
+        <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:when>
     <c:when test="${user.role.ordinal()==2}">
         <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
     </c:when>

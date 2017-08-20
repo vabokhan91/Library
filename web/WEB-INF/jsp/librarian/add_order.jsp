@@ -2,6 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=2}">
@@ -9,7 +11,7 @@
 </c:if>
 <html>
 <head>
-    <title>Order information</title>
+    <title><fmt:message key="label.book.add_order" bundle="${messages}"/> </title>
 </head>
 <body>
 
@@ -22,7 +24,7 @@
     <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
     <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
     <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
-    <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher}<br/>
+    <fmt:message key="label.book.publisher" bundle="${messages}"/> :<c:if test="${not empty item.publisher}">${item.publisher.name}</c:if><br/>
     <fmt:message key="label.book.author" bundle="${messages}"/> :
     <c:forEach items="${item.authors}" var="authors">
         ${authors.toString()}
@@ -35,17 +37,17 @@
     <fmt:message key="label.book.location" bundle="${messages}"/> : ${item.location}<br/>
 
     <fmt:message key="label.book.type_of_order" bundle="${messages}"/> :
-    <select name="type_of_order">
+    <select name="type_of_order" required>
         <option  value="subscription"><fmt:message key="label.book.subscription" bundle="${messages}"/> </option>
         <option value="reading_room"><fmt:message key="label.book.reading_room" bundle="${messages}"/> </option>
     </select><br/>
-
-</c:forEach>
-    <fmt:message key="label.book.enter_library_card" bundle="${messages}"/> : <input type="text" name="library_card" value=""/><br/>
+    <fmt:message key="label.book.enter_library_card" bundle="${messages}"/> : <input type="text" name="library_card" value="" required pattern="\d{1,5}"/><br/>
     <input type="hidden" name="book_id" value="${foundBook.get(0).id}"/>
     <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
+</c:forEach>
     <input type="submit" name="submit" value=<fmt:message key="label.button.book.add_order" bundle="${messages}"/> />
 </form>
+<br/>
 
 <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu"
                                                                   bundle="${messages}"/> </a><br/>

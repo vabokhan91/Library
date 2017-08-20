@@ -10,16 +10,16 @@
 </c:if>
 <html>
 <head>
-    <title>Add Book</title>
+    <title><fmt:message key="label.book.add_book" bundle="${messages}"/></title>
 </head>
 <body>
 <form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
     <input type="hidden" name="command" value="add_book"/>
-    <fmt:message key="label.book.book_title" bundle="${messages}"/> : <input type="text" name="book_title" value="" required/><br/>
+    <fmt:message key="label.book.book_title" bundle="${messages}"/> : <input type="text" name="book_title" value="" pattern="[\d\w\W[а-яА-Я}]]+" required/><br/>
 
-    <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : <input type="text" name="book_pages" value="" required><br/>
+    <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : <input type="text" name="book_pages" value="" pattern="\d{1,5}" required><br/>
 
-    <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : <input type="text" name="book_year" value="" required><br/>
+    <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : <input type="text" name="book_year" value="" pattern="\d{1,5}" required><br/>
 
     <fmt:message key="label.book.isbn" bundle="${messages}"/> : <input type="text" name="book_isbn" value="" required pattern="(\d+-\d+-\d+-\d+-\d+)|(\d+-\d+-\d+-\d+)"><br/>
 
@@ -30,14 +30,14 @@
     </select><br/>
 
     <fmt:message key="label.book.genre" bundle="${messages}"/> : <br/>
-    <select multiple name="book_genre">
+    <select multiple name="book_genre" required>
     <c:forEach items="${genres}" var="genre">
     <option value="${genre.id}">${genre.getName()} </option>
     </c:forEach>
     </select><br/>
 
     <fmt:message key="label.book.author" bundle="${messages}"/> : <br/>
-    <select multiple name="book_author">
+    <select multiple name="book_author" required>
     <c:forEach items="${authors}" var="author">
     <option value="${author.id}">${author.getSurname()} ${author.getName()} ${author.getPatronymic()} </option>
     </c:forEach>

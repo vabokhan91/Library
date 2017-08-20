@@ -427,6 +427,7 @@ public class BookReceiverImpl implements BookReceiver {
                 User librarian = new User();
                 librarian.setId(librarianId);
                 order.setLibrarian(librarian);
+                book.addOrder(order);
                 isOrderAdded = bookDAO.addOrder(book, typeOfOrder);
             }
             requestContent.insertAttribute(IS_ORDER_ADDED, isOrderAdded);

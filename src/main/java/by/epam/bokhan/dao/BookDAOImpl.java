@@ -24,7 +24,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "left join (select book_id, author_id, author.name as author_name, author.surname as author_surname,author.patronymic as author_patronymic \n" +
             "\tfrom book_author left join author on book_author.author_id = author.id) as authors\n" +
             "on book.id = authors.book_id";
-    private static final String SQL_FIND_BOOK_BY_ID = "SELECT book.id, book.title,book.pages, book.location, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year\n" +
+    private static final String SQL_FIND_BOOK_BY_ID = "SELECT book.id, book.title,book.pages, book.location, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year, book.image\n" +
             "            from book\n" +
             "            left join (select book_author.book_id as b,author.name , author.surname , author.patronymic  from book_author left join author on book_author.author_id = author.id) as authors\n" +
             "            on book.id = b \n" +
@@ -41,7 +41,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "on book.publisher_id = publisher.id\n" +
             "where book.id = ?";
 
-    private static final String SQL_FIND_BOOK_BY_TITLE = "SELECT book.id, book.title,book.pages, book.location,book.image, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year\n" +
+    private static final String SQL_FIND_BOOK_BY_TITLE = "SELECT book.id, book.title,book.pages, book.location,book.image, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year, book.image\n" +
             "            from book\n" +
             "            left join (select book_author.book_id as b,author.name , author.surname , author.patronymic  from book_author left join author on book_author.author_id = author.id) as authors\n" +
             "            on book.id = b \n" +
@@ -66,7 +66,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "where orders.order_date = (select max(order_date) from orders where orders.book_id = ?) and orders.book_id = ?";
 
     private static final String SQL_GET_ALL_GENRES = "Select * from genre";
-    private static final String SQL_EDIT_BOOK = "Update book set title = ?, pages = ?, isbn = ?, year = ?,publisher_id = ?, where id = ?";
+    private static final String SQL_EDIT_BOOK = "Update book set title = ?, pages = ?, isbn = ?, year = ?,publisher_id = ? where id = ?";
     private static final String SQL_CHANGE_BOOK_IMAGE = "Update book set image = ? where id = ?";
     private static final String SQL_DELETE_BOOKS_GENRE = "DELETE FROM book_genre WHERE book_genre.book_id = ?";
     private static final String SQL_DELETE_BOOKS_AUTHOR = "DELETE FROM book_author WHERE book_author.book_id = ?";
@@ -99,7 +99,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_ONLINE_ORDER = "INSERT INTO online_orders (online_orders.library_card_id, online_orders.book_id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date, online_orders.order_status) \n" +
             "VALUES (?,?,now(),addtime(now(), '3 0:0:0.0'), null,'booked')";
 
-    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name as author_name,authors.surname as author_surname, authors.patronymic as author_patronymic, user.id,library_card.id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
+    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name as author_name,authors.surname as author_surname, authors.patronymic as author_patronymic, user.id, user.name, user.surname, user.patronymic, library_card.id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
             "from online_orders\n" +
             "left join library_card on online_orders.library_card_id = library_card.id\n" +
             "right join user\n" +
@@ -1206,8 +1206,14 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 User user = new User();
                 int userId = resultSet.getInt(USER_ID);
                 int userLibraryCard = resultSet.getInt(LIBRARY_CARD);
+                String userName = resultSet.getString(USER_NAME);
+                String userSurname = resultSet.getString(USER_SURNAME);
+                String userPatronymic = resultSet.getString(USER_PATRONYMIC);
                 user.setId(userId);
                 user.setLibraryCardNumber(userLibraryCard);
+                user.setName(userName);
+                user.setSurname(userSurname);
+                user.setPatronymic(userPatronymic);
                 order.setUser(user);
                 Timestamp orderDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_DATE_OF_ORDER);
                 LocalDate OrderDate = orderDateTimeStamp != null ? orderDateTimeStamp.toLocalDateTime().toLocalDate() : null;

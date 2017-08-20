@@ -2,6 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=2}">
@@ -9,14 +11,13 @@
 </c:if>
 <html>
 <head>
-    <title>Online order information</title>
+    <title><fmt:message key="label.online_order_information" bundle="${messages}"/> </title>
 </head>
 <body>
 
 <form method="post" action="/controller" accept-charset="UTF-8">
     <input type="hidden" name="command" value="execute_online_order">
     <c:forEach items="${foundBook}" var="item">
-
         <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.getId()}<br/>
         <fmt:message key="label.book.title" bundle="${messages}"/> : ${item.getTitle()}<br/>
         <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
@@ -33,7 +34,6 @@
         </c:forEach><br/>
         <br/>
         <fmt:message key="label.book.location" bundle="${messages}"/> : ${item.location}<br/>
-
         <fmt:message key="label.book.type_of_order" bundle="${messages}"/> :
         <select name="type_of_order">
             <option  value="subscription"><fmt:message key="label.book.subscription" bundle="${messages}"/> </option>

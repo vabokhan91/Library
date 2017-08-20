@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.language" var="messages"/>
 <fmt:setBundle basename="resource.config" var="config"/>
 <c:if test="${user.role.ordinal()!=2}">
@@ -8,7 +10,7 @@
 </c:if>
 <html>
 <head>
-    <title>Add Author</title>
+    <title><fmt:message key="label.genre.add_genre" bundle="${messages}"/> </title>
 </head>
 <body>
 
@@ -16,7 +18,7 @@
     <input type="hidden" name="command" value="add_genre"/>
 
     <fmt:message key="label.book.genre" bundle="${messages}"/> :
-    <input type = "text" name = "genre_name" value="" required/><br/>
+    <input type = "text" name = "genre_name" value="" pattern="[a-zA-Zа-яА-Я_\s]{1,30}" required/><br/>
 
     <input type="submit" name="submit" value=<fmt:message key="label.button.add_genre" bundle="${messages}"/> />
 </form>

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset = UTF-8" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=2}">
@@ -8,12 +10,13 @@
 </c:if>
 <html>
 <head>
-    <title>Add Publisher</title>
+    <title><fmt:message key="label.publisher.add_publisher" bundle="${messages}"/> </title>
 </head>
 <body>
 <form method="post" action="/controller" accept-charset="UTF-8">
     <input type="hidden" name="command" value="add_publisher"/>
-    <fmt:message key="label.book.enter_publisher_name" bundle="${messages}"/> : <input type="text" name="publisher_name" value="" required/><br/>
+    <fmt:message key="label.book.enter_publisher_name" bundle="${messages}"/> :
+    <input type="text" name="publisher_name" value="" pattern="[\d\D]{1,50}" required/><br/>
     <input type="submit" name="submit" value=<fmt:message key="label.book.add_publisher" bundle="${messages}"/> />
 </form>
 

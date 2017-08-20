@@ -2,6 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=1 && user.role.ordinal()!=2}">
@@ -9,8 +11,13 @@
 </c:if>
 <html>
 <head>
-    <title>User online orders</title>
+    <title><fmt:message key="label.book.online_orders" bundle="${messages}"/> </title>
 
+    <fmt:message key="label.name" bundle="${messages}"/> : ${userOrders.get(0).user.name}<br/>
+
+    <fmt:message key="label.surname" bundle="${messages}"/> : ${userOrders.get(0).user.surname}<br/>
+
+    <fmt:message key="label.patronymic" bundle="${messages}"/> : ${userOrders.get(0).user.patronymic}<br/>
 
     <fmt:message key="label.book.online_orders" bundle="${messages}"/> : <br/>
 
