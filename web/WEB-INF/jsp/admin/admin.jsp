@@ -1,6 +1,8 @@
 <%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
@@ -20,7 +22,7 @@
 
         <a href="/controller?command=to_add_user_page" ><fmt:message key="label.add_user" bundle="${messages}"/> </a><br/>
 
-        <a href="/controller?command=get_users_for_removal" ><fmt:message key="label.remove_user" bundle="${messages}"/> </a><br/>
+        <a href="/controller?command=to_find_user_page" ><fmt:message key="label.remove_user" bundle="${messages}"/> </a><br/>
 
         <a href="/controller?command=to_find_user_page" ><fmt:message key="label.button.find_user" bundle="${messages}"/> </a><br/>
 

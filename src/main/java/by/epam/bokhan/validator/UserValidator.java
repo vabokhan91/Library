@@ -1,6 +1,5 @@
 package by.epam.bokhan.validator;
 
-import by.epam.bokhan.entity.Location;
 import by.epam.bokhan.entity.Role;
 
 import java.util.regex.Matcher;

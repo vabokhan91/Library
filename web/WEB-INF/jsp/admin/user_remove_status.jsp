@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=3}">
@@ -8,7 +10,7 @@
 </c:if>
 <html>
 <head>
-    <title>Remove status</title>
+    <title><fmt:message key="label.remove_status"/> </title>
 </head>
 <body>
 
@@ -26,11 +28,8 @@
     <c:remove var="isUserDeleted" scope="session" />
 </c:if>
 
-
-
 <form method="get" action="/controller" accept-charset="UTF-8">
-    <input type="hidden" name="command" value="get_users_for_removal"/>
-
+    <input type="hidden" name="command" value="to_find_user_page"/>
     <input type="submit" name="submit" value="<fmt:message key="label.remove.one_more_user" bundle="${messages}"/>"/>
 </form>
 

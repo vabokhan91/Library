@@ -11,24 +11,34 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Find USer</title></head>
+    <title><fmt:message key="label.button.find_user" bundle="${messages}"/> </title></head>
 
 <body>
 
+<form method="post">
+    <select id="language" name="language" onchange="submit()">
+        <option value="en_US" ${language == "en_US" ? "selected" : ""}>English</option>
+        <option value="ru_RU" ${language == "ru_RU" ? "selected" : ""}>Русский</option>
+    </select>
+</form>
+<br/>
 
 <form method="post" action="/controller">
     <input type="hidden" name="command" value="find_user">
     <fmt:message key="label.enter_library_card_or_surname" bundle="${messages}"/> :
-
-    <%--<select name="type_of_search">
-        <option value="by_library_card"><fmt:message key="label.by_library_card" bundle="${messages}"/> </option>
-        <option value="by_surname"><fmt:message key="label.by.surname" bundle="${messages}"/></option>
-    </select>--%>
-
     <input name="find_query_value" value="">
     <input type="submit" value="<fmt:message key="label.button.find_user" bundle="${messages}"/> ">
 </form>
+<br/>
 
+<c:choose>
+    <c:when test="${user.role.ordinal()==3}">
+        <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:when>
+    <c:otherwise>
+        <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:otherwise>
+</c:choose>
 <br/>
 
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>

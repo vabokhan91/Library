@@ -103,6 +103,9 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         boolean isUserRegistered = false;
         Connection connection = null;
         PreparedStatement registerUserStatement = null;
+        PreparedStatement findUserStatement = null;
+        /*findUserStatement.setString(1, user.getLogin());
+        ResultSet foundUser = findUserStatement.executeQuery();*/
         try {
             connection = ConnectionPool.getInstance().getConnection();
             registerUserStatement = connection.prepareStatement(SQL_REGISTER_USER);

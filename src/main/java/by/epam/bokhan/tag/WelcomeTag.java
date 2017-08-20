@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-/**
- * Created by vbokh on 22.07.2017.
- */
+
 public class WelcomeTag extends TagSupport {
 
 

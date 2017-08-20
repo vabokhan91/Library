@@ -21,7 +21,6 @@
 <fmt:message key="label.address" bundle="${messages}"/> : ${foundUser.address} <br/>
 <fmt:message key="label.login" bundle="${messages}"/> : ${foundUser.login} <br/>
 <fmt:message key="label.mobile_phone" bundle="${messages}"/> : ${foundUser.mobilePhone} <br/>
-
 <hr/>
 
 <table class="item-table">
@@ -48,10 +47,6 @@
     </c:forEach>
 
 </table>
-
-
-
-
 
 <c:choose>
     <c:when test="${user.role.ordinal()==3}">

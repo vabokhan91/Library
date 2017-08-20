@@ -1,6 +1,5 @@
 package by.epam.bokhan.validator;
 
-import by.epam.bokhan.entity.Author;
 import by.epam.bokhan.entity.Location;
 
 import java.util.regex.Matcher;
@@ -9,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class BookValidator {
     private static final String REGEX_FOR_BOOK_ID = "\\d{1,5}";
-    private static final String REGEX_FOR_BOOK_TITLE = "[\\d\\w\\W[а-яА-Я}]]{1,}";
+    private static final String REGEX_FOR_BOOK_TITLE = "[\\d\\w\\W[а-яА-Я}]]+";
     private static final String REGEX_FOR_BOOK_ISBN = "(\\d+-\\d+-\\d+-\\d+-\\d+)|(\\d+-\\d+-\\d+-\\d+)";
     private static final String REGEX_FOR_BOOK_PAGE = "\\d{1,5}";
     private static final String REGEX_FOR_BOOK_YEAR = "\\d{1,5}";
@@ -99,16 +98,6 @@ public class BookValidator {
         return isBookGenreValid;
     }
 
-    public static boolean isBookGenreIdValid(String genreId) {
-        boolean isBookGenreIdValid = false;
-        if (genreId != null) {
-            Pattern patternForBookGenreId = Pattern.compile(REGEX_FOR_BOOK_GENRE_ID);
-            Matcher matcherForBookGenreId = patternForBookGenreId.matcher(genreId);
-            isBookGenreIdValid = matcherForBookGenreId.matches();
-        }
-        return isBookGenreIdValid;
-    }
-
     public static boolean isBookGenreIdValid(String[] genreIdValues) {
         boolean isBookGenreIdValid = false;
         if (genreIdValues != null) {
@@ -119,24 +108,6 @@ public class BookValidator {
             }
         }
         return isBookGenreIdValid;
-    }
-
-    public static boolean isBookAuthorValid(Author author) {
-        boolean isBookAuthorValid = false;
-        if (author != null) {
-            Pattern patternForAuthorName = Pattern.compile(REGEX_FOR_NAME);
-            Pattern patternForAuthorSurname = Pattern.compile(REGEX_FOR_SURNAME);
-            Pattern patternForAuthorPatronymic = Pattern.compile(REGEX_FOR_PATRONYMIC);
-            Matcher matcherForAuthorName = patternForAuthorName.matcher(author.getName());
-            Matcher matcherForAuthorSurname = patternForAuthorSurname.matcher(author.getSurname());
-            if (author.getPatronymic() != null && !author.getPatronymic().isEmpty()) {
-                Matcher matcherForAuthorPatronymic = patternForAuthorPatronymic.matcher(author.getPatronymic());
-                isBookAuthorValid = matcherForAuthorName.matches() && matcherForAuthorSurname.matches() && matcherForAuthorPatronymic.matches();
-            } else {
-                isBookAuthorValid = matcherForAuthorName.matches() && matcherForAuthorSurname.matches();
-            }
-        }
-        return isBookAuthorValid;
     }
 
     public static boolean isBookAuthorIdValid(String[] authors) {

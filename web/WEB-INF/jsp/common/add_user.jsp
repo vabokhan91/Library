@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.language" var="messages"/>
 <fmt:setBundle basename="resource.config" var="config"/>
 <c:if test="${user.role.ordinal()!=2 && user.role.ordinal()!=3}">
@@ -8,13 +10,19 @@
 </c:if>
 <html>
 <head>
-    <title>Add User</title>
+    <title><fmt:message key="label.add_user" bundle="${messages}"/> </title>
 </head>
 <body>
 
+<form method="post">
+    <select id="language" name="language" onchange="submit()">
+        <option value="en_US" ${language == "en_US" ? "selected" : ""}>English</option>
+        <option value="ru_RU" ${language == "ru_RU" ? "selected" : ""}>Русский</option>
+    </select>
+</form>
+
 <form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
     <input type="hidden" name="command" value="add_user"/>
-    <%--<input type = "hidden" name = "user_role" value="2"/><br/>--%>
 
     <fmt:message key="label.name" bundle="${messages}"/> :
     <input type = "text" name = "user_name" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})" required/><br/>
@@ -26,7 +34,7 @@
     <input type = "text" name = "user_patronymic" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})"/><br/>
 
     <fmt:message key="label.address" bundle="${messages}"/> :
-    <input type = "text" name = "user_address" value=""/><br/>
+    <input type = "text" name = "user_address" value="" required/><br/>
     <c:choose>
         <c:when test="${user.role.ordinal() == 3}">
             <fmt:message key="label.role" bundle="${messages}"/> :
@@ -49,12 +57,12 @@
         </c:otherwise>
     </c:choose><br/>
     <fmt:message key="label.mobile_phone" bundle="${messages}"/> :
-    <input type = "text" name = "user_mobilephone" value="" pattern="^((\+)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$"/><br/>
+    <input type = "text" name = "user_mobilephone" value="" pattern="^((\+)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$" required/><br/>
     <c:if test="${user.role.ordinal()==3}">
         <fmt:message key="label.upload_new_photo" bundle="${messages}"/>
     <input type = "file" name = "user_photo" size="50"/><br/>
     </c:if>
-    <input type="submit" name="submit" value=<fmt:message key="label.add_user" bundle="${messages}"/> />
+    <input type="submit" name="submit" value=<fmt:message key="button.add_user" bundle="${messages}"/> />
 </form>
 
 <c:choose>
@@ -69,6 +77,15 @@
 <c:if test="${not empty sessionScope.userIsAdded}">
     <c:remove var="userIsAdded" scope="session" />
 </c:if>
+
+<c:choose>
+    <c:when test="${user.role.ordinal()==3}">
+        <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:when>
+    <c:otherwise>
+        <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+    </c:otherwise>
+</c:choose><br/>
 
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
 
