@@ -1,6 +1,8 @@
 <%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
@@ -9,11 +11,21 @@
 </c:if>
 <html>
 <head>
-    <title>Librarian</title>
+    <title><fmt:message key="label.librarian_page" bundle="${messages}"/> </title>
 </head>
 <body>
 
-<a href="/controller?command=to_add_user_page"><fmt:message key="label.add_user" bundle="${messages}"/> </a><br/>
+<form method="post">
+    <select id="language" name="language" onchange="submit()">
+        <option value="en_US" ${language == "en_US" ? "selected" : ""}>English</option>
+        <option value="ru_RU" ${language == "ru_RU" ? "selected" : ""}>Русский</option>
+    </select>
+</form>
+
+<form action="/controller" accept-charset="UTF-8">
+    <input type="hidden" name="command" value="to_add_user_page"/>
+    <input type="submit" name="submit" value=<fmt:message key="button.add_user" bundle="${messages}"/>/>
+</form>
 
 <a href="/controller?command=get_all_users"><fmt:message key="label.show_all_users" bundle="${messages}"/> </a><br/>
 
@@ -44,6 +56,10 @@
 <a href="/controller?command=to_find_user_orders_page" ><fmt:message key="label.button.book.return_book" bundle="${messages}"/> </a><br/>
 
 <a href="/controller?command=to_find_user_online_orders" ><fmt:message key="label.order.execute_online_order" bundle="${messages}"/> </a><br/>
+
+<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
+
+<a href = "/controller?command=logout"><fmt:message key="label.logout" bundle="${messages}"/> </a><br/>
 
 </body>
 </html>

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=3 && user.role.ordinal()!=2}">
@@ -12,7 +14,7 @@
 </head>
 <body>
 
-
+<img src="data:image/jpg;base64,${foundUser.photo}" width="50px" height="50px"><br/>
 <fmt:message key="label.library_card" bundle="${messages}"/> : ${foundUser.libraryCardNumber}<br/>
 <fmt:message key="label.name" bundle="${messages}"/> : ${foundUser.name} <br/>
 <fmt:message key="label.surname" bundle="${messages}"/> : ${foundUser.surname} <br/>

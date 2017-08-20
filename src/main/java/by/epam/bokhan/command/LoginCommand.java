@@ -11,6 +11,7 @@ import by.epam.bokhan.receiver.Receiver;
 
 public class LoginCommand extends AbstractCommand {
 
+
     public LoginCommand(Receiver receiver) {
         super(receiver);
     }
@@ -23,16 +24,16 @@ public class LoginCommand extends AbstractCommand {
             String page;
             switch (role) {
                 case CLIENT:
-                    page = ConfigurationManager.getProperty(USER_MAIN_PAGE);
-                    content.insertParameter(PAGE, page);
+                    content.insertParameter(PAGE, TO_USER_MAIN_PAGE);
+                    content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
                     break;
                 case LIBRARIAN:
-                    page = ConfigurationManager.getProperty(LIBRARIAN_PAGE);
-                    content.insertParameter(PAGE, page);
+                    content.insertParameter(PAGE, TO_LIBRARIAN_MAIN_PAGE_COMMAND);
+                    content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
                     break;
                 case ADMINISTRATOR:
-                    page = ConfigurationManager.getProperty(ADMIN_PAGE);
-                    content.insertParameter(PAGE, page);
+                    content.insertParameter(PAGE, TO_ADMIN_MAIN_PAGE);
+                    content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
                     break;
             }
         } else {

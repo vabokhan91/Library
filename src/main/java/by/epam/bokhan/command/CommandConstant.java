@@ -99,4 +99,6 @@ public class CommandConstant {
     protected static final String TO_REMOVE_USER_STATUS_COMMAND = "/controller?command=to_remove_user_status_page";
     protected static final String TO_UNBLOCK_STATUS_PAGE_COMMAND = "/controller?command=to_unblock_status_page";
     protected static final String TO_USER_MAIN_PAGE = "/controller?command=to_user_main_page";
+    protected static final String TO_LIBRARIAN_MAIN_PAGE_COMMAND = "/controller?command=to_librarian_main_page";
+    protected static final String TO_ADMIN_MAIN_PAGE = "/controller?command=to_admin_page";
 }

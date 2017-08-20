@@ -12,13 +12,23 @@
 
 <html>
 <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Administrator page</title></head>
+        <title><fmt:message key="label.administrator_page" bundle="${messages}"/> </title></head>
 
 <body>
+
+<form method="post">
+        <select id="language" name="language" onchange="submit()">
+                <option value="en_US" ${language == "en_US" ? "selected" : ""}>English</option>
+                <option value="ru_RU" ${language == "ru_RU" ? "selected" : ""}>Русский</option>
+        </select>
+</form>
+<br/>
+
         ${user.login}, hello!!!
         ${user.name}
         <br/>
+
+
 
         <a href="/controller?command=to_add_user_page" ><fmt:message key="label.add_user" bundle="${messages}"/> </a><br/>
 
@@ -26,25 +36,27 @@
 
         <a href="/controller?command=to_find_user_page" ><fmt:message key="label.button.find_user" bundle="${messages}"/> </a><br/>
 
-        <form method="get" action="/controller" accept-charset="UTF-8">
+        <a href="/controller?command=to_find_user_page" ><fmt:message key="label.user.edit_user" bundle="${messages}"/> </a><br/>
+        <div>
+        <form action="/controller" accept-charset="UTF-8">
                 <input type="hidden" name="command" value="get_not_blocked_users"/>
-
                 <input type="submit" name="submit" value="<fmt:message key="label.user.block_user" bundle="${messages}"/> "/>
         </form>
+        </div>
 
-
-        <form method="get" action="/controller" accept-charset="UTF-8">
+<div>
+        <form action="/controller" accept-charset="UTF-8">
                 <input type="hidden" name="command" value="get_blocked_users"/>
 
                 <input type="submit" name="submit" value="<fmt:message key="label.user.unblock_user" bundle="${messages}"/> "/>
         </form>
-
+</div>
         <a href="/controller?command=get_all_users"><fmt:message key="label.show_all_users" bundle="${messages}"/> </a><br/>
 
         <br/>
 
         <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-        <a href = "/controller?command=logout">Log Out</a>
+        <a href = "/controller?command=logout"><fmt:message key="label.logout" bundle="${messages}"/> </a>
 
 
         </body>

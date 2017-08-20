@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset = UTF-8" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=3 && user.role.ordinal()!=2}">
@@ -8,7 +10,7 @@
 </c:if>
 <html>
 <head>
-    <title>Users</title>
+    <title><fmt:message key="label.show_all_users" bundle="${messages}"/> </title>
 </head>
 <body>
 
@@ -23,7 +25,7 @@
     </tr>
 
     <c:forEach items="${users}" var="item">
-        <c:if test="${item.role.ordinal() !=3 || user.role.ordinal() ==3 }">
+
         <tr>
             <td>${item.libraryCardNumber}</td>
             <td>${item.name}</td>
@@ -60,7 +62,7 @@
             </c:if>
 
         </tr>
-        </c:if>
+
     </c:forEach>
 
 </table>
