@@ -29,7 +29,9 @@
 
     <table class="item-table">
         <tr>
+<c:if test="${user.role.ordinal()!=2}">
             <th><fmt:message key="label.book.id" bundle="${messages}"/></th>
+</c:if>
             <th><fmt:message key="label.book.title" bundle="${messages}"/></th>
             <th><fmt:message key="label.book.isbn" bundle="${messages}"/></th>
             <th><fmt:message key="label.book.order_date" bundle="${messages}"/></th>
@@ -39,7 +41,9 @@
 
         <c:forEach items="${userOrders}" var="item">
             <tr>
-                <td>${item.book.id}
+                <c:if test="${user.role.ordinal()!=2}">
+                <td>${item.book.id}</td>
+                </c:if>
                 <td>${item.book.title}</td>
                 <td>${item.book.isbn}</td>
                 <td>${item.orderDate}</td>

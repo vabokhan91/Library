@@ -61,21 +61,6 @@
                     </td>
                 </c:if>
 
-
-                <%--<c:if test="${item.getLocation().getName() eq 'storage'}">
-                    <td>
-                        <form method="post" action="/controller" accept-charset="UTF-8">
-                            <input type="hidden" name="command" value="to_add_order_page"/>
-                            <input type="hidden" name="book_id" value="${item.id}"/>
-                            <input type="hidden" name="type_of_search" value="by_id">
-                            <input type="submit" name="submit" value=<fmt:message key="label.button.book.add_order"
-                                                                                  bundle="${messages}"/>/>
-                        </form>
-                    </td>
-                </c:if>--%>
-
-
-
                 <c:if test="${empty item.returnDate}">
                     <td>
                         <form method="post" action="/controller" accept-charset="UTF-8">

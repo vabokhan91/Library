@@ -2,6 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=1}">
@@ -9,16 +11,16 @@
 </c:if>
 <html>
 <head>
-    <title>Find book</title>
+    <title><fmt:message key="label.book.find_book" bundle="${messages}"/></title>
 </head>
 <body>
 
 <form method="post" action="/controller">
     <input type="hidden" name="command" value="user_find_book">
-    <input type="hidden" name="type_of_search" value="by_title">
+    <%--<input type="hidden" name="type_of_search" value="by_title">--%>
     <fmt:message key="label.book.enter_book_title" bundle="${messages}"/> :
 
-    <input name="find_query_value" value="">
+    <input name="find_query_value" value="" pattern="[\d\w\W[а-яА-Я}]]+" required>
     <input type="submit" value="<fmt:message key="label.find" bundle="${messages}"/> ">
 </form>
 
@@ -28,9 +30,7 @@
 
 <a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
 
-
-
-<a href = "/controller?command=logout">Log Out</a>
+<a href = "/controller?command=logout"><fmt:message key="label.logout" bundle="${messages}"/> </a>
 
 </body>
 </html>

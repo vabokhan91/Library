@@ -2,6 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <c:if test="${user.role.ordinal()!=1}">
@@ -9,7 +11,7 @@
 </c:if>
 <html>
 <head>
-    <title>Change password</title>
+    <title><fmt:message key="label.password.change_password" bundle="${messages}"/></title>
 </head>
 <body>
 
@@ -27,7 +29,6 @@
     <input type="hidden" name="library_card" value="${sessionScope.user.id}">
     <input type="submit" name="submit" value=<fmt:message key="label.password.change_password" bundle="${messages}"/> />
 </form>
-<%--edit this--%>
 
 <script>
     var password = document.getElementById("password")
@@ -45,6 +46,12 @@
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
 </script>
+
+<a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
+
+<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
+
+<a href = "/controller?command=logout"><fmt:message key="label.logout" bundle="${messages}"/> </a><br/>
 
 </body>
 </html>

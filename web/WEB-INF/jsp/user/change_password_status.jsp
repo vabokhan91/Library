@@ -8,7 +8,7 @@
 </c:if>
 <html>
 <head>
-    <title>Change password status</title>
+    <title><fmt:message key="label.password.change_status" bundle="${messages}"/> </title>
 </head>
 <body>
 
@@ -22,6 +22,7 @@
         <a href="/controller?command=to_change_password_page"><fmt:message key="label.try.once.again" bundle="${messages}"/> </a><br/>
     </c:when>
 </c:choose>
+<br/>
 
 <c:if test="${not empty sessionScope.isPasswordChanged}">
     <c:remove var="isPasswordChanged" scope="session" />

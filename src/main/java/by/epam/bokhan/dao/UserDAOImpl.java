@@ -58,7 +58,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
     private static final String SQL_EDIT_USER_INFO = "UPDATE user SET name =?, surname=?, patronymic=?, role_id=?, login =? where user.id = ?";
     private static final String SQL_EDIT_LIBRARY_CARD_INFO = "UPDATE library_card SET address = ?, mobile_phone=? where library_card.id = ?";
-    private static final String SQL_GET_PASSWORD = "SELECT password FROM user where library_card = ?";
+    private static final String SQL_GET_PASSWORD = "SELECT password FROM user where id = ?";
     private static final String SQL_SET_NEW_PASSWORD = "UPDATE user SET password = ? where user.id = ?";
     private static final String SQL_SET_NEW_LOGIN = "UPDATE user SET login = ? where user.id = ?";
     private static final String SQL_CHANGE_USER_PHOTO = "UPDATE user SET photo = ? where user.id = ?";
@@ -619,20 +619,27 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     public boolean changeLogin(int userId, String login) throws DAOException {
         boolean isLoginChanged = false;
         Connection connection = null;
+        PreparedStatement findUserStatement = null;
         PreparedStatement setNewLoginStatement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            setNewLoginStatement = connection.prepareStatement(SQL_SET_NEW_LOGIN);
-            setNewLoginStatement.setString(1, login);
-            setNewLoginStatement.setInt(2, userId);
-            int setNewLoginResult = setNewLoginStatement.executeUpdate();
-            if (setNewLoginResult > 0) {
-                isLoginChanged = true;
+            findUserStatement = connection.prepareStatement(SQL_CHECK_IF_LOGIN_EXIST);
+            findUserStatement.setString(1, login);
+            ResultSet foundUser = findUserStatement.executeQuery();
+            if (!foundUser.next()) {
+                setNewLoginStatement = connection.prepareStatement(SQL_SET_NEW_LOGIN);
+                setNewLoginStatement.setString(1, login);
+                setNewLoginStatement.setInt(2, userId);
+                int setNewLoginResult = setNewLoginStatement.executeUpdate();
+                if (setNewLoginResult > 0) {
+                    isLoginChanged = true;
+                }
             }
             return isLoginChanged;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not change login. Reason : %s", e.getMessage()), e);
         } finally {
+            closeStatement(findUserStatement);
             closeStatement(setNewLoginStatement);
             closeConnection(connection);
         }
