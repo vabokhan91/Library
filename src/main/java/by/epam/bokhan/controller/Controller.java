@@ -54,8 +54,8 @@ public class Controller extends HttpServlet {
             AbstractCommand command = factory.defineCommand(content);
             try {
                 command.execute(content);
-                getParametersFromContent(request,content);
-                getAttributesFromContent(request, content);
+                content.getParametersFromContent(request);
+                content.getAttributesFromContent(request);
                 page = (String) content.getRequestParameters().get(PAGE);
                 if (page != null) {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
@@ -75,30 +75,12 @@ public class Controller extends HttpServlet {
 
                 }
             } catch (ReceiverException e) {
-                page = ERROR_PAGE_COMMAND;
                 LOGGER.log(Level.ERROR, e.getMessage());
-                response.sendRedirect(page);
+                response.sendRedirect(ERROR_PAGE_COMMAND);
             }
         }
     }
 
-    private void getParametersFromContent(HttpServletRequest request, RequestContent content) {
-        HashMap<String, Object> s = content.getRequestParameters();
-        for (Map.Entry<String, Object> p : s.entrySet()) {
-            String first = p.getKey();
-            Object second = p.getValue();
-            request.setAttribute(first, second);
-        }
-    }
-
-    private void getAttributesFromContent(HttpServletRequest request, RequestContent content) {
-        HashMap<String, Object> attributes = content.getSessionAttributes();
-        for (Map.Entry<String, Object> a : attributes.entrySet()) {
-            String first = a.getKey();
-            Object second = a.getValue();
-            request.getSession().setAttribute(first, second);
-        }
-    }
 
     @Override
     public void destroy() {

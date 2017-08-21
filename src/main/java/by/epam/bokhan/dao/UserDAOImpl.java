@@ -104,22 +104,26 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         Connection connection = null;
         PreparedStatement registerUserStatement = null;
         PreparedStatement findUserStatement = null;
-        /*findUserStatement.setString(1, user.getLogin());
-        ResultSet foundUser = findUserStatement.executeQuery();*/
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            registerUserStatement = connection.prepareStatement(SQL_REGISTER_USER);
-            registerUserStatement.setString(1, user.getLogin());
-            registerUserStatement.setString(2, user.getPassword());
-            registerUserStatement.setInt(3, user.getId());
-            int registerUserResult = registerUserStatement.executeUpdate();
-            if (registerUserResult > POSITIVE_RESULT_VALUE) {
-                isUserRegistered = true;
+            findUserStatement = connection.prepareStatement(SQL_CHECK_IF_LOGIN_EXIST);
+            findUserStatement.setString(1, user.getLogin());
+            ResultSet foundUser = findUserStatement.executeQuery();
+            if (!foundUser.next()) {
+                registerUserStatement = connection.prepareStatement(SQL_REGISTER_USER);
+                registerUserStatement.setString(1, user.getLogin());
+                registerUserStatement.setString(2, user.getPassword());
+                registerUserStatement.setInt(3, user.getId());
+                int registerUserResult = registerUserStatement.executeUpdate();
+                if (registerUserResult > POSITIVE_RESULT_VALUE) {
+                    isUserRegistered = true;
+                }
             }
             return isUserRegistered;
         } catch (SQLException e) {
             throw new DAOException(String.format("User was not registered: Reason : %s", e.getMessage()), e);
         } finally {
+            closeStatement(findUserStatement);
             closeStatement(registerUserStatement);
             closeConnection(connection);
         }

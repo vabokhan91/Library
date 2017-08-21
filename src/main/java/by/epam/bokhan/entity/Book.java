@@ -3,9 +3,7 @@ package by.epam.bokhan.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by vbokh on 24.07.2017.
- */
+
 public class Book {
     private int id;
     private String title;

@@ -530,7 +530,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     @Override
     public boolean editBook(Book book) throws DAOException {
-        boolean isBookEdited = false;
+        boolean isFullBookEdited = false;
         Connection connection = null;
         PreparedStatement editBookStatement = null;
         PreparedStatement deleteGenreStatement = null;
@@ -538,6 +538,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         PreparedStatement addGenreStatement = null;
         PreparedStatement deleteAuthorStatement = null;
         PreparedStatement addAuthorStatement = null;
+        boolean isBookEdited = false;
+        boolean isBookImageEdited = false;
+        boolean isGenreDeleted = false;
+        boolean isGenreEdited = false;
+        boolean isAuthorDeleted = false;
+        boolean isAuthorEdited = false;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
@@ -549,54 +555,83 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             editBookStatement.setInt(5, book.getPublisher().getId());
             editBookStatement.setInt(6, book.getId());
             int editBookResult = editBookStatement.executeUpdate();
-            int changeBookImageResult;
-            if (book.getImage() != null && !book.getImage().isEmpty()) {
-                changeBookImageStatement = connection.prepareStatement(SQL_CHANGE_BOOK_IMAGE);
-                changeBookImageStatement.setString(1, book.getImage());
-                changeBookImageStatement.setInt(2, book.getId());
-                changeBookImageResult = changeBookImageStatement.executeUpdate();
-            } else {
-//                is it shit?
-                changeBookImageResult = 1;
-            }
-            deleteGenreStatement = connection.prepareStatement(SQL_DELETE_BOOKS_GENRE);
-            deleteGenreStatement.setInt(1, book.getId());
-            int deleteGenreResult = deleteGenreStatement.executeUpdate();
-            addGenreStatement = connection.prepareStatement(SQL_ADD_BOOK_GENRE);
-            int addGenreResult = 0;
-            List<Genre> genres = book.getGenre();
-            for (Genre genre : genres) {
-                addGenreStatement.setInt(1, book.getId());
-                addGenreStatement.setInt(2, genre.getId());
-                addGenreResult = addGenreStatement.executeUpdate();
-                if (addGenreResult == 0) {
-                    break;
-                }
-            }
-            deleteAuthorStatement = connection.prepareStatement(SQL_DELETE_BOOKS_AUTHOR);
-            deleteAuthorStatement.setInt(1, book.getId());
-            int deleteAuthorResult = deleteAuthorStatement.executeUpdate();
-            addAuthorStatement = connection.prepareStatement(SQL_ADD_BOOK_AUTHOR);
-            int addAuthorResult = 0;
-            List<Author> authors = book.getAuthors();
-            for (Author author : authors) {
-                addAuthorStatement.setInt(1, book.getId());
-                addAuthorStatement.setInt(2, author.getId());
-                addAuthorResult = addAuthorStatement.executeUpdate();
-                if (addAuthorResult == 0) {
-                    break;
-                }
-            }
-            if (editBookResult > 0 && changeBookImageResult > 0 && deleteGenreResult > 0
-                    && addGenreResult > 0 && deleteAuthorResult > 0 && addAuthorResult > 0) {
+            if (editBookResult > 0) {
                 isBookEdited = true;
-                connection.commit();
+            }
+            if (isBookEdited) {
+                if (book.getImage() != null && !book.getImage().isEmpty()) {
+                    changeBookImageStatement = connection.prepareStatement(SQL_CHANGE_BOOK_IMAGE);
+                    changeBookImageStatement.setString(1, book.getImage());
+                    changeBookImageStatement.setInt(2, book.getId());
+                    int changeBookImageResult = changeBookImageStatement.executeUpdate();
+                    if (changeBookImageResult > 0) {
+                        isBookImageEdited = true;
+                    }
+                } else {
+                    isBookImageEdited = true;
+                }
+                deleteGenreStatement = connection.prepareStatement(SQL_DELETE_BOOKS_GENRE);
+                deleteGenreStatement.setInt(1, book.getId());
+                int deleteGenreResult = deleteGenreStatement.executeUpdate();
+                if (deleteGenreResult > 0) {
+                    isGenreDeleted = true;
+                }
+                if (isGenreDeleted) {
+                    addGenreStatement = connection.prepareStatement(SQL_ADD_BOOK_GENRE);
+                    int addGenreResult = 0;
+                    List<Genre> genres = book.getGenre();
+                    for (Genre genre : genres) {
+                        addGenreStatement.setInt(1, book.getId());
+                        addGenreStatement.setInt(2, genre.getId());
+                        addGenreResult = addGenreStatement.executeUpdate();
+                        if (addGenreResult == 0) {
+                            break;
+                        }
+                    }
+                    if (addGenreResult > 0) {
+                        isGenreEdited = true;
+                    }
+                }
+                deleteAuthorStatement = connection.prepareStatement(SQL_DELETE_BOOKS_AUTHOR);
+                deleteAuthorStatement.setInt(1, book.getId());
+                int deleteAuthorResult = deleteAuthorStatement.executeUpdate();
+                if (deleteAuthorResult > 0) {
+                    isAuthorDeleted = true;
+                }
+                if (isAuthorDeleted) {
+                    addAuthorStatement = connection.prepareStatement(SQL_ADD_BOOK_AUTHOR);
+                    int addAuthorResult = 0;
+                    List<Author> authors = book.getAuthors();
+                    for (Author author : authors) {
+                        addAuthorStatement.setInt(1, book.getId());
+                        addAuthorStatement.setInt(2, author.getId());
+                        addAuthorResult = addAuthorStatement.executeUpdate();
+                        if (addAuthorResult == 0) {
+                            break;
+                        }
+                    }
+                    if (addAuthorResult > 0) {
+                        isAuthorEdited = true;
+                    }
+                }
+                if (isAuthorEdited && isGenreEdited && isBookImageEdited) {
+                    isFullBookEdited = true;
+                    connection.commit();
+                } else {
+                    connection.rollback();
+                }
+
             } else {
                 connection.rollback();
             }
-            return isBookEdited;
+            return isFullBookEdited;
         } catch (SQLException e) {
-            throw new DAOException(e);
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                throw new DAOException(String.format("Can not make rollback. Reason : %s", e1.getMessage()), e1);
+            }
+            throw new DAOException(String.format("Can not edit book. Reason : %s", e.getMessage()), e);
         } finally {
             closeStatement(editBookStatement);
             closeStatement(deleteGenreStatement);
@@ -864,6 +899,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     @Override
     public boolean addBook(Book book) throws DAOException {
+        boolean isBookFullyAdded = false;
+        boolean isGenreAdded = false;
+        boolean isAuthorAdded = false;
         boolean isBookAdded = false;
         Connection connection = null;
         PreparedStatement addBookStatement = null;
@@ -890,8 +928,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             addBookStatement.setString(7, location);
             addBookStatement.setString(8, image);
             int addBookResult = addBookStatement.executeUpdate();
+            if (addBookResult > 0) {
+                isBookAdded = true;
+            }
             ResultSet keys = addBookStatement.getGeneratedKeys();
-            if (keys.next()) {
+            if (isBookAdded && keys.next()) {
+                isBookAdded = true;
                 int lastBookId = keys.getInt(1);
                 addGenreStatement = connection.prepareStatement(SQL_ADD_BOOK_GENRE);
                 int addBookGenreResult = 0;
@@ -904,6 +946,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                         break;
                     }
                 }
+                if (addBookGenreResult > 0) {
+                    isGenreAdded = true;
+                }
                 addAuthorStatement = connection.prepareStatement(SQL_ADD_BOOK_AUTHOR);
                 int addBookAuthorResult = 0;
                 List<Author> authors = book.getAuthors();
@@ -915,8 +960,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                         break;
                     }
                 }
-                if (addBookResult > 0 && addBookGenreResult > 0 && addBookAuthorResult > 0) {
-                    isBookAdded = true;
+                if (addBookAuthorResult > 0) {
+                    isAuthorAdded = true;
+                }
+                if (isBookAdded && isAuthorAdded && isGenreAdded) {
+                    isBookFullyAdded = true;
                     connection.commit();
                 } else {
                     connection.rollback();
@@ -924,7 +972,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             } else {
                 connection.rollback();
             }
-            return isBookAdded;
+            return isBookFullyAdded;
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -938,7 +986,6 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             closeStatement(addGenreStatement);
             closeConnection(connection);
         }
-
     }
 
     @Override
@@ -972,7 +1019,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     @Override
     public boolean addOrder(Book book, String typeOfOrder) throws DAOException {
+        boolean isOrderFullyAdded = false;
         boolean isOrderAdded = false;
+        boolean isBookLocationChanged = false;
         Connection connection = null;
         PreparedStatement addOrderStatement = null;
         PreparedStatement changeBookStatusStatement = null;
@@ -986,7 +1035,6 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             } else if (typeOfOrder.equalsIgnoreCase(Location.READING_ROOM.getName())) {
                 addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_READING_ROOM);
                 changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
-
             }
             int libraryCard = book.getOrders().get(FIRST_INDEX).getUser().getLibraryCardNumber();
             int bookId = book.getId();
@@ -996,14 +1044,24 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             addOrderStatement.setInt(3, librarianId);
             changeBookStatusStatement.setInt(1, book.getId());
             int addOrderResult = addOrderStatement.executeUpdate();
-            int changeBookLocationResult = changeBookStatusStatement.executeUpdate();
-            if (addOrderResult > 0 && changeBookLocationResult > 0) {
+            if (addOrderResult > 0) {
                 isOrderAdded = true;
-                connection.commit();
+            }
+            if (isOrderAdded) {
+                int changeBookLocationResult = changeBookStatusStatement.executeUpdate();
+                if (changeBookLocationResult > 0) {
+                    isBookLocationChanged = true;
+                }
+                if (isBookLocationChanged) {
+                    isOrderFullyAdded = true;
+                    connection.commit();
+                } else {
+                    connection.rollback();
+                }
             } else {
                 connection.rollback();
             }
-            return isOrderAdded;
+            return isOrderFullyAdded;
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -1011,7 +1069,6 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             } catch (SQLException e1) {
                 throw new DAOException(String.format("Can not make rollback. Reason: %s", e.getMessage()), e1);
             }
-
         } finally {
             closeStatement(addOrderStatement);
             closeStatement(changeBookStatusStatement);
@@ -1077,7 +1134,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     @Override
     public boolean returnBook(int orderId, int bookId) throws DAOException {
+        boolean isBookFullyReturned = false;
         boolean isBookReturned = false;
+        boolean isBookLocationChanged = false;
         Connection connection = null;
         PreparedStatement returnBookStatement = null;
         PreparedStatement changeBookStatusStatement = null;
@@ -1088,11 +1147,17 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             returnBookStatement.setInt(1, orderId);
             int returnBookResult = returnBookStatement.executeUpdate();
             if (returnBookResult > 0) {
+                isBookReturned = true;
+            }
+            if (isBookReturned) {
                 changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_STORAGE);
                 changeBookStatusStatement.setInt(1, bookId);
                 int changeBookStatusResult = changeBookStatusStatement.executeUpdate();
                 if (changeBookStatusResult > 0) {
-                    isBookReturned = true;
+                    isBookLocationChanged = true;
+                }
+                if (isBookLocationChanged) {
+                    isBookFullyReturned = true;
                     connection.commit();
                 } else {
                     connection.rollback();
@@ -1100,7 +1165,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             } else {
                 connection.rollback();
             }
-            return isBookReturned;
+            return isBookFullyReturned;
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -1117,7 +1182,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     @Override
     public boolean addOnlineOrder(int bookId, int libraryCard) throws DAOException {
+        boolean isOnlineOrderFullyAdded = false;
         boolean isOnlineOrderAdded = false;
+        boolean isBookLocationChanged = false;
         Connection connection = null;
         PreparedStatement addOnlineOrderStatement = null;
         PreparedStatement changeBookStatusStatement = null;
@@ -1129,11 +1196,17 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             addOnlineOrderStatement.setInt(2, bookId);
             int addOnlineOrderResult = addOnlineOrderStatement.executeUpdate();
             if (addOnlineOrderResult > 0) {
+                isOnlineOrderAdded = true;
+            }
+            if (isOnlineOrderAdded) {
                 changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_ONLINE_ORDER);
                 changeBookStatusStatement.setInt(1, bookId);
                 int changeBookStatusResult = changeBookStatusStatement.executeUpdate();
                 if (changeBookStatusResult > 0) {
-                    isOnlineOrderAdded = true;
+                    isBookLocationChanged = true;
+                }
+                if (isBookLocationChanged) {
+                    isOnlineOrderFullyAdded = true;
                     connection.commit();
                 } else {
                     connection.rollback();
@@ -1141,7 +1214,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             } else {
                 connection.rollback();
             }
-            return isOnlineOrderAdded;
+            return isOnlineOrderFullyAdded;
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -1237,7 +1310,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     @Override
     public boolean cancelOnlineOrder(int orderId, int bookId) throws DAOException {
+        boolean isOnlineOrderFullyCancelled = false;
         boolean isOnlineOrderCancelled = false;
+        boolean isBookLocationChanged = false;
         Connection connection = null;
         PreparedStatement cancelOnlineOrderStatement = null;
         PreparedStatement changeBookStatusStatement = null;
@@ -1248,11 +1323,17 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             cancelOnlineOrderStatement.setInt(1, orderId);
             int cancelOnlineOrderResult = cancelOnlineOrderStatement.executeUpdate();
             if (cancelOnlineOrderResult > 0) {
+                isOnlineOrderCancelled = true;
+            }
+            if (isOnlineOrderCancelled) {
                 changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_STORAGE);
                 changeBookStatusStatement.setInt(1, bookId);
                 int changeBookStatusResult = changeBookStatusStatement.executeUpdate();
                 if (changeBookStatusResult > 0) {
-                    isOnlineOrderCancelled = true;
+                    isBookLocationChanged = true;
+                }
+                if (isBookLocationChanged) {
+                    isOnlineOrderFullyCancelled = true;
                     connection.commit();
                 } else {
                     connection.rollback();
@@ -1260,7 +1341,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             } else {
                 connection.rollback();
             }
-            return isOnlineOrderCancelled;
+            return isOnlineOrderFullyCancelled;
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -1300,7 +1381,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     @Override
     public boolean executeOnlineOrder(OnlineOrder onlineOrder, String typeOfOrder) throws DAOException {
+        boolean isOnlineOrderFullyExecuted = false;
         boolean isOnlineOrderExecuted = false;
+        boolean isOnlineOrderAdded = false;
         Connection connection = null;
         PreparedStatement executeOnlineOrderStatement = null;
         PreparedStatement addOrderStatement = null;
@@ -1311,8 +1394,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             executeOnlineOrderStatement = connection.prepareStatement(SQL_EXECUTE_ONLINE_ORDER);
             executeOnlineOrderStatement.setInt(1, onlineOrder.getId());
             int executeOnlineOrderResult = executeOnlineOrderStatement.executeUpdate();
-
             if (executeOnlineOrderResult > 0) {
+                isOnlineOrderExecuted = true;
+            }
+            if (isOnlineOrderExecuted) {
                 if (typeOfOrder.equals(Location.SUBSCRIPTION.getName())) {
                     addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_SUBSCRIPTION);
                     changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_SUBSCRIPTION);
@@ -1329,12 +1414,14 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 addOrderStatement.setInt(2, bookId);
                 addOrderStatement.setInt(3, librarianId);
                 changeBookStatusStatement.setInt(1, bookId);
-                int addOrderResult = addOrderStatement.executeUpdate();
-
-                if (addOrderResult > 0) {
+                int addOnlineOrderResult = addOrderStatement.executeUpdate();
+                if (addOnlineOrderResult > 0) {
+                    isOnlineOrderExecuted = true;
+                }
+                if (isOnlineOrderAdded) {
                     int bookChangeLocationResult = changeBookStatusStatement.executeUpdate();
                     if (bookChangeLocationResult > 0) {
-                        isOnlineOrderExecuted = true;
+                        isOnlineOrderFullyExecuted = true;
                         connection.commit();
                     } else {
                         connection.rollback();
@@ -1345,7 +1432,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             } else {
                 connection.rollback();
             }
-            return isOnlineOrderExecuted;
+            return isOnlineOrderFullyExecuted;
         } catch (SQLException e) {
             try {
                 connection.rollback();

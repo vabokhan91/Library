@@ -1,8 +1,6 @@
 package by.epam.bokhan.command;
 
-/**
- * Created by vbokh on 14.08.2017.
- */
+
 public class CommandConstant {
     public static final String PAGE = "page";
     public static final String TYPE_OF_TRANSITION = "type_of_transition";

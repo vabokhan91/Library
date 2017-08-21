@@ -7,8 +7,6 @@ import by.epam.bokhan.receiver.Receiver;
 
 public class AddUserCommand extends AbstractCommand {
 
-
-
     public AddUserCommand(Receiver receiver) {
         super(receiver);
     }
@@ -18,6 +16,5 @@ public class AddUserCommand extends AbstractCommand {
         content.insertParameter(PAGE, ADD_USER_PAGE_COMMAND);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
         content.insertParameter(INVALIDATE, false);
-
     }
 }

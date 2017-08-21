@@ -1,5 +1,9 @@
 package by.epam.bokhan.content;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -7,9 +11,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class RequestContent {
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final String CONTENT_TYPE_MULTIPART_FORM_DATA = "multipart/form-data";
     private HashMap<String, Object> requestParameters;
     private HashMap<String, Object> sessionAttributes;
     private HashMap<String, Object> requestParameterValues;
@@ -45,7 +52,7 @@ public class RequestContent {
         }
 
         try {
-            if (request.getContentType() != null && request.getContentType().toLowerCase().contains("multipart/form-data")) {
+            if (request.getContentType() != null && request.getContentType().toLowerCase().contains(CONTENT_TYPE_MULTIPART_FORM_DATA)) {
                 Collection<Part> multitypeValues = request.getParts();
                 for (Part part : multitypeValues) {
                     String name = part.getName();
@@ -53,12 +60,26 @@ public class RequestContent {
                 }
 
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ServletException e) {
-            e.printStackTrace();
+        } catch (IOException | ServletException e) {
+            LOGGER.log(Level.ERROR, String.format("Exception in RequestContent. Reason : %s", e.getMessage()));
         }
 
+    }
+
+    public void getParametersFromContent(HttpServletRequest request) {
+        for (Map.Entry<String, Object> p : requestParameters.entrySet()) {
+            String first = p.getKey();
+            Object second = p.getValue();
+            request.setAttribute(first, second);
+        }
+    }
+
+    public void getAttributesFromContent(HttpServletRequest request) {
+        for (Map.Entry<String, Object> a : sessionAttributes.entrySet()) {
+            String first = a.getKey();
+            Object second = a.getValue();
+            request.getSession().setAttribute(first, second);
+        }
     }
 
     public void insertParameter(String key, Object value) {
@@ -83,10 +104,6 @@ public class RequestContent {
 
     public HashMap<String, Object> getMultiTypeParts() {
         return multiTypeParts;
-    }
-
-    public void setMultiTypeParts(HashMap<String, Object> multiTypeParts) {
-        this.multiTypeParts = multiTypeParts;
     }
 }
 

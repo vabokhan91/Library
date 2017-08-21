@@ -30,7 +30,7 @@ class ConnectionCreator {
             login = resourceBundle.getString(DB_USER);
             password = resourceBundle.getString(DB_PASSWORD);
         } catch (MissingResourceException e) {
-            throw new RuntimeException(String.format("Can not find resourcebundle. Reason : %s", e.getMessage()));
+            throw new RuntimeException(String.format("Can not find resource bundle. Reason : %s", e.getMessage()));
         }
     }
 

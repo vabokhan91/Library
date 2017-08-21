@@ -20,7 +20,6 @@ public class ConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int POOL_SIZE = 10;
     private static Lock lock = new ReentrantLock();
-
     private BlockingQueue<ProxyConnection> connectionQueue;
     private static ConnectionPool instance;
     private static AtomicBoolean isConnectionPoolCreated = new AtomicBoolean(false);
@@ -31,7 +30,7 @@ public class ConnectionPool {
             initConnectionPool();
         } catch (SQLException e) {
             LOGGER.log(Level.FATAL, String.format("Connection pool was not created. Reason : %s", e.getMessage()));
-            throw new RuntimeException(e);
+            throw new RuntimeException(String.format("Connection pool was not created. Reason : %s", e.getMessage()), e);
         }
     }
 
@@ -57,10 +56,10 @@ public class ConnectionPool {
         }
         if (!isAllConnectionsCreated()) {
             tryToRecreateConnections();
-            if (connectionQueue.size() > 0) {
+            if (connectionQueue.size() > POOL_SIZE / 2) {
                 LOGGER.log(Level.INFO, "Available connections: " + connectionQueue.size());
             } else {
-                throw new RuntimeException("Connection pool is empty");
+                throw new RuntimeException("Connection pool has not enough connections to proceed working");
             }
         } else {
             LOGGER.log(Level.INFO, String.format("All connections were created successfully. Connection pool size: %s connections", connectionQueue.size()));

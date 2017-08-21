@@ -11,36 +11,46 @@ import java.util.ResourceBundle;
 
 
 public class WelcomeTag extends TagSupport {
-
+    
+    private final String USER = "user";
+    private final String LANGUAGE = "language";
+    private final String RU_RU = "ru_ru";
+    private final String RU = "ru";
+    private final String EN_US = "en_US";
+    private final String EN = "en";
+    private final String US = "US";
+    private final String LANGUAGE_BUNDLE = "resource.language";
+    private final String MESSAGE_WELCOME_GUEST = "label.message.welcome.guest";
+    private final String MESSAGE_WELCOME_USER = "label.message.welcome.authorizeduser";
 
     @Override
     public int doStartTag() throws JspException {
         Locale locale = null;
-        User user = (User) pageContext.getSession().getAttribute("user");
-        Object object = pageContext.getSession().getAttribute("language");
+        User user = (User) pageContext.getSession().getAttribute(USER);
+        Object object = pageContext.getSession().getAttribute(LANGUAGE);
 
         if (object instanceof Locale) {
             locale = (Locale) object;
         } else if (object instanceof String) {
             String loc = (String) object;
-            if (loc.equalsIgnoreCase("ru_ru")) {
-                locale = new Locale("ru","RU");
-            } else if (loc.equalsIgnoreCase("en_US")) {
-                locale = new Locale("en","US");
+            if (loc.equalsIgnoreCase(RU_RU)) {
+                locale = new Locale(RU,RU);
+            } else if (loc.equalsIgnoreCase(EN_US)) {
+                locale = new Locale(EN, US);
             }
         }
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("resource.language", locale);
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(LANGUAGE_BUNDLE, locale);
         if (user == null) {
             try {
                 JspWriter out = pageContext.getOut();
-                out.write(resourceBundle.getString("label.message.welcome.guest"));
+                out.write(resourceBundle.getString(MESSAGE_WELCOME_GUEST));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             try {
                 JspWriter out = pageContext.getOut();
-                out.write(resourceBundle.getString("label.message.welcome.authorizeduser") + user.getName() + "!!!");
+                out.write(resourceBundle.getString(MESSAGE_WELCOME_USER) + user.getName());
             } catch (IOException e) {
                 e.printStackTrace();
             }
