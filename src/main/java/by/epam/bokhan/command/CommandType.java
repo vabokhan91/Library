@@ -56,9 +56,9 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_MAIN_PAGE(new ToMainPage(new UserReceiverImpl())) {
+    },TO_MAIN_PAGE(new ToMainPage(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-
+            ((BookReceiverImpl) getCommand().getReceiver()).getRandomBooks(content);
         }
     },TO_FIND_USER_PAGE(new ToFindUserPage(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
@@ -367,6 +367,10 @@ public enum CommandType {
     },FIND_BOOK_BY_GENRE(new FindBookByGenreCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).findBookByGenre(content);
+        }
+    },GET_RANDOM_BOOKS_FROM_DATABASE(new GetRandomBooksFromDBCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BookReceiverImpl) getCommand().getReceiver()).getRandomBooks(content);
         }
     };
 

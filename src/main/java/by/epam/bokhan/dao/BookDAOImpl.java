@@ -7,6 +7,7 @@ import by.epam.bokhan.pool.ConnectionPool;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,14 +42,14 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "on book.publisher_id = publisher.id\n" +
             "where book.id = ?";
 
-    private static final String SQL_FIND_BOOK_BY_TITLE = "SELECT book.id, book.title,book.pages, book.location,book.image, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year, book.image\n" +
+    private static final String SQL_FIND_BOOK_BY_TITLE = "SELECT book.id, book.title,book.pages, book.location,book.image, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year\n" +
             "            from book\n" +
             "            left join (select book_author.book_id as b,author.name , author.surname , author.patronymic  from book_author left join author on book_author.author_id = author.id) as authors\n" +
             "            on book.id = b \n" +
             "            where book.title LIKE ?";
 
 
-    private static final String SQL_GET_EXPLICIT_BOOK_INFO = "SELECT book.id, book.title,book.pages,book.isbn, book.location,genres.genre_id, genres.genre_name, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year,publisher.id, publisher.name\n" +
+    private static final String SQL_GET_EXPLICIT_BOOK_INFO = "SELECT book.id, book.title,book.pages,book.isbn, book.location,book.description,book.image, genres.genre_id, genres.genre_name, authors.name as author_name, authors.surname as author_surname, authors.patronymic as author_patronymic, book.year,publisher.id, publisher.name\n" +
             " from book \n" +
             " left join publisher on book.publisher_id = publisher.id\n" +
             " left join (select book_author.book_id as b,author.name, author.surname, author.patronymic from book_author left join author on book_author.author_id = author.id) as authors\n" +
@@ -119,6 +120,9 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             "left join (select book_id,genre.id as genre_id, genre.name as genre_name from book_genre left join genre on book_genre.genre_id = genre.id) as genres \n" +
             "on book.id = genres.book_id\n" +
             "where genre_name LIKE ?";
+    private static final String SQL_GET_RANDOM_BOOK_ID = "SELECT id FROM book\n" +
+            "ORDER BY RAND()\n" +
+            "LIMIT ?";
 
     @Override
     public List<Book> getAllBooks() throws DAOException {
@@ -1527,6 +1531,100 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             throw new DAOException(String.format("Can not get books by genre. Reason: %s", e.getMessage()), e);
         } finally {
             closeStatement(getBooksByGenreStatement);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public List<Book> getRandomBooks(int numberOfBooks) throws DAOException {
+        LinkedList<Book> books = new LinkedList<>();
+        Connection connection = null;
+        PreparedStatement getRandomBookIdStatement = null;
+        PreparedStatement getExplicitBookInfoStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            getRandomBookIdStatement = connection.prepareStatement(SQL_GET_RANDOM_BOOK_ID);
+            getRandomBookIdStatement.setInt(1, numberOfBooks);
+            ResultSet idValues = getRandomBookIdStatement.executeQuery();
+            List<Integer> bookIds = new ArrayList<>();
+            while (idValues.next()) {
+                Integer id = idValues.getInt(BOOK_ID);
+                bookIds.add(id);
+            }
+            for (int id : bookIds) {
+                getExplicitBookInfoStatement = connection.prepareStatement(SQL_GET_EXPLICIT_BOOK_INFO);
+                getExplicitBookInfoStatement.setInt(1, id);
+                ResultSet resultSet = getExplicitBookInfoStatement.executeQuery();
+                while (resultSet.next()) {
+                    Book book = new Book();
+                    int bookId = resultSet.getInt(BOOK_ID);
+                    int lastBookFromListId = !books.isEmpty() ? books.getLast().getId() : 0;
+                    if (lastBookFromListId == bookId) {
+                        String genreName = resultSet.getString(GENRES_NAME);
+                        int genreId = resultSet.getInt(GENRES_ID);
+                        if (genreName != null && !genreName.isEmpty()) {
+                            Genre bookGenre = new Genre();
+                            bookGenre.setId(genreId);
+                            bookGenre.setName(genreName);
+                            if (!books.getLast().getGenre().contains(bookGenre)) {
+                                books.getLast().addGenre(bookGenre);
+                            }
+                        }
+                        Author author = new Author();
+                        String authorName = resultSet.getString(AUTHOR_NAME);
+                        String authorSurname = resultSet.getString(AUTHOR_SURNAME);
+                        String authorPatronymic = resultSet.getString(AUTHOR_PATRONYMIC);
+                        author.setName(authorName);
+                        author.setSurname(authorSurname);
+                        author.setPatronymic(authorPatronymic);
+                        Book lastBookFromDB = books.getLast();
+                        if (!lastBookFromDB.getAuthors().contains(author)) {
+                            lastBookFromDB.addAuthor(author);
+                        }
+                        continue;
+                    }
+                    book.setId(bookId);
+                    book.setTitle(resultSet.getString(BOOK_TITLE));
+                    book.setPages(resultSet.getInt(BOOK_PAGES));
+                    book.setIsbn(resultSet.getString(BOOK_ISBN));
+                    book.setYear(resultSet.getInt(BOOK_YEAR));
+                    book.setDescription(new String(resultSet.getBytes(BOOK_DESCRIPTION), StandardCharsets.UTF_8));
+                    book.setLocation(Location.valueOf(resultSet.getString(BOOK_LOCATION).toUpperCase()));
+                    Publisher publisher = new Publisher();
+                    Integer publisherId = resultSet.getInt(PUBLISHER_ID);
+                    publisher.setId(publisherId);
+                    String publisherName = resultSet.getString(PUBLISHER_NAME);
+                    publisher.setName(publisherName);
+                    book.setPublisher(publisher);
+                    String genreName = resultSet.getString(GENRES_NAME);
+                    int genreId = resultSet.getInt(GENRES_ID);
+                    if (genreName != null && !genreName.isEmpty()) {
+                        Genre bookGenre = new Genre();
+                        bookGenre.setId(genreId);
+                        bookGenre.setName(genreName);
+                        book.addGenre(bookGenre);
+                    }
+                    Author author = new Author();
+                    String authorName = resultSet.getString(AUTHOR_NAME);
+                    String authorSurname = resultSet.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = resultSet.getString(AUTHOR_PATRONYMIC);
+                    author.setName(authorName);
+                    author.setSurname(authorSurname);
+                    author.setPatronymic(authorPatronymic);
+                    book.addAuthor(author);
+                    Blob imageBlob = resultSet.getBlob(BOOK_IMAGE);
+                    if (imageBlob != null) {
+                        String image = new String(imageBlob.getBytes(1, (int) imageBlob.length()));
+                        book.setImage(image);
+                    }
+                    books.add(book);
+                }
+            }
+            return books;
+        } catch (SQLException e) {
+            throw new DAOException(String.format("Can not get books. Reason: %s", e.getMessage()), e);
+        } finally {
+            closeStatement(getExplicitBookInfoStatement);
             closeConnection(connection);
         }
     }

@@ -6,9 +6,9 @@
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2}">
+<%--<c:if test="${user.role.ordinal()!=2}">
     <jsp:forward page="/index.jsp"/>
-</c:if>
+</c:if>--%>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>

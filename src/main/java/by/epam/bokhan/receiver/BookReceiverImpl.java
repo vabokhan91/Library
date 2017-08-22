@@ -25,6 +25,7 @@ import static by.epam.bokhan.validator.UserValidator.*;
 public class BookReceiverImpl implements BookReceiver {
     private static final Logger LOGGER = LogManager.getLogger();
 
+
     @Override
     public void getAllBooks(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
@@ -575,6 +576,18 @@ public class BookReceiverImpl implements BookReceiver {
                 genre.setName(bookGenre);
                 books = bookDAO.getBooksByGenre(genre);
             }
+            requestContent.insertParameter(BOOKS, books);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void getRandomBooks(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        List<Book> books;
+        try {
+            books = bookDAO.getRandomBooks(RANDOM_NUMBER_OF_BOOKS);
             requestContent.insertParameter(FOUND_BOOKS, books);
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -606,4 +619,6 @@ public class BookReceiverImpl implements BookReceiver {
         }
         return image;
     }
+
+
 }

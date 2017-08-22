@@ -59,4 +59,6 @@ public interface BookReceiver extends Receiver {
 
     void findBookByGenre(RequestContent requestContent) throws ReceiverException;
 
+    void getRandomBooks(RequestContent requestContent) throws ReceiverException;
+
 }

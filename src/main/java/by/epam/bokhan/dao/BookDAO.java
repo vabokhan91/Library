@@ -61,4 +61,6 @@ public interface BookDAO {
     boolean executeOnlineOrder(OnlineOrder onlineOrder,String typeOfOrder) throws DAOException;
 
     List<Book> getBooksByGenre(Genre genre) throws DAOException;
+
+    List<Book> getRandomBooks(int numberOfBooks) throws DAOException;
 }

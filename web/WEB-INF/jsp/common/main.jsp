@@ -1,28 +1,39 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <fmt:setBundle basename="resource.config" var="config"/>
 <html lang="${language}">
 <head>
+
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="css/library.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+            crossorigin="anonymous"></script>
 </head>
 <body background="image/books-484766_1920.jpg">
 
 <nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Library</a>
+    <a class="navbar-brand" href="#"><fmt:message key="label.library" bundle="${messages}"/> </a>
 
-    <form class="form-inline">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <form class="form-inline" action="/controller">
+        <input type="hidden" name="command" value="find_book">
+        <input class="form-control mr-sm-2" type="text" placeholder=<fmt:message key="label.book.enter_book_title" bundle="${messages}"/> aria-label="Search" name="find_query_value" value="">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><fmt:message key="label.book.find_book" bundle="${messages}"/></button>
     </form>
 
     <form method="post">
@@ -47,39 +58,42 @@
             </p>
             <div class="jumbotron">
                 <h1>Hello, world!</h1>
-                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
+                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some
+                    responsive-range viewport sizes to see it in action.</p>
             </div>
             <div class="row">
-                <div class="col-6 col-lg-4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-                </div><!--/span-->
-                <div class="col-6 col-lg-4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-                </div><!--/span-->
-                <div class="col-6 col-lg-4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-                </div><!--/span-->
-                <div class="col-6 col-lg-4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-                </div><!--/span-->
-                <div class="col-6 col-lg-4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-                </div><!--/span-->
-                <div class="col-6 col-lg-4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-                </div><!--/span-->
+                <c:forEach items="${foundBooks}" var="item">
+                    <div class="col-12">
+                        <div class="parent-book-info"><h2>${item.title}</h2>
+                        <div>
+                        <img class="main-book-img" src="data:image/jpg;base64,${item.image}"/></div>
+                            <div>
+                            <fmt:message key="label.book.author" bundle="${messages}"/> : <c:forEach items="${item.authors}"
+                                                                                                     var="author">
+                            ${author.surname.concat(' ').concat(author.name.charAt(0)).concat('. ').concat(author.patronymic.charAt(0)).concat(';')}</c:forEach><br/>
+                            <fmt:message key="label.book.genre" bundle="${messages}"/> :
+                            <c:forEach items="${item.genre}" var="genres">
+                                ${genres.getName()}
+                            </c:forEach><br/>
+                            <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
+                            <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
+                            <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
+                            <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher.name}<br/>
+                            </div>
+                        </div>
+                        <div>
+                        <form method="post" action="/controller" accept-charset="UTF-8">
+                            <input type="hidden" name="command" value="get_explicit_book_info"/>
+                            <input type="hidden" name="book_id" value="${item.id}"/>
+                            <button class="btn btn-secondary" type="submit" name="submit"><fmt:message
+                                    key="label.button.more_detail"
+                                    bundle="${messages}"/></button>
+                        </form>
+                        </div>
+
+                    </div>
+                    <!--/span-->
+                </c:forEach>
             </div><!--/row-->
         </div><!--/span-->
 
@@ -87,34 +101,45 @@
             <div><ctg:welcome-tag/></div>
             <c:choose>
                 <c:when test="${empty user}">
-            <form class="form-signin" method = "POST" action = "/controller">
-                <h6 class="form-signin-heading"><fmt:message key="label.login_to_account" bundle="${messages}"/></h6>
-                <input type = "hidden" name = "command" value = "login"/>
-                <label for="inputEmail" class="sr-only"> <fmt:message key="label.login" bundle="${messages}"/></label>
-                <input type="text" name="login" id="inputEmail" class="form-control" placeholder="<fmt:message key="label.login.login" bundle="${messages}"/>" required="" autofocus="">
-                <label for="inputPassword" class="sr-only"><fmt:message key="label.password" bundle="${messages}"/></label>
-                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="<fmt:message key="label.password" bundle="${messages}"/>" required="">
-                <input type="submit" name="login" class="btn btn-lg btn-primary btn-block" value=<fmt:message key="label.login" bundle="${messages}"/>>
-                ${errorLoginPassMessage}
-            </form>
-            <form action="/controller" id="register">
-                   <input type = "hidden" name = "command" value = "to_registration_page"/>
-                   <input type="submit" name="submit" class="btn btn-lg btn-primary btn-block" value=<fmt:message key="label.registration" bundle="${messages}"/> />
-            </form>
-            <c:if test="${not empty sessionScope.errorLoginPassMessage}">
-                <c:remove var="errorLoginPassMessage" scope="session" />
-            </c:if>
-            </c:when>
+                    <form class="form-signin" method="POST" action="/controller">
+                        <h6 class="form-signin-heading"><fmt:message key="label.login_to_account"
+                                                                     bundle="${messages}"/></h6>
+                        <input type="hidden" name="command" value="login"/>
+                        <label for="inputEmail" class="sr-only"> <fmt:message key="label.login"
+                                                                              bundle="${messages}"/></label>
+                        <input type="text" name="login" id="inputEmail" class="form-control"
+                               placeholder="<fmt:message key="label.login.login" bundle="${messages}"/>" required=""
+                               autofocus="">
+                        <label for="inputPassword" class="sr-only"><fmt:message key="label.password"
+                                                                                bundle="${messages}"/></label>
+                        <input type="password" name="password" id="inputPassword" class="form-control"
+                               placeholder="<fmt:message key="label.password" bundle="${messages}"/>" required="">
+                        <input type="submit" name="login" class="btn btn-lg btn-primary btn-block" value=<fmt:message
+                                key="label.login" bundle="${messages}"/>>
+                            ${errorLoginPassMessage}
+                    </form>
+                    <form action="/controller" id="register">
+                        <input type="hidden" name="command" value="to_registration_page"/>
+                        <input type="submit" name="submit" class="btn btn-lg btn-primary btn-block" value=
+                            <fmt:message key="label.registration" bundle="${messages}"/>>
+                    </form>
+                    <c:if test="${not empty sessionScope.errorLoginPassMessage}">
+                        <c:remove var="errorLoginPassMessage" scope="session"/>
+                    </c:if>
+                </c:when>
                 <c:otherwise>
                     <c:choose>
                         <c:when test="${user.role.ordinal()==3}">
-                            <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+                            <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
+                                                                                     bundle="${messages}"/> </a>
                         </c:when>
                         <c:when test="${user.role.ordinal()==2}">
-                            <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+                            <a href="/controller?command=to_librarian_main_page"><fmt:message
+                                    key="label.button.to_main_menu" bundle="${messages}"/> </a>
                         </c:when>
                         <c:when test="${user.role.ordinal()==1}">
-                            <a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
+                            <a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu"
+                                                                                         bundle="${messages}"/> </a>
                         </c:when>
                     </c:choose>
                 </c:otherwise>
@@ -122,7 +147,7 @@
 
 
             <div class="list-group">
-                <a href="#" class="list-group-item active">Link</a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Роман" class="list-group-item ">Link</a>
                 <a href="#" class="list-group-item">Link</a>
                 <a href="#" class="list-group-item">Link</a>
                 <a href="#" class="list-group-item">Link</a>
@@ -313,27 +338,6 @@
     </li>
     </ul>
 </div>--%>
-
-<c:forEach items="${foundBooks}" var="item">
-    <div>
-        ${item.title}
-        ${item.pages}
-        ${item.isbn}
-        ${item.year}
-        ${item.location}
-        ${item.publisher.name}
-            ${item.description}
-        <c:forEach items="${item.genre}" var="genres">
-            ${genres.getName()}
-        </c:forEach>
-        <c:forEach items="${item.authors}" var="authors">
-            ${authors.toString()}
-        </c:forEach>
-    </div>
-</c:forEach>
-
-
-
 
 
 
