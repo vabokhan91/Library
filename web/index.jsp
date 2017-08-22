@@ -3,5 +3,5 @@
 <head><title>HelloPage</title></head>
 <body>
 
-<jsp:forward page = "WEB-INF/jsp/main.jsp" />
+<jsp:forward page = "WEB-INF/jsp/common/main.jsp" />
 </body></html>

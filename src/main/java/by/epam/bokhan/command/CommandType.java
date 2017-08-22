@@ -1,9 +1,10 @@
 package by.epam.bokhan.command;
 
-import by.epam.bokhan.command.navigation.admin.*;
-import by.epam.bokhan.command.navigation.common.*;
-import by.epam.bokhan.command.navigation.librarian.*;
-import by.epam.bokhan.command.navigation.user.*;
+import by.epam.bokhan.command.admin.*;
+import by.epam.bokhan.command.common.*;
+import by.epam.bokhan.command.librarian.*;
+import by.epam.bokhan.command.navigation.*;
+import by.epam.bokhan.command.user.*;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.BookReceiverImpl;
@@ -24,12 +25,10 @@ public enum CommandType {
         public void doReceiver(RequestContent content) {
             ((UserReceiverImpl) getCommand().getReceiver()).logout(content);
         }
-    },
-    ERROR_PAGE(new ErrorPage(new UserReceiverImpl())) {
+    },ERROR_PAGE(new ErrorPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) {
         }
-    },
-    ADD_USER(new AddUserCommand(new UserReceiverImpl())) {
+    },ADD_USER(new AddUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).addUser(content);
         }
@@ -41,8 +40,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },
-    FIND_USER(new FindUserCommand(new UserReceiverImpl())) {
+    },FIND_USER(new FindUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).findUser(content);
         }
