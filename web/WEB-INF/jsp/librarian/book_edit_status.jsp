@@ -10,32 +10,73 @@
 </c:if>
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/library.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+            crossorigin="anonymous"></script>
     <title><fmt:message key="label.edit_status" bundle="${messages}"/> </title>
 </head>
-<body>
+<body background="image/books-484766_1920.jpg">
+
+<jsp:include page="../header.jsp"/>
 
 
-<c:choose>
-    <c:when test="${not empty sessionScope.isBookEdited && sessionScope.isBookEdited eq true}">
-        <fmt:message key="label.book.edit_success" bundle="${messages}"/><br/>
-        <a href="/controller?command=to_find_book_page"><fmt:message key="label.book.edit_one_more_book" bundle="${messages}"/> </a><br/>
-    </c:when>
-    <c:when test="${not empty sessionScope.isBookEdited && sessionScope.isBookEdited eq false}">
-        <fmt:message key="label.book.edit_failed" bundle="${messages}"/>
-        <a href="/controller?command=to_find_book_page"><fmt:message key="label.try.once.again" bundle="${messages}"/> </a><br/>
-    </c:when>
-</c:choose><br/>
+<div class="container">
 
-<c:if test="${not empty sessionScope.isBookEdited}">
-    <c:remove var="isBookEdited" scope="session" />
-</c:if>
+    <div class="row row-offcanvas row-offcanvas-right">
 
-<a href="/controller?command=get_all_books"><fmt:message key="label.book.show_all_books" bundle="${messages}"/> </a><br/>
+        <div class="col-12 col-md-9">
+            <p class="float-right d-md-none">
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Toggle nav</button>
+            </p>
+            <div class="jumbotron">
+                <c:choose>
+                    <c:when test="${not empty sessionScope.isBookEdited && sessionScope.isBookEdited eq true}">
+                        <fmt:message key="label.book.edit_success" bundle="${messages}"/><br/>
+                    </c:when>
+                    <c:when test="${not empty sessionScope.isBookEdited && sessionScope.isBookEdited eq false}">
+                        <fmt:message key="label.book.edit_failed" bundle="${messages}"/>
+                    </c:when>
+                </c:choose>
+            </div>
 
-<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
+            <c:choose>
+                <c:when test="${not empty sessionScope.isBookEdited && sessionScope.isBookEdited eq true}">
+                    <a class="btn btn-secondary" href="/controller?command=to_find_book_page"><fmt:message key="label.book.edit_one_more_book" bundle="${messages}"/> </a><br/>
+                </c:when>
+                <c:when test="${not empty sessionScope.isBookEdited && sessionScope.isBookEdited eq false}">
+                    <a class="btn btn-secondary" href="/controller?command=to_find_book_page"><fmt:message key="label.try.once.again" bundle="${messages}"/> </a><br/>
+                </c:when>
+            </c:choose>
+
+            <c:if test="${not empty sessionScope.isBookEdited}">
+                <c:remove var="isBookEdited" scope="session" />
+            </c:if>
+
+        </div><!--/span-->
+
+        <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
+            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
+                    key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
+            <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
+                    key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
+
+        </div><!--/span-->
+    </div><!--/row-->
+</div>
 
 
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
+<footer>
+    <p>© Company 2017</p>
+</footer>
 
 
 

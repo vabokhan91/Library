@@ -11,11 +11,151 @@
 </c:if>
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/library.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+            crossorigin="anonymous"></script>
     <title><fmt:message key="label.online_order_information" bundle="${messages}"/> </title>
 </head>
-<body>
+<body background="image/books-484766_1920.jpg">
+<jsp:include page="../header.jsp"/>
 
-<form method="post" action="/controller" accept-charset="UTF-8">
+
+
+<div class="container">
+
+    <div class="row row-offcanvas row-offcanvas-right">
+
+        <div class="col-12 col-md-9">
+            <p class="float-right d-md-none">
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Toggle nav</button>
+            </p>
+            <div class="row">
+                <c:forEach items="${foundBook}" var="item">
+                    <div class="col-10">
+
+                        <div>
+                            <img class="main-book-img" src="data:image/jpg;base64,${item.image}"/></div>
+                        <div>
+                            <form method="post" action="/controller" accept-charset="UTF-8">
+                                <input type="hidden" name="command" value="execute_online_order">
+                                <input type="hidden" name="book_id" value="${foundBook.get(0).id}"/>
+                                <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
+                                <div class="parent-book-info"><h2>${item.title}</h2>
+
+                                    <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.id}<br/>
+
+                                    <fmt:message key="label.book.author" bundle="${messages}"/> : <c:forEach
+                                            items="${item.authors}"
+                                            var="author">
+                                        ${author.surname.concat(' ').concat(author.name.charAt(0)).concat('. ').concat(author.patronymic.charAt(0)).concat(';')}</c:forEach><br/>
+                                    <fmt:message key="label.book.genre" bundle="${messages}"/> :
+                                    <c:forEach items="${item.genre}" var="genres">
+                                        ${genres.getName()}
+                                    </c:forEach><br/>
+                                    <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
+                                    <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
+                                    <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
+                                    <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher.name}<br/><br/>
+                                    <fmt:message key="label.book.location" bundle="${messages}"/> : ${item.location}<br/>
+                                    <div>
+                                        <br/>
+                                        <br/>
+                                        <div class="form-group row">
+                                            <label for="type_of_order" class="col-sm-2 col-form-label"
+                                                   style="margin-right: 13px"><fmt:message key="label.book.type_of_order"
+                                                                                           bundle="${messages}"/></label>
+                                            <select id="type_of_order" class="custom-select col-sm-3" name="type_of_order"
+                                                    required>
+                                                <option value="subscription"><fmt:message key="label.book.subscription"
+                                                                                          bundle="${messages}"/></option>
+                                                <option value="reading_room"><fmt:message key="label.book.reading_room"
+                                                                                          bundle="${messages}"/></option>
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <div class="col-sm-10">
+                                                <button type="submit" class="btn btn-primary"><fmt:message
+                                                        key="label.button.book.add_order" bundle="${messages}"/></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="book_id" value="${foundBook.get(0).id}"/>
+                                <input type="hidden" name="online_order_id" value="${online_order_id}"/>
+                                <input type="hidden" name="library_card" value="${library_card}"/>
+                                <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
+                            </form>
+                        </div>
+
+
+                        <div>
+
+
+                        </div>
+
+
+                    </div>
+                    <!--/span-->
+                </c:forEach>
+            </div><!--/row-->
+
+
+
+        </div><!--/span-->
+        <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
+            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
+                    key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
+            <c:if test="${not empty user}">
+
+                <c:choose>
+                    <c:when test="${user.role.ordinal()==3}">
+                        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message
+                                key="label.button.to_main_menu"
+                                bundle="${messages}"/> </a><br/>
+                    </c:when>
+                    <c:when test="${user.role.ordinal()==2}">
+                        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
+                                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
+                    </c:when>
+                    <c:when test="${user.role.ordinal()==1}">
+                        <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message
+                                key="label.button.to_main_menu"
+                                bundle="${messages}"/> </a><br/>
+                    </c:when>
+                </c:choose>
+            </c:if>
+
+        </div><!--/span-->
+
+    </div><!--/row-->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%--<form method="post" action="/controller" accept-charset="UTF-8">
     <input type="hidden" name="command" value="execute_online_order">
     <c:forEach items="${foundBook}" var="item">
         <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.getId()}<br/>
@@ -47,13 +187,13 @@
     <input type="hidden" name="library_card" value="${library_card}"/>
     <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
     <input type="submit" name="submit" value=<fmt:message key="label.button.book.add_order" bundle="${messages}"/> />
-</form>
+</form>--%>
 
 
-<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu"
+<%--<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu"
                                                                   bundle="${messages}"/> </a><br/>
 
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
+<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>--%>
 
 
 </body>

@@ -11,55 +11,73 @@
 </c:if>
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/library.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+            crossorigin="anonymous"></script>
     <title><fmt:message key="label.librarian_page" bundle="${messages}"/> </title>
 </head>
-<body>
+<body background="image/books-484766_1920.jpg">
+<jsp:include page="../header.jsp"/>
 
-<form method="post">
-    <select id="language" name="language" onchange="submit()">
-        <option value="en_US" ${language == "en_US" ? "selected" : ""}>English</option>
-        <option value="ru_RU" ${language == "ru_RU" ? "selected" : ""}>Русский</option>
-    </select>
-</form>
+<div class="container">
 
-<form action="/controller" accept-charset="UTF-8">
-    <input type="hidden" name="command" value="to_add_user_page"/>
-    <input type="submit" name="submit" value=<fmt:message key="button.add_user" bundle="${messages}"/>/>
-</form>
+    <div class="row row-offcanvas row-offcanvas-right">
 
-<a href="/controller?command=get_all_users"><fmt:message key="label.show_all_users" bundle="${messages}"/> </a><br/>
+        <div class="col-12 col-md-9">
+            <div class="jumbotron">
+                <h1>Hello, world!</h1>
+                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some
+                    responsive-range viewport sizes to see it in action.</p>
+            </div>
+            <div class="row">
 
-<a href="/controller?command=to_Find_User_Page" ><fmt:message key="label.button.find_user" bundle="${messages}"/> </a><br/>
+            </div><!--/row-->
+        </div><!--/span-->
 
-<a href="/controller?command=get_all_books" ><fmt:message key="label.book.show_all_books" bundle="${messages}"/> </a><br/>
+        <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
+            <div><ctg:welcome-tag/></div><br/>
+            <br/>
 
-<a href="/controller?command=to_find_book_page" ><fmt:message key="label.book.find_book" bundle="${messages}"/> </a><br/>
+            <div class="list-group">
+                <a href="/controller?command=to_add_user_page" class="list-group-item"><fmt:message key="label.add_user" bundle="${messages}"/></a>
+                <a href="/controller?command=get_all_users" class="list-group-item"><fmt:message key="label.show_all_users" bundle="${messages}"/></a>
+                <a href="/controller?command=to_find_user_page" class="list-group-item"><fmt:message key="label.button.find_user" bundle="${messages}"/></a>
+                <a href="/controller?command=get_all_books" class="list-group-item"><fmt:message key="label.book.show_all_books" bundle="${messages}"/></a>
+                <a href="/controller?command=to_find_book_page" class="list-group-item"><fmt:message key="label.book.find_book" bundle="${messages}"/></a>
+                <a href="/controller?command=to_add_book_page" class="list-group-item"><fmt:message key="label.book.add_book" bundle="${messages}"/></a>
+                <a href="/controller?command=to_find_book_page" class="list-group-item"><fmt:message key="label.button.book.add_order" bundle="${messages}"/></a>
+                <a href="/controller?command=to_find_user_orders_page" class="list-group-item"><fmt:message key="label.button.book.return_book" bundle="${messages}"/></a>
+                <a href="/controller?command=to_find_user_online_orders" class="list-group-item "><fmt:message key="label.order.execute_online_order" bundle="${messages}"/> </a>
+                <a href="/controller?command=to_find_book_page" class="list-group-item"><fmt:message key="label.button.book.delete_book" bundle="${messages}"/></a>
+                <a href="/controller?command=to_add_author_page" class="list-group-item"><fmt:message key="label.book.add_author" bundle="${messages}"/></a>
+                <a href="/controller?command=to_delete_author_page" class="list-group-item"><fmt:message key="label.book.delete_author" bundle="${messages}"/></a>
+                <a href="/controller?command=to_add_genre_page" class="list-group-item"><fmt:message key="label.genre.add_genre" bundle="${messages}"/></a>
+                <a href="/controller?command=to_delete_genre_page" class="list-group-item"><fmt:message key="label.button.delete_genre" bundle="${messages}"/></a>
+                <a href="/controller?command=to_add_publisher_page" class="list-group-item"><fmt:message key="label.book.add_publisher" bundle="${messages}"/></a>
+                <a href="/controller?command=to_delete_publisher_page" class="list-group-item"><fmt:message key="label.book.delete_publisher" bundle="${messages}"/></a>
 
-<a href="/controller?command=to_add_author_page" ><fmt:message key="label.book.add_author" bundle="${messages}"/> </a><br/>
+            </div>
+        </div><!--/span-->
+    </div><!--/row-->
+<br/>
 
-<a href="/controller?command=to_delete_author_page" ><fmt:message key="label.book.delete_author" bundle="${messages}"/> </a><br/>
 
-<a href="/controller?command=to_add_genre_page" ><fmt:message key="label.genre.add_genre" bundle="${messages}"/> </a><br/>
+</div>
 
-<a href="/controller?command=to_delete_genre_page" ><fmt:message key="label.button.delete_genre" bundle="${messages}"/> </a><br/>
+<hr>
 
-<a href="/controller?command=to_add_publisher_page" ><fmt:message key="label.book.add_publisher" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_delete_publisher_page" ><fmt:message key="label.book.delete_publisher" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_add_book_page" ><fmt:message key="label.book.add_book" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_find_book_page" ><fmt:message key="label.button.book.delete_book" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_find_book_page" ><fmt:message key="label.button.book.add_order" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_find_user_orders_page" ><fmt:message key="label.button.book.return_book" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_find_user_online_orders" ><fmt:message key="label.order.execute_online_order" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-
-<a href = "/controller?command=logout"><fmt:message key="label.logout" bundle="${messages}"/> </a><br/>
+<footer>
+    <p>© Company 2017</p>
+</footer>
 
 </body>
 </html>

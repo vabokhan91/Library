@@ -22,12 +22,10 @@
         <th><fmt:message key="label.book.title" bundle="${messages}"/></th>
         <th><fmt:message key="label.book.number_of_pages" bundle="${messages}"/></th>
         <th><fmt:message key="label.book.year_of_publishing" bundle="${messages}"/></th>
-
         <th><fmt:message key="label.book.author" bundle="${messages}"/></th>
-
     </tr>
 
-    <c:forEach items="${foundBook}" var="item">
+    <c:forEach items="${books}" var="item">
         <tr>
 
             <td>${item.title}</td>

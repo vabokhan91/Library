@@ -51,7 +51,7 @@ public class BookReceiverImpl implements BookReceiver {
             } else if (isBookTitleValid(queryValue)) {
                 books = bookDAO.findBookByTitle(queryValue);
             }
-            requestContent.insertParameter(FOUND_BOOK, books);
+            requestContent.insertParameter(BOOKS, books);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -80,7 +80,7 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void getBookForEditing(RequestContent requestContent) throws ReceiverException {
         BookDAO dao = new BookDAOImpl();
-        List<Book> books = null;
+        Book books = null;
         List<Genre> genres = null;
         List<Author> authors = null;
         List<Publisher> publishers = null;
@@ -124,6 +124,7 @@ public class BookReceiverImpl implements BookReceiver {
             String bookIdValue = (String) requestContent.getRequestParameters().get(BOOK_ID);
             String pageValue = (String) requestContent.getRequestParameters().get(BOOK_PAGES);
             String yearValue = (String) requestContent.getRequestParameters().get(BOOK_YEAR);
+            String bookDescription = (String) requestContent.getRequestParameters().get(BOOK_DESCRIPTION);
             String publisherIdValue = (String) requestContent.getRequestParameters().get(BOOK_PUBLISHER);
             String[] genreIdValues = (String[]) requestContent.getRequestParameterValues().get(BOOK_GENRE);
             String[] authorIdValues = (String[]) requestContent.getRequestParameterValues().get(BOOK_AUTHOR);
@@ -145,6 +146,7 @@ public class BookReceiverImpl implements BookReceiver {
                 book.setPages(pages);
                 book.setIsbn(isbn);
                 book.setYear(year);
+                book.setDescription(bookDescription);
                 for (String genreId : genreIdValues) {
                     Genre genre = new Genre();
                     genre.setId(Integer.parseInt(genreId));

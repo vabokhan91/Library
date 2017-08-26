@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class UserValidator {
 
     private static final String REGEX_FOR_PASSWORD = "[\\w!()*&^%$@]{1,12}";
-    private static final String REGEX_FOR_LOGIN = "[^\\W]{1,12}";
+    private static final String REGEX_FOR_LOGIN = "[\\w!()*&^%$@]{1,12}";
     private static final String REGEX_FOR_NAME = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
     private static final String REGEX_FOR_SURNAME = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
     private static final String REGEX_FOR_PATRONYMIC = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";

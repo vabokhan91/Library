@@ -240,6 +240,10 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getUserOrders(content);
         }
+    },TO_USER_ORDERS_PAGE(new ToUserOrdersPageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
     },RETURN_BOOK(new ReturnBookCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).returnBook(content);
@@ -352,11 +356,16 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_EXECUTE_ONLINE_ORDER_PAGE(new ToExecuteOnlineOrderPage(new BookReceiverImpl())) {
+    },GET_ONLINE_ORDER_INFORMATION_PAGE(new GetOnlineOrderInfoPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getExplicitBookInfo(content);
         }
-    },EXECUTE_ONLINE_ORDER(new ExecuteOnlineOrderCommand(new BookReceiverImpl())) {
+    },TO_EXECUTE_ONLINE_ORDER_PAGE(new ToExecuteOnlineOrderCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
+    }
+    ,EXECUTE_ONLINE_ORDER(new ExecuteOnlineOrderCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).executeOnlineOrder(content);
         }

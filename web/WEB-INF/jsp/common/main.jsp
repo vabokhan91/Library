@@ -28,24 +28,29 @@
 <body background="image/books-484766_1920.jpg">
 
 <nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="#"><fmt:message key="label.library" bundle="${messages}"/> </a>
+    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library" bundle="${messages}"/> </a>
 
     <form class="form-inline" action="/controller">
         <input type="hidden" name="command" value="find_book">
-        <input class="form-control mr-sm-2" type="text" placeholder=<fmt:message key="label.book.enter_book_title" bundle="${messages}"/> aria-label="Search" name="find_query_value" value="">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><fmt:message key="label.book.find_book" bundle="${messages}"/></button>
+        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=<fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
+        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
     </form>
 
-    <form method="post">
-        <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
-                <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
-            </label>
-            <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
-                <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
-            </label>
+    <div class="row">
+        <form method="post" class="col">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
+                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
+                </label>
+                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
+                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
+                </label>
+            </div>
+        </form>
+        <div class="col">
+            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message key="label.logout" bundle="${messages}"/></a>
         </div>
-    </form>
+    </div>
 </nav>
 
 <div class="container">
@@ -98,7 +103,7 @@
         </div><!--/span-->
 
         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <div><ctg:welcome-tag/></div>
+            <div><ctg:welcome-tag /></div>
             <c:choose>
                 <c:when test="${empty user}">
                     <form class="form-signin" method="POST" action="/controller">
@@ -130,15 +135,15 @@
                 <c:otherwise>
                     <c:choose>
                         <c:when test="${user.role.ordinal()==3}">
-                            <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
+                            <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
                                                                                      bundle="${messages}"/> </a>
                         </c:when>
                         <c:when test="${user.role.ordinal()==2}">
-                            <a href="/controller?command=to_librarian_main_page"><fmt:message
+                            <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
                                     key="label.button.to_main_menu" bundle="${messages}"/> </a>
                         </c:when>
                         <c:when test="${user.role.ordinal()==1}">
-                            <a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu"
+                            <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu"
                                                                                          bundle="${messages}"/> </a>
                         </c:when>
                     </c:choose>
@@ -147,16 +152,36 @@
 
 
             <div class="list-group">
-                <a href="/controller?command=find_book_by_genre&genre_name=Роман" class="list-group-item ">Link</a>
-                <a href="#" class="list-group-item">Link</a>
-                <a href="#" class="list-group-item">Link</a>
-                <a href="#" class="list-group-item">Link</a>
-                <a href="#" class="list-group-item">Link</a>
-                <a href="#" class="list-group-item">Link</a>
-                <a href="#" class="list-group-item">Link</a>
-                <a href="#" class="list-group-item">Link</a>
-                <a href="#" class="list-group-item">Link</a>
-                <a href="#" class="list-group-item">Link</a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Биография" class="list-group-item"><fmt:message key="label.genre.biography" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Детектив" class="list-group-item"><fmt:message key="label.genre.detective" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Детская литература" class="list-group-item"><fmt:message key="label.genre.children" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Автобиография" class="list-group-item"><fmt:message key="label.genre.autobiography" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Бизнес" class="list-group-item"><fmt:message key="label.genre.business" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Драма" class="list-group-item"><fmt:message key="label.genre.drama" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Информационные технологии" class="list-group-item"><fmt:message key="label.genre.it" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=История" class="list-group-item"><fmt:message key="label.genre.history" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Комедия" class="list-group-item"><fmt:message key="label.genre.comedy" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Короткая история" class="list-group-item"><fmt:message key="label.genre.short_story" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Миф" class="list-group-item"><fmt:message key="label.genre.myth" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Поэма" class="list-group-item"><fmt:message key="label.genre.poem" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Приключения" class="list-group-item"><fmt:message key="label.genre.adventure" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Пьеса" class="list-group-item"><fmt:message key="label.genre.play" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Религия" class="list-group-item"><fmt:message key="label.genre.religion" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Роман" class="list-group-item "><fmt:message key="label.genre.novel" bundle="${messages}"/> </a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Сказка" class="list-group-item"><fmt:message key="label.genre.tale" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Трагедия" class="list-group-item"><fmt:message key="label.genre.tradegy" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Фантастика" class="list-group-item"><fmt:message key="label.genre.fantasy" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Эпос" class="list-group-item"><fmt:message key="label.genre.epos" bundle="${messages}"/></a>
+                <a href="/controller?command=find_book_by_genre&genre_name=Эссе" class="list-group-item"><fmt:message key="label.genre.essay" bundle="${messages}"/></a>
+
+
+
+
+
+
+
+
+
             </div>
         </div><!--/span-->
     </div><!--/row-->

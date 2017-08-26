@@ -64,7 +64,6 @@ public class ConnectionPool {
         } else {
             LOGGER.log(Level.INFO, String.format("All connections were created successfully. Connection pool size: %s connections", connectionQueue.size()));
         }
-
     }
 
     private boolean isAllConnectionsCreated() {

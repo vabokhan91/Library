@@ -10,84 +10,197 @@
 </c:if>
 <html>
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/library.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+            crossorigin="anonymous"></script>
     <title><fmt:message key="label.add_user" bundle="${messages}"/> </title>
 </head>
-<body>
+<body background="image/books-484766_1920.jpg">
 
-<form method="post">
-    <select id="language" name="language" onchange="submit()">
-        <option value="en_US" ${language == "en_US" ? "selected" : ""}>English</option>
-        <option value="ru_RU" ${language == "ru_RU" ? "selected" : ""}>Русский</option>
-    </select>
-</form>
 
-<form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
-    <input type="hidden" name="command" value="add_user"/>
+<nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library" bundle="${messages}"/> </a>
 
-    <fmt:message key="label.name" bundle="${messages}"/> :
-    <input type = "text" name = "user_name" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})" required/><br/>
+    <form class="form-inline" action="/controller">
+        <input type="hidden" name="command" value="find_book">
+        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=<fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
+        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
+    </form>
 
-    <fmt:message key="label.surname" bundle="${messages}"/> :
-    <input type = "text" name = "user_surname" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})" required/><br/>
+    <div class="row">
+        <form method="post" class="col">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
+                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
+                </label>
+                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
+                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
+                </label>
+            </div>
+        </form>
+        <div class="col">
+            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message key="label.logout" bundle="${messages}"/></a>
+        </div>
+    </div>
+</nav>
 
-    <fmt:message key="label.patronymic" bundle="${messages}"/> :
-    <input type = "text" name = "user_patronymic" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})"/><br/>
 
-    <fmt:message key="label.address" bundle="${messages}"/> :
-    <input type = "text" name = "user_address" value="" required/><br/>
-    <c:choose>
-        <c:when test="${user.role.ordinal() == 3}">
-            <fmt:message key="label.role" bundle="${messages}"/> :
-            <select name="user_role">
-                <option  value="librarian"><fmt:message key="label.user.librarian" bundle="${messages}"/> </option>
-                <option value="client"><fmt:message key="label.user.client" bundle="${messages}"/> </option>
-            </select><br/>
 
-            <fmt:message key="label.login" bundle="${messages}"/> :
-            <input type = "text" name = "login" value="" pattern="[^\W]{1,12}"/><br/>
 
-            <fmt:message key="label.password"  bundle="${messages}"/> :
-            <input type = "password" name = "user_password" placeholder="Password" id="password" value="" pattern="[\w!()*&^%$@]{1,12}"/><br/>
+<div class="container">
+    <div class="row row-offcanvas row-offcanvas-right">
 
-            <fmt:message key="label.password" bundle="${messages}"/> :
-            <input type = "password" name = "confirm_password" placeholder="Confirm password" id="confirm_password" value="" pattern="[\w!()*&^%$@]{1,12}"/>
-        </c:when>
-        <c:otherwise>
-            <input type = "hidden" name = "user_role" value="client"/>
-        </c:otherwise>
-    </c:choose><br/>
-    <fmt:message key="label.mobile_phone" bundle="${messages}"/> :
-    <input type = "text" name = "user_mobilephone" value="" pattern="^((\+)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$" required/><br/>
-    <c:if test="${user.role.ordinal()==3}">
-        <fmt:message key="label.upload_new_photo" bundle="${messages}"/>
-    <input type = "file" name = "user_photo" size="50"/><br/>
-    </c:if>
-    <input type="submit" name="submit" value=<fmt:message key="button.add_user" bundle="${messages}"/> />
-</form>
+        <div class="col-12 col-md-9">
+            <div >
+                <form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
+                    <input type="hidden" name="command" value="add_user"/>
+                    <div class="form-group row">
+                        <label for="name" class="col-sm-2 col-form-label"> <fmt:message key="label.name" bundle="${messages}"/></label>
+                        <div class="col-sm-3">
+                            <input type = "text" class="form-control" id="name" name = "user_name" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})" placeholder=<fmt:message key="label.name" bundle="${messages}"/> required/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="surname" class="col-sm-2 col-form-label"><fmt:message key="label.surname" bundle="${messages}"/></label>
+                        <div class="col-sm-3">
+                            <input type = "text" class="form-control" id="surname" name = "user_surname" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})" placeholder=<fmt:message key="label.surname" bundle="${messages}"/> required/>
+                        </div>
+                    </div>
 
-<c:choose>
-    <c:when test="${not empty sessionScope.userIsAdded && sessionScope.userIsAdded eq true}">
-        <fmt:message key="label.user.added_successfully" bundle="${messages}"/>
-    </c:when>
-    <c:when test="${not empty sessionScope.userIsAdded && sessionScope.userIsAdded eq false}">
-        <fmt:message key="label.user.not_added" bundle="${messages}"/>
-    </c:when>
-</c:choose><br/>
+                    <div class="form-group row">
+                        <label for="patronymic" class="col-sm-2 col-form-label"><fmt:message key="label.patronymic" bundle="${messages}"/></label>
+                        <div class="col-sm-3">
+                            <input type = "text" class="form-control" id="patronymic" name = "user_patronymic" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})" placeholder=<fmt:message key="label.patronymic" bundle="${messages}"/>>
+                        </div>
+                    </div>
 
-<c:if test="${not empty sessionScope.userIsAdded}">
-    <c:remove var="userIsAdded" scope="session" />
-</c:if>
+                    <div class="form-group row">
+                        <label for="address" class="col-sm-2 col-form-label"><fmt:message key="label.address" bundle="${messages}"/></label>
+                        <div class="col-sm-3">
+                            <input type = "text" class="form-control" id="address" name = "user_address" value="" placeholder=<fmt:message key="label.address" bundle="${messages}"/> required/>
+                        </div>
+                    </div>
 
-<c:choose>
-    <c:when test="${user.role.ordinal()==3}">
-        <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
-    </c:when>
-    <c:otherwise>
-        <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
-    </c:otherwise>
-</c:choose><br/>
+                    <c:choose>
+                        <c:when test="${user.role.ordinal() == 3}">
 
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
+
+                            <div class="form-group row">
+                                <label for="role" class="col-sm-2 col-form-label" style="margin-right: 13px" ><fmt:message key="label.role" bundle="${messages}"/></label>
+                                <select id="role" class="custom-select col-sm-3"  name="user_role" required>
+                                    <option value="librarian"><fmt:message key="label.user.librarian" bundle="${messages}"/> </option>
+                                    <option value="client"><fmt:message key="label.user.client" bundle="${messages}"/> </option>
+                                </select>
+                            </div>
+
+                            <br/>
+
+                            <div class="form-group row">
+                                <label for="login" class="col-sm-2 col-form-label"><fmt:message key="label.user.login" bundle="${messages}"/></label>
+                                <div class="col-sm-3">
+                                    <input type = "text" class="form-control" id="login" name = "login" value="" placeholder=<fmt:message key="label.user.login" bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-sm-2 col-form-label"><fmt:message key="label.password"  bundle="${messages}"/></label>
+                                <div class="col-sm-3">
+                                    <input type = "password" class="form-control" id="password" name = "user_password" value="" placeholder=<fmt:message key="label.password"  bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="confirm_password" class="col-sm-2 col-form-label"><fmt:message key="label.confirm_password" bundle="${messages}"/></label>
+                                <div class="col-sm-3">
+                                    <input type = "password" class="form-control" id="confirm_password" name = "confirm_password" value="" placeholder=<fmt:message key="label.placeholder.confirm_password" bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <input type = "hidden" name = "user_role" value="client"/>
+                        </c:otherwise>
+                    </c:choose><br/>
+
+
+                    <div class="form-group row">
+                        <label for="mobile_phone" class="col-sm-2 col-form-label"><fmt:message key="label.mobile_phone" bundle="${messages}"/></label>
+                        <div class="col-sm-3">
+                            <input type = "text" class="form-control" id="mobile_phone" name = "user_mobilephone" value="" placeholder= <fmt:message key="label.placeholder.mobile_phone" bundle="${messages}"/> pattern="^((\+)[\-]?)?(\(?\d{3}\)?[\-]?)?[\d\-]{7,10}$" required/>
+                        </div>
+                    </div>
+
+                    <c:if test="${user.role.ordinal()==3}">
+                        <div class="form-group row">
+                            <label  for="photo" class="col-sm-2 col-form-label" style="margin-right: 13px"><fmt:message key="label.upload_photo" bundle="${messages}"/></label>
+                            <input type ="file" id="photo" name = "user_photo" size="50"/><br/>
+                        </div>
+                    </c:if>
+                    <%--<input type="submit" name="submit" value=<fmt:message key="button.add_user" bundle="${messages}"/> />--%>
+
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary"><fmt:message key="label.add_user" bundle="${messages}"/></button>
+                        </div>
+                    </div>
+                </form>
+
+                <c:choose>
+                    <c:when test="${not empty sessionScope.userIsAdded && sessionScope.userIsAdded eq true}">
+                        <fmt:message key="label.user.added_successfully" bundle="${messages}"/>
+                    </c:when>
+                    <c:when test="${not empty sessionScope.userIsAdded && sessionScope.userIsAdded eq false}">
+                        <fmt:message key="label.user.not_added" bundle="${messages}"/>
+                    </c:when>
+                </c:choose><br/>
+
+                <c:if test="${not empty sessionScope.userIsAdded}">
+                    <c:remove var="userIsAdded" scope="session" />
+                </c:if>
+            </div>
+            <div class="row">
+
+            </div><!--/row-->
+        </div>
+
+
+    <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
+        <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
+        <c:if test="${not empty user}">
+
+            <c:choose>
+                <c:when test="${user.role.ordinal()==3}">
+                    <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
+                                                                                                       bundle="${messages}"/> </a><br/>
+                </c:when>
+                <c:when test="${user.role.ordinal()==2}">
+                    <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
+                            key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
+                </c:when>
+
+            </c:choose>
+        </c:if>
+
+    </div><!--/span-->
+
+
+
+    </div>
+</div>
+
+
+<footer>
+    <p>© Company 2017</p>
+</footer>
+
 
 <script>
     var password = document.getElementById("password")

@@ -28,23 +28,29 @@
 
 
 <nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="#"><fmt:message key="label.library" bundle="${messages}"/> </a>
+    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library" bundle="${messages}"/> </a>
 
-    <form class="form-inline">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="find-query-value">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <form class="form-inline" action="/controller">
+        <input type="hidden" name="command" value="find_book">
+        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=<fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
+        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
     </form>
 
-    <form method="post">
-        <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
-                <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
-            </label>
-            <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
-                <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
-            </label>
+    <div class="row">
+        <form method="post" class="col">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
+                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
+                </label>
+                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
+                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
+                </label>
+            </div>
+        </form>
+        <div class="col">
+            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message key="label.logout" bundle="${messages}"/></a>
         </div>
-    </form>
+    </div>
 </nav>
 
 <div class="container">
@@ -126,7 +132,6 @@
         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
             <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
             <c:if test="${not empty user}">
-
                 <c:choose>
                     <c:when test="${user.role.ordinal()==3}">
                         <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
@@ -141,7 +146,6 @@
                                                                                      bundle="${messages}"/> </a><br/>
                     </c:when>
                 </c:choose>
-                <a class="btn btn-secondary" href="/controller?command=logout"><fmt:message key="label.logout" bundle="${messages}"/> </a><br/>
             </c:if>
 
         </div><!--/span-->

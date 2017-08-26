@@ -50,7 +50,7 @@ public class WelcomeTag extends TagSupport {
         } else {
             try {
                 JspWriter out = pageContext.getOut();
-                out.write(resourceBundle.getString(MESSAGE_WELCOME_USER) + user.getName());
+                out.write(resourceBundle.getString(MESSAGE_WELCOME_USER) +", " + user.getName());
             } catch (IOException e) {
                 e.printStackTrace();
             }

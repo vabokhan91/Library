@@ -18,7 +18,7 @@ public interface BookDAO {
 
     List<Order> getBooksLastOrder(int bookId) throws DAOException;
 
-    List<Book> getBookForEditing(int bookId) throws DAOException;
+    Book getBookForEditing(int bookId) throws DAOException;
 
     List<Genre> getAllGenres() throws DAOException;
 

@@ -9,18 +9,14 @@ footer {
     padding: 30px 0;
 }
 
-.lib-navbar {
-    justify-content: space-between;
-}
-
-.lib-navbar > form {
+.lib-navbar form {
     margin-bottom: 0;
 }
 .main-book-img{
     float: left;
     margin-right:20px;
-    height: 350px;
-    width: 250px;
+    height: 300px;
+    width: 200px;
 }
 .parent-book-info:after {
     content: ".";
@@ -30,11 +26,27 @@ footer {
     clear: both;
     visibility: hidden;
 }
-.btn-secondary{
+.btn-secondary-menu{
     margin-bottom: 5px;
 }
 .form-action{
     float: left;
     margin-right: 5px;
+}
+tr
+
+/*td .expander {
+    position: absolute;
+    bottom: 0px;
+    z-index: 1;
+    left: 100%;
+    display: none;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+}*/
+.table-cell-user{
+    width: 15%;
 }
 
