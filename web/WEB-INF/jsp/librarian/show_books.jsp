@@ -90,7 +90,20 @@
                                         bundle="${messages}"/></button>
                             </form>
 
-                        <c:if test="${user.role.ordinal() == 2}">
+                            <c:if test="${item.getLocation().getName() eq 'storage' && user.role.ordinal()==1}">
+                                <td>
+                                    <form method="post" action="/controller" accept-charset="UTF-8">
+                                        <input type="hidden" name="command" value="to_add_online_order_page"/>
+                                        <input type="hidden" name="book_id" value="${item.id}"/>
+                                        <input type="hidden" name="type_of_search" value="by_id">
+                                        <button class="btn btn-secondary" type="submit" name="submit"><fmt:message key="label.book.make_online_order"
+                                                                                                                   bundle="${messages}"/></button>
+                                    </form>
+                                </td>
+                            </c:if>
+
+
+                            <c:if test="${user.role.ordinal() == 2}">
                             <td>
                                 <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
                                     <input type="hidden" name="command" value="get_book_for_editing"/>

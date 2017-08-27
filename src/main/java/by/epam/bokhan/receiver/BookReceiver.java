@@ -15,6 +15,8 @@ public interface BookReceiver extends Receiver {
 
     void findBook(RequestContent requestContent) throws ReceiverException;
 
+    void userFindBook(RequestContent requestContent) throws ReceiverException;
+
     void getBookForEditing(RequestContent requestContent) throws ReceiverException;
 
     void editBook(RequestContent requestContent) throws ReceiverException;

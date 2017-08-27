@@ -58,6 +58,22 @@ public class BookReceiverImpl implements BookReceiver {
     }
 
     @Override
+    public void userFindBook(RequestContent requestContent) throws ReceiverException {
+        BookDAO bookDAO = new BookDAOImpl();
+        List<Book> books = null;
+        String titleValue = (String) requestContent.getRequestParameters().get(BOOK_TITLE);
+        try {
+            if (isBookTitleValid(titleValue)) {
+                books = bookDAO.findBookByTitle(titleValue);
+            }
+            requestContent.insertParameter(BOOKS, books);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+
+    @Override
     public void getExplicitBookInfo(RequestContent requestContent) throws ReceiverException {
         BookDAO dao = new BookDAOImpl();
         List<Book> books = null;

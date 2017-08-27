@@ -46,6 +46,8 @@
         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
             <div><ctg:welcome-tag/></div><br/>
             <br/>
+            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
+                    key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
 
             <div class="list-group">
                 <a href="/controller?command=to_add_user_page" class="list-group-item"><fmt:message key="label.add_user" bundle="${messages}"/></a>

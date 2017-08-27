@@ -326,7 +326,7 @@ public enum CommandType {
         }
     },USER_FIND_BOOK(new UserFindBookCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((BookReceiverImpl) getCommand().getReceiver()).findBook(content);
+            ((BookReceiverImpl) getCommand().getReceiver()).userFindBook(content);
         }
     },TO_ADD_ONLINE_ORDER_PAGE(new ToAddOnlineOrderPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {

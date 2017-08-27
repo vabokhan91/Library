@@ -93,8 +93,8 @@
                                         <input type="hidden" name="command" value="to_add_online_order_page"/>
                                         <input type="hidden" name="book_id" value="${item.id}"/>
                                         <input type="hidden" name="type_of_search" value="by_id">
-                                        <input type="submit" name="submit" value=<fmt:message key="label.button.book.make_online_order"
-                                                                                              bundle="${messages}"/>/>
+                                        <button class="btn btn-secondary" type="submit" name="submit"><fmt:message key="label.book.make_online_order"
+                                                                                                                   bundle="${messages}"/></button>
                                     </form>
                                 </td>
                             </c:if>

@@ -90,6 +90,7 @@
                         <th><fmt:message key="label.online_order.id" bundle="${messages}"/></th>
                         <th><fmt:message key="label.book.id" bundle="${messages}"/></th>
                     </c:if>
+                    <th><fmt:message key="label.book.title" bundle="${messages}"/></th>
                     <th><fmt:message key="label.online_order.order_date" bundle="${messages}"/></th>
                     <th><fmt:message key="label.online_order.expiration_date" bundle="${messages}"/></th>
                     <th><fmt:message key="label.book.order_status" bundle="${messages}"/></th>
@@ -106,10 +107,10 @@
                             <td>${item.id}</td>
                             <td>${item.book.id}</td>
                         </c:if>
+                        <td>${item.book.title}</td>
                         <td>${item.orderDate}</td>
                         <td>${item.expirationDate}</td>
-                        <td>
-                            ${item.status}
+                        <td>${item.status}
                             <span class="expander">
                                 <c:if test="${user.role.ordinal()==2 && item.status eq 'booked'}">
                                     <form method="post" action="/controller" accept-charset="UTF-8">
@@ -127,6 +128,7 @@
                                 <form method="post" action="/controller" accept-charset="UTF-8">
                                     <input type="hidden" name="command" value="cancel_online_order"/>
                                     <input type="hidden" name="order_id" value="${item.id}"/>
+                                    <input type="hidden" name="book_id" value="${item.book.id}"/>
                                     <button type="submit" class="btn btn-primary">
                                         <fmt:message key="label.button.book.cancel_online_order" bundle="${messages}"/>
                                     </button>
