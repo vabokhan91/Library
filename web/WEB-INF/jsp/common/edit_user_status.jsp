@@ -1,13 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2&& user.role.ordinal()!=3}">
+<c:if test="${user.role!=Role.LIBRARIAN&& user.role!=Role.ADMINISTRATOR}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
+
 <html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
@@ -27,8 +29,6 @@
 <body background="image/books-484766_1920.jpg">
 
 <jsp:include page="../header.jsp"/>
-
-
 
 <div class="container">
 
@@ -70,12 +70,12 @@
                 <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
                         key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
                 <c:choose>
-                    <c:when test="${user.role.ordinal()==3}">
+                    <c:when test="${user.role==Role.ADMINISTRATOR}">
                         <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message
                                 key="label.button.to_main_menu"
                                 bundle="${messages}"/> </a><br/>
                     </c:when>
-                    <c:when test="${user.role.ordinal()==2}">
+                    <c:when test="${user.role==Role.LIBRARIAN}">
                         <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
                                 key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
                     </c:when>

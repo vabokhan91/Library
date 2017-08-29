@@ -381,6 +381,10 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getRandomBooks(content);
         }
+    },CHANGE_LANGUAGE_COMMAND(new ChangeLanguageCommand(new BookReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+
+        }
     };
 
 

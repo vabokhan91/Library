@@ -2,7 +2,7 @@ package by.epam.bokhan.entity;
 
 
 public enum Role {
-    GUEST("Guest"),CLIENT("Client"),LIBRARIAN("Librarian"),ADMINISTRATOR("Administrator");
+    GUEST("Гость"),CLIENT("Клиент"),LIBRARIAN("Библиотекарь"),ADMINISTRATOR("Администратор");
 
     private String name;
     Role(String name) {

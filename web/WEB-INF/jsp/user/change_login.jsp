@@ -1,12 +1,12 @@
 <%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="ctg" uri="customtags" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=1}">
+<c:if test="${user.role!=Role.CLIENT}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -29,10 +29,6 @@
 
 <jsp:include page="../header.jsp"/>
 
-
-
-
-
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
 
@@ -43,10 +39,13 @@
                     <input type="hidden" name="user_id" value="${sessionScope.user.id}"/>
 
                     <div class="form-group row">
-                        <label for="login" class="col-sm-2 col-form-label"><fmt:message key="label.login.enter_new_login" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <label for="login" class="col-5 col-form-label required"><fmt:message key="label.login.enter_new_login" bundle="${messages}"/></label>
+                        <div class="col-3">
                             <input type="text" class="form-control" id="login" name="new_login" value=""
                                    pattern="[\w!()*&^%$@]{1,12}" required/>
+                            <small class="form-text text-muted">
+                                <fmt:message key="label.login.login_info" bundle="${messages}"/>
+                            </small>
                         </div>
                     </div>
 

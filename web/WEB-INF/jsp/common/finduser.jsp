@@ -29,38 +29,9 @@
 
 <body background="image/books-484766_1920.jpg">
 
+<jsp:include page="../header.jsp"/>
 
-<nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library"
-                                                                                 bundle="${messages}"/> </a>
-
-    <form class="form-inline" action="/controller">
-        <input type="hidden" name="command" value="find_book">
-        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=
-        <fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
-        <input class="btn btn-outline-success my-2 my-sm-0" type="submit"
-               value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
-    </form>
-
-    <div class="row">
-        <form method="post" class="col">
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
-                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
-                </label>
-                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
-                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
-                </label>
-            </div>
-        </form>
-        <div class="col">
-            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message
-                    key="label.logout" bundle="${messages}"/></a>
-        </div>
-    </div>
-</nav>
 <br/>
-
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">

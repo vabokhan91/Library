@@ -1,11 +1,12 @@
 <%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=3 && user.role.ordinal()!=2}">
+<c:if test="${user.role!=Role.ADMINISTRATOR && user.role!=Role.LIBRARIAN}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -47,7 +48,7 @@
                                     <fmt:message key="label.name" bundle="${messages}"/> : ${foundUser.name} <br/>
                                     <fmt:message key="label.surname" bundle="${messages}"/> : ${foundUser.surname} <br/>
                                     <fmt:message key="label.patronymic" bundle="${messages}"/> : ${foundUser.patronymic} <br/>
-                                    <fmt:message key="label.role" bundle="${messages}"/> : ${foundUser.role} <br/>
+                                    <fmt:message key="label.role" bundle="${messages}"/> : ${foundUser.role.name} <br/>
                                     <fmt:message key="label.address" bundle="${messages}"/> : ${foundUser.address} <br/>
                                     <fmt:message key="label.login.login" bundle="${messages}"/> : ${foundUser.login} <br/>
                                     <fmt:message key="label.mobile_phone" bundle="${messages}"/> : ${foundUser.mobilePhone} <br/>
@@ -96,11 +97,11 @@
             <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
             <c:if test="${not empty user}">
                 <c:choose>
-                    <c:when test="${user.role.ordinal()==3}">
+                    <c:when test="${user.role==Role.ADMINISTRATOR}">
                         <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
                                                                                                            bundle="${messages}"/> </a><br/>
                     </c:when>
-                    <c:when test="${user.role.ordinal()==2}">
+                    <c:when test="${user.role==Role.LIBRARIAN}">
                         <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
                                 key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
                     </c:when>
@@ -110,75 +111,10 @@
         </div><!--/span-->
     </div><!--/row-->
 
-    <hr>
-
     <footer>
         <p>© Company 2017</p>
     </footer>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<%--
-
-<img src="data:image/jpg;base64,${foundUser.photo}" width="50px" height="50px"><br/>
-<fmt:message key="label.library_card" bundle="${messages}"/> : ${foundUser.libraryCardNumber}<br/>
-<fmt:message key="label.name" bundle="${messages}"/> : ${foundUser.name} <br/>
-<fmt:message key="label.surname" bundle="${messages}"/> : ${foundUser.surname} <br/>
-<fmt:message key="label.patronymic" bundle="${messages}"/> : ${foundUser.patronymic} <br/>
-<fmt:message key="label.role" bundle="${messages}"/> : ${foundUser.role} <br/>
-<fmt:message key="label.address" bundle="${messages}"/> : ${foundUser.address} <br/>
-<fmt:message key="label.login" bundle="${messages}"/> : ${foundUser.login} <br/>
-<fmt:message key="label.mobile_phone" bundle="${messages}"/> : ${foundUser.mobilePhone} <br/>
-<hr/>
-
-<table class="item-table">
-    <tr>
-        <th><fmt:message key="label.order.id" bundle="${messages}"/> </th>
-        <th><fmt:message key="label.book.id" bundle="${messages}"/></th>
-        <th><fmt:message key="label.book.title" bundle="${messages}"/> </th>
-        <th><fmt:message key="label.order.order_date" bundle="${messages}"/> </th>
-        <th><fmt:message key="label.order.expiration_date" bundle="${messages}"/> </th>
-        <th><fmt:message key="label.order.return_date" bundle="${messages}"/></th>
-
-    </tr>
-
-    <c:forEach items="${foundUser.orders}" var="item">
-        <tr>
-            <td>${item.id}</td>
-            <td>${item.getBook().id}</td>
-            <td>${item.getBook().title}</td>
-            <td>${item.orderDate}</td>
-            <td>${item.expirationDate}</td>
-            <td>${item.returnDate}</td>
-
-        </tr>
-    </c:forEach>
-
-</table>
-
-<c:choose>
-    <c:when test="${user.role.ordinal()==3}">
-        <a href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
-    </c:when>
-    <c:otherwise>
-        <a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
-    </c:otherwise>
-</c:choose><br/>
-
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>--%>
-
 </body>
 </html>

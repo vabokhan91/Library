@@ -1,12 +1,12 @@
 <%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="ctg" uri="customtags" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2}">
+<c:if test="${user.role!=Role.LIBRARIAN}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -27,80 +27,33 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-
-<nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library"
-                                                                                 bundle="${messages}"/> </a>
-
-    <form class="form-inline" action="/controller">
-        <input type="hidden" name="command" value="find_book">
-        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=
-        <fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
-        <input class="btn btn-outline-success my-2 my-sm-0" type="submit"
-               value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
-    </form>
-
-    <div class="row">
-        <form method="post" class="col">
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
-                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
-                </label>
-                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
-                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
-                </label>
-            </div>
-        </form>
-        <div class="col">
-            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message
-                    key="label.logout" bundle="${messages}"/></a>
-        </div>
-    </div>
-</nav>
-
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
-
         <div class="col-12 col-md-9">
-
             <div class="row">
-
                 <div class="col-lg-6">
                     <div class="input-group">
-
                         <form class="form-inline" method="post" action="/controller">
                             <input type="hidden" name="command" value="find_book">
                             <div class="col-12">
                             <fmt:message key="label.book.enter_id_or_book_title" bundle="${messages}"/> :</div><br/>
-                            <input type="text" class="form-control" name="find_query_value" value="" placeholder=<fmt:message key="label.search_book" bundle="${messages}"/> required>
+                            <input type="text" class="form-control" name="find_query_value" value="" placeholder=<fmt:message key="label.placeholder.enter_book_id_or_title" bundle="${messages}"/> required>
                             <input type="submit" class="btn btn-secondary" value="<fmt:message key="label.button.find" bundle="${messages}"/> ">
                         </form>
                     </div>
                 </div>
             </div>
             <br>
-
         </div>
-
 
         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
             <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
                     key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
             <c:if test="${not empty user}">
-
-                <c:choose>
-                    <c:when test="${user.role.ordinal()==3}">
-                        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message
-                                key="label.button.to_main_menu"
-                                bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role.ordinal()==2}">
-                        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-                    </c:when>
-
-                </c:choose>
+                <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
+                        key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
             </c:if>
 
         </div><!--/span-->
@@ -108,87 +61,9 @@
     </div>
 </div>
 
-
-
-
-
-<%--<div class="container">
-    <div class="row row-offcanvas row-offcanvas-right">
-
-        <div class="col-12 col-md-9">
-
-            <div class="row">
-
-                <div class="col-lg-6">
-                    <div class="input-group">
-
-                        <form class="form-inline" method="post" action="/controller">
-                            <input type="hidden" name="command" value="find_book">
-                            <fmt:message key="label.book.enter_id_or_book_title" bundle="${messages}"/> :
-                            <input type="text" class="form-control" name="find_query_value" value="" placeholder=<fmt:message key="label.search_book" bundle="${messages}"/> required>
-                            <input type="submit" class="btn btn-secondary" value="<fmt:message key="label.button.find" bundle="${messages}"/> ">
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <br>
-
-        </div>
-
-
-        <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
-                    key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <c:if test="${not empty user}">
-
-                <c:choose>
-                    <c:when test="${user.role.ordinal()==3}">
-                        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message
-                                key="label.button.to_main_menu"
-                                bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role.ordinal()==2}">
-                        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-                    </c:when>
-
-                </c:choose>
-            </c:if>
-
-        </div><!--/span-->
-
-    </div>
-</div>--%>
-
 <footer>
     <p>© Company 2017</p>
 </footer>
-
-
-
-
-
-
-
-
-
-
-
-<%--<form method="post" action="/controller">
-    <input type="hidden" name="command" value="find_book">
-    <fmt:message key="label.book.enter_id_or_book_title" bundle="${messages}"/> :
-
-    <input name="find_query_value" value="">
-    <input type="submit" value="<fmt:message key="label.find" bundle="${messages}"/> ">
-</form>
-
-<br/>
-
-<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-
-<a href = "/controller?command=logout"><fmt:message key="label.logout" bundle="${messages}"/> </a>--%>
 
 </body>
 </html>

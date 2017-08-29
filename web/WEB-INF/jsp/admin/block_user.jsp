@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=3}">
+<c:if test="${user.role!=Role.ADMINISTRATOR}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -55,7 +56,7 @@
                         <td>${item.name}</td>
                         <td>${item.surname}</td>
                         <td>${item.patronymic}</td>
-                        <td>${item.role}</td>
+                        <td>${item.role.name}</td>
                         <td><form method="post" action="/controller" accept-charset="UTF-8">
                             <input type="hidden" name="command" value="block_user"/>
                             <input type = "hidden" name = "user_id" value="${item.id}"/><br/>

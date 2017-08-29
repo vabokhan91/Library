@@ -92,7 +92,6 @@
                         </div>
                     </div>
 
-
                     <div class="form-group row">
                         <label for="publisher" class="col-sm-2 col-form-label" style="margin-right: 13px" ><fmt:message key="label.book.publisher" bundle="${messages}"/></label>
                         <select id="publisher" class="custom-select col-sm-3"  name="book_publisher" required>
@@ -145,70 +144,6 @@
                             <button type="submit" class="btn btn-primary"><fmt:message key="label.book.add_book" bundle="${messages}"/></button>
                         </div>
                     </div>
-
-
-
-                    <%--<c:choose>
-                        <c:when test="${user.role.ordinal() == 3}">
-
-
-                            <div class="form-group row">
-                                <label for="role" class="col-sm-2 col-form-label" style="margin-right: 13px" ><fmt:message key="label.role" bundle="${messages}"/></label>
-                                <select id="role" class="custom-select col-sm-3"  name="user_role" required>
-                                    <option value="librarian"><fmt:message key="label.user.librarian" bundle="${messages}"/> </option>
-                                    <option value="client"><fmt:message key="label.user.client" bundle="${messages}"/> </option>
-                                </select>
-                            </div>
-
-                            <br/>
-
-                            <div class="form-group row">
-                                <label for="login" class="col-sm-2 col-form-label"><fmt:message key="label.user.login" bundle="${messages}"/></label>
-                                <div class="col-sm-3">
-                                    <input type = "text" class="form-control" id="login" name = "login" value="" placeholder=<fmt:message key="label.user.login" bundle="${messages}"/> pattern="[^\W]{1,12}" required/>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password" class="col-sm-2 col-form-label"><fmt:message key="label.password"  bundle="${messages}"/></label>
-                                <div class="col-sm-3">
-                                    <input type = "password" class="form-control" id="password" name = "user_password" value="" placeholder=<fmt:message key="label.password"  bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="confirm_password" class="col-sm-2 col-form-label"><fmt:message key="label.confirm_password" bundle="${messages}"/></label>
-                                <div class="col-sm-3">
-                                    <input type = "password" class="form-control" id="confirm_password" name = "confirm_password" value="" placeholder=<fmt:message key="label.placeholder.confirm_password" bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
-                                </div>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <input type = "hidden" name = "user_role" value="client"/>
-                        </c:otherwise>
-                    </c:choose><br/>--%>
-
-
-                    <%--<div class="form-group row">
-                        <label for="mobile_phone" class="col-sm-2 col-form-label"><fmt:message key="label.mobile_phone" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
-                            <input type = "text" class="form-control" id="mobile_phone" name = "user_mobilephone" value="" placeholder= <fmt:message key="label.placeholder.mobile_phone" bundle="${messages}"/> pattern="^((\+)[\-]?)?(\(?\d{3}\)?[\-]?)?[\d\-]{7,10}$" required/>
-                        </div>
-                    </div>
-
-                    <c:if test="${user.role.ordinal()==3}">
-                        <div class="form-group row">
-                            <label  for="photo" class="col-sm-2 col-form-label" style="margin-right: 13px"><fmt:message key="label.upload_photo" bundle="${messages}"/></label>
-                            <input type ="file" id="photo" name = "user_photo" size="50"/><br/>
-                        </div>
-                    </c:if>
-                    &lt;%&ndash;<input type="submit" name="submit" value=<fmt:message key="button.add_user" bundle="${messages}"/> />&ndash;%&gt;
-
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary"><fmt:message key="label.add_user" bundle="${messages}"/></button>
-                        </div>
-                    </div>--%>
                 </form>
 
                 <c:choose>

@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset = UTF-8" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2}">
+<c:if test="${user.role!=Role.LIBRARIAN}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -28,23 +29,27 @@
 
 <jsp:include page="../header.jsp"/>
 
-
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
-
         <div class="col-12 col-md-9">
-
             <div class="row">
-
                 <div class="col-lg-6">
-                    <div class="input-group">
+                    <div class="col-12 col-md-9">
                         <form class="form-inline" method="post" action="/controller">
                             <input type="hidden" name="command" value="add_publisher"/>
-                            <div class="col-12 ">
-                                <fmt:message key="label.book.enter_publisher_name" bundle="${messages}"/> </div><br/>
 
-                            <input type="text" class="form-control" name="publisher_name" value="" placeholder=<fmt:message key="label.placeholder.publisher_name" bundle="${messages}"/> pattern="[\w]{1,50}" required>
-                            <input class="btn btn-secondary" type="submit" value="<fmt:message key="label.publisher.add_publisher" bundle="${messages}"/> ">
+                                <div class="form-group required">
+                                    <label for="name" class="col-5 col-form-label required"><fmt:message key="label.book.enter_publisher_name" bundle="${messages}"/></label>
+                                    <div class="col-5">
+                                        <input type="text"  class="form-control" id="name" name="publisher_name" value="" pattern="[\d\D]{1,50}" placeholder=<fmt:message key="label.placeholder.publisher_name" bundle="${messages}"/> required/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-primary"><fmt:message key="label.publisher.add_publisher" bundle="${messages}"/></button>
+                                    </div>
+                                </div>
                         </form>
                     </div>
                     <c:choose>

@@ -263,7 +263,7 @@ public class UserReceiverImpl implements UserReceiver {
                 User user = new User();
                 int libraryCard = Integer.parseInt(libraryCardValue);
                 int userId = Integer.parseInt(userIdValue);
-                Role userRole = Role.valueOf(role.toUpperCase());
+                Role userRole = Role.valueOf(role);
                 user.setId(userId);
                 user.setLibraryCardNumber(libraryCard);
                 user.setName(name);

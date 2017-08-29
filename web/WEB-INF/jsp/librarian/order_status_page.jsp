@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2}">
+<c:if test="${user.role!=Role.LIBRARIAN}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -26,39 +27,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-
-<nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library"
-                                                                                 bundle="${messages}"/> </a>
-
-    <form class="form-inline" action="/controller">
-        <input type="hidden" name="command" value="find_book">
-        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=
-        <fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
-        <input class="btn btn-outline-success my-2 my-sm-0" type="submit"
-               value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
-    </form>
-
-    <div class="row">
-        <form method="post" class="col">
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
-                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
-                </label>
-                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
-                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
-                </label>
-            </div>
-        </form>
-        <div class="col">
-            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message
-                    key="label.logout" bundle="${messages}"/></a>
-        </div>
-    </div>
-</nav>
-
-
-
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
 
@@ -92,7 +61,6 @@
             <c:if test="${not empty sessionScope.isOrderAdded}">
                 <c:remove var="isOrderAdded" scope="session" />
             </c:if>
-
         </div><!--/span-->
 
         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
@@ -103,30 +71,8 @@
 
         </div><!--/span-->
     </div><!--/row-->
-
     <hr>
-
-
-
 </div>
-
-
-
-
-
-<%--<c:choose>
-    <c:when test="${not empty sessionScope.isOrderAdded && sessionScope.isOrderAdded eq true}">
-        <fmt:message key="message.order_added_successfully" bundle="${messages}"/>
-    </c:when>
-    <c:when test="${not empty sessionScope.isOrderAdded && sessionScope.isOrderAdded eq false}">
-        <fmt:message key="message.order_was_not_added" bundle="${messages}"/>
-    </c:when>
-</c:choose>
-
-<c:if test="${not empty sessionScope.isOrderAdded}">
-    <c:remove var="isOrderAdded" scope="session" />
-</c:if>
-<br/>--%>
 
 <footer>
     <p>© Company 2017</p>

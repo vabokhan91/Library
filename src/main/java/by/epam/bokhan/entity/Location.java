@@ -2,7 +2,7 @@ package by.epam.bokhan.entity;
 
 
 public enum Location {
-    STORAGE("storage"), READING_ROOM("reading_room"), SUBSCRIPTION("subscription"),ONLINE_ORDER("online_order");
+    STORAGE("Хранилище"), READING_ROOM("Читательский зал"), SUBSCRIPTION("Абонемент"),ONLINE_ORDER("Онлайн заказ"),BOOKED("Заказано"),CANCELED("Отменено"),EXECUTED("Исполнен");
 
     private String name;
 

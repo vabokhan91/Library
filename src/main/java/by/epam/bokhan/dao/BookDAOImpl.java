@@ -106,15 +106,13 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     private static final String SQL_ADD_ONLINE_ORDER = "INSERT INTO online_orders (online_orders.library_card_id, online_orders.book_id, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date, online_orders.order_status) \n" +
             "VALUES (?,?,now(),addtime(now(), '3 0:0:0.0'), null,'booked')";
 
-    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, authors.name as author_name,authors.surname as author_surname, authors.patronymic as author_patronymic, user.id, user.name, user.surname, user.patronymic, library_card.id,library_card.mobile_phone, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
+    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, user.id, user.name, user.surname, user.patronymic, library_card.id,library_card.mobile_phone, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
             "from online_orders\n" +
-            "left join library_card on online_orders.library_card_id = library_card.id\n" +
+            "right join library_card on online_orders.library_card_id = library_card.id\n" +
             "right join user\n" +
             "on library_card.user_id = user.id\n" +
             "left join book on book.id = online_orders.book_id\n" +
-            "left join (select book_author.book_id as b_id, author.name, author.surname, author.patronymic from author join book_author on book_author.author_id = author.id) as authors\n" +
-            "on authors.b_id = online_orders.book_id\n" +
-            "where library_card.id = ?";
+            "where library_card.id =?";
     private static final String SQL_CANCEL_ONLINE_ORDER = "Update online_orders set online_orders.order_execution_date = now(), order_status = 'canceled' where online_orders.id = ?";
     private static final String SQL_ONLINE_ORDER_STATUS = "SELECT order_status from online_orders where online_orders.id = ?";
     private static final String SQL_EXECUTE_ONLINE_ORDER = "Update online_orders SET online_orders.order_execution_date = now(), online_orders.order_status = 'executed' where online_orders.id = ?";
@@ -375,11 +373,80 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public List<Book> getExplicitBookInfo(int bookId) throws DAOException {
-        LinkedList<Book> books = new LinkedList<>();
+    public Book getExplicitBookInfo(int bookId) throws DAOException {
+        Book book = new Book();
         Connection connection = null;
         PreparedStatement explicitBookInfoStatement = null;
         try {
+            connection = ConnectionPool.getInstance().getConnection();
+            explicitBookInfoStatement = connection.prepareStatement(SQL_GET_EXPLICIT_BOOK_INFO);
+            explicitBookInfoStatement.setInt(1, bookId);
+            ResultSet resultSet = explicitBookInfoStatement.executeQuery();
+            while (resultSet.next()) {
+                Genre genre;
+                int bookFromDBId = resultSet.getInt(BOOK_ID);
+                int foundBookId = book.getId();
+                if (foundBookId == 0) {
+                    book.setId(bookFromDBId);
+                    book.setTitle(resultSet.getString(BOOK_TITLE));
+                    book.setPages(resultSet.getInt(BOOK_PAGES));
+                    book.setYear(resultSet.getInt(BOOK_YEAR));
+                    book.setLocation(Location.valueOf(resultSet.getString(BOOK_LOCATION).toUpperCase()));
+                    genre = new Genre();
+                    String genreName = resultSet.getString(GENRES_NAME);
+                    int genreId = resultSet.getInt(GENRES_ID);
+                    genre.setId(genreId);
+                    genre.setName(genreName);
+                    book.addGenre(genre);
+                    book.setIsbn(resultSet.getString(BOOK_ISBN));
+                    book.setDescription(resultSet.getString(BOOK_DESCRIPTION));
+                    Publisher publisher = new Publisher();
+                    Integer publisherId = resultSet.getInt(PUBLISHER_ID);
+                    String publisherName = resultSet.getString(PUBLISHER_NAME);
+                    publisher.setId(publisherId);
+                    publisher.setName(publisherName);
+                    book.setPublisher(publisher);
+                    Author author = new Author();
+                    String authorName = resultSet.getString(AUTHOR_NAME);
+                    String authorSurname = resultSet.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = resultSet.getString(AUTHOR_PATRONYMIC);
+                    author.setName(authorName);
+                    author.setSurname(authorSurname);
+                    author.setPatronymic(authorPatronymic);
+                    book.addAuthor(author);
+                    Blob imageBlob = resultSet.getBlob(BOOK_IMAGE);
+                    if (imageBlob != null) {
+                        String image = new String(imageBlob.getBytes(1, (int) imageBlob.length()));
+                        book.setImage(image);
+                    }
+                }else {
+                    genre = new Genre();
+                    String genreName = resultSet.getString(GENRES_NAME);
+                    int genreId = resultSet.getInt(GENRES_ID);
+                    genre.setId(genreId);
+                    genre.setName(genreName);
+                    if (!book.getGenre().contains(genre)) {
+                        book.addGenre(genre);
+                    }
+                    Author author = new Author();
+                    String authorName = resultSet.getString(AUTHOR_NAME);
+                    String authorSurname = resultSet.getString(AUTHOR_SURNAME);
+                    String authorPatronymic = resultSet.getString(AUTHOR_PATRONYMIC);
+                    author.setName(authorName);
+                    author.setSurname(authorSurname);
+                    author.setPatronymic(authorPatronymic);
+                    if (!book.getAuthors().contains(author)) {
+                        book.addAuthor(author);
+                    }
+                }
+            }
+            return book;
+/*
+
+
+
+
+
             connection = ConnectionPool.getInstance().getConnection();
             explicitBookInfoStatement = connection.prepareStatement(SQL_GET_EXPLICIT_BOOK_INFO);
             explicitBookInfoStatement.setInt(1, bookId);
@@ -447,7 +514,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     book.setImage(image);
                 }
             }
-            return books;
+            return books;*/
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not get books. Reason : %s", e.getMessage()), e);
         } finally {
@@ -1095,39 +1162,44 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         try {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
-            if (typeOfOrder.equalsIgnoreCase(Location.SUBSCRIPTION.getName())) {
-                addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_SUBSCRIPTION);
-                changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_SUBSCRIPTION);
-
-            } else if (typeOfOrder.equalsIgnoreCase(Location.READING_ROOM.getName())) {
-                addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_READING_ROOM);
-                changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
-            }
             int libraryCard = book.getOrders().get(FIRST_INDEX).getUser().getLibraryCardNumber();
             int bookId = book.getId();
             int librarianId = book.getOrders().get(FIRST_INDEX).getLibrarian().getId();
-            addOrderStatement.setInt(1, libraryCard);
-            addOrderStatement.setInt(2, bookId);
-            addOrderStatement.setInt(3, librarianId);
-            changeBookStatusStatement.setInt(1, book.getId());
-            int addOrderResult = addOrderStatement.executeUpdate();
-            if (addOrderResult > 0) {
-                isOrderAdded = true;
+            if (Location.valueOf(typeOfOrder).equals(Location.SUBSCRIPTION)) {
+                addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_SUBSCRIPTION);
+                changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_SUBSCRIPTION);
+
+            } else if (Location.valueOf(typeOfOrder).equals(Location.READING_ROOM)) {
+                addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_READING_ROOM);
+                changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
             }
-            if (isOrderAdded) {
-                int changeBookLocationResult = changeBookStatusStatement.executeUpdate();
-                if (changeBookLocationResult > 0) {
-                    isBookLocationChanged = true;
+            if (addOrderStatement != null) {
+                addOrderStatement.setInt(1, libraryCard);
+                addOrderStatement.setInt(2, bookId);
+                addOrderStatement.setInt(3, librarianId);
+                changeBookStatusStatement.setInt(1, book.getId());
+                int addOrderResult = addOrderStatement.executeUpdate();
+                if (addOrderResult > 0) {
+                    isOrderAdded = true;
                 }
-                if (isBookLocationChanged) {
-                    isOrderFullyAdded = true;
-                    connection.commit();
+                if (isOrderAdded) {
+                    int changeBookLocationResult = changeBookStatusStatement.executeUpdate();
+                    if (changeBookLocationResult > 0) {
+                        isBookLocationChanged = true;
+                    }
+                    if (isBookLocationChanged) {
+                        isOrderFullyAdded = true;
+                        connection.commit();
+                    } else {
+                        connection.rollback();
+                    }
                 } else {
                     connection.rollback();
                 }
-            } else {
+            }else {
                 connection.rollback();
             }
+
             return isOrderFullyAdded;
         } catch (SQLException e) {
             try {
@@ -1144,7 +1216,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public List<Order> getUserOrders(int libraryCard) throws DAOException {
+    public User getUserOrders(int libraryCard) throws DAOException {
+        User user = new User();
         List<Order> userOrders = new LinkedList<>();
         Connection connection = null;
         PreparedStatement getUserOrdersStatement = null;
@@ -1154,43 +1227,47 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             getUserOrdersStatement.setInt(1, libraryCard);
             ResultSet resultSet = getUserOrdersStatement.executeQuery();
             while (resultSet.next()) {
-                Order order = new Order();
-                Book book = new Book();
-                int orderId = resultSet.getInt(ORDER_ID);
-                order.setId(orderId);
-                int bookId = resultSet.getInt(BOOK_ID);
-                String bookTitle = resultSet.getString(BOOK_TITLE);
-                String bookIsbn = resultSet.getString(BOOK_ISBN);
-                book.setId(bookId);
-                book.setTitle(bookTitle);
-                book.setIsbn(bookIsbn);
-                order.setBook(book);
-                Timestamp lastOrderTimeStamp = resultSet.getTimestamp(ORDER_DATE);
-                LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setOrderDate(lastOrderDate);
-                Timestamp expirationDateTimeStamp = resultSet.getTimestamp(ORDER_EXPIRATION_DATE);
-                LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setExpirationDate(expirationDate);
-                Timestamp returnDateTimeStamp = resultSet.getTimestamp(ORDER_RETURN_DATE);
-                LocalDate returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setReturnDate(returnDate);
-                User user = new User();
                 int userId = resultSet.getInt(USER_ID);
-                int userLibraryCard = resultSet.getInt(LIBRARY_CARD);
-                String userName = resultSet.getString(USER_NAME);
-                String userSurname = resultSet.getString(USER_SURNAME);
-                String userPatronymic = resultSet.getString(USER_PATRONYMIC);
-                String userMobilePhone = resultSet.getString(MOBILE_PHONE);
-                user.setId(userId);
-                user.setLibraryCardNumber(userLibraryCard);
-                user.setName(userName);
-                user.setSurname(userSurname);
-                user.setPatronymic(userPatronymic);
-                user.setMobilePhone(userMobilePhone);
-                order.setUser(user);
-                userOrders.add(order);
+                if (user.getId() != userId) {
+                    int userLibraryCard = resultSet.getInt(LIBRARY_CARD);
+                    String userName = resultSet.getString(USER_NAME);
+                    String userSurname = resultSet.getString(USER_SURNAME);
+                    String userPatronymic = resultSet.getString(USER_PATRONYMIC);
+                    String userMobilePhone = resultSet.getString(MOBILE_PHONE);
+                    user.setId(userId);
+                    user.setLibraryCardNumber(userLibraryCard);
+                    user.setName(userName);
+                    user.setSurname(userSurname);
+                    user.setPatronymic(userPatronymic);
+                    user.setMobilePhone(userMobilePhone);
+                }else {
+                    int orderId = resultSet.getInt(ORDER_ID);
+                    if (orderId != 0) {
+                        Order order = new Order();
+                        Book book = new Book();
+                        order.setId(orderId);
+                        int bookId = resultSet.getInt(BOOK_ID);
+                        String bookTitle = resultSet.getString(BOOK_TITLE);
+                        String bookIsbn = resultSet.getString(BOOK_ISBN);
+                        book.setId(bookId);
+                        book.setTitle(bookTitle);
+                        book.setIsbn(bookIsbn);
+                        order.setBook(book);
+                        Timestamp lastOrderTimeStamp = resultSet.getTimestamp(ORDER_DATE);
+                        LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setOrderDate(lastOrderDate);
+                        Timestamp expirationDateTimeStamp = resultSet.getTimestamp(ORDER_EXPIRATION_DATE);
+                        LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setExpirationDate(expirationDate);
+                        Timestamp returnDateTimeStamp = resultSet.getTimestamp(ORDER_RETURN_DATE);
+                        LocalDate returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setReturnDate(returnDate);
+                        userOrders.add(order);
+                    }
+                }
             }
-            return userOrders;
+            user.setOrders(userOrders);
+            return user;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not get user orders. Reason: %s", e.getMessage()), e);
         } finally {
@@ -1297,7 +1374,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     @Override
-    public List<Order> getUserOnlineOrders(int libraryCard) throws DAOException {
+    public User getUserOnlineOrders(int libraryCard) throws DAOException {
+        User user = new User();
         LinkedList<Order> userOrders = new LinkedList<>();
         Connection connection = null;
         PreparedStatement getUserOnlineOrdersStatement = null;
@@ -1307,68 +1385,50 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             getUserOnlineOrdersStatement.setInt(1, libraryCard);
             ResultSet resultSet = getUserOnlineOrdersStatement.executeQuery();
             while (resultSet.next()) {
-                OnlineOrder order = new OnlineOrder();
-                Book book = new Book();
-                int ordersId = resultSet.getInt(ONLINE_ORDER_ID);
-                int bookId = resultSet.getInt(BOOK_ID);
-                int lastOrderIdFromList = !userOrders.isEmpty() ? userOrders.getLast().getId() : 0;
-                if (lastOrderIdFromList == ordersId) {
-                    String authorName = resultSet.getString(AUTHOR_NAME);
-                    String authorSurname = resultSet.getString(AUTHOR_SURNAME);
-                    String authorPatronymic = resultSet.getString(AUTHOR_PATRONYMIC);
-                    Author author = new Author();
-                    author.setName(authorName);
-                    author.setSurname(authorSurname);
-                    author.setPatronymic(authorPatronymic);
-                    Book lastBookFromList = userOrders.getLast().getBook();
-                    if (!lastBookFromList.getAuthors().contains(author)) {
-                        lastBookFromList.addAuthor(author);
-                    }
-                    continue;
-                }
-                String bookTitle = resultSet.getString(BOOK_TITLE);
-                String bookIsbn = resultSet.getString(BOOK_ISBN);
-                Author author = new Author();
-                String authorName = resultSet.getString(AUTHOR_NAME);
-                String authorSurname = resultSet.getString(AUTHOR_SURNAME);
-                String authorPatronymic = resultSet.getString(AUTHOR_PATRONYMIC);
-                author.setName(authorName);
-                author.setSurname(authorSurname);
-                author.setPatronymic(authorPatronymic);
-                book.addAuthor(author);
-                book.setId(bookId);
-                book.setTitle(bookTitle);
-                book.setIsbn(bookIsbn);
-                String orderStatus = resultSet.getString(ONLINE_ORDER_STATUS);
-                order.setStatus(orderStatus);
-                order.setBook(book);
-                order.setId(ordersId);
-                User user = new User();
                 int userId = resultSet.getInt(USER_ID);
-                int userLibraryCard = resultSet.getInt(LIBRARY_CARD);
-                String userName = resultSet.getString(USER_NAME);
-                String userSurname = resultSet.getString(USER_SURNAME);
-                String userPatronymic = resultSet.getString(USER_PATRONYMIC);
-                String mobilePhone = resultSet.getString(MOBILE_PHONE);
-                user.setId(userId);
-                user.setLibraryCardNumber(userLibraryCard);
-                user.setName(userName);
-                user.setSurname(userSurname);
-                user.setPatronymic(userPatronymic);
-                user.setMobilePhone(mobilePhone);
-                order.setUser(user);
-                Timestamp orderDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_DATE_OF_ORDER);
-                LocalDate OrderDate = orderDateTimeStamp != null ? orderDateTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setOrderDate(OrderDate);
-                Timestamp expirationDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_EXPIRATION_DATE);
-                LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setExpirationDate(expirationDate);
-                Timestamp executionDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_EXECUTION_DATE);
-                LocalDate executionDate = executionDateTimeStamp != null ? executionDateTimeStamp.toLocalDateTime().toLocalDate() : null;
-                order.setReturnDate(executionDate);
-                userOrders.add(order);
+                if (user.getId() != userId) {
+                    int userLibraryCard = resultSet.getInt(LIBRARY_CARD);
+                    String userName = resultSet.getString(USER_NAME);
+                    String userSurname = resultSet.getString(USER_SURNAME);
+                    String userPatronymic = resultSet.getString(USER_PATRONYMIC);
+                    String mobilePhone = resultSet.getString(MOBILE_PHONE);
+                    user.setId(userId);
+                    user.setLibraryCardNumber(userLibraryCard);
+                    user.setName(userName);
+                    user.setSurname(userSurname);
+                    user.setPatronymic(userPatronymic);
+                    user.setMobilePhone(mobilePhone);
+                }else {
+                    int ordersId = resultSet.getInt(ONLINE_ORDER_ID);
+                    if (ordersId != 0) {
+                        OnlineOrder order = new OnlineOrder();
+                        Book book = new Book();
+                        int bookId = resultSet.getInt(BOOK_ID);
+                        String bookTitle = resultSet.getString(BOOK_TITLE);
+                        String bookIsbn = resultSet.getString(BOOK_ISBN);
+                        book.setId(bookId);
+                        book.setTitle(bookTitle);
+                        book.setIsbn(bookIsbn);
+                        String orderStatus = resultSet.getString(ONLINE_ORDER_STATUS);
+                        order.setLocation(Location.valueOf(orderStatus.toUpperCase()));
+//                        order.setStatus(orderStatus);
+                        order.setBook(book);
+                        order.setId(ordersId);
+                        Timestamp orderDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_DATE_OF_ORDER);
+                        LocalDate OrderDate = orderDateTimeStamp != null ? orderDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setOrderDate(OrderDate);
+                        Timestamp expirationDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_EXPIRATION_DATE);
+                        LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setExpirationDate(expirationDate);
+                        Timestamp executionDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_EXECUTION_DATE);
+                        LocalDate executionDate = executionDateTimeStamp != null ? executionDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setReturnDate(executionDate);
+                        userOrders.add(order);
+                    }
+                }
             }
-            return userOrders;
+            user.setOrders(userOrders);
+            return user;
         } catch (SQLException e) {
             throw new DAOException(String.format("Can not get users' online orders. Reason: %s", e.getMessage()), e);
         } finally {
@@ -1437,7 +1497,8 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             ResultSet rs = onlineOrderStatusStatement.executeQuery();
             if (rs.next()) {
                 String orderStatus = rs.getString(ONLINE_ORDER_STATUS);
-                order.setStatus(orderStatus);
+                Location location = Location.valueOf(orderStatus.toUpperCase());
+                order.setLocation(location);
             }
             return order;
         } catch (SQLException e) {
@@ -1467,37 +1528,42 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                 isOnlineOrderExecuted = true;
             }
             if (isOnlineOrderExecuted) {
-                if (typeOfOrder.equals(Location.SUBSCRIPTION.getName())) {
+                if (Location.valueOf(typeOfOrder).equals(Location.SUBSCRIPTION)) {
                     addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_SUBSCRIPTION);
                     changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_SUBSCRIPTION);
 
-                } else if (typeOfOrder.equalsIgnoreCase(Location.READING_ROOM.getName())) {
+                } else if (Location.valueOf(typeOfOrder).equals(Location.READING_ROOM)) {
                     addOrderStatement = connection.prepareStatement(SQL_ADD_ORDER_ON_READING_ROOM);
                     changeBookStatusStatement = connection.prepareStatement(SQL_BOOK_LOCATION_READING_ROOM);
 
                 }
-                int libraryCard = onlineOrder.getUser().getLibraryCardNumber();
-                int bookId = onlineOrder.getBook().getId();
-                int librarianId = onlineOrder.getLibrarian().getId();
-                addOrderStatement.setInt(1, libraryCard);
-                addOrderStatement.setInt(2, bookId);
-                addOrderStatement.setInt(3, librarianId);
-                changeBookStatusStatement.setInt(1, bookId);
-                int addOnlineOrderResult = addOrderStatement.executeUpdate();
-                if (addOnlineOrderResult > 0) {
-                    isOnlineOrderAdded = true;
-                }
-                if (isOnlineOrderAdded) {
-                    int bookChangeLocationResult = changeBookStatusStatement.executeUpdate();
-                    if (bookChangeLocationResult > 0) {
-                        isOnlineOrderFullyExecuted = true;
-                        connection.commit();
+                if (addOrderStatement != null && changeBookStatusStatement != null) {
+                    int libraryCard = onlineOrder.getUser().getLibraryCardNumber();
+                    int bookId = onlineOrder.getBook().getId();
+                    int librarianId = onlineOrder.getLibrarian().getId();
+                    addOrderStatement.setInt(1, libraryCard);
+                    addOrderStatement.setInt(2, bookId);
+                    addOrderStatement.setInt(3, librarianId);
+                    changeBookStatusStatement.setInt(1, bookId);
+                    int addOnlineOrderResult = addOrderStatement.executeUpdate();
+                    if (addOnlineOrderResult > 0) {
+                        isOnlineOrderAdded = true;
+                    }
+                    if (isOnlineOrderAdded) {
+                        int bookChangeLocationResult = changeBookStatusStatement.executeUpdate();
+                        if (bookChangeLocationResult > 0) {
+                            isOnlineOrderFullyExecuted = true;
+                            connection.commit();
+                        } else {
+                            connection.rollback();
+                        }
                     } else {
                         connection.rollback();
                     }
-                } else {
+                }else {
                     connection.rollback();
                 }
+
             } else {
                 connection.rollback();
             }

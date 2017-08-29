@@ -4,10 +4,11 @@
 <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
        scope="session"/>
+<%@ page import="by.epam.bokhan.entity.Role" %>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=1}">
+<c:if test="${user.role!=Role.CLIENT}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -28,9 +29,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-
 <jsp:include page="../header.jsp"/>
-
 
 <div class="container">
 
@@ -49,11 +48,6 @@
                         <fmt:message key="message.order_was_not_added" bundle="${messages}"/>
                     </c:when>
                 </c:choose>
-
-
-
-
-
             </div>
             <c:choose>
                 <c:when test="${not empty sessionScope.isOnlineOrderAdded && sessionScope.isOnlineOrderAdded eq true}">
@@ -71,7 +65,7 @@
                 <c:remove var="isOnlineOrderAdded" scope="session"/>
             </c:if>
 
-        </div><!--/span-->
+        </div>
 
         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
             <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
@@ -79,39 +73,13 @@
             <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message
                     key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
 
-        </div><!--/span-->
-    </div><!--/row-->
-
-    <hr>
-
-
+        </div>
+    </div>
 </div>
-
 
 <footer>
     <p>© Company 2017</p>
 </footer>
-
-
-<%--<c:choose>
-    <c:when test="${not empty sessionScope.isOnlineOrderAdded && sessionScope.isOnlineOrderAdded eq true}">
-        <fmt:message key="message.order_added_successfully" bundle="${messages}"/>
-    </c:when>
-    <c:when test="${not empty sessionScope.isOnlineOrderAdded && sessionScope.isOnlineOrderAdded eq false}">
-        <fmt:message key="message.order_was_not_added" bundle="${messages}"/>
-    </c:when>
-</c:choose>
-<br/>
-
-<c:if test="${not empty sessionScope.isOnlineOrderAdded}">
-    <c:remove var="isOnlineOrderAdded" scope="session" />
-</c:if>
-
-
-<a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>--%>
-
 
 </body>
 </html>

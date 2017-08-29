@@ -2,13 +2,13 @@ package by.epam.bokhan.entity;
 
 
 public class OnlineOrder extends Order {
-    private String status;
+    private Location location;
 
-    public String getStatus() {
-        return status;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

@@ -1,12 +1,12 @@
 <%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="ctg" uri="customtags" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=1}">
+<c:if test="${user.role!=Role.CLIENT}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -27,10 +27,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-
 <jsp:include page="../header.jsp"/>
-
-
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
@@ -41,18 +38,6 @@
 
                 <div class="col-lg-6">
                     <div class="input-group">
-
-                        <%--<form method="post" action="/controller">
-                            <input type="hidden" name="command" value="user_find_book">
-                            &lt;%&ndash;<input type="hidden" name="type_of_search" value="by_title">&ndash;%&gt;
-                            <fmt:message key="label.book.enter_book_title" bundle="${messages}"/> :
-
-                            <input name="find_query_value" value="" pattern="[\d\w\W[а-яА-Я}]]+" required>
-                            <input type="submit" value="<fmt:message key="label.find" bundle="${messages}"/> ">
-                        </form>
---%>
-
-
                         <form class="form-inline" method="post" action="/controller">
                             <input type="hidden" name="command" value="user_find_book">
                             <div class="col-12">
@@ -67,7 +52,6 @@
 
         </div>
 
-
         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
             <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
                     key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
@@ -77,28 +61,6 @@
 
     </div>
 </div>
-
-
-
-
-<%--
-<form method="post" action="/controller">
-    <input type="hidden" name="command" value="user_find_book">
-    &lt;%&ndash;<input type="hidden" name="type_of_search" value="by_title">&ndash;%&gt;
-    <fmt:message key="label.book.enter_book_title" bundle="${messages}"/> :
-
-    <input name="find_query_value" value="" pattern="[\d\w\W[а-яА-Я}]]+" required>
-    <input type="submit" value="<fmt:message key="label.find" bundle="${messages}"/> ">
-</form>
-
-<br/>
-
-<a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-
-<a href = "/controller?command=logout"><fmt:message key="label.logout" bundle="${messages}"/> </a>
---%>
 
 </body>
 </html>

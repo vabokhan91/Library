@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 
 public class BookValidator {
     private static final String REGEX_FOR_BOOK_ID = "\\d{1,5}";
-    private static final String REGEX_FOR_BOOK_TITLE = "[\\d\\w\\W[а-яА-Я}]]+";
+    private static final String REGEX_FOR_BOOK_TITLE = "[\\d\\w\\W[а-яА-ЯеЁ}]]+";
     private static final String REGEX_FOR_BOOK_ISBN = "(\\d+-\\d+-\\d+-\\d+-\\d+)|(\\d+-\\d+-\\d+-\\d+)";
     private static final String REGEX_FOR_BOOK_PAGE = "\\d{1,5}";
     private static final String REGEX_FOR_BOOK_YEAR = "\\d{1,5}";
     private static final String REGEX_FOR_BOOK_PUBLISHER = "[\\d\\D]{1,50}";
-    private static final String REGEX_FOR_BOOK_GENRE = "[a-zA-Zа-яА-Я_\\s]{1,30}";
+    private static final String REGEX_FOR_BOOK_GENRE = "[a-zA-Zа-яА-ЯеЁ_\\s]{1,30}";
     private static final String REGEX_FOR_BOOK_PUBLISHER_ID = "\\d{1,5}";
     private static final String REGEX_FOR_BOOK_GENRE_ID = "\\d{1,5}";
     private static final String REGEX_FOR_AUTHOR_ID = "\\d{1,5}";

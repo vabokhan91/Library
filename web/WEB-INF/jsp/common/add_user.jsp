@@ -27,34 +27,7 @@
 <body background="image/books-484766_1920.jpg">
 
 
-<nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library" bundle="${messages}"/> </a>
-
-    <form class="form-inline" action="/controller">
-        <input type="hidden" name="command" value="find_book">
-        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=<fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
-        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
-    </form>
-
-    <div class="row">
-        <form method="post" class="col">
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
-                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
-                </label>
-                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
-                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
-                </label>
-            </div>
-        </form>
-        <div class="col">
-            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message key="label.logout" bundle="${messages}"/></a>
-        </div>
-    </div>
-</nav>
-
-
-
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
@@ -64,28 +37,28 @@
                 <form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
                     <input type="hidden" name="command" value="add_user"/>
                     <div class="form-group row">
-                        <label for="name" class="col-sm-2 col-form-label"> <fmt:message key="label.name" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <label for="name" class="col-sm-2 col-form-label required"> <fmt:message key="label.name" bundle="${messages}"/></label>
+                        <div class="col-5">
                             <input type = "text" class="form-control" id="name" name = "user_name" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})" placeholder=<fmt:message key="label.name" bundle="${messages}"/> required/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="surname" class="col-sm-2 col-form-label"><fmt:message key="label.surname" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <label for="surname" class="col-sm-2 col-form-label required"><fmt:message key="label.surname" bundle="${messages}"/></label>
+                        <div class="col-5">
                             <input type = "text" class="form-control" id="surname" name = "user_surname" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})" placeholder=<fmt:message key="label.surname" bundle="${messages}"/> required/>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="patronymic" class="col-sm-2 col-form-label"><fmt:message key="label.patronymic" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <div class="col-5">
                             <input type = "text" class="form-control" id="patronymic" name = "user_patronymic" value="" pattern = "[^\d\W]{1,40}|([а-яА-Я]{1,40})" placeholder=<fmt:message key="label.patronymic" bundle="${messages}"/>>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="address" class="col-sm-2 col-form-label"><fmt:message key="label.address" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <label for="address" class="col-sm-2 col-form-label required"><fmt:message key="label.address" bundle="${messages}"/></label>
+                        <div class="col-5">
                             <input type = "text" class="form-control" id="address" name = "user_address" value="" placeholder=<fmt:message key="label.address" bundle="${messages}"/> required/>
                         </div>
                     </div>
@@ -95,8 +68,8 @@
 
 
                             <div class="form-group row">
-                                <label for="role" class="col-sm-2 col-form-label" style="margin-right: 13px" ><fmt:message key="label.role" bundle="${messages}"/></label>
-                                <select id="role" class="custom-select col-sm-3"  name="user_role" required>
+                                <label for="role" class="col-sm-2 col-form-label required" style="margin-right: 13px" ><fmt:message key="label.role" bundle="${messages}"/></label>
+                                <select id="role" class="custom-select col-5 "  name="user_role" required>
                                     <option value="librarian"><fmt:message key="label.user.librarian" bundle="${messages}"/> </option>
                                     <option value="client"><fmt:message key="label.user.client" bundle="${messages}"/> </option>
                                 </select>
@@ -105,22 +78,28 @@
                             <br/>
 
                             <div class="form-group row">
-                                <label for="login" class="col-sm-2 col-form-label"><fmt:message key="label.user.login" bundle="${messages}"/></label>
-                                <div class="col-sm-3">
-                                    <input type = "text" class="form-control" id="login" name = "login" value="" placeholder=<fmt:message key="label.user.login" bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
+                                <label for="login" class="col-sm-2 col-form-label required"><fmt:message key="label.user.login" bundle="${messages}"/></label>
+                                <div class="col-5">
+                                    <input type = "text" class="form-control" id="login" name = "login" value="" placeholder=<fmt:message key="label.user.login" bundle="${messages}"/> pattern="[\w!()*&^%$@]{5,12}" required/>
+                                    <small class="form-text text-muted">
+                                        <fmt:message key="label.login.login_info" bundle="${messages}"/>
+                                    </small>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="password" class="col-sm-2 col-form-label"><fmt:message key="label.password"  bundle="${messages}"/></label>
-                                <div class="col-sm-3">
-                                    <input type = "password" class="form-control" id="password" name = "user_password" value="" placeholder=<fmt:message key="label.password"  bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
+                                <label for="password" class="col-sm-2 col-form-label required"><fmt:message key="label.password"  bundle="${messages}"/></label>
+                                <div class="col-5">
+                                    <input type = "password" class="form-control" id="password" name = "user_password" value="" placeholder=<fmt:message key="label.password"  bundle="${messages}"/> pattern="[\w!()*&^%$@]{3,12}" required/>
+                                    <small class="form-text text-muted">
+                                        <fmt:message key="label.password.password_info" bundle="${messages}"/>
+                                    </small>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="confirm_password" class="col-sm-2 col-form-label"><fmt:message key="label.confirm_password" bundle="${messages}"/></label>
-                                <div class="col-sm-3">
+                                <label for="confirm_password" class="col-sm-2 col-form-label required"><fmt:message key="label.confirm_password" bundle="${messages}"/></label>
+                                <div class="col-5">
                                     <input type = "password" class="form-control" id="confirm_password" name = "confirm_password" value="" placeholder=<fmt:message key="label.placeholder.confirm_password" bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
                                 </div>
                             </div>
@@ -129,12 +108,13 @@
                             <input type = "hidden" name = "user_role" value="client"/>
                         </c:otherwise>
                     </c:choose><br/>
-
-
                     <div class="form-group row">
-                        <label for="mobile_phone" class="col-sm-2 col-form-label"><fmt:message key="label.mobile_phone" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <label for="mobile_phone" class="col-sm-2 col-form-label required"><fmt:message key="label.mobile_phone" bundle="${messages}"/></label>
+                        <div class="col-5">
                             <input type = "text" class="form-control" id="mobile_phone" name = "user_mobilephone" value="" placeholder= <fmt:message key="label.placeholder.mobile_phone" bundle="${messages}"/> pattern="^((\+)[\-]?)?(\(?\d{3}\)?[\-]?)?[\d\-]{7,10}$" required/>
+                            <small class="form-text text-muted">
+                                <fmt:message key="label.mobilephone.mobilephone_info" bundle="${messages}"/>
+                            </small>
                         </div>
                     </div>
 
@@ -144,7 +124,6 @@
                             <input type ="file" id="photo" name = "user_photo" size="50"/><br/>
                         </div>
                     </c:if>
-                    <%--<input type="submit" name="submit" value=<fmt:message key="button.add_user" bundle="${messages}"/> />--%>
 
                     <div class="form-group row">
                         <div class="col-sm-10">

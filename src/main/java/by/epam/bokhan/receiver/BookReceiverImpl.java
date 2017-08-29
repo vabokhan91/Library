@@ -76,17 +76,17 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void getExplicitBookInfo(RequestContent requestContent) throws ReceiverException {
         BookDAO dao = new BookDAOImpl();
-        List<Book> books = null;
+        Book book = null;
         List<Order> orders = null;
         String bookIdValue = (String) requestContent.getRequestParameters().get(BOOK_ID);
         try {
             if (isBookIdValid(bookIdValue)) {
                 int bookId = Integer.parseInt(bookIdValue);
-                books = dao.getExplicitBookInfo(bookId);
+                book = dao.getExplicitBookInfo(bookId);
                 orders = dao.getBooksLastOrder(bookId);
             }
 
-            requestContent.insertParameter(FOUND_BOOK, books);
+            requestContent.insertParameter(FOUND_BOOK, book);
             requestContent.insertParameter(FOUND_ORDER, orders);
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -458,14 +458,14 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void getUserOrders(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        List<Order> userOrders = null;
+        User user = null;
         try {
             String libraryCardValue = (String) requestContent.getRequestParameters().get(LIBRARY_CARD);
             if (isLibraryCardIdValid(libraryCardValue)) {
                 int libraryCard = Integer.parseInt(libraryCardValue);
-                userOrders = bookDAO.getUserOrders(libraryCard);
+                user = bookDAO.getUserOrders(libraryCard);
             }
-            requestContent.insertAttribute(USER_ORDERS, userOrders);
+            requestContent.insertAttribute(USER_ORDERS, user);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -510,14 +510,14 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void getUserOnlineOrders(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-        List<Order> userOrders = null;
+        User user = null;
         try {
             String libraryCardValue = (String) requestContent.getRequestParameters().get(LIBRARY_CARD);
             if (isLibraryCardIdValid(libraryCardValue)) {
                 int libraryCard = Integer.parseInt(libraryCardValue);
-                userOrders = bookDAO.getUserOnlineOrders(libraryCard);
+                user = bookDAO.getUserOnlineOrders(libraryCard);
             }
-            requestContent.insertParameter(USER_ORDERS, userOrders);
+            requestContent.insertParameter(USER_ORDERS, user);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -532,8 +532,8 @@ public class BookReceiverImpl implements BookReceiver {
             String bookIdValue = (String) requestContent.getRequestParameters().get(BOOK_ID);
             if (isOnlineOrderIdValid(onlineOrderIdValue) && isBookIdValid(bookIdValue)) {
                 int onlineOrderId = Integer.parseInt(onlineOrderIdValue);
-                String onlineOrderStatus = bookDAO.onlineOrderStatus(onlineOrderId).getStatus();
-                if (!onlineOrderStatus.equals(STATUS_CANCELED)) {
+                Location onlineOrderStatus = bookDAO.onlineOrderStatus(onlineOrderId).getLocation();
+                if (!Location.CANCELED.equals(onlineOrderStatus)) {
                     int bookId = Integer.parseInt(bookIdValue);
                     isOnlineOrderCancelled = bookDAO.cancelOnlineOrder(onlineOrderId, bookId);
                 }
@@ -558,8 +558,8 @@ public class BookReceiverImpl implements BookReceiver {
             if (isOnlineOrderIdValid(onlineOrderIdValue) && isBookIdValid(bookIdValue) && isLibraryCardIdValid(libraryCardValue)
                     && isUserIdValid(librarianIdValue) && typeOfOrder != null) {
                 int onlineOrderId = Integer.parseInt(onlineOrderIdValue);
-                String orderStatus = bookDAO.onlineOrderStatus(onlineOrderId).getStatus();
-                if (orderStatus.equals(STATUS_BOOKED)) {
+                Location location = bookDAO.onlineOrderStatus(onlineOrderId).getLocation();
+                if (Location.BOOKED.equals(location)) {
                     int bookId = Integer.parseInt(bookIdValue);
                     int libraryCard = Integer.parseInt(libraryCardValue);
                     int librarianId = Integer.parseInt(librarianIdValue);

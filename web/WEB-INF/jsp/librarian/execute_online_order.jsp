@@ -2,11 +2,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
+<%@ page import="by.epam.bokhan.entity.Location" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2}">
+<c:if test="${user.role!=Role.LIBRARIAN}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -39,33 +41,32 @@
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Toggle nav</button>
             </p>
             <div class="row">
-                <c:forEach items="${foundBook}" var="item">
                     <div class="col-10">
 
                         <div>
-                            <img class="main-book-img" src="data:image/jpg;base64,${item.image}"/></div>
+                            <img class="main-book-img" src="data:image/jpg;base64,${foundBook.image}"/></div>
                         <div>
                             <form method="post" action="/controller" accept-charset="UTF-8">
                                 <input type="hidden" name="command" value="execute_online_order">
-                                <input type="hidden" name="book_id" value="${foundBook.get(0).id}"/>
+                                <input type="hidden" name="book_id" value="${foundBook.id}"/>
                                 <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
-                                <div class="parent-book-info"><h2>${item.title}</h2>
+                                <div class="parent-book-info"><h2>${foundBook.title}</h2>
 
-                                    <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.id}<br/>
+                                    <fmt:message key="label.book.id" bundle="${messages}"/> : ${foundBook.id}<br/>
 
                                     <fmt:message key="label.book.author" bundle="${messages}"/> : <c:forEach
-                                            items="${item.authors}"
+                                            items="${foundBook.authors}"
                                             var="author">
                                         ${author.surname.concat(' ').concat(author.name.charAt(0)).concat('. ').concat(author.patronymic.charAt(0)).concat(';')}</c:forEach><br/>
                                     <fmt:message key="label.book.genre" bundle="${messages}"/> :
-                                    <c:forEach items="${item.genre}" var="genres">
+                                    <c:forEach items="${foundBook.genre}" var="genres">
                                         ${genres.getName()}
                                     </c:forEach><br/>
-                                    <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
-                                    <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
-                                    <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
-                                    <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher.name}<br/><br/>
-                                    <fmt:message key="label.book.location" bundle="${messages}"/> : ${item.location}<br/>
+                                    <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${foundBook.isbn}<br/>
+                                    <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${foundBook.year}<br/>
+                                    <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${foundBook.pages}<br/>
+                                    <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${foundBook.publisher.name}<br/><br/>
+                                    <fmt:message key="label.book.location" bundle="${messages}"/> : ${foundBook.location.name}<br/>
                                     <div>
                                         <br/>
                                         <br/>
@@ -75,9 +76,9 @@
                                                                                            bundle="${messages}"/></label>
                                             <select id="type_of_order" class="custom-select col-sm-3" name="type_of_order"
                                                     required>
-                                                <option value="subscription"><fmt:message key="label.book.subscription"
+                                                <option value="${Location.SUBSCRIPTION}"><fmt:message key="label.book.subscription"
                                                                                           bundle="${messages}"/></option>
-                                                <option value="reading_room"><fmt:message key="label.book.reading_room"
+                                                <option value="${Location.READING_ROOM}"><fmt:message key="label.book.reading_room"
                                                                                           bundle="${messages}"/></option>
                                             </select>
                                         </div>
@@ -92,7 +93,7 @@
                                     </div>
                                 </div>
 
-                                <input type="hidden" name="book_id" value="${foundBook.get(0).id}"/>
+                                <input type="hidden" name="book_id" value="${foundBook.id}"/>
                                 <input type="hidden" name="online_order_id" value="${online_order_id}"/>
                                 <input type="hidden" name="library_card" value="${library_card}"/>
                                 <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
@@ -108,7 +109,7 @@
 
                     </div>
                     <!--/span-->
-                </c:forEach>
+
             </div><!--/row-->
 
 

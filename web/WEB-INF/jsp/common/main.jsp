@@ -27,31 +27,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library" bundle="${messages}"/> </a>
-
-    <form class="form-inline" action="/controller">
-        <input type="hidden" name="command" value="find_book">
-        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=<fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
-        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
-    </form>
-
-    <div class="row">
-        <form method="post" class="col">
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
-                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
-                </label>
-                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
-                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
-                </label>
-            </div>
-        </form>
-        <div class="col">
-            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message key="label.logout" bundle="${messages}"/></a>
-        </div>
-    </div>
-</nav>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
 
@@ -150,7 +126,6 @@
                 </c:otherwise>
             </c:choose>
 
-
             <div class="list-group">
                 <a href="/controller?command=find_book_by_genre&genre_name=Биография" class="list-group-item"><fmt:message key="label.genre.biography" bundle="${messages}"/></a>
                 <a href="/controller?command=find_book_by_genre&genre_name=Детектив" class="list-group-item"><fmt:message key="label.genre.detective" bundle="${messages}"/></a>
@@ -174,14 +149,6 @@
                 <a href="/controller?command=find_book_by_genre&genre_name=Эпос" class="list-group-item"><fmt:message key="label.genre.epos" bundle="${messages}"/></a>
                 <a href="/controller?command=find_book_by_genre&genre_name=Эссе" class="list-group-item"><fmt:message key="label.genre.essay" bundle="${messages}"/></a>
 
-
-
-
-
-
-
-
-
             </div>
         </div><!--/span-->
     </div><!--/row-->
@@ -193,178 +160,6 @@
     </footer>
 
 </div>
-
-<%--<ctg:welcome-tag/>
-        <c:choose>
-            <c:when test="${user==null}">
-                <form method = "POST" action = "/controller">
-                    <input type = "hidden" name = "command" value = "login"/>
-                    <fmt:message key="label.login" bundle="${messages}"/> : <br/>
-                    <input type="text" name="login" placeholder=<fmt:message key="label.login.login" bundle="${messages}"/>><br/>
-                    <fmt:message key="label.password" bundle="${messages}"/> : <br/>
-                    <input type="password" name="password" placeholder=<fmt:message key="label.password" bundle="${messages}"/>>
-                    <br/>
-                    <input type="submit" name="login" class="login loginmodal-submit" value=<fmt:message key="label.login" bundle="${messages}"/>>
-                </form>
-            </c:when>
-            <c:otherwise>
-                <ctg:welcome-tag/>
-                <br />
-            </c:otherwise>
-        </c:choose>--%>
-
-<%--<div>
-    <ul><li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="РОМАН">
-            <input type="submit" name="submit" value="Роман" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Автобиография">
-            <input type="submit" name="submit" value="Автобиография" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Бизнес">
-            <input type="submit" name="submit" value="Бизнес" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Биография">
-            <input type="submit" name="submit" value="Биография" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Детектив">
-            <input type="submit" name="submit" value="Детектив" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Детская_литература">
-            <input type="submit" name="submit" value="Детская литература" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Драма">
-            <input type="submit" name="submit" value="Драма" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Информационные_технологии">
-            <input type="submit" name="submit" value="Информационные технологии" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="История">
-            <input type="submit" name="submit" value="История" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Комедия">
-            <input type="submit" name="submit" value="Комедия" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Короткая_история">
-            <input type="submit" name="submit" value="Короткая история" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Миф">
-            <input type="submit" name="submit" value="Миф" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Поэма">
-            <input type="submit" name="submit" value="Поэма" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Приключения">
-            <input type="submit" name="submit" value="Приключения" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Пьеса">
-            <input type="submit" name="submit" value="Пьеса" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Религия">
-            <input type="submit" name="submit" value="Религия" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Сказка">
-            <input type="submit" name="submit" value="Сказка" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Трагедия">
-            <input type="submit" name="submit" value="Трагедия" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Фантастика">
-            <input type="submit" name="submit" value="Фантастика" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Эпос">
-            <input type="submit" name="submit" value="Эпос" />
-        </form>
-    </li>
-    <li>
-        <form action="/controller">
-            <input type="hidden" name="command" value="find_book_by_genre">
-            <input type="hidden" name="genre_name" value="Эссе">
-            <input type="submit" name="submit" value="Эссе" />
-        </form>
-    </li>
-    </ul>
-</div>--%>
-
-
 
 </body></html>
 

@@ -1,14 +1,15 @@
 <%@ page language="java" contentType="text/html; charset = UTF-8" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="ctg" uri="customtags" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
+<%@ page import="by.epam.bokhan.entity.Location" %>
 <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
        scope="session"/>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role.ordinal()!=2}">
+<c:if test="${user.role!=Role.LIBRARIAN}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
 <html>
@@ -29,37 +30,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-
-<nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library"
-                                                                                 bundle="${messages}"/> </a>
-
-    <form class="form-inline" action="/controller">
-        <input type="hidden" name="command" value="find_book">
-        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=
-        <fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
-        <input class="btn btn-outline-success my-2 my-sm-0" type="submit"
-               value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
-    </form>
-
-    <div class="row">
-        <form method="post" class="col">
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
-                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
-                </label>
-                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
-                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
-                </label>
-            </div>
-        </form>
-        <div class="col">
-            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message
-                    key="label.logout" bundle="${messages}"/></a>
-        </div>
-    </div>
-</nav>
-
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
 
@@ -70,7 +41,6 @@
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Toggle nav</button>
             </p>
             <div class="row">
-                <c:forEach items="${foundBook}" var="item">
                 <div class="col-10">
 
                         <div>
@@ -78,26 +48,25 @@
                         <div>
                     <form method="post" action="/controller" accept-charset="UTF-8">
                         <input type="hidden" name="command" value="add_order">
-                        <input type="hidden" name="book_id" value="${foundBook.get(0).id}"/>
+                        <input type="hidden" name="book_id" value="${foundBook.id}"/>
                         <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
-                        <div class="parent-book-info"><h2>${item.title}</h2>
+                        <div class="parent-book-info"><h2>${foundBook.title}</h2>
 
-
-                            <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.id}<br/>
+                            <fmt:message key="label.book.id" bundle="${messages}"/> : ${foundBook.id}<br/>
 
                             <fmt:message key="label.book.author" bundle="${messages}"/> : <c:forEach
-                                    items="${item.authors}"
+                                    items="${foundBook.authors}"
                                     var="author">
                                 ${author.surname.concat(' ').concat(author.name.charAt(0)).concat('. ').concat(author.patronymic.charAt(0)).concat(';')}</c:forEach><br/>
                             <fmt:message key="label.book.genre" bundle="${messages}"/> :
-                            <c:forEach items="${item.genre}" var="genres">
+                            <c:forEach items="${foundBook.genre}" var="genres">
                                 ${genres.getName()}
                             </c:forEach><br/>
-                            <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
-                            <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
-                            <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
-                            <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher.name}<br/><br/>
-                            <fmt:message key="label.book.location" bundle="${messages}"/> : ${item.location}<br/>
+                            <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${foundBook.isbn}<br/>
+                            <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${foundBook.year}<br/>
+                            <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${foundBook.pages}<br/>
+                            <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${foundBook.publisher.name}<br/><br/>
+                            <fmt:message key="label.book.location" bundle="${messages}"/> : ${foundBook.location.name}<br/>
                         <div>
                             <br/>
                             <br/>
@@ -107,15 +76,15 @@
                                                                                bundle="${messages}"/></label>
                                 <select id="type_of_order" class="custom-select col-sm-3" name="type_of_order"
                                         required>
-                                    <option value="subscription"><fmt:message key="label.book.subscription"
+                                    <option value="${Location.SUBSCRIPTION}"><fmt:message key="label.book.subscription"
                                                                               bundle="${messages}"/></option>
-                                    <option value="reading_room"><fmt:message key="label.book.reading_room"
+                                    <option value="${Location.READING_ROOM}"><fmt:message key="label.book.reading_room"
                                                                               bundle="${messages}"/></option>
                                 </select>
                             </div>
 
                             <div class="form-group row">
-                                <label for="library_card" class="col-5 col-form-label"><fmt:message
+                                <label for="library_card" class="col-5 col-form-label required"><fmt:message
                                         key="label.book.enter_library_card" bundle="${messages}"/></label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="library_card" name="library_card"
