@@ -4,11 +4,11 @@ package by.epam.bokhan.receiver;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.dao.UserDAO;
 import by.epam.bokhan.dao.UserDAOImpl;
+import by.epam.bokhan.encoder.PasswordEncoder;
 import by.epam.bokhan.entity.Role;
 import by.epam.bokhan.entity.User;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,6 @@ import static by.epam.bokhan.validator.UserValidator.*;
 public class UserReceiverImpl implements UserReceiver {
     private static final Logger LOGGER = LogManager.getLogger();
 
-
     @Override
     public void login(RequestContent content) throws ReceiverException {
         UserDAO userDAO = new UserDAOImpl();
@@ -36,7 +35,7 @@ public class UserReceiverImpl implements UserReceiver {
         String password = (String) content.getRequestParameters().get(PASSWORD);
         try {
             if (isLoginValid(login) && isPasswordValid(password)) {
-                String hashedPassword = DigestUtils.md5Hex(password);
+                String hashedPassword = PasswordEncoder.encodePassword(password);
                 User user = userDAO.getUserByLogin(login);
                 if (login.equals(user.getLogin()) && hashedPassword.equals(user.getPassword())) {
                     isRightData = true;
@@ -68,14 +67,15 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             if (isUserNameValid(name) && isUserSurnameValid(surname) && isLibraryCardIdValid(libraryCardValue)
                     && isPasswordValid(password) && isPasswordValid(confirmPassword) && isPasswordsEquals(password, confirmPassword)) {
+                User user = new User();
                 int libraryCard = Integer.parseInt(libraryCardValue);
-                User user = userDAO.getExplicitUserInfo(libraryCard);
-                if (name.equalsIgnoreCase(user.getName()) && surname.equalsIgnoreCase(user.getSurname())) {
-                    String hashedPassword = DigestUtils.md5Hex(password);
-                    user.setPassword(hashedPassword);
-                    user.setLogin(login);
-                    isUserRegistered = userDAO.registerUser(user);
-                }
+                String hashedPassword = PasswordEncoder.encodePassword(password);
+                user.setName(name);
+                user.setSurname(surname);
+                user.setLibraryCardNumber(libraryCard);
+                user.setLogin(login);
+                user.setPassword(hashedPassword);
+                isUserRegistered = userDAO.registerUser(user);
             }
             requestContent.insertAttribute(IS_USER_REGISTERED, isUserRegistered);
         } catch (DAOException e) {
@@ -100,8 +100,8 @@ public class UserReceiverImpl implements UserReceiver {
         try {
             if (isUserNameValid(name) && isUserSurnameValid(surname) && isUserPatronymicValid(patronymic) &&
                     isUserAddressValid(address) && isUserMobilePhoneValid(phone) && isUserRoleValid(roleValue)) {
-                Role role = Role.valueOf(roleValue.toUpperCase());
                 User user = new User();
+                Role role = Role.valueOf(roleValue.toUpperCase());
                 user.setName(name);
                 user.setSurname(surname);
                 user.setPatronymic(patronymic);
@@ -109,13 +109,15 @@ public class UserReceiverImpl implements UserReceiver {
                 user.setMobilePhone(phone);
                 user.setRole(role);
                 if (isLoginValid(login) && isPasswordValid(password) && isPasswordValid(confirmPassword) && isPasswordsEquals(password, confirmPassword)) {
-                    String hashedPassword = DigestUtils.md5Hex(password);
+                    String hashedPassword = PasswordEncoder.encodePassword(password);
                     user.setLogin(login);
                     user.setPassword(hashedPassword);
                 }
                 if (userPhoto != null) {
-                    String image = convertImageToString(userPhoto);
-                    user.setPhoto(image);
+                    String image = convertImageToBase64(userPhoto);
+                    if (!image.isEmpty()) {
+                        user.setPhoto(image);
+                    }
                 }
                 isUserAdded = userDAO.addUser(user);
             }
@@ -128,9 +130,8 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public void getAllUsers(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
-        List<User> users;
         try {
-            users = dao.getAllUsers();
+            List<User> users = dao.getAllUsers();
             requestContent.insertParameter(USERS, users);
         } catch (DAOException e) {
             throw new ReceiverException(e);
@@ -145,7 +146,7 @@ public class UserReceiverImpl implements UserReceiver {
             String userIdValue = (String) content.getRequestParameters().get(USER_ID);
             if (isUserIdValid(userIdValue)) {
                 int userId = Integer.parseInt(userIdValue);
-                isUserDeleted = dao.removeUserById(userId);
+                isUserDeleted = dao.removeUser(userId);
             }
             content.insertAttribute(IS_USER_DELETED, isUserDeleted);
         } catch (DAOException e) {
@@ -170,6 +171,7 @@ public class UserReceiverImpl implements UserReceiver {
             throw new ReceiverException(e);
         }
     }
+
     @Override
     public void blockUser(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -213,6 +215,7 @@ public class UserReceiverImpl implements UserReceiver {
             throw new ReceiverException(e);
         }
     }
+
     @Override
     public void getNotBlockedUsers(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -273,14 +276,14 @@ public class UserReceiverImpl implements UserReceiver {
                 user.setMobilePhone(phone);
                 user.setAddress(address);
                 if (isPasswordValid(password) && isPasswordValid(confirmPassword) && isPasswordsEquals(password, confirmPassword)) {
-                    String hashedPassword = DigestUtils.md5Hex(password);
+                    String hashedPassword = PasswordEncoder.encodePassword(password);
                     user.setPassword(hashedPassword);
                 }
                 if (isLoginValid(login)) {
                     user.setLogin(login);
                 }
                 if (userPhoto != null) {
-                    String image = convertImageToString(userPhoto);
+                    String image = convertImageToBase64(userPhoto);
                     if (!image.isEmpty()) {
                         user.setPhoto(image);
                     }
@@ -305,12 +308,9 @@ public class UserReceiverImpl implements UserReceiver {
             if (isPasswordValid(oldPassword) && isPasswordValid(newPassword) && isPasswordValid(confirmPassword)
                     && isPasswordsEquals(newPassword, confirmPassword) && isLibraryCardIdValid(libraryCardValue)) {
                 int libraryCard = Integer.parseInt(libraryCardValue);
-                String hashedOldPassword = DigestUtils.md5Hex(oldPassword);
-                String oldPasswordFromDB = dao.getUserPassword(libraryCard);
-                if (isPasswordsEquals(hashedOldPassword, oldPasswordFromDB)) {
-                    String hashedNewPassword = DigestUtils.md5Hex(newPassword);
-                    isPasswordChanged = dao.changePassword(libraryCard, hashedNewPassword);
-                }
+                String hashedOldPassword = PasswordEncoder.encodePassword(oldPassword);
+                String hashedNewPassword = PasswordEncoder.encodePassword(newPassword);
+                isPasswordChanged = dao.changePassword(libraryCard, hashedOldPassword, hashedNewPassword);
             }
             requestContent.insertAttribute(IS_PASSWORD_CHANGED, isPasswordChanged);
         } catch (DAOException e) {
@@ -336,52 +336,48 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public void uploadPhoto(RequestContent requestContent) throws ReceiverException {
+    public void uploadUserPhoto(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
         boolean isPhotoUploaded = false;
         String userIdValue = (String) requestContent.getRequestParameters().get(USER_ID);
-        if (isUserIdValid(userIdValue)) {
-            try {
+        Part userPhoto = (Part) requestContent.getMultiTypeParts().get(USER_PHOTO);
+        try {
+            if (isUserIdValid(userIdValue) && userPhoto != null) {
+                User user = new User();
                 int userId = Integer.parseInt(userIdValue);
-                Part userPhoto = (Part) requestContent.getMultiTypeParts().get(USER_PHOTO);
-                if (userPhoto != null) {
-                    String image = convertImageToString(userPhoto);
-                    User user = new User();
-                    user.setId(userId);
-                    if (!image.isEmpty()) {
-                        user.setPhoto(image);
-                        isPhotoUploaded = dao.changePhoto(user);
-                    }
-                    if (isPhotoUploaded) {
-                        ((User) requestContent.getSessionAttributes().get(USER)).setPhoto(image);
-                    }
+                String convertedPhoto = convertImageToBase64(userPhoto);
+                user.setId(userId);
+                user.setPhoto(convertedPhoto);
+                isPhotoUploaded = dao.changePhoto(user);
+                if (isPhotoUploaded) {
+                    ((User) requestContent.getSessionAttributes().get(USER)).setPhoto(convertedPhoto);
                 }
-                requestContent.insertAttribute(IS_PHOTO_UPLOADED, isPhotoUploaded);
-            } catch (DAOException e) {
-                throw new ReceiverException(e);
             }
+            requestContent.insertAttribute(IS_PHOTO_UPLOADED, isPhotoUploaded);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
         }
     }
-
-    private String convertImageToString(Part userPhoto) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream is = null;
+    
+    private String convertImageToBase64(Part userPhoto) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        InputStream inputStream = null;
         String photo = null;
         try {
-            is = userPhoto.getInputStream();
-            int reads = is.read();
+            inputStream = userPhoto.getInputStream();
+            int reads = inputStream.read();
             while (reads != -1) {
-                baos.write(reads);
-                reads = is.read();
+                byteArrayOutputStream.write(reads);
+                reads = inputStream.read();
             }
-            byte[] b = baos.toByteArray();
+            byte[] b = byteArrayOutputStream.toByteArray();
             photo = Base64.getEncoder().encodeToString(b);
         } catch (IOException e) {
             LOGGER.log(Level.ERROR, String.format("Can not convert to string. Reason : %s", e));
-        }finally {
+        } finally {
             try {
-                is.close();
-                baos.close();
+                inputStream.close();
+                byteArrayOutputStream.close();
             } catch (IOException e) {
                 LOGGER.log(Level.ERROR, String.format("Can not close stream. Reason : %s", e));
             }

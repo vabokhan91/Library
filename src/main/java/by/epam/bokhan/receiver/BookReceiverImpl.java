@@ -74,7 +74,7 @@ public class BookReceiverImpl implements BookReceiver {
 
 
     @Override
-    public void getExplicitBookInfo(RequestContent requestContent) throws ReceiverException {
+    public void getExplicitBookInformation(RequestContent requestContent) throws ReceiverException {
         BookDAO dao = new BookDAOImpl();
         Book book = null;
         List<Order> orders = null;

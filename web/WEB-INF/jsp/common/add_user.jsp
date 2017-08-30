@@ -78,9 +78,9 @@
                             <br/>
 
                             <div class="form-group row">
-                                <label for="login" class="col-sm-2 col-form-label required"><fmt:message key="label.user.login" bundle="${messages}"/></label>
+                                <label for="login" class="col-sm-2 col-form-label"><fmt:message key="label.user.login" bundle="${messages}"/></label>
                                 <div class="col-5">
-                                    <input type = "text" class="form-control" id="login" name = "login" value="" placeholder=<fmt:message key="label.user.login" bundle="${messages}"/> pattern="[\w!()*&^%$@]{5,12}" required/>
+                                    <input type = "text" class="form-control" id="login" name = "login" value="" placeholder=<fmt:message key="label.user.login" bundle="${messages}"/> pattern="[\w!()*&^%$@]{5,12}"/>
                                     <small class="form-text text-muted">
                                         <fmt:message key="label.login.login_info" bundle="${messages}"/>
                                     </small>
@@ -88,9 +88,9 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="password" class="col-sm-2 col-form-label required"><fmt:message key="label.password"  bundle="${messages}"/></label>
+                                <label for="password" class="col-sm-2 col-form-label "><fmt:message key="label.password"  bundle="${messages}"/></label>
                                 <div class="col-5">
-                                    <input type = "password" class="form-control" id="password" name = "user_password" value="" placeholder=<fmt:message key="label.password"  bundle="${messages}"/> pattern="[\w!()*&^%$@]{3,12}" required/>
+                                    <input type = "password" class="form-control" id="password" name = "user_password" value="" placeholder=<fmt:message key="label.password"  bundle="${messages}"/> pattern="[\w!()*&^%$@]{3,12}" />
                                     <small class="form-text text-muted">
                                         <fmt:message key="label.password.password_info" bundle="${messages}"/>
                                     </small>
@@ -98,9 +98,9 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="confirm_password" class="col-sm-2 col-form-label required"><fmt:message key="label.confirm_password" bundle="${messages}"/></label>
+                                <label for="confirm_password" class="col-sm-2 col-form-label "><fmt:message key="label.confirm_password" bundle="${messages}"/></label>
                                 <div class="col-5">
-                                    <input type = "password" class="form-control" id="confirm_password" name = "confirm_password" value="" placeholder=<fmt:message key="label.placeholder.confirm_password" bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
+                                    <input type = "password" class="form-control" id="confirm_password" name = "confirm_password" value="" placeholder=<fmt:message key="label.placeholder.confirm_password" bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" />
                                 </div>
                             </div>
                         </c:when>

@@ -13,14 +13,14 @@ public class BookValidator {
     private static final String REGEX_FOR_BOOK_PAGE = "\\d{1,5}";
     private static final String REGEX_FOR_BOOK_YEAR = "\\d{1,5}";
     private static final String REGEX_FOR_BOOK_PUBLISHER = "[\\d\\D]{1,50}";
-    private static final String REGEX_FOR_BOOK_GENRE = "[a-zA-Zа-яА-ЯеЁ_\\s]{1,30}";
+    private static final String REGEX_FOR_BOOK_GENRE = "[a-zA-Zа-яА-ЯеЁ\\s]{1,30}";
     private static final String REGEX_FOR_BOOK_PUBLISHER_ID = "\\d{1,5}";
     private static final String REGEX_FOR_BOOK_GENRE_ID = "\\d{1,5}";
     private static final String REGEX_FOR_AUTHOR_ID = "\\d{1,5}";
     private static final String REGEX_FOR_DATE_OF_BIRTH = "^(\\d){3,4}[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
-    private static final String REGEX_FOR_NAME = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
-    private static final String REGEX_FOR_SURNAME = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
-    private static final String REGEX_FOR_PATRONYMIC = "[^\\d\\W]{1,40}|([а-яА-Я]{1,40})";
+    private static final String REGEX_FOR_NAME = "[a-zA-Z\\s]{1,40}|([а-яА-ЯёЁ\\s]{1,40})";
+    private static final String REGEX_FOR_SURNAME = "[a-zA-Z\\s]{1,40}|([а-яА-ЯёЁ\\s]{1,40})";
+    private static final String REGEX_FOR_PATRONYMIC = "[a-zA-Z\\s]{1,40}|([а-яА-ЯёЁ\\s]{1,40})";
     private static final String REGEX_FOR_BOOK_LOCATION = "[a-zA-Zа-яА-Я_]{1,30}";
     private static final String REGEX_FOR_ORDER_ID = "\\d{1,5}";
     private static final String REGEX_FOR_ONLINE_ORDER_ID = "\\d{1,5}";
@@ -77,9 +77,16 @@ public class BookValidator {
     }
 
     public static boolean isBookPublisherValid(String publisher) {
-        Pattern patternForBookPublisher = Pattern.compile(REGEX_FOR_BOOK_PUBLISHER);
-        Matcher matcherForBookPublisher = patternForBookPublisher.matcher(publisher);
-        return publisher == null || publisher.isEmpty() || matcherForBookPublisher.matches();
+        boolean isBookPublisherValid;
+        if (publisher == null) {
+            isBookPublisherValid = true;
+        }else {
+            Pattern patternForBookPublisher = Pattern.compile(REGEX_FOR_BOOK_PUBLISHER);
+            Matcher matcherForBookPublisher = patternForBookPublisher.matcher(publisher);
+            isBookPublisherValid = matcherForBookPublisher.matches();
+        }
+
+        return isBookPublisherValid;
     }
 
     public static boolean isBookPublisherIdValid(String publisherId) {
@@ -153,9 +160,18 @@ public class BookValidator {
     }
 
     public static boolean isAuthorPatronymicValid(String patronymic) {
-        Pattern patternForPatronymic = Pattern.compile(REGEX_FOR_PATRONYMIC);
-        Matcher matcherForPatronymic = patternForPatronymic.matcher(patronymic);
-        return patronymic == null || patronymic.isEmpty() || matcherForPatronymic.matches();
+        boolean isPatronymicValid = false;
+        if (patronymic == null || patronymic.isEmpty()) {
+            isPatronymicValid = true;
+        }else {
+            Pattern patternForPatronymic = Pattern.compile(REGEX_FOR_PATRONYMIC);
+            Matcher matcherForPatronymic = patternForPatronymic.matcher(patronymic);
+            if (matcherForPatronymic.matches()) {
+                isPatronymicValid = true;
+            }
+        }
+
+        return isPatronymicValid;
     }
 
     public static boolean isBookLocationValid(String locationValue) {
@@ -166,7 +182,7 @@ public class BookValidator {
             if (matcherForLocation.matches()) {
                 Location[] locationValues = Location.values();
                 for (Location location : locationValues) {
-                    if (location.equals(Location.valueOf(locationValue.toUpperCase()))) {
+                    if (location.name().equalsIgnoreCase(locationValue)) {
                         isLocationValid = true;
                     }
                 }

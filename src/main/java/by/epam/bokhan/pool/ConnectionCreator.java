@@ -17,7 +17,7 @@ class ConnectionCreator {
     private static final String DB_URL = "db.url";
     private static final String DB_USER = "db.user";
     private static final String DB_PASSWORD = "db.password";
-    private static final String DB_CONFIG = "/resource/database";
+    private static final String DB_CONFIG = "resource.database";
     private static ResourceBundle resourceBundle;
     private static String url;
     private static String login;

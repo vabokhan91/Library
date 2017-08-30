@@ -9,9 +9,10 @@ import java.util.List;
 
 
 public interface BookReceiver extends Receiver {
+
     void getAllBooks(RequestContent requestContent) throws ReceiverException;
 
-    void getExplicitBookInfo(RequestContent requestContent) throws ReceiverException;
+    void getExplicitBookInformation(RequestContent requestContent) throws ReceiverException;
 
     void findBook(RequestContent requestContent) throws ReceiverException;
 

@@ -12,7 +12,7 @@ public interface UserDAO {
 
     boolean registerUser(User user) throws DAOException;
 
-    boolean removeUserById(int id) throws DAOException;
+    boolean removeUser(int id) throws DAOException;
 
     List<User> findUserByLibraryCard(int libraryCard) throws DAOException ;
 
@@ -34,9 +34,7 @@ public interface UserDAO {
 
     boolean editUser(User user) throws DAOException;
 
-    boolean changePassword(int libraryCard, String newPassword) throws DAOException ;
-
-    String getUserPassword(int libraryCard) throws DAOException;
+    boolean changePassword(int libraryCard,String oldPassword, String newPassword) throws DAOException ;
 
     boolean changeLogin(int userId, String login) throws DAOException;
 

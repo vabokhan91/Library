@@ -8,6 +8,7 @@ import by.epam.bokhan.exception.ReceiverException;
 import java.sql.SQLException;
 
 public interface UserReceiver extends Receiver {
+
     void registerUser(RequestContent requestContent) throws ReceiverException;
 
     void login(RequestContent content) throws ReceiverException;
@@ -38,5 +39,5 @@ public interface UserReceiver extends Receiver {
 
     void addUser(RequestContent requestContent) throws ReceiverException;
 
-    void uploadPhoto(RequestContent requestContent) throws ReceiverException;
+    void uploadUserPhoto(RequestContent requestContent) throws ReceiverException;
 }

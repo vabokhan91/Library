@@ -80,6 +80,10 @@ public class ConnectionPool {
         return connection;
     }
 
+    public int size() {
+        return connectionQueue.size();
+    }
+
     void releaseConnection(ProxyConnection connection) {
         connectionQueue.offer(connection);
     }
