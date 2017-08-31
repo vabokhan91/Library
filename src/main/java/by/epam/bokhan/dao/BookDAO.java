@@ -18,7 +18,7 @@ public interface BookDAO {
 
     List<Order> getBooksLastOrder(int bookId) throws DAOException;
 
-    Book getBookForEditing(int bookId) throws DAOException;
+//    Book getBookForEditing(int bookId) throws DAOException;
 
     List<Genre> getAllGenres() throws DAOException;
 
@@ -34,9 +34,7 @@ public interface BookDAO {
 
     boolean deleteBook(int bookId) throws DAOException;
 
-    boolean addOrder(Book book, String typeOfOrder) throws DAOException;
-
-    User getUserOrders(int libraryCard) throws DAOException;
+    boolean addOrder(Order order, String typeOfOrder) throws DAOException;
 
     boolean returnBook(int orderId, int bookId) throws DAOException;
 
@@ -52,7 +50,7 @@ public interface BookDAO {
 
     boolean addOnlineOrder(int bookId, int libraryCard) throws DAOException;
 
-    User getUserOnlineOrders(int libraryCard) throws DAOException;
+
 
     boolean cancelOnlineOrder(int orderId, int bookId) throws DAOException;
 

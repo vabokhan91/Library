@@ -77,22 +77,23 @@ public class BookValidator {
     }
 
     public static boolean isBookPublisherValid(String publisher) {
-        boolean isBookPublisherValid;
-        if (publisher == null) {
-            isBookPublisherValid = true;
-        }else {
+        boolean isBookPublisherValid = false;
+        if (publisher != null && !publisher.isEmpty()) {
             Pattern patternForBookPublisher = Pattern.compile(REGEX_FOR_BOOK_PUBLISHER);
             Matcher matcherForBookPublisher = patternForBookPublisher.matcher(publisher);
             isBookPublisherValid = matcherForBookPublisher.matches();
         }
-
         return isBookPublisherValid;
     }
 
     public static boolean isBookPublisherIdValid(String publisherId) {
-        Pattern patternForBookPublisherId = Pattern.compile(REGEX_FOR_BOOK_PUBLISHER_ID);
-        Matcher matcherForBookPublisherId = patternForBookPublisherId.matcher(publisherId);
-        return publisherId == null || publisherId.isEmpty() || matcherForBookPublisherId.matches();
+        boolean isBookPublisherIdValid = false;
+        if (publisherId != null && !publisherId.isEmpty()) {
+            Pattern patternForBookPublisherId = Pattern.compile(REGEX_FOR_BOOK_PUBLISHER_ID);
+            Matcher matcherForBookPublisherId = patternForBookPublisherId.matcher(publisherId);
+            isBookPublisherIdValid = matcherForBookPublisherId.matches();
+        }
+        return isBookPublisherIdValid;
     }
 
     public static boolean isBookGenreNameValid(String genreName) {

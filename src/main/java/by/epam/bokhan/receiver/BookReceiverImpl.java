@@ -25,7 +25,6 @@ import static by.epam.bokhan.validator.UserValidator.*;
 public class BookReceiverImpl implements BookReceiver {
     private static final Logger LOGGER = LogManager.getLogger();
 
-
     @Override
     public void getAllBooks(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
@@ -40,8 +39,6 @@ public class BookReceiverImpl implements BookReceiver {
     @Override
     public void findBook(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
-
-
         List<Book> books = null;
         String queryValue = (String) requestContent.getRequestParameters().get(FIND_QUERY_VALUE);
         try {
@@ -58,7 +55,7 @@ public class BookReceiverImpl implements BookReceiver {
     }
 
     @Override
-    public void userFindBook(RequestContent requestContent) throws ReceiverException {
+    public void findBookForUser(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
         List<Book> books = null;
         String titleValue = (String) requestContent.getRequestParameters().get(BOOK_TITLE);
@@ -72,9 +69,8 @@ public class BookReceiverImpl implements BookReceiver {
         }
     }
 
-
     @Override
-    public void getExplicitBookInformation(RequestContent requestContent) throws ReceiverException {
+    public void getExplicitBookInfo(RequestContent requestContent) throws ReceiverException {
         BookDAO dao = new BookDAOImpl();
         Book book = null;
         List<Order> orders = null;
@@ -85,7 +81,6 @@ public class BookReceiverImpl implements BookReceiver {
                 book = dao.getExplicitBookInfo(bookId);
                 orders = dao.getBooksLastOrder(bookId);
             }
-
             requestContent.insertParameter(FOUND_BOOK, book);
             requestContent.insertParameter(FOUND_ORDER, orders);
         } catch (DAOException e) {
@@ -104,7 +99,7 @@ public class BookReceiverImpl implements BookReceiver {
         try {
             if (isBookIdValid(bookIdValue)) {
                 int bookId = Integer.parseInt(bookIdValue);
-                books = dao.getBookForEditing(bookId);
+                books = dao.getExplicitBookInfo(bookId);
                 genres = dao.getAllGenres();
                 authors = dao.getAllAuthors();
                 publishers = dao.getAllPublishers();
@@ -151,12 +146,10 @@ public class BookReceiverImpl implements BookReceiver {
                 int bookId = Integer.parseInt(bookIdValue);
                 int pages = Integer.parseInt(pageValue);
                 int year = Integer.parseInt(yearValue);
-                if (publisherIdValue != null && !publisherIdValue.isEmpty()) {
-                    int publisherId = Integer.parseInt(publisherIdValue);
-                    Publisher publisher = new Publisher();
-                    publisher.setId(publisherId);
-                    book.setPublisher(publisher);
-                }
+                Publisher publisher = new Publisher();
+                int publisherId = Integer.parseInt(publisherIdValue);
+                publisher.setId(publisherId);
+                book.setPublisher(publisher);
                 book.setId(bookId);
                 book.setTitle(title);
                 book.setPages(pages);
@@ -174,8 +167,10 @@ public class BookReceiverImpl implements BookReceiver {
                     book.addAuthor(author);
                 }
                 if (bookImage != null) {
-                    String image = convertImageToString(bookImage);
-                    book.setImage(image);
+                    String image = convertImageToBase64(bookImage);
+                    if (!image.isEmpty()) {
+                        book.setImage(image);
+                    }
                 }
                 isBookEdited = bookDAO.editBook(book);
             }
@@ -184,7 +179,6 @@ public class BookReceiverImpl implements BookReceiver {
             throw new ReceiverException(e);
         }
     }
-
 
     @Override
     public void addAuthor(RequestContent requestContent) throws ReceiverException {
@@ -368,11 +362,8 @@ public class BookReceiverImpl implements BookReceiver {
                 Book book = new Book();
                 int pages = Integer.parseInt(pageValue);
                 int yearOfPublishing = Integer.parseInt(yearValue);
-                if (publisherIdValue != null && !publisherIdValue.isEmpty()) {
-                    Publisher publisher = new Publisher();
-                    publisher.setId(Integer.parseInt(publisherIdValue));
-                    book.setPublisher(publisher);
-                }
+                Publisher publisher = new Publisher();
+                publisher.setId(Integer.parseInt(publisherIdValue));
                 Location location = Location.valueOf((locationValue).toUpperCase());
                 List<Genre> genres = new ArrayList<>();
                 for (String genreIdValue : genresIdValues) {
@@ -387,7 +378,7 @@ public class BookReceiverImpl implements BookReceiver {
                     authors.add(author);
                 }
                 if (bookImage != null) {
-                    String image = convertImageToString(bookImage);
+                    String image = convertImageToBase64(bookImage);
                     if (!image.isEmpty()) {
                         book.setImage(image);
                     }
@@ -398,6 +389,7 @@ public class BookReceiverImpl implements BookReceiver {
                 book.setIsbn(isbn);
                 book.setDescription(description);
                 book.setLocation(location);
+                book.setPublisher(publisher);
                 book.setGenre(genres);
                 book.setAuthors(authors);
                 isBookAdded = bookDAO.addBook(book);
@@ -432,11 +424,11 @@ public class BookReceiverImpl implements BookReceiver {
             String bookIdValue = (String) requestContent.getRequestParameters().get(BOOK_ID);
             String librarianIdValue = (String) requestContent.getRequestParameters().get(LIBRARIAN_ID);
             String libraryCardId = (String) requestContent.getRequestParameters().get(LIBRARY_CARD);
-            if (isBookIdValid(bookIdValue) && isUserIdValid(librarianIdValue) && isLibraryCardIdValid(libraryCardId)) {
+            String typeOfOrder = (String) requestContent.getRequestParameters().get(TYPE_OF_ORDER);
+            if (isBookIdValid(bookIdValue) && isUserIdValid(librarianIdValue) && isLibraryCardIdValid(libraryCardId) && isBookLocationValid(typeOfOrder)) {
                 int bookId = Integer.parseInt(bookIdValue);
                 int librarianId = Integer.parseInt(librarianIdValue);
                 int libraryCard = Integer.parseInt(libraryCardId);
-                String typeOfOrder = (String) requestContent.getRequestParameters().get(TYPE_OF_ORDER);
                 Book book = new Book();
                 book.setId(bookId);
                 Order order = new Order();
@@ -446,8 +438,8 @@ public class BookReceiverImpl implements BookReceiver {
                 User librarian = new User();
                 librarian.setId(librarianId);
                 order.setLibrarian(librarian);
-                book.addOrder(order);
-                isOrderAdded = bookDAO.addOrder(book, typeOfOrder);
+                order.setBook(book);
+                isOrderAdded = bookDAO.addOrder(order, typeOfOrder);
             }
             requestContent.insertAttribute(IS_ORDER_ADDED, isOrderAdded);
         } catch (DAOException e) {
@@ -455,21 +447,6 @@ public class BookReceiverImpl implements BookReceiver {
         }
     }
 
-    @Override
-    public void getUserOrders(RequestContent requestContent) throws ReceiverException {
-        BookDAO bookDAO = new BookDAOImpl();
-        User user = null;
-        try {
-            String libraryCardValue = (String) requestContent.getRequestParameters().get(LIBRARY_CARD);
-            if (isLibraryCardIdValid(libraryCardValue)) {
-                int libraryCard = Integer.parseInt(libraryCardValue);
-                user = bookDAO.getUserOrders(libraryCard);
-            }
-            requestContent.insertAttribute(USER_ORDERS, user);
-        } catch (DAOException e) {
-            throw new ReceiverException(e);
-        }
-    }
 
     @Override
     public void returnBook(RequestContent requestContent) throws ReceiverException {
@@ -508,22 +485,6 @@ public class BookReceiverImpl implements BookReceiver {
     }
 
     @Override
-    public void getUserOnlineOrders(RequestContent requestContent) throws ReceiverException {
-        BookDAO bookDAO = new BookDAOImpl();
-        User user = null;
-        try {
-            String libraryCardValue = (String) requestContent.getRequestParameters().get(LIBRARY_CARD);
-            if (isLibraryCardIdValid(libraryCardValue)) {
-                int libraryCard = Integer.parseInt(libraryCardValue);
-                user = bookDAO.getUserOnlineOrders(libraryCard);
-            }
-            requestContent.insertParameter(USER_ORDERS, user);
-        } catch (DAOException e) {
-            throw new ReceiverException(e);
-        }
-    }
-
-    @Override
     public void cancelOnlineOrder(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
         boolean isOnlineOrderCancelled = false;
@@ -543,7 +504,6 @@ public class BookReceiverImpl implements BookReceiver {
             throw new ReceiverException(e);
         }
     }
-
 
     @Override
     public void executeOnlineOrder(RequestContent requestContent) throws ReceiverException {
@@ -584,7 +544,7 @@ public class BookReceiverImpl implements BookReceiver {
     }
 
     @Override
-    public void findBookByGenre(RequestContent requestContent) throws ReceiverException {
+    public void getBookByGenre(RequestContent requestContent) throws ReceiverException {
         BookDAO bookDAO = new BookDAOImpl();
         List<Book> books = null;
         try {
@@ -612,7 +572,7 @@ public class BookReceiverImpl implements BookReceiver {
         }
     }
 
-    private String convertImageToString(Part bookImage) {
+    private String convertImageToBase64(Part bookImage) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         InputStream is = null;
         String image = null;
@@ -637,6 +597,4 @@ public class BookReceiverImpl implements BookReceiver {
         }
         return image;
     }
-
-
 }

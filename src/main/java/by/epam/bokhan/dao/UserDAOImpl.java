@@ -1,15 +1,13 @@
 package by.epam.bokhan.dao;
 
-import by.epam.bokhan.entity.Book;
-import by.epam.bokhan.entity.Order;
-import by.epam.bokhan.entity.Role;
+import by.epam.bokhan.entity.*;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.pool.ConnectionPool;
-import by.epam.bokhan.entity.User;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static by.epam.bokhan.dao.DAOConstant.*;
@@ -62,6 +60,19 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static final String SQL_SET_NEW_PASSWORD = "UPDATE user SET password = ? where user.id = ?";
     private static final String SQL_SET_NEW_LOGIN = "UPDATE user SET login = ? where user.id = ?";
     private static final String SQL_CHANGE_USER_PHOTO = "UPDATE user SET photo = ? where user.id = ?";
+    private static final String SQL_GET_USER_ORDERS = "Select orders.id, book.id, book.title, book.isbn, user.id,library_card.id, user.name, user.surname, user.patronymic, library_card.mobile_phone, orders.order_date, orders.expiration_date, orders.return_date \n" +
+            "from orders \n" +
+            "right join library_card on orders.library_card_id = library_card.id\n" +
+            "left join user on user.id = library_card.user_id\n" +
+            "left join book on book.id = orders.book_id\n" +
+            "where library_card.id = ?";
+    private static final String SQL_GET_USER_ONLINE_ORDERS = "Select online_orders.id, book.id, book.title, book.isbn, user.id, user.name, user.surname, user.patronymic, library_card.id,library_card.mobile_phone, online_orders.order_date, online_orders.expiration_date, online_orders.order_execution_date,online_orders.order_status\n" +
+            "from online_orders\n" +
+            "right join library_card on online_orders.library_card_id = library_card.id\n" +
+            "right join user\n" +
+            "on library_card.user_id = user.id\n" +
+            "left join book on book.id = online_orders.book_id\n" +
+            "where library_card.id =?";
 
     @Override
     public User getUserByLogin(String login) throws DAOException {
@@ -661,7 +672,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
     @Override
     public boolean changePhoto(User user) throws DAOException {
-        boolean isPhotoChanged = false;
+        boolean isPhotoChanged;
         Connection connection = null;
         PreparedStatement setNewPhotoStatement = null;
         try {
@@ -676,6 +687,130 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             throw new DAOException(String.format("Can not change photo. Reason : %s", e.getMessage()), e);
         } finally {
             closeStatement(setNewPhotoStatement);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public User getUserOrders(int libraryCard) throws DAOException {
+        User user = new User();
+        List<Order> userOrders = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement getUserOrdersStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            getUserOrdersStatement = connection.prepareStatement(SQL_GET_USER_ORDERS);
+            getUserOrdersStatement.setInt(1, libraryCard);
+            ResultSet resultSet = getUserOrdersStatement.executeQuery();
+            while (resultSet.next()) {
+                int userId = resultSet.getInt(USER_ID);
+                if (user.getId() != userId) {
+                    int userLibraryCard = resultSet.getInt(LIBRARY_CARD);
+                    String userName = resultSet.getString(USER_NAME);
+                    String userSurname = resultSet.getString(USER_SURNAME);
+                    String userPatronymic = resultSet.getString(USER_PATRONYMIC);
+                    String userMobilePhone = resultSet.getString(MOBILE_PHONE);
+                    user.setId(userId);
+                    user.setLibraryCardNumber(userLibraryCard);
+                    user.setName(userName);
+                    user.setSurname(userSurname);
+                    user.setPatronymic(userPatronymic);
+                    user.setMobilePhone(userMobilePhone);
+                } else {
+                    int orderId = resultSet.getInt(ORDER_ID);
+                    if (orderId != 0) {
+                        Order order = new Order();
+                        Book book = new Book();
+                        order.setId(orderId);
+                        int bookId = resultSet.getInt(BOOK_ID);
+                        String bookTitle = resultSet.getString(BOOK_TITLE);
+                        String bookIsbn = resultSet.getString(BOOK_ISBN);
+                        book.setId(bookId);
+                        book.setTitle(bookTitle);
+                        book.setIsbn(bookIsbn);
+                        order.setBook(book);
+                        Timestamp lastOrderTimeStamp = resultSet.getTimestamp(ORDER_DATE);
+                        LocalDate lastOrderDate = lastOrderTimeStamp != null ? lastOrderTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setOrderDate(lastOrderDate);
+                        Timestamp expirationDateTimeStamp = resultSet.getTimestamp(ORDER_EXPIRATION_DATE);
+                        LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setExpirationDate(expirationDate);
+                        Timestamp returnDateTimeStamp = resultSet.getTimestamp(ORDER_RETURN_DATE);
+                        LocalDate returnDate = returnDateTimeStamp != null ? returnDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setReturnDate(returnDate);
+                        userOrders.add(order);
+                    }
+                }
+            }
+            user.setOrders(userOrders);
+            return user;
+        } catch (SQLException e) {
+            throw new DAOException(String.format("Can not get user orders. Reason: %s", e.getMessage()), e);
+        } finally {
+            closeStatement(getUserOrdersStatement);
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public User getUserOnlineOrders(int libraryCard) throws DAOException {
+        User user = new User();
+        List<Order> userOrders = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement getUserOnlineOrdersStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            getUserOnlineOrdersStatement = connection.prepareStatement(SQL_GET_USER_ONLINE_ORDERS);
+            getUserOnlineOrdersStatement.setInt(1, libraryCard);
+            ResultSet resultSet = getUserOnlineOrdersStatement.executeQuery();
+            while (resultSet.next()) {
+                int userId = resultSet.getInt(USER_ID);
+                if (user.getId() != userId) {
+                    int userLibraryCard = resultSet.getInt(LIBRARY_CARD);
+                    String userName = resultSet.getString(USER_NAME);
+                    String userSurname = resultSet.getString(USER_SURNAME);
+                    String userPatronymic = resultSet.getString(USER_PATRONYMIC);
+                    String mobilePhone = resultSet.getString(MOBILE_PHONE);
+                    user.setId(userId);
+                    user.setLibraryCardNumber(userLibraryCard);
+                    user.setName(userName);
+                    user.setSurname(userSurname);
+                    user.setPatronymic(userPatronymic);
+                    user.setMobilePhone(mobilePhone);
+                } else {
+                    int ordersId = resultSet.getInt(ONLINE_ORDER_ID);
+                    if (ordersId != 0) {
+                        OnlineOrder order = new OnlineOrder();
+                        Book book = new Book();
+                        int bookId = resultSet.getInt(BOOK_ID);
+                        String bookTitle = resultSet.getString(BOOK_TITLE);
+                        String bookIsbn = resultSet.getString(BOOK_ISBN);
+                        book.setId(bookId);
+                        book.setTitle(bookTitle);
+                        book.setIsbn(bookIsbn);
+                        String orderStatus = resultSet.getString(ONLINE_ORDER_STATUS);
+                        order.setLocation(Location.valueOf(orderStatus.toUpperCase()));
+                        order.setBook(book);
+                        order.setId(ordersId);
+                        Timestamp orderDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_DATE_OF_ORDER);
+                        LocalDate OrderDate = orderDateTimeStamp != null ? orderDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setOrderDate(OrderDate);
+                        Timestamp expirationDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_EXPIRATION_DATE);
+                        LocalDate expirationDate = expirationDateTimeStamp != null ? expirationDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setExpirationDate(expirationDate);
+                        Timestamp executionDateTimeStamp = resultSet.getTimestamp(ONLINE_ORDER_EXECUTION_DATE);
+                        LocalDate executionDate = executionDateTimeStamp != null ? executionDateTimeStamp.toLocalDateTime().toLocalDate() : null;
+                        order.setReturnDate(executionDate);
+                        userOrders.add(order);
+                    }
+                }
+            }
+            user.setOrders(userOrders);
+            return user;
+        } catch (SQLException e) {
+            throw new DAOException(String.format("Can not get users' online orders. Reason: %s", e.getMessage()), e);
+        } finally {
+            closeStatement(getUserOnlineOrdersStatement);
             closeConnection(connection);
         }
     }

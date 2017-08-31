@@ -40,4 +40,8 @@ public interface UserDAO {
 
     boolean changePhoto(User user) throws DAOException;
 
+    User getUserOrders(int libraryCard) throws DAOException;
+
+    User getUserOnlineOrders(int libraryCard) throws DAOException;
+
 }

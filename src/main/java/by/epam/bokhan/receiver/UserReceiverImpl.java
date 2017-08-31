@@ -358,7 +358,39 @@ public class UserReceiverImpl implements UserReceiver {
             throw new ReceiverException(e);
         }
     }
-    
+
+    @Override
+    public void getUserOrders(RequestContent requestContent) throws ReceiverException {
+        UserDAO userDAO = new UserDAOImpl();
+        User user = null;
+        try {
+            String libraryCardValue = (String) requestContent.getRequestParameters().get(LIBRARY_CARD);
+            if (isLibraryCardIdValid(libraryCardValue)) {
+                int libraryCard = Integer.parseInt(libraryCardValue);
+                user = userDAO.getUserOrders(libraryCard);
+            }
+            requestContent.insertAttribute(USER_ORDERS, user);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void getUserOnlineOrders(RequestContent requestContent) throws ReceiverException {
+        UserDAO userDAO = new UserDAOImpl();
+        User user = null;
+        try {
+            String libraryCardValue = (String) requestContent.getRequestParameters().get(LIBRARY_CARD);
+            if (isLibraryCardIdValid(libraryCardValue)) {
+                int libraryCard = Integer.parseInt(libraryCardValue);
+                user = userDAO.getUserOnlineOrders(libraryCard);
+            }
+            requestContent.insertParameter(USER_ORDERS, user);
+        } catch (DAOException e) {
+            throw new ReceiverException(e);
+        }
+    }
+
     private String convertImageToBase64(Part userPhoto) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         InputStream inputStream = null;

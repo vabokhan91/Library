@@ -2,10 +2,7 @@ package by.epam.bokhan.receiver;
 
 
 import by.epam.bokhan.content.RequestContent;
-import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
-
-import java.sql.SQLException;
 
 public interface UserReceiver extends Receiver {
 
@@ -40,4 +37,8 @@ public interface UserReceiver extends Receiver {
     void addUser(RequestContent requestContent) throws ReceiverException;
 
     void uploadUserPhoto(RequestContent requestContent) throws ReceiverException;
+
+    void getUserOrders(RequestContent requestContent) throws ReceiverException;
+
+    void getUserOnlineOrders(RequestContent requestContent) throws ReceiverException;
 }
