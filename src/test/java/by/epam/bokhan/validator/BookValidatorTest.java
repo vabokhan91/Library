@@ -188,7 +188,7 @@ public class BookValidatorTest {
                     {"ДЭМ, Москва", true},
                     {"qwerty!", true},
                     {"qwer-123", true},
-                    {null, true}
+                    {null, false}
             });
         }
 

@@ -16,7 +16,6 @@ public class CancelOnlineOrderCommand extends AbstractCommand {
         super.execute(content);
         content.insertParameter(PAGE, CANCEL_ONLINE_ORDER_STATUS_COMMAND);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
-
         content.insertParameter(INVALIDATE, false);
     }
 }

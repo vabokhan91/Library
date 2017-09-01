@@ -24,7 +24,7 @@
 <body>
 
 <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-<a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/><br/>
+<a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
 <c:if test="${not empty user}">
 
     <ctg:is-admin>

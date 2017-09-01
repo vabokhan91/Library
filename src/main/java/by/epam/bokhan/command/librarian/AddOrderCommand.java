@@ -9,8 +9,6 @@ import static by.epam.bokhan.command.librarian.LibrarianConstant.*;
 
 public class AddOrderCommand extends AbstractCommand {
 
-
-
     public AddOrderCommand(Receiver receiver) {
         super(receiver);
     }

@@ -41,11 +41,10 @@
 
             <div class="row">
 
-
                 <div class="col-lg-6">
                     <div class="input-group">
 
-                        <form class="form-inline" method="post" action="/controller">
+                        <form class="form-inline" action="/controller">
                             <input type="hidden" name="command" value="find_user">
                             <fmt:message key="label.enter_library_card_or_surname" bundle="${messages}"/> :<br/>
                             <input type="text" class="form-control" name="find_query_value" value="" placeholder=<fmt:message key="label.library_card_or_surname" bundle="${messages}"/> required>

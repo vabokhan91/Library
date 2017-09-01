@@ -3,7 +3,6 @@ package by.epam.bokhan.dao;
 import by.epam.bokhan.entity.User;
 import by.epam.bokhan.exception.DAOException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

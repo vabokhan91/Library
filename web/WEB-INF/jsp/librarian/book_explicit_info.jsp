@@ -59,7 +59,7 @@
                                 <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${foundBook.publisher.name}<br/><br/>
                                 <fmt:message key="label.book.description" bundle="${messages}"/> : ${foundBook.description}<br/><br/>
                                 <c:if test="${user.role==Role.LIBRARIAN || user.role == Role.ADMINISTRATOR}">
-                                    <fmt:message key="label.book.location" bundle="${messages}"/> : ${foundBook.location.name}<br/>
+                                    <fmt:message key="label.book.orderStatus" bundle="${messages}"/> : ${foundBook.orderStatus.name}<br/>
                                 </c:if>
                             </div>
                         </div>
@@ -80,14 +80,14 @@
 
                             <c:if test="${user.role ==Role.LIBRARIAN}">
                                 <td>
-                                    <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
+                                    <form class="form-action" action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="get_book_for_editing"/>
                                         <input type="hidden" name="book_id" value="${foundBook.id}"/>
-                                        <button class="btn btn-secondary" type="submit" name="submit"><fmt:message key="label.book.edit_book"
+                                        <button class="btn btn-secondary" type="submit"><fmt:message key="label.book.edit_book"
                                                                                                                    bundle="${messages}"/></button>
                                     </form>
                                 </td>
-                                <c:if test="${item.getLocation()== Location.STORAGE}">
+                                <c:if test="${foundBook.getLocation()== Location.STORAGE}">
                                     <td>
                                         <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
                                             <input type="hidden" name="command" value="delete_book"/>
@@ -97,12 +97,12 @@
                                         </form>
                                     </td>
                                 </c:if>
-                                <c:if test="${item.getLocation()==Location.STORAGE}">
+                                <c:if test="${foundBook.getLocation()==Location.STORAGE}">
                                     <td>
-                                        <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
+                                        <form class="form-action" action="/controller" accept-charset="UTF-8">
                                             <input type="hidden" name="command" value="to_add_order_page"/>
                                             <input type="hidden" name="book_id" value="${foundBook.id}"/>
-                                            <button class="btn btn-secondary" type="submit" name="submit" ><fmt:message key="label.button.book.add_order"
+                                            <button class="btn btn-secondary" type="submit" ><fmt:message key="label.button.book.add_order"
                                                                                                                         bundle="${messages}"/></button>
                                         </form>
                                     </td>

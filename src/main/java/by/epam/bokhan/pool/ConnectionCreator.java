@@ -1,9 +1,6 @@
 package by.epam.bokhan.pool;
 
 import by.epam.bokhan.exception.ConnectionPoolException;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,14 +15,13 @@ class ConnectionCreator {
     private static final String DB_USER = "db.user";
     private static final String DB_PASSWORD = "db.password";
     private static final String DB_CONFIG = "resource.database";
-    private static ResourceBundle resourceBundle;
     private static String url;
     private static String login;
     private static String password;
 
     static {
         try {
-            resourceBundle = PropertyResourceBundle.getBundle(DB_CONFIG);
+            ResourceBundle resourceBundle = PropertyResourceBundle.getBundle(DB_CONFIG);
             url = resourceBundle.getString(DB_URL);
             login = resourceBundle.getString(DB_USER);
             password = resourceBundle.getString(DB_PASSWORD);

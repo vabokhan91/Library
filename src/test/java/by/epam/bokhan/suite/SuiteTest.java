@@ -1,7 +1,6 @@
 package by.epam.bokhan.suite;
 
 
-import by.epam.bokhan.encoder.PasswordEncoder;
 import by.epam.bokhan.encoder.PasswordEncoderTest;
 import by.epam.bokhan.pool.ConnectionPoolTest;
 import by.epam.bokhan.property.PropertyTest;

@@ -66,7 +66,7 @@
                                         bundle="${messages}"/></button>
                             </form>
 
-                            <c:if test="${item.location == Location.STORAGE && user.role==Role.CLIENT}">
+                            <c:if test="${item.orderStatus == Location.STORAGE && user.role==Role.CLIENT}">
                                 <td>
                                     <form method="post" action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="to_add_online_order_page"/>

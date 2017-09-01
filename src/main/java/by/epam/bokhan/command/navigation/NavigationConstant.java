@@ -4,10 +4,13 @@ package by.epam.bokhan.command.navigation;
 class NavigationConstant {
 
     static final String PAGE = "page";
+    static final String ERROR_PAGE = "path.page.error";
     static final String INVALIDATE = "invalidate";
     static final String ADMIN_PAGE = "path.page.admin";
     static final String USER_MAIN_PAGE = "path.page.authorized_user_main";
     static final String REGISTRATION_RESULT = "path.page.registration_result_page";
+    static final String TO_UNBLOCK_STATUS_PAGE = "path.page.unblock_status";
+    static final String TO_UNBLOCK_USER_PAGE = "path.page.unblock_user";
     static final String FIND_USER_PAGE = "path.page.find_user";
     static final String REGISTRATION_PAGE = "path.page.registration_page";
     static final String TO_BLOCK_STATUS_PAGE = "path.page.block_status";

@@ -7,10 +7,11 @@ class LibrarianConstant {
     static final String TYPE_OF_TRANSITION = "type_of_transition";
     static final String REDIRECT = "redirect";
     static final String INVALIDATE = "invalidate";
+    static final String USER_ORDERS_PAGE = "path.page.book.user_orders";
     static final String TO_ADD_AUTHOR_PAGE_COMMAND = "/controller?command=to_add_author_page";
-    static String TO_ADD_BOOK_PAGE_COMMAND = "/controller?command=to_add_book_page";
-    static String TO_ADD_GENRE_PAGE_COMMAND = "/controller?command=to_add_genre_page";
-    static String TO_ORDER_STATUS_PAGE_COMMAND = "/controller?command=to_order_status_page";
+    static final String TO_ADD_BOOK_PAGE_COMMAND = "/controller?command=to_add_book_page";
+    static final String TO_ADD_GENRE_PAGE_COMMAND = "/controller?command=to_add_genre_page";
+    static final String TO_ORDER_STATUS_PAGE_COMMAND = "/controller?command=to_order_status_page";
     static final String TO_ADD_PUBLISHER_PAGE_COMMAND = "/controller?command=to_add_publisher_page";
     static final String TO_DELETE_AUTHOR_PAGE_COMMAND = "/controller?command=to_delete_author_page";
     static final String TO_DELETE_BOOK_PAGE_RESULT_COMMAND = "/controller?command=to_book_delete_result_page";

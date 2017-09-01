@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="by.epam.bokhan.entity.Role" %>
 <%@ page import="by.epam.bokhan.entity.Location" %>
+<%@ page import="by.epam.bokhan.entity.OrderStatus" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
@@ -54,7 +55,7 @@
 
             <h5><fmt:message key="label.order.active_online_orders" bundle="${messages}"/></h5><br>
 
-            <table class="table ebalyavrot">
+            <table class="table">
                 <thead class="thead-default">
                 <tr>
                     <c:if test="${user.role == Role.LIBRARIAN}">
@@ -71,7 +72,7 @@
 
                 <c:forEach items="${userOrders.orders}" var="item">
 
-                    <c:if test="${item.location == Location.BOOKED}">
+                    <c:if test="${item.orderStatus == OrderStatus.BOOKED}">
                     <tr>
                         <c:if test="${user.role == Role.LIBRARIAN}">
                             <td>${item.id}</td>
@@ -82,7 +83,7 @@
                         <td>${item.expirationDate}</td>
                         <td>
                             <span class="expander">
-                                <c:if test="${user.role == Role.LIBRARIAN && item.location == Location.BOOKED}">
+                                <c:if test="${user.role == Role.LIBRARIAN && item.orderStatus == OrderStatus.BOOKED}">
                                     <form method="post" action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="get_online_order_information_page"/>
                                         <input type="hidden" name="online_order_id" value="${item.id}"/>
@@ -146,7 +147,7 @@
                         <td>${item.orderDate}</td>
                         <td>${item.expirationDate}</td>
                         <td>
-                                ${item.location.name}
+                                ${item.orderStatus.name}
 
                         </td>
                     </tr>

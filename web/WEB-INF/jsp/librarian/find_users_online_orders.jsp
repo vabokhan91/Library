@@ -36,7 +36,7 @@
                 <div class="col-lg-6">
                     <div class="input-group">
 
-                        <form class="form-inline" method="post" action="/controller">
+                        <form class="form-inline" action="/controller">
                             <input type="hidden" name="command" value="to_get_online_orders_page">
 
                             <div class="col-12">

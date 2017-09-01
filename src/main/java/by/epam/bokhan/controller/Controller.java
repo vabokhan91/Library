@@ -47,7 +47,6 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter(COMMAND) != null) {
-            String page;
             CommandFactory factory = new CommandFactory();
             RequestContent content = new RequestContent();
             content.extractValues(request);
@@ -56,7 +55,7 @@ public class Controller extends HttpServlet {
                 command.execute(content);
                 content.getParametersFromContent(request);
                 content.getAttributesFromContent(request);
-                page = (String) content.getRequestParameters().get(PAGE);
+                String page = (String) content.getRequestParameters().get(PAGE);
                 if (page != null) {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
                     String typeOfTransition = (String) request.getAttribute(TYPE_OF_TRANSITION);
@@ -78,6 +77,11 @@ public class Controller extends HttpServlet {
                 LOGGER.log(Level.ERROR, e.getMessage());
                 response.sendRedirect(ERROR_PAGE_COMMAND);
             }
+        } else {
+            String page = ConfigurationManager.getProperty(INDEX_PAGE);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+            dispatcher.forward(request, response);
+
         }
     }
 

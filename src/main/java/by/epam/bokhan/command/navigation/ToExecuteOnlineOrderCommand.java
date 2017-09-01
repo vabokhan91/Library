@@ -14,7 +14,6 @@ public class ToExecuteOnlineOrderCommand extends AbstractCommand {
     }
 
     public void execute(RequestContent content) throws ReceiverException {
-
         String page = ConfigurationManager.getProperty(EXECUTE_ONLINE_ORDER_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);

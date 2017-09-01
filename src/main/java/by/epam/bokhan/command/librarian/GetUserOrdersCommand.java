@@ -15,9 +15,8 @@ public class GetUserOrdersCommand extends AbstractCommand {
 
     public void execute(RequestContent content) throws ReceiverException {
         super.execute(content);
-//        String page = ConfigurationManager.getProperty(USER_ORDERS_PAGE);
-        content.insertParameter(PAGE, "/controller?command=to_user_orders_page");
-        content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
+        String page = ConfigurationManager.getProperty(USER_ORDERS_PAGE);
+        content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);
     }
 }

@@ -66,7 +66,7 @@
                                     <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${foundBook.year}<br/>
                                     <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${foundBook.pages}<br/>
                                     <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${foundBook.publisher.name}<br/><br/>
-                                    <fmt:message key="label.book.location" bundle="${messages}"/> : ${foundBook.location.name}<br/>
+                                    <fmt:message key="label.book.orderStatus" bundle="${messages}"/> : ${foundBook.orderStatus.name}<br/>
                                     <div>
                                         <br/>
                                         <br/>
@@ -177,7 +177,7 @@
             ${genres.getName()}
         </c:forEach><br/>
         <br/>
-        <fmt:message key="label.book.location" bundle="${messages}"/> : ${item.location}<br/>
+        <fmt:message key="label.book.orderStatus" bundle="${messages}"/> : ${item.orderStatus}<br/>
         <fmt:message key="label.book.type_of_order" bundle="${messages}"/> :
         <select name="type_of_order">
             <option  value="subscription"><fmt:message key="label.book.subscription" bundle="${messages}"/> </option>

@@ -6,4 +6,8 @@ class FilterConstant {
     static final String UTF8_CHARSET = "UTF-8";
     static final String ENCODING_PARAM ="Encoding Param";
     static final String INDEX_PATH = "INDEX_PATH";
+
+    private FilterConstant() {
+
+    }
 }

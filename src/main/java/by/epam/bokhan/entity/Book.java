@@ -22,7 +22,6 @@ public class Book {
         genre = new ArrayList<>();
         authors = new ArrayList<>();
         orders = new ArrayList<>();
-
     }
 
     public int getId() {

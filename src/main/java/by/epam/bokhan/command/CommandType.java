@@ -7,9 +7,9 @@ import by.epam.bokhan.command.navigation.*;
 import by.epam.bokhan.command.user.*;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
-import by.epam.bokhan.receiver.BookReceiverImpl;
+import by.epam.bokhan.receiver.impl.BookReceiverImpl;
 import by.epam.bokhan.receiver.UserReceiver;
-import by.epam.bokhan.receiver.UserReceiverImpl;
+import by.epam.bokhan.receiver.impl.UserReceiverImpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) {
             ((UserReceiverImpl) getCommand().getReceiver()).logout(content);
         }
-    },ERROR_PAGE(new ErrorPageCommand(new UserReceiverImpl())) {
+    },ERROR_PAGE(new ToErrorPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) {
         }
     },ADD_USER(new AddUserCommand(new UserReceiverImpl())) {
@@ -37,7 +37,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).removeUser(content);
         }
-    },TO_REMOVE_USER_STATUS_PAGE(new ToRemoveUserStatusPage(new UserReceiverImpl())) {
+    },TO_REMOVE_USER_STATUS_PAGE(new ToRemoveUserStatusPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -49,7 +49,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).registerUser(content);
         }
-    },TO_REGISTRATION_PAGE(new ToRegistrationPage(new UserReceiverImpl())) {
+    },TO_REGISTRATION_PAGE(new ToRegistrationPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -57,39 +57,27 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_MAIN_PAGE(new ToMainPage(new BookReceiverImpl())) {
+    },TO_MAIN_PAGE(new ToMainPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getRandomBooks(content);
         }
-    },TO_FIND_USER_PAGE(new ToFindUserPage(new UserReceiverImpl())) {
+    },TO_FIND_USER_PAGE(new ToFindUserPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_REMOVE_USER_PAGE(new ToRemoveUserPage(new UserReceiverImpl())) {
+    },TO_REMOVE_USER_PAGE(new ToRemoveUserPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_ADMIN_PAGE(new ToAdminPage(new UserReceiverImpl())) {
+    },TO_ADMIN_PAGE(new ToAdminPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_ADD_USER_PAGE(new ToAddUserPage(new UserReceiverImpl())) {
+    },TO_ADD_USER_PAGE(new ToAddUserPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_USER_ADDED_PAGE(new ToUserAddedPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },TO_USER_NOT_ADDED_PAGE(new ToUserNotAddedPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },TO_LIBRARIAN_MAIN_PAGE(new ToLibrarianMainPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },TO_BLOCK_USER_PAGE(new ToBlockUserPage(new UserReceiverImpl())) {
+    },TO_LIBRARIAN_MAIN_PAGE(new ToLibrarianMainPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -97,11 +85,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).blockUser(content);
         }
-    },TO_BLOCK_STATUS_PAGE(new ToBlockStatusPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },TO_UNBLOCK_USER_PAGE(new UnblockUserPage(new UserReceiverImpl())) {
+    },TO_BLOCK_STATUS_PAGE(new ToBlockStatusPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -109,7 +93,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).unblockUser(content);
         }
-    },TO_UNBLOCK_STATUS_PAGE(new UnblockStatusPage(new UserReceiverImpl())) {
+    },TO_UNBLOCK_STATUS_PAGE(new ToUnblockStatusPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -121,39 +105,23 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getNotBlockedUsers(content);
         }
-    },GET_USERS_FOR_REMOVAL(new GetUsersForRemovalCommand(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-            ((UserReceiverImpl) getCommand().getReceiver()).getAllUsers(content);
-        }
     },GET_ALL_USERS(new GetAllUsersCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getAllUsers(content);
-        }
-    },TO_SHOW_USERS_PAGE(new ToShowUsersPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
         }
     },GET_EXPLICIT_USER_INFO(new GetExplicitUserInfoCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getExplicitUserInfo(content);
         }
-    },TO_EXPLICIT_USER_INFO_PAGE(new ToExplicitUserPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
     },GET_USER_FOR_EDITING(new GetUserForEditingCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).findUser(content);
-        }
-    },TO_EDIT_USER_PAGE(new ToEditUserPage(new UserReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
         }
     },EDIT_USER(new EditUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).editUser(content);
         }
-    },TO_USER_EDIT_STATUS(new ToUserEditStatus(new UserReceiverImpl())) {
+    },TO_USER_EDIT_STATUS(new ToUserEditStatusCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException{
 
         }
@@ -161,11 +129,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getAllBooks(content);
         }
-    },TO_SHOW_BOOKS_PAGE(new ToShowBooksPage(new BookReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
-    },TO_FIND_BOOK_PAGE(new ToFindBookPage(new BookReceiverImpl())) {
+    },TO_FIND_BOOK_PAGE(new ToFindBookPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -177,7 +141,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getExplicitBookInfo(content);
         }
-    },TO_EXPLICIT_BOOK_INFO_PAGE(new ToExplicitBookInfoPage(new BookReceiverImpl())) {
+    },TO_EXPLICIT_BOOK_INFO_PAGE(new ToExplicitBookInfoPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -185,15 +149,11 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getBookForEditing(content);
         }
-    },TO_EDIT_BOOK_PAGE(new ToEditBookPageCommand(new BookReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
-        }
     },EDIT_BOOK(new EditBookCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).editBook(content);
         }
-    },TO_BOOK_EDIT_STATUS_PAGE(new ToBookEditStatusPage(new BookReceiverImpl())) {
+    },TO_BOOK_EDIT_STATUS_PAGE(new ToBookEditStatusPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -217,11 +177,11 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).deleteBook(content);
         }
-    },TO_BOOK_DELETE_RESULT_PAGE(new ToBookDeleteResultPage(new BookReceiverImpl())) {
+    },TO_BOOK_DELETE_RESULT_PAGE(new ToBookDeleteResultPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_ADD_ORDER_PAGE(new ToAddOrderPage(new BookReceiverImpl())) {
+    },TO_ADD_ORDER_PAGE(new ToAddOrderPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getExplicitBookInfo(content);
         }
@@ -229,21 +189,17 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).addOrder(content);
         }
-    },TO_ORDER_STATUS_PAGE(new ToOrderStatusPage(new BookReceiverImpl())) {
+    },TO_ORDER_STATUS_PAGE(new ToOrderStatusPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_FIND_USER_ORDERS_PAGE(new ToFindUserOrdersPage(new BookReceiverImpl())) {
+    },TO_FIND_USER_ORDERS_PAGE(new ToFindUserOrdersPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
     },GET_USER_ORDERS(new GetUserOrdersCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).getUserOrders(content);
-        }
-    },TO_USER_ORDERS_PAGE(new ToUserOrdersPageCommand(new BookReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
         }
     },RETURN_BOOK(new ReturnBookCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
@@ -253,7 +209,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_ADD_PUBLISHER_PAGE(new ToAddPublisherPage(new BookReceiverImpl())) {
+    },TO_ADD_PUBLISHER_PAGE(new ToAddPublisherPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -261,7 +217,7 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).addPublisher(content);
         }
-    },TO_ADD_GENRE_PAGE(new ToAddGenrePage(new BookReceiverImpl())) {
+    },TO_ADD_GENRE_PAGE(new ToAddGenrePageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -293,11 +249,11 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).deletePublisher(content);
         }
-    },TO_USER_MAIN_PAGE(new ToUserMainPage(new UserReceiverImpl())) {
+    },TO_USER_MAIN_PAGE(new ToUserMainPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_CHANGE_PASSWORD_PAGE(new ToChangePasswordPage(new UserReceiverImpl())) {
+    },TO_CHANGE_PASSWORD_PAGE(new ToChangePasswordPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -305,11 +261,11 @@ public enum CommandType {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).changePassword(content);
         }
-    },TO_CHANGE_PASSWORD_STATUS_PAGE(new ToChangePasswordStatusPage(new UserReceiverImpl())) {
+    },TO_CHANGE_PASSWORD_STATUS_PAGE(new ToChangePasswordStatusPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
-    },TO_CHANGE_LOGIN_PAGE(new ToChangeLoginPage(new UserReceiverImpl())) {
+    },TO_CHANGE_LOGIN_PAGE(new ToChangeLoginPageCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
 
         }
@@ -381,10 +337,6 @@ public enum CommandType {
     },GET_RANDOM_BOOKS_FROM_DATABASE(new GetRandomBooksFromDBCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((BookReceiverImpl) getCommand().getReceiver()).getRandomBooks(content);
-        }
-    },CHANGE_LANGUAGE_COMMAND(new ChangeLanguageCommand(new BookReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-
         }
     };
 

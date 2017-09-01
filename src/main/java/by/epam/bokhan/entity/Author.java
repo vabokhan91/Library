@@ -62,16 +62,21 @@ public class Author {
         if (o == null || getClass() != o.getClass()) return false;
 
         Author author = (Author) o;
-        return name.equals(author.name) &&
-                surname.equals(author.surname) &&
-                (patronymic != null ? patronymic.equals(author.patronymic) : author.patronymic == null);
+
+        if (id != author.id) return false;
+        if (name != null ? !name.equals(author.name) : author.name != null) return false;
+        if (surname != null ? !surname.equals(author.surname) : author.surname != null) return false;
+        if (patronymic != null ? !patronymic.equals(author.patronymic) : author.patronymic != null) return false;
+        return dateOfBirth != null ? dateOfBirth.equals(author.dateOfBirth) : author.dateOfBirth == null;
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + surname.hashCode();
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (patronymic != null ? patronymic.hashCode() : 0);
+        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
         return result;
     }
 }

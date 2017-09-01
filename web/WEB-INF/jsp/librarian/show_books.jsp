@@ -57,10 +57,10 @@
                             </div>
                         </div>
                         <div>
-                            <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
+                            <form class="form-action" action="/controller" accept-charset="UTF-8">
                                 <input type="hidden" name="command" value="get_explicit_book_info"/>
                                 <input type="hidden" name="book_id" value="${item.id}"/>
-                                <button class="btn btn-secondary" type="submit" name="submit"><fmt:message
+                                <button class="btn btn-secondary" type="submit" ><fmt:message
                                         key="label.button.more_detail"
                                         bundle="${messages}"/></button>
                             </form>
@@ -71,7 +71,7 @@
                                         <input type="hidden" name="command" value="to_add_online_order_page"/>
                                         <input type="hidden" name="book_id" value="${item.id}"/>
                                         <input type="hidden" name="type_of_search" value="by_id">
-                                        <button class="btn btn-secondary" type="submit" name="submit"><fmt:message key="label.book.make_online_order"
+                                        <button class="btn btn-secondary" type="submit" ><fmt:message key="label.book.make_online_order"
                                                                                                                    bundle="${messages}"/></button>
                                     </form>
                                 </td>
@@ -79,10 +79,10 @@
 
                             <c:if test="${user.role == Role.LIBRARIAN}">
                             <td>
-                                <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
+                                <form class="form-action" action="/controller" accept-charset="UTF-8">
                                     <input type="hidden" name="command" value="get_book_for_editing"/>
                                     <input type="hidden" name="book_id" value="${item.id}"/>
-                                    <button class="btn btn-secondary" type="submit" name="submit"><fmt:message key="label.book.edit_book"
+                                    <button class="btn btn-secondary" type="submit" ><fmt:message key="label.book.edit_book"
                                                                                                                bundle="${messages}"/></button>
                                 </form>
                             </td>
@@ -91,17 +91,17 @@
                                     <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="delete_book"/>
                                         <input type="hidden" name="book_id" value="${item.id}"/>
-                                        <button class="btn btn-secondary" type="submit" name="submit" ><fmt:message key="label.button.book.delete_book"
+                                        <button class="btn btn-secondary" type="submit" ><fmt:message key="label.button.book.delete_book"
                                                                                                                     bundle="${messages}"/></button>
                                     </form>
                                 </td>
                             </c:if>
                             <c:if test="${item.getLocation()==Location.STORAGE}">
                                 <td>
-                                    <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
+                                    <form class="form-action" action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="to_add_order_page"/>
                                         <input type="hidden" name="book_id" value="${item.id}"/>
-                                        <button class="btn btn-secondary" type="submit" name="submit" ><fmt:message key="label.button.book.add_order"
+                                        <button class="btn btn-secondary" type="submit" ><fmt:message key="label.button.book.add_order"
                                                                                                                     bundle="${messages}"/></button>
                                     </form>
                                 </td>

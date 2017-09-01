@@ -57,15 +57,15 @@
                             </div>
                         </div>
                         <div>
-                            <form method="post" class="form-action" action="/controller" accept-charset="UTF-8">
+                            <form class="form-action" action="/controller" accept-charset="UTF-8">
                                 <input type="hidden" name="command" value="get_explicit_user_info"/>
                                 <input type="hidden" name="library_card" value="${item.libraryCardNumber}"/><br/>
-                                <button class="btn btn-secondary" type="submit" name="submit"><fmt:message
+                                <button class="btn btn-secondary" type="submit" ><fmt:message
                                         key="label.show_explicit_info"
                                         bundle="${messages}"/></button>
                             </form>
 
-                            <form method="post" class="form-action" action="/controller" accept-charset="UTF-8">
+                            <form class="form-action" action="/controller" accept-charset="UTF-8">
                                 <input type="hidden" name="command" value="get_user_for_editing"/>
                                 <input type="hidden" name="find_query_value" value="${item.libraryCardNumber}"/><br/>
                                 <button class="btn btn-secondary" type="submit" name="submit"><fmt:message

@@ -18,7 +18,5 @@ public class GetBookForEditing extends AbstractCommand{
         String page = ConfigurationManager.getProperty(EDIT_BOOK_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);
-
-
     }
 }

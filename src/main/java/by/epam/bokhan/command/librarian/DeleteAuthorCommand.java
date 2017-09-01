@@ -16,8 +16,6 @@ public class DeleteAuthorCommand extends AbstractCommand {
         super.execute(content);
         content.insertParameter(PAGE, TO_DELETE_AUTHOR_PAGE_COMMAND);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);
-
         content.insertParameter(INVALIDATE, false);
-
     }
 }

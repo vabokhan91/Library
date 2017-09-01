@@ -25,7 +25,6 @@ public class UserValidator {
             Matcher passwordMatcher = passwordPattern.matcher(password);
             isPasswordValid = passwordMatcher.matches();
         }
-
         return isPasswordValid;
     }
 
