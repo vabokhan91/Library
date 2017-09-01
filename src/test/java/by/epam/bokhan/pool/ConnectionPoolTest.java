@@ -36,7 +36,7 @@ public class ConnectionPoolTest {
     public void releaseConnectionTest() throws Exception {
         Connection connection = connectionPool.getConnection();
         connection.close();
-        long actual = connectionPool.size();
+        int actual = connectionPool.size();
         assertEquals(numberOfConnections, actual);
     }
 }

@@ -5,10 +5,9 @@ import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
+import static by.epam.bokhan.command.navigation.NavigationConstant.*;
 
-/**
- * Created by vbokh on 25.08.2017.
- */
+
 public class ToExecuteOnlineOrderCommand extends AbstractCommand {
     public ToExecuteOnlineOrderCommand(Receiver receiver) {
         super(receiver);

@@ -26,36 +26,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library"
-                                                                                 bundle="${messages}"/> </a>
-
-    <form class="form-inline" action="/controller">
-        <input type="hidden" name="command" value="find_book">
-        <input class="form-control mr-sm-2" type="text" name="find_query_value" value="" placeholder=
-        <fmt:message key="label.book.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]{3,}" required>
-        <input class="btn btn-outline-success my-2 my-sm-0" type="submit"
-               value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
-    </form>
-
-    <div class="row">
-        <form method="post" class="col">
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
-                    <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
-                </label>
-                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
-                    <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
-                </label>
-            </div>
-        </form>
-        <div class="col">
-            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message
-                    key="label.logout" bundle="${messages}"/></a>
-        </div>
-    </div>
-</nav>
-
+<jsp:include page="../header.jsp"/>
 
 
 <div class="container">
@@ -66,35 +37,35 @@
                 <form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
                     <input type="hidden" name="command" value="add_book"/>
                     <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label"> <fmt:message key="label.book.book_title" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <label for="title" class="col-3 col-form-label required"> <fmt:message key="label.book.book_title" bundle="${messages}"/></label>
+                        <div class="col-5">
                             <input type="text"  class="form-control" id="title" name="book_title" value="" pattern="[\d\w\W[а-яА-Я}]]+" placeholder=<fmt:message key="label.placeholder.book_title" bundle="${messages}"/> required/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="pages" class="col-sm-2 col-form-label"><fmt:message key="label.book.number_of_pages" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <label for="pages" class="col-3 col-form-label required"><fmt:message key="label.book.number_of_pages" bundle="${messages}"/></label>
+                        <div class="col-5">
                             <input type = "text" class="form-control" id="pages" name="book_pages" value="" pattern="\d{1,5}" placeholder=<fmt:message key="label.placeholder.number_of_pages" bundle="${messages}"/> required/>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="year" class="col-sm-2 col-form-label"><fmt:message key="label.book.year_of_publishing" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <label for="year" class="col-3 col-form-label required"><fmt:message key="label.book.year_of_publishing" bundle="${messages}"/></label>
+                        <div class="col-5">
                             <input type = "text" class="form-control" id="year" name="book_year" value="" pattern="\d{1,5}" placeholder=<fmt:message key="label.placeholder.year_of_publishing" bundle="${messages}"/>>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="isbn" class="col-sm-2 col-form-label"><fmt:message key="label.book.isbn" bundle="${messages}"/></label>
-                        <div class="col-sm-3">
+                        <label for="isbn" class="col-3 col-form-label required"><fmt:message key="label.book.isbn" bundle="${messages}"/></label>
+                        <div class="col-5">
                             <input type = "text" class="form-control" id="isbn" name="book_isbn" value="" placeholder=<fmt:message key="label.book.isbn" bundle="${messages}"/> pattern="(\d+-\d+-\d+-\d+-\d+)|(\d+-\d+-\d+-\d+)" required/>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="publisher" class="col-sm-2 col-form-label" style="margin-right: 13px" ><fmt:message key="label.book.publisher" bundle="${messages}"/></label>
-                        <select id="publisher" class="custom-select col-sm-3"  name="book_publisher" required>
+                        <label for="publisher" class="col-3 col-form-label required" style="margin-right: 13px" ><fmt:message key="label.book.publisher" bundle="${messages}"/></label>
+                        <select id="publisher" class="custom-select col-5"  name="book_publisher" required>
                             <c:forEach items="${publishers}" var="publisher">
                                 <option value="${publisher.id}">${publisher.getName()} </option>
                             </c:forEach>
@@ -104,8 +75,8 @@
 
 
                     <div class="form-group">
-                        <label for="genre"><fmt:message key="label.book.genre" bundle="${messages}"/></label>
-                        <select multiple id="genre" class="form-control col-6" name="book_genre" required>
+                        <label for="genre" class="col-3 col-form-label required"><fmt:message key="label.book.genre" bundle="${messages}"/></label>
+                        <select multiple id="genre" class="form-control col-5" name="book_genre" required>
                             <c:forEach items="${genres}" var="genre">
                                 <option value="${genre.id}">${genre.getName()} </option>
                             </c:forEach>
@@ -115,8 +86,8 @@
 
 
                     <div class="form-group">
-                        <label for="author" style="margin-right: 13px" ><fmt:message key="label.book.author" bundle="${messages}"/></label>
-                        <select multiple class="form-control col-6" id="author" name="book_author" required>
+                        <label for="author" class="col-3 col-form-label required" style="margin-right: 13px" ><fmt:message key="label.book.author" bundle="${messages}"/></label>
+                        <select multiple class="form-control col-5" id="author" name="book_author" required>
                             <c:forEach items="${authors}" var="author">
                                 <option value="${author.id}">${author.getSurname()} ${author.getName()} ${author.getPatronymic()} </option>
                             </c:forEach>
@@ -131,7 +102,7 @@
 
 
                     <div class="form-group row">
-                        <label  for="image" class="col-sm-2 col-form-label" style="margin-right: 13px"><fmt:message key="label.placeholder.image" bundle="${messages}"/></label>
+                        <label  for="image" class="col-3 col-form-label" style="margin-right: 13px"><fmt:message key="label.placeholder.image" bundle="${messages}"/></label>
                         <input type="file" name="book_image" id="image" size="50"/><br/>
                     </div>
 
@@ -164,8 +135,10 @@
             </div><!--/row-->
         </div>
 
+        <jsp:include page="../navigation_sidebar.jsp"/>
 
-        <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
+
+        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
             <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
             <c:if test="${not empty user}">
 
@@ -182,7 +155,7 @@
                 </c:choose>
             </c:if>
 
-        </div><!--/span-->
+        </div>--%>
 
 
 

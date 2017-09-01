@@ -2,9 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
-<c:set var="language"
-       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
-       scope="session"/>
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <fmt:setBundle basename="resource.config" var="config"/>
@@ -80,6 +78,7 @@
 
         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
             <div><ctg:welcome-tag /></div>
+
             <c:choose>
                 <c:when test="${empty user}">
                     <form class="form-signin" method="POST" action="/controller">
@@ -108,6 +107,7 @@
                         <c:remove var="errorLoginPassMessage" scope="session"/>
                     </c:if>
                 </c:when>
+
                 <c:otherwise>
                     <c:choose>
                         <c:when test="${user.role.ordinal()==3}">

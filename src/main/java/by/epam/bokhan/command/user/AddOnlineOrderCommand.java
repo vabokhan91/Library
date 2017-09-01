@@ -4,6 +4,7 @@ import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;
+import static by.epam.bokhan.command.user.UserConstant.*;
 
 
 public class AddOnlineOrderCommand extends AbstractCommand {

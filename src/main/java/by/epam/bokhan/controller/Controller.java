@@ -32,7 +32,7 @@ public class Controller extends HttpServlet {
     private static final String REDIRECT = "redirect";
     private static final String INVALIDATE = "invalidate";
     private static final String INDEX_PAGE = "path.page.index";
-    private final String ERROR_PAGE_COMMAND = "/controller?command=error_page";
+    private static final String ERROR_PAGE_COMMAND = "/controller?command=error_page";
 
     public Controller() {
     }

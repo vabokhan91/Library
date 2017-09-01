@@ -48,7 +48,9 @@
             <br>
         </div>
 
-        <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
+        <jsp:include page="../navigation_sidebar.jsp"/>
+
+       <%-- <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
             <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
                     key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
             <c:if test="${not empty user}">
@@ -56,8 +58,7 @@
                         key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
             </c:if>
 
-        </div><!--/span-->
-
+        </div>--%>
     </div>
 </div>
 

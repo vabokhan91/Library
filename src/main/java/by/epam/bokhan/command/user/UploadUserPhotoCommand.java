@@ -5,10 +5,9 @@ import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
+import static by.epam.bokhan.command.user.UserConstant.*;
 
-/**
- * Created by vbokh on 18.08.2017.
- */
+
 public class UploadUserPhotoCommand extends AbstractCommand {
 
     public UploadUserPhotoCommand(Receiver receiver) {

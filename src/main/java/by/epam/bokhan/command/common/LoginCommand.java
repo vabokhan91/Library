@@ -8,7 +8,7 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
-
+import static by.epam.bokhan.command.common.CommonConstant.*;
 
 public class LoginCommand extends AbstractCommand {
 

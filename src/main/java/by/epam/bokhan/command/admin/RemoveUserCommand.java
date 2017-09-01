@@ -3,9 +3,9 @@ package by.epam.bokhan.command.admin;
 import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
-import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
 
+import static by.epam.bokhan.command.admin.AdminConstant.*;
 
 public class RemoveUserCommand extends AbstractCommand {
 

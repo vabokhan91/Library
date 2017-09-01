@@ -28,7 +28,8 @@ public class Genre {
 
         Genre genre = (Genre) o;
 
-        return id == genre.id && (name != null ? name.equals(genre.name) : genre.name == null);
+        if (id != genre.id) return false;
+        return name != null ? name.equals(genre.name) : genre.name == null;
     }
 
     @Override

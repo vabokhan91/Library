@@ -5,7 +5,7 @@ import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.MessageManager;
 import by.epam.bokhan.receiver.Receiver;
-
+import static by.epam.bokhan.command.librarian.LibrarianConstant.*;
 
 public class AddOrderCommand extends AbstractCommand {
 

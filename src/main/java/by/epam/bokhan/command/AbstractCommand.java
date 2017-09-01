@@ -5,7 +5,7 @@ import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;
 
 
-public abstract class AbstractCommand extends CommandConstant {
+public abstract class AbstractCommand{
     private Receiver receiver;
 
     public AbstractCommand(Receiver receiver) {

@@ -388,8 +388,6 @@ public enum CommandType {
         }
     };
 
-
-
     private AbstractCommand command;
 
     CommandType(AbstractCommand command) {

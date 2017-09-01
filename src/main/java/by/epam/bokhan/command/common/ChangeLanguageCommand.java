@@ -4,10 +4,8 @@ import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;
+import static by.epam.bokhan.command.common.CommonConstant.*;
 
-/**
- * Created by vbokh on 28.08.2017.
- */
 public class ChangeLanguageCommand extends AbstractCommand {
     public ChangeLanguageCommand(Receiver receiver) {
         super(receiver);
