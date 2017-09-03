@@ -41,7 +41,7 @@
                     <div class="col-10">
                         <div class="parent-book-info"><h2>${item.title}</h2>
                             <div>
-                                <img class="main-book-img" src="data:image/jpg;base64,${item.image}"/></div>
+                                <img class="lib-main-book-img" src="data:image/jpg;base64,${item.image}"/></div>
                             <div>
                                 <fmt:message key="label.book.author" bundle="${messages}"/> : <c:forEach items="${item.authors}"
                                                                                                          var="author">

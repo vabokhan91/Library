@@ -38,7 +38,7 @@
 
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <form class="form-inline" method="post" action="/controller">
+                        <form class="form-inline" action="/controller">
                             <input type="hidden" name="command" value="user_find_book">
                             <div class="col-12">
                                 <fmt:message key="label.book.enter_book_title" bundle="${messages}"/></div><br/><br/>

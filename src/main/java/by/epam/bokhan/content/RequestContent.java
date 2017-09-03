@@ -17,9 +17,13 @@ import java.util.Map;
 public class RequestContent {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String CONTENT_TYPE_MULTIPART_FORM_DATA = "multipart/form-data";
+    /* Map that stores request parameters*/
     private HashMap<String, Object> requestParameters;
+    /*Map that stores session attributes*/
     private HashMap<String, Object> sessionAttributes;
+    /* Map that stores request parameter values*/
     private HashMap<String, Object> requestParameterValues;
+    /*Map that stores Parts objects (for multitype queries)*/
     private HashMap<String, Object> multiTypeParts;
 
     public RequestContent() {
@@ -28,7 +32,7 @@ public class RequestContent {
         requestParameterValues = new HashMap<>();
         multiTypeParts = new HashMap<>();
     }
-
+    /*Extracts all request parameters, request parameter values, session attributes, and objects of type Part from request*/
     public void extractValues(HttpServletRequest request) {
         Enumeration requestParameters = request.getParameterNames();
         while (requestParameters.hasMoreElements()) {
@@ -66,15 +70,13 @@ public class RequestContent {
 
     }
 
-    public void getParametersFromContent(HttpServletRequest request) {
+    /*Inserts all request parameters, session attributes into request*/
+    public void insertValues(HttpServletRequest request) {
         for (Map.Entry<String, Object> p : requestParameters.entrySet()) {
             String first = p.getKey();
             Object second = p.getValue();
             request.setAttribute(first, second);
         }
-    }
-
-    public void getAttributesFromContent(HttpServletRequest request) {
         for (Map.Entry<String, Object> a : sessionAttributes.entrySet()) {
             String first = a.getKey();
             Object second = a.getValue();
@@ -82,10 +84,12 @@ public class RequestContent {
         }
     }
 
+    /*Inserts parameter into RequestContent object*/
     public void insertParameter(String key, Object value) {
         requestParameters.put(key, value);
     }
 
+    /*Inserts attribute into RequestContent object*/
     public void insertAttribute(String key, Object attribute) {
         sessionAttributes.put(key, attribute);
     }

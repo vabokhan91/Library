@@ -2,7 +2,9 @@ package by.epam.bokhan.entity;
 
 
 public class Genre {
+    /*Genre id*/
     private int id;
+    /*Genre name*/
     private String name;
 
     public String getName() {

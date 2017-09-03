@@ -4,10 +4,15 @@ import java.time.LocalDate;
 
 
 public class Author {
+    /*Author id*/
     private int id;
+    /*Author name*/
     private String name;
+    /*Author surname*/
     private String surname;
+    /*Author patronymic*/
     private String patronymic;
+    /*Author date of birth*/
     private LocalDate dateOfBirth;
 
     public String getName() {
@@ -66,8 +71,7 @@ public class Author {
         if (id != author.id) return false;
         if (name != null ? !name.equals(author.name) : author.name != null) return false;
         if (surname != null ? !surname.equals(author.surname) : author.surname != null) return false;
-        if (patronymic != null ? !patronymic.equals(author.patronymic) : author.patronymic != null) return false;
-        return dateOfBirth != null ? dateOfBirth.equals(author.dateOfBirth) : author.dateOfBirth == null;
+        return patronymic != null ? patronymic.equals(author.patronymic) : author.patronymic == null;
     }
 
     @Override
@@ -76,7 +80,6 @@ public class Author {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (patronymic != null ? patronymic.hashCode() : 0);
-        result = 31 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
         return result;
     }
 }

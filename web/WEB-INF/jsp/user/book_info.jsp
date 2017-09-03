@@ -31,8 +31,11 @@
 
 <jsp:include page="../header.jsp"/>
 
+
 <div class="container">
+
     <div class="row row-offcanvas row-offcanvas-right">
+
         <div class="col-12 col-md-9">
             <p class="float-right d-md-none">
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Toggle nav</button>
@@ -58,45 +61,43 @@
                             </div>
                         </div>
                         <div>
-                            <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
+                            <form class="form-action" action="/controller" accept-charset="UTF-8">
                                 <input type="hidden" name="command" value="get_explicit_book_info"/>
                                 <input type="hidden" name="book_id" value="${item.id}"/>
-                                <button class="btn btn-secondary" type="submit" name="submit"><fmt:message
+                                <button class="btn btn-secondary" type="submit" ><fmt:message
                                         key="label.button.more_detail"
                                         bundle="${messages}"/></button>
                             </form>
 
-                            <c:if test="${item.orderStatus == Location.STORAGE && user.role==Role.CLIENT}">
+                            <c:if test="${item.getLocation()==Location.STORAGE && user.role==Role.CLIENT}">
                                 <td>
                                     <form method="post" action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="to_add_online_order_page"/>
                                         <input type="hidden" name="book_id" value="${item.id}"/>
                                         <input type="hidden" name="type_of_search" value="by_id">
-                                        <button class="btn btn-secondary" type="submit" name="submit"><fmt:message key="label.book.make_online_order"
-                                                                                                                   bundle="${messages}"/></button>
+                                        <button class="btn btn-secondary" type="submit" ><fmt:message key="label.book.make_online_order"
+                                                                                                      bundle="${messages}"/></button>
                                     </form>
                                 </td>
                             </c:if>
-
                         </div>
-
                     </div>
-                    <!--/span-->
                 </c:forEach>
-            </div><!--/row-->
-        </div><!--/span-->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
 
         <jsp:include page="../navigation_sidebar.jsp"/>
-
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu"
-                                                                                                   bundle="${messages}"/> </a><br/>
-
-        </div>--%>
-    </div><!--/row-->
-
-    <hr>
+    </div>
 
     <footer>
         <p>© Company 2017</p>

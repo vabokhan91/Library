@@ -43,7 +43,7 @@ public enum CommandType {
         }
     },FIND_USER(new FindUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((UserReceiverImpl) getCommand().getReceiver()).findUser(content);
+            ((UserReceiverImpl) getCommand().getReceiver()).getUser(content);
         }
     },REGISTER(new RegisterUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
@@ -115,7 +115,7 @@ public enum CommandType {
         }
     },GET_USER_FOR_EDITING(new GetUserForEditingCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((UserReceiverImpl) getCommand().getReceiver()).findUser(content);
+            ((UserReceiverImpl) getCommand().getReceiver()).getUser(content);
         }
     },EDIT_USER(new EditUserCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
@@ -135,7 +135,7 @@ public enum CommandType {
         }
     },FIND_BOOK(new FindBookCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((BookReceiverImpl) getCommand().getReceiver()).findBook(content);
+            ((BookReceiverImpl) getCommand().getReceiver()).getBook(content);
         }
     },GET_EXPLICIT_BOOK_INFO(new GetExplicitBookInfoCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
@@ -283,7 +283,7 @@ public enum CommandType {
         }
     },USER_FIND_BOOK(new UserFindBookCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((BookReceiverImpl) getCommand().getReceiver()).findBookForUser(content);
+            ((BookReceiverImpl) getCommand().getReceiver()).getBookByTitle(content);
         }
     },TO_ADD_ONLINE_ORDER_PAGE(new ToAddOnlineOrderPageCommand(new BookReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {

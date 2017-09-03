@@ -10,122 +10,62 @@
 <head>
 
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/library.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
-            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-            crossorigin="anonymous"></script>
+
 </head>
 <body background="image/books-484766_1920.jpg">
 
 <jsp:include page="../header.jsp"/>
 
 <div class="container">
-
     <div class="row row-offcanvas row-offcanvas-right">
-
         <div class="col-12 col-md-9">
             <p class="float-right d-md-none">
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Toggle nav</button>
             </p>
             <div class="jumbotron">
-                <h1>Hello, world!</h1>
-                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some
+                <ctg:welcome-tag />
+                <h6 class="form-signin-heading"><fmt:message key="label.login_to_account" bundle="${messages}"/></h6>
+                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap123. Try some
                     responsive-range viewport sizes to see it in action.</p>
             </div>
+
             <div class="row">
                 <c:forEach items="${foundBooks}" var="item">
                     <div class="col-12">
-                        <div class="parent-book-info"><h2>${item.title}</h2>
-                        <div>
-                        <img class="main-book-img" src="data:image/jpg;base64,${item.image}"/></div>
+                        <div class="lib-parent-book-info">
                             <div>
-                            <fmt:message key="label.book.author" bundle="${messages}"/> : <c:forEach items="${item.authors}"
-                                                                                                     var="author">
-                            ${author.surname.concat(' ').concat(author.name.charAt(0)).concat('. ').concat(author.patronymic.charAt(0)).concat(';')}</c:forEach><br/>
-                            <fmt:message key="label.book.genre" bundle="${messages}"/> :
-                            <c:forEach items="${item.genre}" var="genres">
-                                ${genres.getName()}
-                            </c:forEach><br/>
-                            <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
-                            <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
-                            <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
-                            <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher.name}<br/>
+                                <img class="lib-main-book-img" src="data:image/jpg;base64,${item.image}"/>
+                            </div>
+                            <div>
+                                <h2>${item.title}</h2>
+                                <fmt:message key="label.book.author" bundle="${messages}"/> : <c:forEach items="${item.authors}"
+                                                                                                         var="author">
+                                ${author.surname.concat(' ').concat(author.name.charAt(0)).concat('. ').concat(author.patronymic.charAt(0)).concat(';')}</c:forEach><br/>
+                                <fmt:message key="label.book.genre" bundle="${messages}"/> :
+                                <c:forEach items="${item.genre}" var="genres">
+                                    ${genres.getName()}
+                                </c:forEach><br/>
+                                <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
+                                <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
+                                <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
+                                <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher.name}<br/>
                             </div>
                         </div>
                         <div>
-                        <form method="post" action="/controller" accept-charset="UTF-8">
-                            <input type="hidden" name="command" value="get_explicit_book_info"/>
-                            <input type="hidden" name="book_id" value="${item.id}"/>
-                            <button class="btn btn-secondary" type="submit" name="submit"><fmt:message
-                                    key="label.button.more_detail"
-                                    bundle="${messages}"/></button>
-                        </form>
+                            <form method="post" action="/controller" accept-charset="UTF-8">
+                                <input type="hidden" name="command" value="get_explicit_book_info"/>
+                                <input type="hidden" name="book_id" value="${item.id}"/>
+                                <button class="btn btn-secondary" type="submit" name="submit"><fmt:message
+                                        key="label.button.more_detail"
+                                        bundle="${messages}"/></button>
+                            </form>
                         </div>
-
                     </div>
                     <!--/span-->
                 </c:forEach>
             </div><!--/row-->
-        </div><!--/span-->
-
+        </div>
         <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <div><ctg:welcome-tag /></div>
-
-            <c:choose>
-                <c:when test="${empty user}">
-                    <form class="form-signin" method="POST" action="/controller">
-                        <h6 class="form-signin-heading"><fmt:message key="label.login_to_account"
-                                                                     bundle="${messages}"/></h6>
-                        <input type="hidden" name="command" value="login"/>
-                        <label for="inputEmail" class="sr-only"> <fmt:message key="label.login"
-                                                                              bundle="${messages}"/></label>
-                        <input type="text" name="login" id="inputEmail" class="form-control"
-                               placeholder="<fmt:message key="label.login.login" bundle="${messages}"/>" required=""
-                               autofocus="">
-                        <label for="inputPassword" class="sr-only"><fmt:message key="label.password"
-                                                                                bundle="${messages}"/></label>
-                        <input type="password" name="password" id="inputPassword" class="form-control"
-                               placeholder="<fmt:message key="label.password" bundle="${messages}"/>" required="">
-                        <input type="submit" name="login" class="btn btn-lg btn-primary btn-block" value=<fmt:message
-                                key="label.login" bundle="${messages}"/>>
-                            ${errorLoginPassMessage}
-                    </form>
-                    <form action="/controller" id="register">
-                        <input type="hidden" name="command" value="to_registration_page"/>
-                        <input type="submit" name="submit" class="btn btn-lg btn-primary btn-block" value=
-                            <fmt:message key="label.registration" bundle="${messages}"/>>
-                    </form>
-                    <c:if test="${not empty sessionScope.errorLoginPassMessage}">
-                        <c:remove var="errorLoginPassMessage" scope="session"/>
-                    </c:if>
-                </c:when>
-
-                <c:otherwise>
-                    <c:choose>
-                        <c:when test="${user.role.ordinal()==3}">
-                            <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
-                                                                                     bundle="${messages}"/> </a>
-                        </c:when>
-                        <c:when test="${user.role.ordinal()==2}">
-                            <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                                    key="label.button.to_main_menu" bundle="${messages}"/> </a>
-                        </c:when>
-                        <c:when test="${user.role.ordinal()==1}">
-                            <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu"
-                                                                                         bundle="${messages}"/> </a>
-                        </c:when>
-                    </c:choose>
-                </c:otherwise>
-            </c:choose>
-
             <div class="list-group">
                 <a href="/controller?command=find_book_by_genre&genre_name=Биография" class="list-group-item"><fmt:message key="label.genre.biography" bundle="${messages}"/></a>
                 <a href="/controller?command=find_book_by_genre&genre_name=Детектив" class="list-group-item"><fmt:message key="label.genre.detective" bundle="${messages}"/></a>
@@ -151,15 +91,14 @@
 
             </div>
         </div><!--/span-->
-    </div><!--/row-->
+    </div><!--/span-->
 
-    <hr>
+</div><!--/row-->
 
-    <footer>
-        <p>© Company 2017</p>
-    </footer>
+<hr>
 
-</div>
-
+<footer>
+    <p>© Company 2017</p>
+</footer>
 </body></html>
 

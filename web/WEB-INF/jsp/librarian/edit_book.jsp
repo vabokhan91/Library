@@ -94,7 +94,7 @@
                         <select multiple class="form-control col-5" id="author" name="book_author" required>
                             <c:forEach items="${authors}" var="author">
                                 <option value="${author.id}"
-                                    <c:if test="${foundBook.getAuthors().contains(author)}">selected</c:if>> ${author.getSurname()} ${author.getName()} ${author.getPatronymic()} </option>
+                                    <c:if test="${foundBook.authors.contains(author)}">selected</c:if>> ${author.getSurname()} ${author.getName()} ${author.getPatronymic()} </option>
                             </c:forEach>
                         </select>
                     </div>

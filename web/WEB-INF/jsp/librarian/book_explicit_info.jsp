@@ -117,23 +117,23 @@
                             <c:if test="${not empty user.role && user.role!=Role.CLIENT}">
                                 <h3><fmt:message key="label.book.latest_order_information" bundle="${messages}"/> :</h3> <br/>
 
-                                <c:forEach items="${foundOrder}" var="item">
-                                    <fmt:message key="label.library_card" bundle="${messages}"/> : ${item.user.libraryCardNumber}<br/>
 
-                                    <fmt:message key="label.name" bundle="${messages}"/> : ${item.user.name}<br/>
+                                    <fmt:message key="label.library_card" bundle="${messages}"/> : ${foundOrder.user.libraryCardNumber}<br/>
 
-                                    <fmt:message key="label.surname" bundle="${messages}"/> : ${item.user.surname}<br/>
+                                    <fmt:message key="label.name" bundle="${messages}"/> : ${foundOrder.user.name}<br/>
 
-                                    <fmt:message key="label.patronymic" bundle="${messages}"/> : ${item.user.patronymic}<br/>
+                                    <fmt:message key="label.surname" bundle="${messages}"/> : ${foundOrder.user.surname}<br/>
 
-                                    <fmt:message key="label.mobile_phone" bundle="${messages}"/> : ${item.user.mobilePhone}<br/>
+                                    <fmt:message key="label.patronymic" bundle="${messages}"/> : ${foundOrder.user.patronymic}<br/>
 
-                                    <fmt:message key="label.book.order_date" bundle="${messages}"/> : ${item.orderDate}<br/>
+                                    <fmt:message key="label.mobile_phone" bundle="${messages}"/> : ${foundOrder.user.mobilePhone}<br/>
 
-                                    <fmt:message key="label.book.expiration_date" bundle="${messages}"/> : ${item.expirationDate}<br/>
+                                    <fmt:message key="label.book.order_date" bundle="${messages}"/> : ${foundOrder.orderDate}<br/>
 
-                                    <fmt:message key="label.book.return_date" bundle="${messages}"/> : ${item.returnDate}<br/>
-                                </c:forEach><br/>
+                                    <fmt:message key="label.book.expiration_date" bundle="${messages}"/> : ${foundOrder.expirationDate}<br/>
+
+                                    <fmt:message key="label.book.return_date" bundle="${messages}"/> : ${foundOrder.returnDate}<br/>
+                               <br/>
                             </c:if>
                         </div>
 

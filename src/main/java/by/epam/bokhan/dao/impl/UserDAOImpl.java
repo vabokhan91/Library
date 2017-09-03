@@ -74,6 +74,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "left join book on book.id = online_orders.book_id\n" +
             "where library_card.id =?";
 
+    /**
+     * Gets user by login
+     * @param login login of the user
+     * @return found user
+     * @throws DAOException
+     * */
     @Override
     public User getUserByLogin(String login) throws DAOException {
         User user = new User();
@@ -108,6 +114,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Registeres new user
+     * @param user new user to register
+     * @return boolean, depending on the operation result
+     * @throws DAOException
+     * */
     @Override
     public boolean registerUser(User user) throws DAOException {
         boolean isUserRegistered = false;
@@ -149,6 +161,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Adds new user
+     * @param user new user to register
+     * @return boolean, depending on the operation result
+     * @throws DAOException
+     * */
     @Override
     public boolean addUser(User user) throws DAOException {
         boolean isUserAdded = false;
@@ -222,9 +240,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Gets all users from database
+     * @return List of users
+     * @throws DAOException
+     * */
     @Override
     public List<User> getAllUsers() throws DAOException {
-        ArrayList<User> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         Connection connection = null;
         PreparedStatement getAllUsersStatement = null;
         try {
@@ -254,8 +277,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Removes user by id
+     * @param userId user id
+     * @return boolean, depending on the operation result
+     * @throws DAOException
+     * */
     @Override
-    public boolean removeUser(int userId) throws DAOException {
+    public boolean removeUserById(int userId) throws DAOException {
         boolean isUserRemoved;
         Connection connection = null;
         PreparedStatement removeUserStatement = null;
@@ -274,8 +303,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Gets user by library card
+     * @param libraryCard library card of user
+     * @return List of found users
+     * @throws DAOException
+     * */
     @Override
-    public List<User> findUserByLibraryCard(int libraryCard) throws DAOException {
+    public List<User> getUserByLibraryCard(int libraryCard) throws DAOException {
         List<User> user = new ArrayList<>();
         Connection connection = null;
         PreparedStatement findUserBLibraryCardStatement = null;
@@ -309,8 +344,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Gets user by surname
+     * @param surname user surname
+     * @return List of found users
+     * @throws DAOException
+     * */
     @Override
-    public List<User> findUserBySurname(String surname) throws DAOException {
+    public List<User> getUserBySurname(String surname) throws DAOException {
         List<User> users = new ArrayList<>();
         Connection connection = null;
         PreparedStatement findUserBySurnameStatement = null;
@@ -344,6 +385,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Blocks user
+     * @param userId user id
+     * @return boolean, depending on the operation result
+     * @throws DAOException
+     * */
     @Override
     public boolean blockUser(int userId) throws DAOException {
         boolean isUserBlocked = false;
@@ -374,6 +421,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Unblocks user
+     * @param userId user id
+     * @return boolean, depending on the operation result
+     * @throws DAOException
+     * */
     @Override
     public boolean unblockUser(int userId) throws DAOException {
         boolean isUserUnblocked = false;
@@ -404,6 +457,11 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Gets blocked users
+     * @return List of users
+     * @throws DAOException
+     * */
     @Override
     public List<User> getBlockedUsers() throws DAOException {
         List<User> blockedUsers = new ArrayList<>();
@@ -435,6 +493,11 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Gets not blocked users
+     * @return List of users
+     * @throws DAOException
+     * */
     @Override
     public List<User> getNotBlockedUsers() throws DAOException {
         List<User> notBlockedUsers = new ArrayList<>();
@@ -466,6 +529,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Gets explicit user info( user information and information about his orders)
+     * @param libraryCard user library card
+     * @return found user
+     * @throws DAOException
+     * */
     @Override
     public User getExplicitUserInfo(int libraryCard) throws DAOException {
         User user = new User();
@@ -524,6 +593,13 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Edits user. If user information edited,
+     * then updated information about library card, user photo, login and password
+     * @param user user to edit
+     * @return boolean, depending on the operation result
+     * @throws DAOException
+     * */
     @Override
     public boolean editUser(User user) throws DAOException {
         boolean isUserEdited = false;
@@ -611,6 +687,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Changes user password
+     * @param libraryCard user library card
+     * @param oldPassword old password of the user
+     * @param newPassword new password of the user
+     * @return boolean, depending on the operation result
+     * @throws DAOException
+     * */
     @Override
     public boolean changePassword(int libraryCard,String oldPassword, String newPassword) throws DAOException {
         boolean isPasswordChanged = false;
@@ -643,6 +727,13 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Changes user login. First checks, if login do not exist, then changes it
+     * @param userId user id
+     * @param login new login of the user
+     * @return boolean, depending on the operation result
+     * @throws DAOException
+     * */
     @Override
     public boolean changeLogin(int userId, String login) throws DAOException {
         boolean isLoginChanged = false;
@@ -671,6 +762,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Changes user photo
+     * @param user user, whose photo to be changed
+     * @return boolean, depending on the operation result
+     * @throws DAOException
+     * */
     @Override
     public boolean changePhoto(User user) throws DAOException {
         boolean isPhotoChanged;
@@ -692,8 +789,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Gets user and his orders
+     * @param libraryCard user library card
+     * @return user with his orders
+     * @throws DAOException
+     * */
     @Override
-    public User getUserOrders(int libraryCard) throws DAOException {
+    public User getUserWithOrders(int libraryCard) throws DAOException {
         User user = new User();
         List<Order> userOrders = new ArrayList<>();
         Connection connection = null;
@@ -753,6 +856,12 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         }
     }
 
+    /**
+     * Gets user and his online orders
+     * @param libraryCard user library card
+     * @return user with his online orders
+     * @throws DAOException
+     * */
     @Override
     public User getUserOnlineOrders(int libraryCard) throws DAOException {
         User user = new User();

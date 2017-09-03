@@ -47,4 +47,5 @@ class DAOConstant {
     static final int POSITIVE_RESULT_VALUE = 1;
     static final int FIRST_INDEX = 0;
     static final String BOOK_IMAGE = "book.image";
+    static final String AUTHORS_ID = "author_id";
 }

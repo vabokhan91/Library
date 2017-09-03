@@ -5,19 +5,32 @@ import java.util.List;
 
 
 public class User {
+    /*User id*/
     private int id;
+    /*User name*/
     private String name;
+    /*User surname*/
     private String surname;
+    /*User patronymic*/
     private String patronymic;
+    /*User address*/
     private String address;
+    /*User role*/
     private Role role;
+    /*User login*/
     private String login;
+    /*User password*/
     private String password;
+    /*User mobile phone*/
     private String mobilePhone;
+    /*User status*/
     private boolean isBlocked;
+    /*User orders*/
     private List<Order> orders = new ArrayList<>();
+    /*User library card number*/
     private int libraryCardNumber;
-    private  String photo;
+    /* User photo*/
+    private String photo;
 
     public User() {
     }
@@ -126,6 +139,32 @@ public class User {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (id != user.id) return false;
+        if (libraryCardNumber != user.libraryCardNumber) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
+        if (patronymic != null ? !patronymic.equals(user.patronymic) : user.patronymic != null) return false;
+        return address != null ? address.equals(user.address) : user.address == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (patronymic != null ? patronymic.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + libraryCardNumber;
+        return result;
     }
 
     @Override

@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @WebServlet({"/controller"})
@@ -53,8 +51,7 @@ public class Controller extends HttpServlet {
             AbstractCommand command = factory.defineCommand(content);
             try {
                 command.execute(content);
-                content.getParametersFromContent(request);
-                content.getAttributesFromContent(request);
+                content.insertValues(request);
                 String page = (String) content.getRequestParameters().get(PAGE);
                 if (page != null) {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);

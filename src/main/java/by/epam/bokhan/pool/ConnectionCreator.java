@@ -11,12 +11,19 @@ import java.util.ResourceBundle;
 
 
 class ConnectionCreator {
+    /*Property name of database url*/
     private static final String DB_URL = "db.url";
+    /*Property name of database user*/
     private static final String DB_USER = "db.user";
+    /*Property name of database password*/
     private static final String DB_PASSWORD = "db.password";
+    /*Name of property file*/
     private static final String DB_CONFIG = "resource.database";
+    /* Url of the database*/
     private static String url;
+    /*Login of the user of database*/
     private static String login;
+    /*Password of the user of database*/
     private static String password;
 
     static {
@@ -30,8 +37,11 @@ class ConnectionCreator {
         }
     }
 
+    /*
+    * Creates new connection and returns ProxyConnection object
+    * */
     static ProxyConnection getConnection() throws ConnectionPoolException{
-        Connection connection ;
+        Connection connection;
         try {
             connection = DriverManager.getConnection(url, login, password);
 

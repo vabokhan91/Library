@@ -42,7 +42,6 @@ class ReceiverConstant {
     static final String ORDER_ID = "order_id";
     static final String IS_BOOK_RETURNED = "isBookReturned";
     static final String IS_ONLINE_ORDER_ADDED = "isOnlineOrderAdded";
-    static final String STATUS_CANCELED = "canceled";
     static final String IS_ONLINE_ORDER_CANCELLED = "isOnlineOrderCancelled";
     static final String ONLINE_ORDER_ID = "online_order_id";
     static final String IS_ONLINE_ORDER_EXECUTED = "isOnlineOrderExecuted";
@@ -77,9 +76,12 @@ class ReceiverConstant {
     static final String IS_PASSWORD_CHANGED = "isPasswordChanged";
     static final String NEW_LOGIN = "new_login";
     static final String IS_LOGIN_CHANGED = "isLoginChanged";
-    static final String STATUS_BOOKED = "booked";
     static final String USER_PHOTO = "user_photo";
     static final String BOOK_IMAGE = "book_image";
     static final String IS_PHOTO_UPLOADED = "isPhotoUploaded";
     static final int RANDOM_NUMBER_OF_BOOKS = 5;
+
+    private ReceiverConstant() {
+
+    }
 }

@@ -5,17 +5,29 @@ import java.util.List;
 
 
 public class Book {
+    /*Book id*/
     private int id;
+    /*Book title*/
     private String title;
+    /*Number of book pages*/
     private int pages;
+    /*Isbn of the book*/
     private String isbn;
+    /*Year of publishing*/
     private int year;
+    /*Book publisher*/
     private Publisher publisher;
+    /*Book description*/
     private String description;
+    /*Book genres*/
     private List<Genre> genre;
+    /*Book location*/
     private Location location;
+    /*Book authors*/
     private List<Author> authors;
+    /*Orders of this book*/
     private List<Order> orders;
+    /*Book image*/
     private String image;
 
     public Book() {
@@ -120,10 +132,6 @@ public class Book {
         this.orders = orders;
     }
 
-    public void addOrder(Order order) {
-        orders.add(order);
-    }
-
     public String getImage() {
         return image;
     }
@@ -139,11 +147,9 @@ public class Book {
 
         Book book = (Book) o;
 
-        if (id != book.id) return false;
-        if (pages != book.pages) return false;
-        if (year != book.year) return false;
-        if (title != null ? !title.equals(book.title) : book.title != null) return false;
-        return isbn != null ? isbn.equals(book.isbn) : book.isbn == null;
+        return id == book.id && pages == book.pages &&
+                year == book.year && (title != null ? title.equals(book.title) : book.title == null)
+                && (isbn != null ? isbn.equals(book.isbn) : book.isbn == null);
     }
 
     @Override

@@ -13,7 +13,7 @@ import static by.epam.bokhan.filter.FilterConstant.*;
 @WebFilter(urlPatterns = {"/jsp/*"},
         initParams = {@WebInitParam(name = INDEX_PATH, value = "/index.jsp")})
 public class RedirectToIndexPageFilter implements Filter {
-
+    /* Index path*/
     private String indexPath;
 
     public void init(FilterConfig fConfig) throws ServletException {

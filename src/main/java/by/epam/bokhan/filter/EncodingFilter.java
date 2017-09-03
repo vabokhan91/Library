@@ -10,7 +10,7 @@ import static by.epam.bokhan.filter.FilterConstant.*;
 
 @WebFilter(urlPatterns = {"/*"}, initParams = {@WebInitParam(name = ENCODING, value = UTF8_CHARSET, description = ENCODING_PARAM)})
 public class EncodingFilter implements Filter {
-
+    /*Character encoding*/
     private String code;
 
     public void init(FilterConfig config) throws ServletException {

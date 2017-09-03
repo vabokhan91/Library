@@ -10,11 +10,13 @@ import java.sql.Statement;
 
 
 public abstract class AbstractDAO {
+    /*Logger*/
     private static final Logger LOGGER = LogManager.getLogger();
 
     public AbstractDAO() {
     }
 
+    /*Closes statement*/
     void closeStatement(Statement statement) {
         if (statement != null) {
             try {
@@ -24,7 +26,7 @@ public abstract class AbstractDAO {
             }
         }
     }
-
+    /*Gets connection back to connection pool*/
     void closeConnection(Connection connection) {
         if(connection != null) {
             try {
@@ -34,5 +36,4 @@ public abstract class AbstractDAO {
             }
         }
     }
-
 }

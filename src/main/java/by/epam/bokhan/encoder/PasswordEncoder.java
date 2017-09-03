@@ -4,8 +4,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 
 public class PasswordEncoder {
+    /*Encodes string to md5*/
     public static String encodePassword(String password) {
-        String hashedPassword = DigestUtils.md5Hex(password);
-        return hashedPassword;
+        return DigestUtils.md5Hex(password);
     }
 }
