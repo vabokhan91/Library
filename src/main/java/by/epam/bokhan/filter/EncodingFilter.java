@@ -5,11 +5,11 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
-import static by.epam.bokhan.filter.FilterConstant.*;
 
 
-@WebFilter(urlPatterns = {"/*"}, initParams = {@WebInitParam(name = ENCODING, value = UTF8_CHARSET, description = ENCODING_PARAM)})
+@WebFilter(urlPatterns = {"/*"}, initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")})
 public class EncodingFilter implements Filter {
+    private static final String ENCODING = "encoding";
     /*Character encoding*/
     private String code;
 

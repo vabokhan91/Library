@@ -1,4 +1,4 @@
-package by.epam.bokhan.validator;
+package by.epam.bokhan.util;
 
 import by.epam.bokhan.entity.Location;
 

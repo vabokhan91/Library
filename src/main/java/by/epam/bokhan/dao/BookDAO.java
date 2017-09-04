@@ -49,7 +49,7 @@ public interface BookDAO {
      * @return order of the book
      * @throws DAOException
      */
-    Order getBooksLastOrder(int bookId) throws DAOException;
+    Order getLastOrderOfBook(int bookId) throws DAOException;
 
     /**
      * Gets all genres

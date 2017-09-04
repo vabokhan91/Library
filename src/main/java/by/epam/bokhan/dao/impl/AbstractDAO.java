@@ -26,6 +26,7 @@ public abstract class AbstractDAO {
             }
         }
     }
+
     /*Gets connection back to connection pool*/
     void closeConnection(Connection connection) {
         if(connection != null) {

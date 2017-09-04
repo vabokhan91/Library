@@ -13,7 +13,7 @@ public class ToUserMainPageCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws ReceiverException {
+    public void execute(RequestContent content) {
         String page = ConfigurationManager.getProperty(USER_MAIN_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);

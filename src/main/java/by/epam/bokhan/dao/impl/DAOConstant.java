@@ -28,7 +28,6 @@ class DAOConstant {
     static final String GENRE_NAME = "genre.name";
     static final String GENRE_ID = "genre.id";
     static final String AUTHOR_ID = "author.id";
-    static final String AUTHOR_DATE_OF_BIRTH = "author.date_of_birth";
     static final String ORDER_ID = "orders.id";
     static final String ONLINE_ORDER_ID = "online_orders.id";
     static final String ONLINE_ORDER_STATUS = "online_orders.order_status";
@@ -42,10 +41,6 @@ class DAOConstant {
     static final String ROLE = "role.name";
     static final String ORDERS_BOOK_ID = "orders.book_id";
     static final String USER_PHOTO = "user.photo";
-    static final int BLOCKED_VALUE = 1;
-    static final int UNBLOCKED_VALUE = 0;
-    static final int POSITIVE_RESULT_VALUE = 1;
-    static final int FIRST_INDEX = 0;
     static final String BOOK_IMAGE = "book.image";
     static final String AUTHORS_ID = "author_id";
 }

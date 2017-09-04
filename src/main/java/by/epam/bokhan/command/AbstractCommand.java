@@ -1,6 +1,7 @@
 package by.epam.bokhan.command;
 
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;
 
@@ -12,8 +13,12 @@ public abstract class AbstractCommand{
         this.receiver = receiver;
     }
 
-    public void execute(RequestContent content) throws ReceiverException {
-        receiver.action(CommandType.takeCommandType(this), content);
+    public void execute(RequestContent content) throws CommandException {
+        try {
+            receiver.action(CommandType.takeCommandType(this), content);
+        } catch (ReceiverException e) {
+            throw new CommandException(e);
+        }
     }
 
     public Receiver getReceiver() {

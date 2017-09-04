@@ -2,6 +2,7 @@ package by.epam.bokhan.command.navigation;
 
 import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.receiver.Receiver;
@@ -13,7 +14,7 @@ public class ToDeleteGenrePageCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws ReceiverException{
+    public void execute(RequestContent content) throws CommandException {
         super.execute(content);
         String page = ConfigurationManager.getProperty(DELETE_GENRE_PAGE);
         content.insertParameter(PAGE, page);

@@ -12,7 +12,7 @@ public class ToRegistrationResultCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws ReceiverException {
+    public void execute(RequestContent content) {
         String page = ConfigurationManager.getProperty(REGISTRATION_RESULT);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);

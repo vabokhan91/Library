@@ -2,6 +2,7 @@ package by.epam.bokhan.controller;
 
 import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.factory.CommandFactory;
 import by.epam.bokhan.manager.ConfigurationManager;
@@ -68,9 +69,8 @@ public class Controller extends HttpServlet {
                     page = ConfigurationManager.getProperty(INDEX_PAGE);
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
                     dispatcher.forward(request, response);
-
                 }
-            } catch (ReceiverException e) {
+            } catch (CommandException e) {
                 LOGGER.log(Level.ERROR, e.getMessage());
                 response.sendRedirect(ERROR_PAGE_COMMAND);
             }
@@ -78,10 +78,8 @@ public class Controller extends HttpServlet {
             String page = ConfigurationManager.getProperty(INDEX_PAGE);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
             dispatcher.forward(request, response);
-
         }
     }
-
 
     @Override
     public void destroy() {

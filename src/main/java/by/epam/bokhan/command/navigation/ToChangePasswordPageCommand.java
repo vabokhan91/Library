@@ -13,7 +13,7 @@ public class ToChangePasswordPageCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws ReceiverException {
+    public void execute(RequestContent content) {
         String page = ConfigurationManager.getProperty(CHANGE_PASSWORD_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);

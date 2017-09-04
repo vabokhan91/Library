@@ -13,7 +13,7 @@ public class ToUserFindBookCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws ReceiverException {
+    public void execute(RequestContent content) {
         String page = ConfigurationManager.getProperty(FIND_BOOK_FOR_USER);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);

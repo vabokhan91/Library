@@ -4,6 +4,7 @@ import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.entity.Role;
 import by.epam.bokhan.entity.User;
+import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.manager.ConfigurationManager;
 import by.epam.bokhan.manager.MessageManager;
@@ -17,7 +18,7 @@ public class LoginCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws ReceiverException {
+    public void execute(RequestContent content) throws CommandException {
         super.execute(content);
         if ((Boolean) content.getRequestParameters().get(IS_VALID)) {
             User user = (User) content.getSessionAttributes().get(USER);

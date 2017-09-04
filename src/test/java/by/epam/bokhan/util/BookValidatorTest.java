@@ -1,4 +1,4 @@
-package by.epam.bokhan.validator;
+package by.epam.bokhan.util;
 
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;

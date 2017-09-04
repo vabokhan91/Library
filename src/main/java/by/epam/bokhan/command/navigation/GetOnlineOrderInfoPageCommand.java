@@ -2,6 +2,7 @@ package by.epam.bokhan.command.navigation;
 
 import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;
 import static by.epam.bokhan.command.navigation.NavigationConstant.*;
@@ -13,7 +14,7 @@ public class GetOnlineOrderInfoPageCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws ReceiverException{
+    public void execute(RequestContent content) throws CommandException {
         super.execute(content);
         content.insertParameter(PAGE, TO_EXECUTE_ONLINE_ORDER_PAGE);
         content.insertParameter(INVALIDATE, false);

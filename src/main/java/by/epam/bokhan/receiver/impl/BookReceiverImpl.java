@@ -7,6 +7,7 @@ import by.epam.bokhan.entity.*;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.BookReceiver;
+import by.epam.bokhan.util.ImageConverter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,12 +19,11 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.*;
 import static by.epam.bokhan.receiver.impl.ReceiverConstant.*;
-import static by.epam.bokhan.validator.BookValidator.*;
-import static by.epam.bokhan.validator.UserValidator.*;
+import static by.epam.bokhan.util.BookValidator.*;
+import static by.epam.bokhan.util.UserValidator.*;
 
 
 public class BookReceiverImpl implements BookReceiver {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Gets all books
@@ -99,7 +99,7 @@ public class BookReceiverImpl implements BookReceiver {
             if (isBookIdValid(bookIdValue)) {
                 int bookId = Integer.parseInt(bookIdValue);
                 book = dao.getExplicitBookInfo(bookId);
-                order = dao.getBooksLastOrder(bookId);
+                order = dao.getLastOrderOfBook(bookId);
             }
             requestContent.insertParameter(FOUND_BOOK, book);
             requestContent.insertParameter(FOUND_ORDER, order);
@@ -202,7 +202,7 @@ public class BookReceiverImpl implements BookReceiver {
                     book.addAuthor(author);
                 }
                 if (bookImage != null) {
-                    String image = convertImageToBase64(bookImage);
+                    String image = ImageConverter.convertImageToBase64(bookImage);
                     if (!image.isEmpty()) {
                         book.setImage(image);
                     }
@@ -465,7 +465,7 @@ public class BookReceiverImpl implements BookReceiver {
                     authors.add(author);
                 }
                 if (bookImage != null) {
-                    String image = convertImageToBase64(bookImage);
+                    String image = ImageConverter.convertImageToBase64(bookImage);
                     if (!image.isEmpty()) {
                         book.setImage(image);
                     }
@@ -698,34 +698,4 @@ public class BookReceiverImpl implements BookReceiver {
         }
     }
 
-    /**
-     * Converts object of type Part to base64 String
-     * @param bookImage object to convert
-     * @return converted String
-     * */
-    private String convertImageToBase64(Part bookImage) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream is = null;
-        String image = null;
-        try {
-            is = bookImage.getInputStream();
-            int reads = is.read();
-            while (reads != -1) {
-                baos.write(reads);
-                reads = is.read();
-            }
-            byte[] b = baos.toByteArray();
-            image = Base64.getEncoder().encodeToString(b);
-        } catch (IOException e) {
-            LOGGER.log(Level.ERROR, String.format("Can not convert to string. Reason : %s", e));
-        }finally {
-            try {
-                is.close();
-                baos.close();
-            } catch (IOException e) {
-                LOGGER.log(Level.ERROR, String.format("Can not close stream. Reason : %s", e));
-            }
-        }
-        return image;
-    }
 }

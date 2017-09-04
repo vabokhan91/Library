@@ -2,6 +2,7 @@ package by.epam.bokhan.command.admin;
 
 import by.epam.bokhan.command.AbstractCommand;
 import by.epam.bokhan.content.RequestContent;
+import by.epam.bokhan.exception.CommandException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.Receiver;
 
@@ -13,7 +14,7 @@ public class RemoveUserCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content) throws ReceiverException {
+    public void execute(RequestContent content) throws CommandException {
         super.execute(content);
         content.insertParameter(PAGE, TO_REMOVE_USER_STATUS_COMMAND);
         content.insertParameter(TYPE_OF_TRANSITION, REDIRECT);

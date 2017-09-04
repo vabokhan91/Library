@@ -12,7 +12,7 @@ public class ToAddAuthorPageCommand extends AbstractCommand {
         super(receiver);
     }
 
-    public void execute(RequestContent content)  {
+    public void execute(RequestContent content) {
         String page = ConfigurationManager.getProperty(ADD_AUTHOR_PAGE);
         content.insertParameter(PAGE, page);
         content.insertParameter(INVALIDATE, false);

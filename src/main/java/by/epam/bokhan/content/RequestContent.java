@@ -32,6 +32,7 @@ public class RequestContent {
         requestParameterValues = new HashMap<>();
         multiTypeParts = new HashMap<>();
     }
+
     /*Extracts all request parameters, request parameter values, session attributes, and objects of type Part from request*/
     public void extractValues(HttpServletRequest request) {
         Enumeration requestParameters = request.getParameterNames();
@@ -40,21 +41,18 @@ public class RequestContent {
             Object value = request.getParameter(name);
             this.requestParameters.put(name, value);
         }
-
         Enumeration sessionAttributes = request.getSession().getAttributeNames();
         while (sessionAttributes.hasMoreElements()) {
             String name = (String) sessionAttributes.nextElement();
             Object value = request.getSession().getAttribute(name);
             this.sessionAttributes.put(name, value);
         }
-
         Enumeration requestParameterValues = request.getParameterNames();
         while (requestParameterValues.hasMoreElements()) {
             String name = (String) requestParameterValues.nextElement();
             Object value = request.getParameterValues(name);
             this.requestParameterValues.put(name, value);
         }
-
         try {
             if (request.getContentType() != null && request.getContentType().toLowerCase().contains(CONTENT_TYPE_MULTIPART_FORM_DATA)) {
                 Collection<Part> multitypeValues = request.getParts();
@@ -62,12 +60,10 @@ public class RequestContent {
                     String name = part.getName();
                     multiTypeParts.put(name, part);
                 }
-
             }
         } catch (IOException | ServletException e) {
             LOGGER.log(Level.ERROR, String.format("Exception in RequestContent. Reason : %s", e.getMessage()));
         }
-
     }
 
     /*Inserts all request parameters, session attributes into request*/

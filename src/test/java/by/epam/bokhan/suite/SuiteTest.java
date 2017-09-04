@@ -1,11 +1,11 @@
 package by.epam.bokhan.suite;
 
 
-import by.epam.bokhan.encoder.PasswordEncoderTest;
+import by.epam.bokhan.util.PasswordEncoderTest;
 import by.epam.bokhan.pool.ConnectionPoolTest;
 import by.epam.bokhan.property.PropertyTest;
-import by.epam.bokhan.validator.BookValidatorTest;
-import by.epam.bokhan.validator.UserValidatorTest;
+import by.epam.bokhan.util.BookValidatorTest;
+import by.epam.bokhan.util.UserValidatorTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

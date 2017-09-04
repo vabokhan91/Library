@@ -4,7 +4,8 @@ package by.epam.bokhan.receiver.impl;
 import by.epam.bokhan.content.RequestContent;
 import by.epam.bokhan.dao.UserDAO;
 import by.epam.bokhan.dao.impl.UserDAOImpl;
-import by.epam.bokhan.encoder.PasswordEncoder;
+import by.epam.bokhan.util.ImageConverter;
+import by.epam.bokhan.util.PasswordEncoder;
 import by.epam.bokhan.entity.Role;
 import by.epam.bokhan.entity.User;
 import by.epam.bokhan.exception.DAOException;
@@ -22,10 +23,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import static by.epam.bokhan.receiver.impl.ReceiverConstant.*;
-import static by.epam.bokhan.validator.UserValidator.*;
+import static by.epam.bokhan.util.UserValidator.*;
 
 public class UserReceiverImpl implements UserReceiver {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Login user and moves him to personal cabinet
@@ -134,7 +134,7 @@ public class UserReceiverImpl implements UserReceiver {
                     user.setPassword(hashedPassword);
                 }
                 if (userPhoto != null) {
-                    String image = convertImageToBase64(userPhoto);
+                    String image = ImageConverter.convertImageToBase64(userPhoto);
                     if (!image.isEmpty()) {
                         user.setPhoto(image);
                     }
@@ -349,7 +349,7 @@ public class UserReceiverImpl implements UserReceiver {
                     user.setLogin(login);
                 }
                 if (userPhoto != null) {
-                    String image = convertImageToBase64(userPhoto);
+                    String image = ImageConverter.convertImageToBase64(userPhoto);
                     if (!image.isEmpty()) {
                         user.setPhoto(image);
                     }
@@ -426,7 +426,7 @@ public class UserReceiverImpl implements UserReceiver {
             if (isUserIdValid(userIdValue) && userPhoto != null) {
                 User user = new User();
                 int userId = Integer.parseInt(userIdValue);
-                String convertedPhoto = convertImageToBase64(userPhoto);
+                String convertedPhoto = ImageConverter.convertImageToBase64(userPhoto);
                 user.setId(userId);
                 user.setPhoto(convertedPhoto);
                 isPhotoUploaded = dao.changePhoto(user);
@@ -482,35 +482,6 @@ public class UserReceiverImpl implements UserReceiver {
         }
     }
 
-    /**
-     * Converts object of type Part to base64 String
-     * @param userPhoto object to convert
-     * @return converted String
-     * */
-    private String convertImageToBase64(Part userPhoto) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        InputStream inputStream = null;
-        String photo = null;
-        try {
-            inputStream = userPhoto.getInputStream();
-            int reads = inputStream.read();
-            while (reads != -1) {
-                byteArrayOutputStream.write(reads);
-                reads = inputStream.read();
-            }
-            byte[] b = byteArrayOutputStream.toByteArray();
-            photo = Base64.getEncoder().encodeToString(b);
-        } catch (IOException e) {
-            LOGGER.log(Level.ERROR, String.format("Can not convert to string. Reason : %s", e));
-        } finally {
-            try {
-                inputStream.close();
-                byteArrayOutputStream.close();
-            } catch (IOException e) {
-                LOGGER.log(Level.ERROR, String.format("Can not close stream. Reason : %s", e));
-            }
-        }
-        return photo;
-    }
+
 }
 
