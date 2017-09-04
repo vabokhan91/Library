@@ -2,6 +2,5 @@
 <html>
 <head><title>HelloPage</title></head>
 <body>
-
-<jsp:forward page = "WEB-INF/jsp/main.jsp" />
+<jsp:forward page = "/controller?command=get_random_books_from_database" />
 </body></html>

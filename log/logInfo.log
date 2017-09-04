@@ -1,53 +1,30 @@
-2017-08-06 16:37:35.168 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-06 16:39:19.189 [http-nio-8080-exec-7] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.DAOException: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`library_project`.`book_genre`, CONSTRAINT `fk_genre_has_book_genre1` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION)
-2017-08-06 16:43:18.135 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-06 16:44:54.696 [http-nio-8080-exec-7] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.DAOException: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`library_project`.`book_genre`, CONSTRAINT `fk_genre_has_book_genre1` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION)
-2017-08-06 16:48:09.753 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-06 19:42:34.775 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-06 19:48:48.465 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-06 19:52:40.800 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 16:37:36.338 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 16:39:14.564 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 16:43:56.363 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 17:57:28.691 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:04:42.239 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:11:16.661 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:12:59.644 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:15:30.302 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:19:59.426 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:21:44.980 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:26:41.177 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:47:29.164 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:49:28.278 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-07 18:51:39.153 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 00:05:27.057 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 01:10:09.005 [http-nio-8080-exec-6] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 01:12:08.889 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 01:15:36.357 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 01:20:34.358 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 01:21:44.863 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 01:25:10.354 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 01:29:08.179 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 02:54:34.442 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 03:11:13.049 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:06:52.643 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:07:04.045 [http-nio-8080-exec-7] ERROR by.epam.bokhan.controller.Controller - Can not find book. Reason : com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'left join (select book_author.book_id as b,author.name , author.surname , author' at line 2
-2017-08-08 15:11:30.224 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:11:38.946 [http-nio-8080-exec-7] ERROR by.epam.bokhan.controller.Controller - Can not find book. Reason : java.sql.SQLException: Column 'publisher' not found.
-2017-08-08 15:11:47.346 [http-nio-8080-exec-9] ERROR by.epam.bokhan.controller.Controller - Can not find book. Reason : java.sql.SQLException: Column 'publisher' not found.
-2017-08-08 15:12:39.756 [http-nio-8080-exec-3] ERROR by.epam.bokhan.controller.Controller - Can not find book. Reason : java.sql.SQLException: Column 'publisher' not found.
-2017-08-08 15:13:21.802 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:13:46.108 [http-nio-8080-exec-8] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.DAOException: Can not get order. Reason : You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 5
-2017-08-08 15:16:28.787 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:16:37.719 [http-nio-8080-exec-8] ERROR by.epam.bokhan.controller.Controller - by.epam.bokhan.exception.DAOException: Can not get order. Reason : Column 'last_order_date' not found.
-2017-08-08 15:18:07.094 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:20:47.495 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:26:47.726 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:28:21.282 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:44:02.576 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:46:43.880 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:49:23.300 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:50:51.535 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 15:54:01.489 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 16:20:10.935 [http-nio-8080-exec-5] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
-2017-08-08 18:24:48.742 [http-nio-8080-exec-4] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 02:26:11.023 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 02:38:12.509 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 02:51:49.678 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 02:53:18.462 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 02:58:54.186 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 03:11:48.506 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 03:12:32.396 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 03:19:37.954 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 03:20:33.989 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 15:52:08.681 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 15:53:18.779 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 15:55:16.324 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 15:55:36.057 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 15:56:36.000 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-03 20:43:27.677 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 01:35:25.562 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 01:44:48.146 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 01:51:54.041 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 01:51:57.471 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 01:53:16.324 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 01:53:36.235 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 01:53:38.810 [main] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 01:54:27.250 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 03:27:22.830 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 17:42:04.420 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 19:34:50.302 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 20:45:42.086 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 21:01:36.373 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 21:13:12.314 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 21:15:31.034 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections

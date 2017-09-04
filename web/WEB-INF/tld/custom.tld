@@ -12,11 +12,6 @@
         <body-content>empty</body-content>
     </tag>
     <tag>
-        <name>current-date</name>
-        <tag-class>by.epam.bokhan.tag.CurrentDateTag</tag-class>
-        <body-content>empty</body-content>
-    </tag>
-    <tag>
         <name>is-admin</name>
         <tag-class>by.epam.bokhan.tag.AdminRoleTag</tag-class>
         <body-content>JSP</body-content>

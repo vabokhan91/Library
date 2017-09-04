@@ -6,19 +6,14 @@
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/library.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
-            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-            crossorigin="anonymous"></script>
-    <title><fmt:message key="label.librarian_page" bundle="${messages}"/> </title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<link rel="stylesheet" href="css/library.css">
+
+<script src="../../js/http_cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.js"></script>
+<script src="../../js/http_code.jquery.com_jquery-3.2.1.slim.js"></script>
+<script src="../../js/http_cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.js"></script>
+<script src="../../js/http_maxcdn.bootstrapcdn.com_bootstrap_4.0.0-beta_js_bootstrap.js"></script>
 
 
 <nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">

@@ -1,50 +1,69 @@
-<%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
+<%@ page language="java" contentType="text/html; charset = UTF-8" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
+<%@ page import="by.epam.bokhan.entity.Role" %>
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="resource.config" var="path"/>
-<fmt:setBundle basename="resource.language" var="message"/>
-<c:if test="${user.roleId!=4}">
-        <jsp:forward page="/index.jsp"/>
+<fmt:setBundle basename="resource.language" var="messages"/>
+<c:if test="${user.role!=Role.ADMINISTRATOR}">
+    <jsp:forward page="/index.jsp"/>
 </c:if>
 
 <html>
 <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Administrator page</title></head>
+    <title><fmt:message key="label.administrator_page" bundle="${messages}"/></title></head>
 
-<body>
-        ${user.login}, hello!!!
-        ${user.name}
-        <br/>
-        <form action="<fmt:message key="path.page.adduser"/>">
-                <input type="submit" value="Add User">
-        </form>
+<body background="image/books-484766_1920.jpg">
 
-        <a href="/controller?command=to_add_user_page" ><fmt:message key="label.add_user" bundle="${message}"/> </a><br/>
+<jsp:include page="../header.jsp"/>
 
-        <a href="/controller?command=to_Remove_User_Page" ><fmt:message key="label.remove_user" bundle="${message}"/> </a><br/>
+<div class="container">
+    C:\Users\vbokh\.IntelliJIdea2017.1\config\javascript\extLibs\http_cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.js
 
-        <a href="/controller?command=to_Find_User_Page" ><fmt:message key="label.button.find_user" bundle="${message}"/> </a><br/>
+    <div class="row row-offcanvas row-offcanvas-right">
 
-        <form method="get" action="/controller" accept-charset="UTF-8">
-                <input type="hidden" name="command" value="get_not_blocked_users"/>
+        <div class="col-12 col-md-9">
+            <div class="jumbotron">
+                <h1>Hello, world!</h1>
+                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some
+                    responsive-range viewport sizes to see it in action.</p>
+            </div>
+            <div class="row">
 
-                <input type="submit" name="submit" value="<fmt:message key="label.user.block_user" bundle="${message}"/> "/>
-        </form>
+            </div><!--/row-->
+        </div><!--/span-->
 
-        <%--<a href="/controller?command=to_block_user_page" ><fmt:message key="label.user.block_user" bundle="${message}"/> </a><br/>--%>
+        <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
+            <div><ctg:welcome-tag/></div><br/>
+            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
+                    key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
+            <br/>
 
-        <form method="get" action="/controller" accept-charset="UTF-8">
-                <input type="hidden" name="command" value="get_blocked_users"/>
+            <div class="list-group">
+                <a href="/controller?command=to_add_user_page" class="list-group-item"><fmt:message key="label.add_user" bundle="${messages}"/></a>
+                <a href="/controller?command=to_find_user_page" class="list-group-item"><fmt:message key="label.remove_user" bundle="${messages}"/></a>
+                <a href="/controller?command=get_all_users" class="list-group-item"><fmt:message key="label.show_all_users" bundle="${messages}"/></a>
+                <a href="/controller?command=to_find_user_page" class="list-group-item"><fmt:message key="label.button.find_user"
+                                                                                                     bundle="${messages}"/></a>
+                <a href="/controller?command=to_find_user_page" class="list-group-item"><fmt:message key="label.user.edit_user" bundle="${messages}"/></a>
+                <a href="/controller?command=get_not_blocked_users" class="list-group-item"><fmt:message key="label.user.block_user" bundle="${messages}"/></a>
+                <a href="/controller?command=get_blocked_users" class="list-group-item"><fmt:message key="label.user.unblock_user" bundle="${messages}"/></a>
+            </div>
+        </div><!--/span-->
+    </div><!--/row-->
+    <br/>
 
-                <input type="submit" name="submit" value="<fmt:message key="label.user.unblock_user" bundle="${message}"/> "/>
-        </form>
+</div>
 
+<hr>
 
-        <br/>
-        <a href = "/controller?command=logout">Log Out</a>
+<footer>
+    <p>© Company 2017</p>
+</footer>
 
-
-        </body>
-        </html>
+</body>
+</html>
