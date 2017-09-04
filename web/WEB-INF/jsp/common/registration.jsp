@@ -8,11 +8,12 @@
 
 <html>
 <head>
-    <title><fmt:message key="label.registration" bundle="${messages}"/> </title>
+    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<jsp:include page="../header.jsp"/>
+<%@include file="../header.jsp"%>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">

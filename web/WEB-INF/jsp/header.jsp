@@ -1,20 +1,10 @@
-<%@ page language="java" contentType = "text/html; charset = UTF-8" pageEncoding="UTF-8" session="true"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-<link rel="stylesheet" href="css/library.css">
-
-<script src="../../js/http_cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.js"></script>
-<script src="../../js/http_code.jquery.com_jquery-3.2.1.slim.js"></script>
-<script src="../../js/http_cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.js"></script>
-<script src="../../js/http_maxcdn.bootstrapcdn.com_bootstrap_4.0.0-beta_js_bootstrap.js"></script>
-
 
 <nav class="lib-navbar navbar fixed-top navbar-dark bg-dark">
     <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library" bundle="${messages}"/> </a>
@@ -28,10 +18,10 @@
     <div class="row lib-header-menu">
         <form method="post">
             <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-secondary btn-sm ${language == "en_US" ? "active" : ""}">
+                <label class="btn btn-sm btn-secondary ${language == "en_US" ? "active" : ""}">
                     <input type="radio" name="language" value="en_US" autocomplete="off" onchange="submit()"> English
                 </label>
-                <label class="btn btn-secondary btn-sm ${language == "ru_RU" ? "active" : ""}">
+                <label class="btn btn-sm btn-secondary ${language == "ru_RU" ? "active" : ""}">
                     <input type="radio" name="language" value="ru_RU" autocomplete="off" onchange="submit()"> Русский
                 </label>
             </div>
@@ -63,7 +53,7 @@
             <c:otherwise>
                 <c:choose>
                     <c:when test="${user.role.ordinal()==3}">
-                        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
+                        <a class="btn btn-sm btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
                                                                                                            bundle="${messages}"/> </a>
                     </c:when>
                     <c:when test="${user.role.ordinal()==2}">
@@ -71,7 +61,7 @@
                                 key="label.button.to_main_menu" bundle="${messages}"/> </a>
                     </c:when>
                     <c:when test="${user.role.ordinal()==1}">
-                        <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu"
+                        <a class="btn btn-sm btn-secondary" href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu"
                                                                                                                bundle="${messages}"/> </a>
                     </c:when>
                 </c:choose>
@@ -79,7 +69,7 @@
         </c:choose>
 
         <c:if test="${not empty user}">
-            <a class="btn btn-info btn-sm logout" href="/controller?command=logout" role="button"><fmt:message key="label.logout" bundle="${messages}"/></a>
+            <a class="btn btn-sm btn-info logout" href="/controller?command=logout" role="button"><fmt:message key="label.logout" bundle="${messages}"/></a>
         </c:if>
     </div>
 </nav>

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset = UTF-8" pageEncoding="UTF-8" session="true" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" session="true" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
@@ -15,14 +15,15 @@
 
 <html>
 <head>
-    <title><fmt:message key="label.administrator_page" bundle="${messages}"/></title></head>
+    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <%@include file="../common_imports.jsp"%>
+</head>
 
 <body background="image/books-484766_1920.jpg">
 
-<jsp:include page="../header.jsp"/>
+<%@include file="../header.jsp"%>
 
 <div class="container">
-    C:\Users\vbokh\.IntelliJIdea2017.1\config\javascript\extLibs\http_cdnjs.cloudflare.com_ajax_libs_popper.js_1.11.0_umd_popper.js
 
     <div class="row row-offcanvas row-offcanvas-right">
 

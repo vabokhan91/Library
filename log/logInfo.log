@@ -28,3 +28,9 @@
 2017-09-04 21:01:36.373 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
 2017-09-04 21:13:12.314 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
 2017-09-04 21:15:31.034 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 23:34:09.303 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 23:35:25.569 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 23:36:12.295 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 23:38:33.801 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 23:45:56.922 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
+2017-09-04 23:48:05.674 [http-nio-8080-exec-1] INFO  by.epam.bokhan.pool.ConnectionPool - All connections were created successfully. Connection pool size: 10 connections
