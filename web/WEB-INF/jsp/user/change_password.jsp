@@ -11,10 +11,39 @@
 <c:if test="${user.role!=Role.CLIENT}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
+
+    <script>
+        function validatePasswordForm() {
+            var password_form = document.getElementById('password_form'),
+                old_password_field = document.getElementById('old_password'),
+                new_password_field = document.getElementById("new_password"),
+                confirm_password_field = document.getElementById("confirm_password");
+
+            if (!old_password_field.checkValidity()) {
+                old_password_field.setCustomValidity('old password failed');
+            }
+
+            if (!new_password_field.checkValidity()) {
+                new_password_field.setCustomValidity("new password failed");
+            }
+
+            if (!confirm_password_field.checkValidity()) {
+                confirm_password_field.setCustomValidity("confirm password failed");
+            }
+
+            if (new_password_field.value !== confirm_password_field.value) {
+                confirm_password_field.setCustomValidity("Passwords Don't Match");
+            }
+
+            if (password_form.reportValidity()){
+                password_form.submit();
+            }
+        }
+    </script>
 </head>
 <body background="image/books-484766_1920.jpg">
 
@@ -25,7 +54,7 @@
 
         <div class="col-12 col-md-9">
             <div>
-                <form method="post" action="/controller" accept-charset="UTF-8">
+                <form method="post" action="/controller" novalidate id="password_form" onsubmit="event.preventDefault(); validatePasswordForm();" accept-charset="UTF-8">
                     <input type="hidden" name="command" value="change_password"/>
                     <input type="hidden" name="library_card" value="${sessionScope.user.id}">
 
@@ -34,16 +63,16 @@
                                 key="label.password.enter_old_password" bundle="${messages}"/></label>
                         <div class="col-5">
                             <input type="password" class="form-control" id="old_password" name="old_password" value=""
-                                   pattern="[\w!()*&^%$@]{1,12}" required/>
+                                   pattern="[\w!()*&^%$@]{1,12}" onkeyup="this.setCustomValidity('')" required/>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="password" class="col-3 col-form-label required"><fmt:message
+                        <label for="new_password" class="col-3 col-form-label required"><fmt:message
                                 key="label.password.enter_new_password" bundle="${messages}"/></label>
                         <div class="col-5">
-                            <input type="password" class="form-control" id="password" name="new_password" value=""
-                                   pattern="[\w!()*&^%$@]{1,12}"/>
+                            <input type="password" class="form-control" id="new_password" name="new_password" value=""
+                                   pattern="[\w!()*&^%$@]{1,12}" onkeyup="this.setCustomValidity('')" required/>
                             <small class="form-text text-muted">
                                 <fmt:message key="label.password.password_info" bundle="${messages}"/>
                             </small>
@@ -55,7 +84,7 @@
                                 key="label.password.repeat_password" bundle="${messages}"/></label>
                         <div class="col-5">
                             <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                                   value="" pattern="[\w!()*&^%$@]{1,12}"/>
+                                   value="" pattern="[\w!()*&^%$@]{1,12}" onkeyup="this.setCustomValidity('')" required/>
                             <small class="form-text text-muted">
                                 <fmt:message key="label.password.password_info" bundle="${messages}"/>
                             </small>
@@ -86,23 +115,6 @@
 <footer>
     <p>© Company 2017</p>
 </footer>
-
-<script>
-    var password = document.getElementById("password")
-        , confirm_password = document.getElementById("confirm_password");
-
-    function validatePassword() {
-        debugger
-        if (password.value != confirm_password.value) {
-            confirm_password.setCustomValidity("Passwords Don't Match");
-        } else {
-            confirm_password.setCustomValidity('');
-        }
-    }
-
-    password.onchange = validatePassword;
-    confirm_password.onkeyup = validatePassword;
-</script>
 
 </body>
 </html>

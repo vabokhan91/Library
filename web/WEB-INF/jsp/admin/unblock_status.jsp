@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="by.epam.bokhan.entity.Role" %>
@@ -9,7 +9,7 @@
 <c:if test="${user.role!=Role.ADMINISTRATOR}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -53,7 +53,7 @@
                 <c:remove var="isUserUnblocked" scope="session" />
             </c:if>
 
-        </div><!--/span-->
+        </div>
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
@@ -64,8 +64,8 @@
             <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message
                     key="label.button.to_main_menu"
                     bundle="${messages}"/> </a><br/>
-        </div>--%><!--/span-->
-    </div><!--/row-->
+        </div>--%>
+    </div>
 </div>
 
 <footer>

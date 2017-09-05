@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="by.epam.bokhan.entity.Role" %>
@@ -9,7 +9,7 @@
 <c:if test="${user.role!=Role.LIBRARIAN}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -49,7 +49,7 @@
                     <div class="form-group row">
                         <label for="date_of_birth" class="col-3 col-form-label required"><fmt:message key="label.date_of_birth" bundle="${messages}"/></label>
                         <div class="col-5">
-                            <input type = "date" class="form-control" id="date_of_birth" name="date_of_birth" value="" required>
+                            <input class="form-control" id="date_of_birth" name="date_of_birth" value="" required>
                         </div>
 
                     </div>
@@ -78,7 +78,7 @@
             </div>
             <div class="row">
 
-            </div><!--/row-->
+            </div>
         </div>
 
         <jsp:include page="../navigation_sidebar.jsp"/>
@@ -96,6 +96,14 @@
 <footer>
     <p>© Company 2017</p>
 </footer>
+
+<script>
+    $('#date_of_birth').datepicker({
+        language: '${language}',
+        format: 'dd.mm.yyyy',
+        orientation: 'bottom'
+    });
+</script>
 
 </body>
 </html>

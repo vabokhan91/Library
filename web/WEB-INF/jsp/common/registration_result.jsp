@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="resource.language" var="messages"/>
 <fmt:setBundle basename="resource.config" var="config"/>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -46,7 +46,7 @@
                 <c:remove var="isUserEdited" scope="session" />
             </c:if>
 
-        </div><!--/span-->
+        </div>
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
@@ -55,7 +55,7 @@
                     key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
 
         </div>--%>
-    </div><!--/row-->
+    </div>
 </div>
 
 <footer>

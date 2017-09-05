@@ -11,7 +11,7 @@
 <c:if test="${user.role!=Role.LIBRARIAN && user.role!=Role.CLIENT}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>

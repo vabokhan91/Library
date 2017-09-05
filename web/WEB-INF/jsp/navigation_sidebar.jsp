@@ -6,14 +6,9 @@
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 
-
 <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-<a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
 <c:if test="${not empty user}">
-
     <ctg:is-admin>
-        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
-                                                                                           bundle="${messages}"/> </a><br/><br/>
         <div class="list-group">
             <a href="/controller?command=to_add_user_page" class="list-group-item"><fmt:message key="label.add_user" bundle="${messages}"/></a>
             <a href="/controller?command=to_find_user_page" class="list-group-item"><fmt:message key="label.remove_user" bundle="${messages}"/></a>
@@ -26,8 +21,6 @@
         </div>
     </ctg:is-admin>
     <ctg:is-librarian>
-        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/><br/>
         <div class="list-group">
             <a href="/controller?command=to_add_user_page" class="list-group-item"><fmt:message key="label.add_user" bundle="${messages}"/></a>
             <a href="/controller?command=get_all_users" class="list-group-item"><fmt:message key="label.show_all_users" bundle="${messages}"/></a>
@@ -45,12 +38,9 @@
             <a href="/controller?command=to_delete_genre_page" class="list-group-item"><fmt:message key="label.button.delete_genre" bundle="${messages}"/></a>
             <a href="/controller?command=to_add_publisher_page" class="list-group-item"><fmt:message key="label.book.add_publisher" bundle="${messages}"/></a>
             <a href="/controller?command=to_delete_publisher_page" class="list-group-item"><fmt:message key="label.book.delete_publisher" bundle="${messages}"/></a>
-
         </div>
     </ctg:is-librarian>
     <ctg:is-client>
-        <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message
-                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/><br/>
         <div class="list-group">
             <a href="/controller?command=to_change_password_page" class="list-group-item"><fmt:message key="label.user.change_password" bundle="${messages}"/></a>
             <a href="/controller?command=to_change_login_page" class="list-group-item"><fmt:message key="label.login.change_login" bundle="${messages}"/></a>
@@ -61,6 +51,5 @@
             <a href="/controller?command=to_get_online_orders_page&library_card=${sessionScope.user.libraryCardNumber}" class="list-group-item"><fmt:message key="label.book.cancel_online_order" bundle="${messages}"/></a>
         </div>
     </ctg:is-client>
-
 </c:if>
 </div>

@@ -9,7 +9,7 @@
 <c:if test="${user.role!=Role.CLIENT}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -28,7 +28,7 @@
                     <input type="hidden" name="user_id" value="${sessionScope.user.id}"/>
 
                     <div class="form-group row">
-                        <label for="login" class="col-5 col-form-label required"><fmt:message key="label.login.enter_new_login" bundle="${messages}"/></label>
+                        <label for="login" class="col-3 col-form-label required"><fmt:message key="label.login.enter_new_login" bundle="${messages}"/></label>
                         <div class="col-3">
                             <input type="text" class="form-control" id="login" name="new_login" value=""
                                    pattern="[\w!()*&^%$@]{1,12}" required/>

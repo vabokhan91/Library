@@ -5,7 +5,7 @@
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -26,10 +26,10 @@
                 <h1><fmt:message key="label.error" bundle="${messages}"/> </h1>
 
             </div>
-        </div><!--/span-->
+        </div>
 
-        </div><!--/span-->
-    </div><!--/row-->
+        </div>
+    </div>
 
     <hr>
 

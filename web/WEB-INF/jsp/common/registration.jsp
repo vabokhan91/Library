@@ -6,7 +6,7 @@
 <fmt:setBundle basename="resource.language" var="messages"/>
 <fmt:setBundle basename="resource.config" var="config"/>
 
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>

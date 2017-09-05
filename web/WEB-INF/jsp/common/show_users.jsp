@@ -9,7 +9,7 @@
 <c:if test="${user.role != Role.ADMINISTRATOR && user.role!=Role.LIBRARIAN}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -50,7 +50,7 @@
 
             <div class="row">
 
-            </div><!--/row-->
+            </div>
         </div>
 
         <jsp:include page="../navigation_sidebar.jsp"/>

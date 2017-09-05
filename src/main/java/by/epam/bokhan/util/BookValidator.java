@@ -17,7 +17,7 @@ public class BookValidator {
     private static final String REGEX_FOR_BOOK_PUBLISHER_ID = "\\d{1,5}";
     private static final String REGEX_FOR_BOOK_GENRE_ID = "\\d{1,5}";
     private static final String REGEX_FOR_AUTHOR_ID = "\\d{1,5}";
-    private static final String REGEX_FOR_DATE_OF_BIRTH = "^(\\d){3,4}[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$";
+    private static final String REGEX_FOR_DATE_OF_BIRTH = "^(0[1-9]|[12][0-9]|3[01])[.](0[1-9]|1[012])[.](\\d){3,4}$";
     private static final String REGEX_FOR_NAME = "[a-zA-Z\\s]{1,40}|([а-яА-ЯёЁ\\s]{1,40})";
     private static final String REGEX_FOR_SURNAME = "[a-zA-Z\\s]{1,40}|([а-яА-ЯёЁ\\s]{1,40})";
     private static final String REGEX_FOR_PATRONYMIC = "[a-zA-Z\\s]{1,40}|([а-яА-ЯёЁ\\s]{1,40})";

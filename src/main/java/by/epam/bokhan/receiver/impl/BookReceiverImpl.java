@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import static by.epam.bokhan.receiver.impl.ReceiverConstant.*;
 import static by.epam.bokhan.util.BookValidator.*;
@@ -234,7 +235,7 @@ public class BookReceiverImpl implements BookReceiver {
                 author.setName(name);
                 author.setSurname(surname);
                 author.setPatronymic(patronymic);
-                LocalDate dateOfBirth = LocalDate.parse(dateOfBirthValue);
+                LocalDate dateOfBirth = LocalDate.parse(dateOfBirthValue, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
                 author.setDateOfBirth(dateOfBirth);
                 authorIsAdded = bookDAO.addAuthor(author);
             }

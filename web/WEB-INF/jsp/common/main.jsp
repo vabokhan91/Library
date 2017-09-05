@@ -60,9 +60,9 @@
                                 </form>
                             </div>
                         </div>
-                        <!--/span-->
+
                     </c:forEach>
-                </div><!--/row-->
+                </div>
             </div>
             <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
                 <div class="list-group">
@@ -89,10 +89,10 @@
                     <a href="/controller?command=find_book_by_genre&genre_name=Эссе" class="list-group-item"><fmt:message key="label.genre.essay" bundle="${messages}"/></a>
 
                 </div>
-            </div><!--/span-->
-        </div><!--/span-->
+            </div>
+        </div>
 
-    </div><!--/row-->
+    </div>
 
     <hr>
 

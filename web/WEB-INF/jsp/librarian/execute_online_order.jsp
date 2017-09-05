@@ -11,7 +11,7 @@
 <c:if test="${user.role!=Role.LIBRARIAN}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -97,9 +97,9 @@
 
 
                     </div>
-                    <!--/span-->
 
-            </div><!--/row-->
+
+            </div>
 
 
 
@@ -132,7 +132,7 @@
 
         </div>--%>
 
-    </div><!--/row-->
+    </div>
 
 </div>
 

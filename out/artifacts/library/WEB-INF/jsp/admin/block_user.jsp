@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="by.epam.bokhan.entity.Role" %>
@@ -9,13 +9,14 @@
 <c:if test="${user.role!=Role.ADMINISTRATOR}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
-    <title><fmt:message key="label.user.block_user" bundle="${messages}"/></title>
+    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<jsp:include page="../header.jsp"/>
+<%@include file="../header.jsp"%>
 
 
 <div class="container">
@@ -64,7 +65,7 @@
         <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
             <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
             <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/></a><br/>
-        </div>--%><!--/span-->
+        </div>--%>
 
     </div>
 </div>

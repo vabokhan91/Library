@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
@@ -8,14 +8,15 @@
 <c:if test="${user.role.ordinal()!=2 && user.role.ordinal()!=3}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
-    <title><fmt:message key="label.add_user" bundle="${messages}"/> </title>
+    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
 
 
-<jsp:include page="../header.jsp"/>
+<%@include file="../header.jsp"%>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
@@ -135,7 +136,7 @@
             </div>
             <div class="row">
 
-            </div><!--/row-->
+            </div>
         </div>
 
         <jsp:include page="../navigation_sidebar.jsp"/>
@@ -176,7 +177,6 @@
         , confirm_password = document.getElementById("confirm_password");
 
     function validatePassword(){
-        debugger
         if(password.value != confirm_password.value) {
             confirm_password.setCustomValidity("Passwords Don't Match");
         } else {

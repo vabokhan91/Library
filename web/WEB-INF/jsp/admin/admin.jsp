@@ -13,7 +13,7 @@
     <jsp:forward page="/index.jsp"/>
 </c:if>
 
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -35,27 +35,12 @@
             </div>
             <div class="row">
 
-            </div><!--/row-->
-        </div><!--/span-->
-
-        <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <div><ctg:welcome-tag/></div><br/>
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
-                    key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <br/>
-
-            <div class="list-group">
-                <a href="/controller?command=to_add_user_page" class="list-group-item"><fmt:message key="label.add_user" bundle="${messages}"/></a>
-                <a href="/controller?command=to_find_user_page" class="list-group-item"><fmt:message key="label.remove_user" bundle="${messages}"/></a>
-                <a href="/controller?command=get_all_users" class="list-group-item"><fmt:message key="label.show_all_users" bundle="${messages}"/></a>
-                <a href="/controller?command=to_find_user_page" class="list-group-item"><fmt:message key="label.button.find_user"
-                                                                                                     bundle="${messages}"/></a>
-                <a href="/controller?command=to_find_user_page" class="list-group-item"><fmt:message key="label.user.edit_user" bundle="${messages}"/></a>
-                <a href="/controller?command=get_not_blocked_users" class="list-group-item"><fmt:message key="label.user.block_user" bundle="${messages}"/></a>
-                <a href="/controller?command=get_blocked_users" class="list-group-item"><fmt:message key="label.user.unblock_user" bundle="${messages}"/></a>
             </div>
-        </div><!--/span-->
-    </div><!--/row-->
+        </div>
+
+        <jsp:include page="../navigation_sidebar.jsp"/>
+
+    </div>
     <br/>
 
 </div>

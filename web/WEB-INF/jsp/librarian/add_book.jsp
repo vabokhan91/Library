@@ -8,7 +8,7 @@
 <c:if test="${user.role.ordinal()!=2}">
     <jsp:forward page="/index.jsp"/>
 </c:if>
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -121,7 +121,7 @@
             </div>
             <div class="row">
 
-            </div><!--/row-->
+            </div>
         </div>
 
         <jsp:include page="../navigation_sidebar.jsp"/>

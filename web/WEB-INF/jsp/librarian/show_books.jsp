@@ -8,7 +8,7 @@
 <fmt:setBundle basename="resource.config" var="config"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
 
-<html>
+<html lang="${language}">
 <head>
     <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
@@ -100,10 +100,10 @@
                         </div>
 
                     </div>
-                    <!--/span-->
+
                 </c:forEach>
-            </div><!--/row-->
-        </div><!--/span-->
+            </div>
+        </div>
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
@@ -127,7 +127,7 @@
             </c:if>
 
         </div>--%>
-    </div><!--/row-->
+    </div>
 
     <hr>
 
