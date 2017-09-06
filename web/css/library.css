@@ -83,7 +83,7 @@ body > .container {
     width: 100%;
 }
 
-.lib-row-action-widget button:first-child {
+.lib-row-action-widget button:first-of-type {
     margin-bottom: 0.3rem;
 }
 
