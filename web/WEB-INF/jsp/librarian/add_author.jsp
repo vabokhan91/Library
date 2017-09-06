@@ -93,9 +93,7 @@
 </div>
 
 
-<footer>
-    <p>© Company 2017</p>
-</footer>
+<jsp:include page="../footer.jsp"/>
 
 <script>
     $('#date_of_birth').datepicker({

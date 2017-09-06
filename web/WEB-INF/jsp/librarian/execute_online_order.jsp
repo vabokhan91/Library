@@ -39,7 +39,7 @@
                                 <input type="hidden" name="command" value="execute_online_order">
                                 <input type="hidden" name="book_id" value="${foundBook.id}"/>
                                 <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
-                                <div class="parent-book-info"><h2>${foundBook.title}</h2>
+                                <div class="lib-parent-book-info"><h2>${foundBook.title}</h2>
 
                                     <fmt:message key="label.book.id" bundle="${messages}"/> : ${foundBook.id}<br/>
 
@@ -136,6 +136,8 @@
 
 </div>
 
+
+<jsp:include page="../footer.jsp"/>
 
 
 

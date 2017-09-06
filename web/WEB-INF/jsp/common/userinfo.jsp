@@ -31,10 +31,10 @@
             <div class="row">
                 <c:forEach items="${foundUser}" var="item">
                     <div class="col-10">
-                        <div class="parent-book-info">
+                        <div class="lib-parent-book-info">
                             <h2>${item.surname.concat(' ').concat(item.name).concat(' ').concat(item.patronymic)}</h2>
                             <div>
-                                <img class="main-book-img" src="data:image/jpg;base64,${item.photo}"/></div>
+                                <img class="lib-main-book-img" src="data:image/jpg;base64,${item.photo}"/></div>
                             <div>
                                 <fmt:message key="label.library_card" bundle="${messages}"/> : ${item.libraryCardNumber}
                                 <br/>
@@ -102,13 +102,9 @@
         </div>--%>
     </div>
 
-    <hr>
-
-    <footer>
-        <p>© Company 2017</p>
-    </footer>
-
 </div>
+
+<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

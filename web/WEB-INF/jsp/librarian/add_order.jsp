@@ -39,7 +39,7 @@
                         <input type="hidden" name="command" value="add_order">
                         <input type="hidden" name="book_id" value="${foundBook.id}"/>
                         <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
-                        <div class="parent-book-info"><h2>${foundBook.title}</h2>
+                        <div class="lib-parent-book-info"><h2>${foundBook.title}</h2>
 
                             <fmt:message key="label.book.id" bundle="${messages}"/> : ${foundBook.id}<br/>
 
@@ -138,13 +138,9 @@
 
 </div>
 
-<hr>
-
-<footer>
-    <p>© Company 2017</p>
-</footer>
-
 </div>
+
+<jsp:include page="../footer.jsp"/>
 
 
 <%--<form method="post" action="/controller" accept-charset="UTF-8">

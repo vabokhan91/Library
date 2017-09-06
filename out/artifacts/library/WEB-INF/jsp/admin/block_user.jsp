@@ -11,7 +11,7 @@
 </c:if>
 <html lang="${language}">
 <head>
-    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <title><fmt:message key="label.user.block_user" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
@@ -70,9 +70,7 @@
     </div>
 </div>
 
-<footer>
-    <p>© Company 2017</p>
-</footer>
+<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

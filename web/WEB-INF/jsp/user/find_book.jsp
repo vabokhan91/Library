@@ -27,10 +27,9 @@
 
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <form class="form-inline" action="/controller">
+                        <form class="lib-search-form form-inline" action="/controller">
                             <input type="hidden" name="command" value="user_find_book">
-                            <div class="col-12">
-                                <fmt:message key="label.book.enter_book_title" bundle="${messages}"/></div><br/><br/>
+                            <div><fmt:message key="label.book.enter_book_title" bundle="${messages}"/></div><br/><br/>
                             <input type="text" class="form-control" name="book_title" value="" placeholder=<fmt:message key="label.placeholder.book_title" bundle="${messages}"/> required>
                             <input type="submit" class="btn btn-secondary" value="<fmt:message key="label.button.find" bundle="${messages}"/> ">
                         </form>
@@ -51,7 +50,7 @@
         </div>--%>
 
     </div>
-</div>
+</div><jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

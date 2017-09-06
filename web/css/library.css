@@ -7,8 +7,20 @@ body {
     padding-top: 70px;
 }
 
-footer {
-    padding: 30px 0;
+body > .container {
+    min-height: calc(100vh - 130px);
+}
+
+.footer {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: #f5f5f5;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .lib-navbar form {
@@ -27,9 +39,28 @@ footer {
     display: flex;
 }
 
+.lib-search-form input[type=submit] {
+    margin-left: 1rem;
+}
+
+.lib-search-form div {
+    margin-bottom: 0.5rem;
+    flex-basis: 100%;
+}
+
 .lib-form-signin > *:not(:last-child) {
     width: 6rem;
     margin-right: 0.2rem;
+}
+
+.lib-parent-book-info {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.lib-parent-book-info h2 {
+    flex-basis: 100%;
 }
 
 .lib-main-book-img {
@@ -37,15 +68,6 @@ footer {
     margin-right: 20px;
     max-height: 215px;
     max-width: 200px;
-}
-
-.lib-parent-book-info:after {
-    content: ".";
-    margin-bottom: 20px;
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
 }
 
 .btn-secondary-menu {
@@ -57,18 +79,22 @@ footer {
     margin-right: 5px;
 }
 
-tr
-    /*td .expander {
-        position: absolute;
-        bottom: 0px;
-        z-index: 1;
-        left: 100%;
-        display: none;
-        height: 100%;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 1rem;
-    }*/
+.lib-row-action-widget button {
+    width: 100%;
+}
+
+.lib-row-action-widget button:first-child {
+    margin-bottom: 0.3rem;
+}
+
+.table {
+    font-size: 0.9rem;
+}
+
+.table form {
+    margin-bottom: 0;
+}
+
 .table-cell-user {
     width: 15%;
 }

@@ -28,9 +28,9 @@
             </p>
             <div class="row">
                     <div class="col-10">
-                        <div class="parent-book-info"><h2>${foundBook.title}</h2>
+                        <div class="lib-parent-book-info"><h2>${foundBook.title}</h2>
                             <div>
-                                <img class="main-book-img" src="data:image/jpg;base64,${foundBook.image}"/></div>
+                                <img class="lib-main-book-img" src="data:image/jpg;base64,${foundBook.image}"/></div>
                             <div>
                                 <c:if test="${user.role == Role.LIBRARIAN || user.role == Role.ADMINISTRATOR}">
                                     <fmt:message key="label.book.id" bundle="${messages}"/> : ${foundBook.id}<br/>
@@ -46,12 +46,13 @@
                                 <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${foundBook.year}<br/>
                                 <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${foundBook.pages}<br/>
                                 <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${foundBook.publisher.name}<br/><br/>
-                                <fmt:message key="label.book.description" bundle="${messages}"/> : ${foundBook.description}<br/><br/>
-                                <c:if test="${user.role==Role.LIBRARIAN || user.role == Role.ADMINISTRATOR}">
-                                    <fmt:message key="label.book.orderStatus" bundle="${messages}"/> : ${foundBook.orderStatus.name}<br/>
-                                </c:if>
                             </div>
                         </div>
+
+                        <fmt:message key="label.book.description" bundle="${messages}"/> : ${foundBook.description}<br/><br/>
+                        <c:if test="${user.role==Role.LIBRARIAN || user.role == Role.ADMINISTRATOR}">
+                            <fmt:message key="label.book.orderStatus" bundle="${messages}"/> : ${foundBook.location.name}<br/><br/>
+                        </c:if>
 
 
                         <div>
@@ -157,13 +158,9 @@
         </div>--%>
     </div>
 
-    <hr>
-
-    <footer>
-        <p>© Company 2017</p>
-    </footer>
-
 </div>
+
+<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

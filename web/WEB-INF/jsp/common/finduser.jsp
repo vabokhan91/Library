@@ -32,9 +32,9 @@
                 <div class="col-lg-6">
                     <div class="input-group">
 
-                        <form class="form-inline" action="/controller">
+                        <form class="lib-search-form form-inline" action="/controller">
                             <input type="hidden" name="command" value="find_user">
-                            <fmt:message key="label.enter_library_card_or_surname" bundle="${messages}"/> :<br/>
+                            <div><fmt:message key="label.enter_library_card_or_surname" bundle="${messages}"/> :</div><br/>
                             <input type="text" class="form-control" name="find_query_value" value="" placeholder=<fmt:message key="label.library_card_or_surname" bundle="${messages}"/> required>
                             <input type="submit" class="btn btn-secondary" value="<fmt:message key="label.button.find" bundle="${messages}"/> ">
                         </form>
@@ -67,9 +67,8 @@
     </div>
 </div>
 
-<footer>
-    <p>© Company 2017</p>
-</footer>
+
+<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

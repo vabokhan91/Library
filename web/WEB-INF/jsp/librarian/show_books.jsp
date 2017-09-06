@@ -28,7 +28,7 @@
             <div class="row">
                 <c:forEach items="${books}" var="item">
                     <div class="col-10">
-                        <div class="parent-book-info"><h2>${item.title}</h2>
+                        <div class="lib-parent-book-info"><h2>${item.title}</h2>
                             <div>
                                 <img class="lib-main-book-img" src="data:image/jpg;base64,${item.image}"/></div>
                             <div>
@@ -129,13 +129,9 @@
         </div>--%>
     </div>
 
-    <hr>
-
-    <footer>
-        <p>© Company 2017</p>
-    </footer>
-
 </div>
+
+<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

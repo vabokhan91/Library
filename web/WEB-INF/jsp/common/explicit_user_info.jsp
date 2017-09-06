@@ -31,7 +31,7 @@
                     <div class="col-10">
 
                             <div>
-                                <img class="main-book-img" src="data:image/jpg;base64,${foundUser.photo}"><br/>
+                                <img class="lib-main-book-img" src="data:image/jpg;base64,${foundUser.photo}"><br/>
                             <div>
                                     <fmt:message key="label.library_card" bundle="${messages}"/> : ${foundUser.libraryCardNumber}<br/>
                                     <fmt:message key="label.name" bundle="${messages}"/> : ${foundUser.name} <br/>
@@ -102,10 +102,9 @@
         </div>--%>
     </div>
 
-    <footer>
-        <p>© Company 2017</p>
-    </footer>
 
 </div>
+
+<jsp:include page="../footer.jsp"/>
 </body>
 </html>

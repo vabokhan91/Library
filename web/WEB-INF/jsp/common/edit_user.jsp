@@ -174,5 +174,7 @@
     confirm_password.onkeyup = validatePassword;
 </script>
 
+
+<jsp:include page="../footer.jsp"/>
 </body>
 </html>

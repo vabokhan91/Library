@@ -7,9 +7,7 @@
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="resource.config" var="path"/>
 <fmt:setBundle basename="resource.language" var="messages"/>
-<c:if test="${user.role!=Role.CLIENT && empty user.role}">
-    <jsp:forward page="/index.jsp"/>
-</c:if>
+
 <html lang="${language}">
 <head>
     <title><fmt:message key="label.book.book_information" bundle="${messages}"/></title>
@@ -30,9 +28,9 @@
             <div class="row">
                 <c:forEach items="${books}" var="item">
                     <div class="col-10">
-                        <div class="parent-book-info"><h2>${item.title}</h2>
+                        <div class="lib-parent-book-info"><h2>${item.title}</h2>
                             <div>
-                                <img class="main-book-img" src="data:image/jpg;base64,${item.image}"/></div>
+                                <img class="lib-main-book-img" src="data:image/jpg;base64,${item.image}"/></div>
                             <div>
                                 <fmt:message key="label.book.author" bundle="${messages}"/> : <c:forEach items="${item.authors}"
                                                                                                          var="author">
@@ -78,11 +76,8 @@
         <jsp:include page="../navigation_sidebar.jsp"/>
     </div>
 
-    <footer>
-        <p>© Company 2017</p>
-    </footer>
-
 </div>
+<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

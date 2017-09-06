@@ -51,7 +51,7 @@
                                 </div>
                             </div>
                             <div>
-                                <form method="post" action="/controller" accept-charset="UTF-8">
+                                <form action="/controller" accept-charset="UTF-8">
                                     <input type="hidden" name="command" value="get_explicit_book_info"/>
                                     <input type="hidden" name="book_id" value="${item.id}"/>
                                     <button class="btn btn-secondary" type="submit" name="submit"><fmt:message
@@ -93,13 +93,7 @@
         </div>
 
     </div>
-
-    <hr>
-
     <jsp:include page="../footer.jsp"/>
-    <footer>
-        <p>© Company 2017</p>
-    </footer>
 </body>
 </html>
 

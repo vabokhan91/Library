@@ -26,11 +26,10 @@
                 <div class="col-lg-6">
                     <div class="input-group">
 
-                        <form class="form-inline" action="/controller">
+                        <form class="lib-search-form form-inline" action="/controller">
                             <input type="hidden" name="command" value="get_user_orders">
 
-                            <div class="col-12">
-                                <fmt:message key="label.book.enter_library_card" bundle="${messages}"/> </div><br/>
+                            <div><fmt:message key="label.book.enter_library_card" bundle="${messages}"/> </div><br/>
 
                             <input class="form-control" type="text" name="library_card" value="" placeholder=<fmt:message key="label.placeholder.enter_library_card" bundle="${messages}"/> required pattern="\d{1,5}"/>
 
@@ -53,10 +52,7 @@
         </div>--%>
     </div>
 </div>
-<br/>
 
-<footer>
-    <p>© Company 2017</p>
-</footer>
+<jsp:include page="../footer.jsp"/>
 </body>
 </html>

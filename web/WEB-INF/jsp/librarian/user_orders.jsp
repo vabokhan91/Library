@@ -79,7 +79,7 @@
                                             <input type="hidden" name="command" value="return_book"/>
                                             <input type="hidden" name="book_id" value="${item.book.id}"/>
                                             <input type="hidden" name="order_id" value="${item.id}"/>
-                                            <button type="submit" class="btn btn-primary"><fmt:message key="label.button.book.return_book" bundle="${messages}"/></button>
+                                            <button type="submit" class="btn btn-sm btn-primary"><fmt:message key="label.button.book.return_book" bundle="${messages}"/></button>
                                         </form>
                                     </td>
                                 </c:when>
@@ -150,6 +150,8 @@
 
     </div>
 </div>
+
+<jsp:include page="../footer.jsp"/>
 
 
 

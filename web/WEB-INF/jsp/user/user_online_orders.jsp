@@ -72,7 +72,7 @@
                         <td>${item.orderDate}</td>
                         <td>${item.expirationDate}</td>
                         <td>
-                            <span class="expander">
+                            <span class="lib-row-action-widget">
                                 <c:if test="${user.role == Role.LIBRARIAN && item.orderStatus == OrderStatus.BOOKED}">
                                     <form action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="get_online_order_information_page"/>
@@ -80,7 +80,7 @@
                                         <input type="hidden" name="book_id" value="${item.book.id}"/>
                                         <input type="hidden" name="library_card" value="${userOrders.libraryCardNumber}"/>
                                         <input type="hidden" name="librarian_id" value="${user.id}"/>
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-sm btn-primary">
                                             <fmt:message key="label.button.book.execute_online_order" bundle="${messages}"/>
                                         </button>
                                     </form>
@@ -90,7 +90,7 @@
                                     <input type="hidden" name="command" value="cancel_online_order"/>
                                     <input type="hidden" name="order_id" value="${item.id}"/>
                                     <input type="hidden" name="book_id" value="${item.book.id}"/>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-sm btn-primary">
                                         <fmt:message key="label.button.book.cancel_online_order" bundle="${messages}"/>
                                     </button>
                                 </form>
@@ -168,8 +168,8 @@
         </div>--%>
 
     </div>
-
 </div>
+<jsp:include page="../footer.jsp"/>
 </body>
 </html>
 

@@ -79,9 +79,7 @@
 </div>
 
 
-<footer>
-    <p>© Company 2017</p>
-</footer>
+<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

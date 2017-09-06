@@ -101,10 +101,7 @@
 </div>
 
 
-<footer>
-    <p>© Company 2017</p>
-</footer>
-
+<jsp:include page="../footer.jsp"/>
 <script >
     var password = document.getElementById("password")
         , confirm_password = document.getElementById("confirm_password");

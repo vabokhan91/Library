@@ -10,7 +10,7 @@
     <a class="navbar-brand" href="/controller?command=to_main_page"><fmt:message key="label.library" bundle="${messages}"/> </a>
     <form class="form-inline" action="/controller">
         <input type="hidden" name="command" value="user_find_book">
-        <input class="form-control mr-sm-2 lib-search" type="text" name="find_query_value" value="" placeholder=<fmt:message key="label.placeholder.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]+" required>
+        <input class="form-control mr-sm-2 lib-search" type="text" name="book_title" value="" placeholder=<fmt:message key="label.placeholder.enter_book_title" bundle="${messages}"/> pattern="[\w\WА-Яа-яЁё]+" required>
         <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="<fmt:message key="label.book.find_book" bundle="${messages}"/>">
     </form>
 
