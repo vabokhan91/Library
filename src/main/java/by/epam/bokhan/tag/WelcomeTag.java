@@ -12,16 +12,16 @@ import java.util.ResourceBundle;
 
 public class WelcomeTag extends TagSupport {
     
-    private final String USER = "user";
-    private final String LANGUAGE = "language";
-    private final String RU_RU = "ru_ru";
-    private final String RU = "ru";
-    private final String EN_US = "en_US";
-    private final String EN = "en";
-    private final String US = "US";
-    private final String LANGUAGE_BUNDLE = "resource.language";
-    private final String MESSAGE_WELCOME_GUEST = "label.message.welcome.guest";
-    private final String MESSAGE_WELCOME_USER = "label.message.welcome.authorizeduser";
+    private static final String USER = "user";
+    private static final String LANGUAGE = "language";
+    private static final String RU_RU = "ru_ru";
+    private static final String RU = "ru";
+    private static final String EN_US = "en_US";
+    private static final String EN = "en";
+    private static final String US = "US";
+    private static final String LANGUAGE_BUNDLE = "resource.language";
+    private static final String MESSAGE_WELCOME_GUEST = "label.message.welcome.guest";
+    private static final String MESSAGE_WELCOME_USER = "label.message.welcome.authorizeduser";
 
     @Override
     public int doStartTag() throws JspException {

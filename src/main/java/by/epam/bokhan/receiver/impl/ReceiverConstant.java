@@ -80,6 +80,7 @@ class ReceiverConstant {
     static final String BOOK_IMAGE = "book_image";
     static final String IS_PHOTO_UPLOADED = "isPhotoUploaded";
     static final int RANDOM_NUMBER_OF_BOOKS = 5;
+    static final String IS_LOGIN_EXIST = "isLoginExist";
 
     private ReceiverConstant() {
 

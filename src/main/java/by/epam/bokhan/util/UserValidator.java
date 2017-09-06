@@ -18,6 +18,7 @@ public class UserValidator {
     private static final String REGEX_FOR_USER_ID = "\\d{1,5}";
     private static final String REGEX_FOR_USER_ROLE = "[a-zA-Zа-яА-Я_]{1,30}";
 
+    /*Checks if password is valid*/
     public static boolean isPasswordValid(String password) {
         boolean isPasswordValid = false;
         if (password != null) {
@@ -27,11 +28,11 @@ public class UserValidator {
         }
         return isPasswordValid;
     }
-
+    /*Checks if passed passwords are equal*/
     public static boolean isPasswordsEquals(String password, String confirmPassword) {
         return !(password == null || password.isEmpty()) && password.equals(confirmPassword);
     }
-
+    /*Checks if login is valid*/
     public static boolean isLoginValid(String login) {
         boolean isLoginValid = false;
         if (login != null) {
@@ -41,7 +42,7 @@ public class UserValidator {
         }
         return isLoginValid;
     }
-
+    /*Checks if user name is valid*/
     public static boolean isUserNameValid(String name) {
         boolean isNameValid = false;
         if (name != null) {
@@ -51,7 +52,7 @@ public class UserValidator {
         }
         return isNameValid;
     }
-
+    /*Checks if user surname if valid*/
     public static boolean isUserSurnameValid(String surname) {
         boolean isSurnameValid = false;
         if (surname != null) {
@@ -61,7 +62,7 @@ public class UserValidator {
         }
         return isSurnameValid;
     }
-
+    /*Checks if user patronymic is valid*/
     public static boolean isUserPatronymicValid(String patronymic) {
         boolean isPatronymicValid = false;
         if (patronymic == null || patronymic.isEmpty()) {
@@ -76,11 +77,11 @@ public class UserValidator {
 
         return isPatronymicValid;
     }
-
+    /*Checks if user address is valid*/
     public static boolean isUserAddressValid(String address) {
         return address != null && !address.isEmpty();
     }
-
+    /* Checks if user mobile phone is valid */
     public static boolean isUserMobilePhoneValid(String mobilePhone) {
         boolean isMobilePhoneValid = false;
         if (mobilePhone != null) {
@@ -91,7 +92,7 @@ public class UserValidator {
         return isMobilePhoneValid;
     }
 
-
+    /*Checks if user library card id is valid*/
     public static boolean isLibraryCardIdValid(String libraryCard) {
         boolean isLibraryCardValid = false;
         if (libraryCard != null) {
@@ -102,7 +103,7 @@ public class UserValidator {
 
         return isLibraryCardValid;
     }
-
+    /*Checks if user id is valid*/
     public static boolean isUserIdValid(String userId) {
         boolean isUserIdValid = false;
         if (userId != null) {
@@ -112,7 +113,7 @@ public class UserValidator {
         }
         return isUserIdValid;
     }
-
+    /*Checks if user role is valid*/
     public static boolean isUserRoleValid(String roleValue) {
         boolean isRoleValid = false;
         if (roleValue != null) {

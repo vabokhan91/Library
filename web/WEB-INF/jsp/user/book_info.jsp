@@ -12,7 +12,7 @@
 </c:if>
 <html lang="${language}">
 <head>
-    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <title><fmt:message key="label.book.book_information" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
@@ -58,7 +58,7 @@
 
                             <c:if test="${item.getLocation()==Location.STORAGE && user.role==Role.CLIENT}">
                                 <td>
-                                    <form method="post" action="/controller" accept-charset="UTF-8">
+                                    <form action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="to_add_online_order_page"/>
                                         <input type="hidden" name="book_id" value="${item.id}"/>
                                         <input type="hidden" name="type_of_search" value="by_id">
@@ -70,15 +70,7 @@
                         </div>
                     </div>
                 </c:forEach>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
+
             </div>
         </div>
 

@@ -12,7 +12,7 @@ public abstract class AbstractCommand{
     public AbstractCommand(Receiver receiver) {
         this.receiver = receiver;
     }
-
+    /* Executes command, invokes receiver method action*/
     public void execute(RequestContent content) throws CommandException {
         try {
             receiver.action(CommandType.takeCommandType(this), content);

@@ -7,8 +7,8 @@ import by.epam.bokhan.exception.ReceiverException;
 
 public interface Receiver {
     /**
-     * Executes method doReceiver() of the passed command
-     * @param type concrete command to execute its method
+     * Executes method doReceiver() of the passed command type
+     * @param type type of command, which method doReceiver will be executed
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
      * */

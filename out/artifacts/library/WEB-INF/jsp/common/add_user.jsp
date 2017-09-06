@@ -122,6 +122,15 @@
                 </form>
 
                 <c:choose>
+                    <c:when test="${sessionScope.isLoginExist == true}">
+                        <fmt:message key="label.login_exist" bundle="${messages}"/>
+                    </c:when>
+                </c:choose>
+                <c:if test="${not empty sessionScope.isLoginExist}">
+                    <c:remove var="isLoginExist" scope="session" />
+                </c:if>
+
+                <c:choose>
                     <c:when test="${not empty sessionScope.userIsAdded && sessionScope.userIsAdded eq true}">
                         <fmt:message key="label.user.added_successfully" bundle="${messages}"/>
                     </c:when>

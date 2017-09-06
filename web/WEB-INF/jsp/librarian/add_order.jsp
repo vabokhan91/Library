@@ -14,7 +14,7 @@
 </c:if>
 <html lang="${language}">
 <head>
-    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <title><fmt:message key="label.book.add_order" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
@@ -33,7 +33,7 @@
                 <div class="col-10">
 
                         <div>
-                            <img class="main-book-img" src="data:image/jpg;base64,${foundBook.image}"/></div>
+                            <img class="lib-main-book-img" src="data:image/jpg;base64,${foundBook.image}"/></div>
                         <div>
                     <form method="post" action="/controller" accept-charset="UTF-8">
                         <input type="hidden" name="command" value="add_order">
@@ -55,7 +55,7 @@
                             <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${foundBook.year}<br/>
                             <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${foundBook.pages}<br/>
                             <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${foundBook.publisher.name}<br/><br/>
-                            <fmt:message key="label.book.orderStatus" bundle="${messages}"/> : ${foundBook.orderStatus.name}<br/>
+                            <fmt:message key="label.book.orderStatus" bundle="${messages}"/> : ${foundBook.location.name}<br/>
                         <div>
                             <br/>
                             <br/>

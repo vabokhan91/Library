@@ -12,11 +12,7 @@ public class CommandFactory {
     private static final String WRONG_ACTION_MESSAGE = "message.wrongaction";
     private static final String WRONG_ACTION = "wrongAction";
 
-    /**
-     * Defines command, depending on query value and returns it
-     * @param requestContent object holding all request parameters and session attributes
-     * @return AbstractCommand object or null, if command not found
-     * */
+    /*Defines command, depending on query value and returns it*/
     public AbstractCommand defineCommand(RequestContent requestContent) {
         AbstractCommand current = null;
         String action = (String) requestContent.getRequestParameters().get(COMMAND);

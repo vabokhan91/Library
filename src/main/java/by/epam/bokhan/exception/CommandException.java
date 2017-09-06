@@ -1,8 +1,6 @@
 package by.epam.bokhan.exception;
 
-/**
- * Created by vbokh on 04.09.2017.
- */
+
 public class CommandException extends Exception {
     public CommandException() {
         super();

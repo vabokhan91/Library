@@ -44,6 +44,7 @@ public class Controller extends HttpServlet {
         this.processRequest(request, response);
     }
 
+    /* Processes every request*/
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter(COMMAND) != null) {
             CommandFactory factory = new CommandFactory();

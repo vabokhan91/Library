@@ -13,7 +13,7 @@
 </c:if>
 <html lang="${language}">
 <head>
-    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <title><fmt:message key="label.book.user_online_orders" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
@@ -74,11 +74,11 @@
                         <td>
                             <span class="expander">
                                 <c:if test="${user.role == Role.LIBRARIAN && item.orderStatus == OrderStatus.BOOKED}">
-                                    <form method="post" action="/controller" accept-charset="UTF-8">
+                                    <form action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="get_online_order_information_page"/>
                                         <input type="hidden" name="online_order_id" value="${item.id}"/>
                                         <input type="hidden" name="book_id" value="${item.book.id}"/>
-                                        <input type="hidden" name="library_card" value="${item.user.libraryCardNumber}"/>
+                                        <input type="hidden" name="library_card" value="${userOrders.libraryCardNumber}"/>
                                         <input type="hidden" name="librarian_id" value="${user.id}"/>
                                         <button type="submit" class="btn btn-primary">
                                             <fmt:message key="label.button.book.execute_online_order" bundle="${messages}"/>

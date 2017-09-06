@@ -13,7 +13,7 @@
 </c:if>
 <html lang="${language}">
 <head>
-    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <title><fmt:message key="label.password.change_password" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
 
     <script>
@@ -56,7 +56,7 @@
             <div>
                 <form method="post" action="/controller" novalidate id="password_form" onsubmit="event.preventDefault(); validatePasswordForm();" accept-charset="UTF-8">
                     <input type="hidden" name="command" value="change_password"/>
-                    <input type="hidden" name="library_card" value="${sessionScope.user.id}">
+                    <input type="hidden" name="user_id" value="${sessionScope.user.id}">
 
                     <div class="form-group row">
                         <label for="old_password" class="col-3 col-form-label required"><fmt:message

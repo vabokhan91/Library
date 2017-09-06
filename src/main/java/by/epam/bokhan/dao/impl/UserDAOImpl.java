@@ -36,7 +36,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             "left join user on library_card.user_id = user.id\n" +
             "left join role on user.role_id = role.id \n" +
             "where user.surname LIKE ?";
-    private static final String SQL_CHECK_IF_LOGIN_EXIST = "SELECT login FROM user where login = ?";
+    private static final String SQL_CHECK_IF_LOGIN_EXIST = "SELECT id FROM user where login = ?";
     private static final String SQL_BLOCK_USER_BY_ID = "UPDATE user SET blocked = 1 WHERE user.id = ?";
     private static final String SQL_UNBLOCK_USER = "UPDATE user SET blocked = 0 WHERE user.id = ?";
     private static final String SQL_BLOCK_STATUS = "SELECT blocked FROM user WHERE user.id = ?";
@@ -130,25 +130,20 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         try {
             connection = ConnectionPool.getInstance().getConnection();
             getUserInfoStatement = connection.prepareStatement(SQL_FIND_USER_BY_LIBRARY_CARD);
+            getUserInfoStatement.setInt(1, user.getLibraryCardNumber());
             ResultSet resultSet = getUserInfoStatement.executeQuery();
             if (resultSet.next() && resultSet.getString(LOGIN) == null) {
                 String userName = resultSet.getString(USER_NAME);
                 String userSurname = resultSet.getString(USER_SURNAME);
                 if (user.getName().equalsIgnoreCase(userName) && user.getSurname().equalsIgnoreCase(userSurname)) {
                     int userId = resultSet.getInt(USER_ID);
-                    findLoginStatement = connection.prepareStatement(SQL_CHECK_IF_LOGIN_EXIST);
-                    findLoginStatement.setString(1, user.getLogin());
-                    ResultSet foundLogin = findLoginStatement.executeQuery();
-                    if (!foundLogin.next()) {
-                        registerUserStatement = connection.prepareStatement(SQL_REGISTER_USER);
-                        registerUserStatement.setString(1, user.getLogin());
-                        registerUserStatement.setString(2, user.getPassword());
-                        registerUserStatement.setInt(3, userId);
-                        int registerUserResult = registerUserStatement.executeUpdate();
-                        isUserRegistered = registerUserResult > 0;
-                    }
+                    registerUserStatement = connection.prepareStatement(SQL_REGISTER_USER);
+                    registerUserStatement.setString(1, user.getLogin());
+                    registerUserStatement.setString(2, user.getPassword());
+                    registerUserStatement.setInt(3, userId);
+                    int registerUserResult = registerUserStatement.executeUpdate();
+                    isUserRegistered = registerUserResult > 0;
                 }
-
             }
             return isUserRegistered;
         } catch (SQLException e) {
@@ -157,6 +152,27 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             closeStatement(getUserInfoStatement);
             closeStatement(findLoginStatement);
             closeStatement(registerUserStatement);
+            closeConnection(connection);
+        }
+    }
+
+
+    @Override
+    public boolean isLoginExist(User user) throws DAOException {
+        boolean isLoginExist;
+        Connection connection = null;
+        PreparedStatement getLoginStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            getLoginStatement = connection.prepareStatement(SQL_CHECK_IF_LOGIN_EXIST);
+            getLoginStatement.setString(1,user.getLogin());
+            ResultSet resultSet = getLoginStatement.executeQuery();
+            isLoginExist = resultSet.next();
+            return isLoginExist;
+        } catch (SQLException e) {
+            throw new DAOException(String.format("Can not get login: Reason : %s", e.getMessage()), e);
+        } finally {
+            closeStatement(getLoginStatement);
             closeConnection(connection);
         }
     }
@@ -182,20 +198,8 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
             insertUserStatement.setString(2, user.getSurname());
             insertUserStatement.setString(3, user.getPatronymic());
             insertUserStatement.setInt(4, user.getRole().ordinal());
-            if (user.getLogin() == null && user.getPassword() == null) {
-                insertUserStatement.setString(5, null);
-                insertUserStatement.setString(6, null);
-            } else {
-                findLoginStatement = connection.prepareStatement(SQL_CHECK_IF_LOGIN_EXIST);
-                findLoginStatement.setString(1, user.getLogin());
-                ResultSet foundLogin = findLoginStatement.executeQuery();
-                if (!foundLogin.next()) {
-                    insertUserStatement.setString(5, user.getLogin());
-                    insertUserStatement.setString(6, user.getPassword());
-                } else {
-                    return isUserAdded;
-                }
-            }
+            insertUserStatement.setString(5, user.getLogin());
+            insertUserStatement.setString(6, user.getPassword());
             if (user.getPhoto() != null && !user.getPhoto().isEmpty()) {
                 insertUserStatement.setString(7, user.getPhoto());
             } else {
@@ -689,14 +693,14 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
 
     /**
      * Changes user password
-     * @param libraryCard user library card
+     * @param userId user id
      * @param oldPassword old password of the user
      * @param newPassword new password of the user
      * @return boolean, depending on the operation result
      * @throws DAOException
      * */
     @Override
-    public boolean changePassword(int libraryCard,String oldPassword, String newPassword) throws DAOException {
+    public boolean changePassword(int userId,String oldPassword, String newPassword) throws DAOException {
         boolean isPasswordChanged = false;
         Connection connection = null;
         PreparedStatement getOldPasswordStatement = null;
@@ -704,7 +708,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
         try {
             connection = ConnectionPool.getInstance().getConnection();
             getOldPasswordStatement = connection.prepareStatement(SQL_GET_PASSWORD);
-            getOldPasswordStatement.setInt(1, libraryCard);
+            getOldPasswordStatement.setInt(1, userId);
             ResultSet resultSet = getOldPasswordStatement.executeQuery();
             if (resultSet.next()) {
                String oldPasswordFromDB = resultSet.getString(PASSWORD);
@@ -712,7 +716,7 @@ public class UserDAOImpl extends AbstractDAO implements UserDAO {
                     connection = ConnectionPool.getInstance().getConnection();
                     setNewPasswordStatement = connection.prepareStatement(SQL_SET_NEW_PASSWORD);
                     setNewPasswordStatement.setString(1, newPassword);
-                    setNewPasswordStatement.setInt(2, libraryCard);
+                    setNewPasswordStatement.setInt(2, userId);
                     int setNewPasswordResult = setNewPasswordStatement.executeUpdate();
                     isPasswordChanged = setNewPasswordResult > 0;
                 }

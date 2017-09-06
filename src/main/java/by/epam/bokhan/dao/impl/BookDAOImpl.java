@@ -181,7 +181,6 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     @Override
     public List<Book> getBookById(int bookId) throws DAOException {
         LinkedList<Book> books = new LinkedList<>();
-
         Connection connection = null;
         PreparedStatement findBookByIdStatement = null;
         try {
@@ -887,7 +886,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         String bookIsbn = book.getIsbn();
         int bookYear = book.getYear();
         String bookDescription = book.getDescription();
-        String location = book.getLocation().getName();
+        String location = book.getLocation().name();
         int publisherId = book.getPublisher().getId();
         String image = book.getImage();
         try {

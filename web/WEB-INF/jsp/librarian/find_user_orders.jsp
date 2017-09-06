@@ -12,7 +12,7 @@
 </c:if>
 <html lang="${language}">
 <head>
-    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <title><fmt:message key="label.find_user_online_orders" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
@@ -26,7 +26,7 @@
                 <div class="col-lg-6">
                     <div class="input-group">
 
-                        <form class="form-inline" method="post" action="/controller">
+                        <form class="form-inline" action="/controller">
                             <input type="hidden" name="command" value="get_user_orders">
 
                             <div class="col-12">

@@ -25,7 +25,7 @@ public class BookValidator {
     private static final String REGEX_FOR_ORDER_ID = "\\d{1,5}";
     private static final String REGEX_FOR_ONLINE_ORDER_ID = "\\d{1,5}";
 
-
+    /*Checks if book id is valid*/
     public static boolean isBookIdValid(String bookId) {
         boolean isBookIdValid = false;
         if (bookId != null) {
@@ -35,7 +35,7 @@ public class BookValidator {
         }
         return isBookIdValid;
     }
-
+    /*Checks if book title is valid*/
     public static boolean isBookTitleValid(String title) {
         boolean isBookTitleValid = false;
         if (title != null) {
@@ -45,7 +45,7 @@ public class BookValidator {
         }
         return isBookTitleValid;
     }
-
+    /*Checks if book isbn is valid*/
     public static boolean isBookIsbnValid(String isbn) {
         boolean isBookIsbnValid = false;
         if (isbn != null) {
@@ -55,7 +55,7 @@ public class BookValidator {
         }
         return isBookIsbnValid;
     }
-
+    /*Checks if book page value is valid*/
     public static boolean isBookPageValid(String page) {
         boolean isBookPageValid = false;
         if (page != null) {
@@ -65,7 +65,7 @@ public class BookValidator {
         }
         return isBookPageValid;
     }
-
+    /*Checks if book year value is valid*/
     public static boolean isBookYearValid(String year) {
         boolean isBookYearValid = false;
         if (year != null) {
@@ -75,7 +75,7 @@ public class BookValidator {
         }
         return isBookYearValid;
     }
-
+    /*Checks if book publisher is valid*/
     public static boolean isBookPublisherValid(String publisher) {
         boolean isBookPublisherValid = false;
         if (publisher != null && !publisher.isEmpty()) {
@@ -85,7 +85,7 @@ public class BookValidator {
         }
         return isBookPublisherValid;
     }
-
+    /*Checks if book publisher id is valid*/
     public static boolean isBookPublisherIdValid(String publisherId) {
         boolean isBookPublisherIdValid = false;
         if (publisherId != null && !publisherId.isEmpty()) {
@@ -95,7 +95,7 @@ public class BookValidator {
         }
         return isBookPublisherIdValid;
     }
-
+    /*Checks if book genre name is valid*/
     public static boolean isBookGenreNameValid(String genreName) {
         boolean isBookGenreValid = false;
         if (genreName != null) {
@@ -105,7 +105,7 @@ public class BookValidator {
         }
         return isBookGenreValid;
     }
-
+    /*Checks if book genre id is valid*/
     public static boolean isBookGenreIdValid(String[] genreIdValues) {
         boolean isBookGenreIdValid = false;
         if (genreIdValues != null) {
@@ -117,7 +117,7 @@ public class BookValidator {
         }
         return isBookGenreIdValid;
     }
-
+    /*Checks if book author id is valid*/
     public static boolean isBookAuthorIdValid(String[] authors) {
         boolean isBookAuthorIdValid = false;
         if (authors != null) {
@@ -129,7 +129,7 @@ public class BookValidator {
         }
         return isBookAuthorIdValid;
     }
-
+    /*Checks if date of birth is valid*/
     public static boolean isDateOfBirthValid(String dateOfBirth) {
         boolean isDateOfBirthValid = false;
         if (dateOfBirth != null) {
@@ -139,7 +139,7 @@ public class BookValidator {
         }
         return isDateOfBirthValid;
     }
-
+    /*Checks if author name is valid*/
     public static boolean isAuthorNameValid(String name) {
         boolean isNameValid = false;
         if (name != null) {
@@ -149,7 +149,7 @@ public class BookValidator {
         }
         return isNameValid;
     }
-
+    /*Checks if author surname is valid*/
     public static boolean isAuthorSurnameValid(String surname) {
         boolean isSurnameValid = false;
         if (surname != null) {
@@ -159,7 +159,7 @@ public class BookValidator {
         }
         return isSurnameValid;
     }
-
+    /*Checks if author patronymic is valid*/
     public static boolean isAuthorPatronymicValid(String patronymic) {
         boolean isPatronymicValid = false;
         if (patronymic == null || patronymic.isEmpty()) {
@@ -174,7 +174,7 @@ public class BookValidator {
 
         return isPatronymicValid;
     }
-
+    /*Checks if book location is valid*/
     public static boolean isBookLocationValid(String locationValue) {
         boolean isLocationValid = false;
         if (locationValue != null) {
@@ -191,7 +191,7 @@ public class BookValidator {
         }
         return isLocationValid;
     }
-
+    /*Checks if id of the order is valid*/
     public static boolean isOrderIdValid(String orderIdValue) {
         boolean isOrderIdValid = false;
         if (orderIdValue != null) {
@@ -202,7 +202,7 @@ public class BookValidator {
         }
         return isOrderIdValid;
     }
-
+    /*Checks if online order id is valid*/
     public static boolean isOnlineOrderIdValid(String onlineOrderIdValue) {
         boolean isOnlineOrderIdValid = false;
         if (onlineOrderIdValue != null) {

@@ -12,7 +12,7 @@
 </c:if>
 <html lang="${language}">
 <head>
-    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <title><fmt:message key="label.personal_cabinet" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">

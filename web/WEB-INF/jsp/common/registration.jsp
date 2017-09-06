@@ -8,7 +8,7 @@
 
 <html lang="${language}">
 <head>
-    <title><fmt:message key="label.main_page" bundle="${messages}"/></title>
+    <title><fmt:message key="label.registration" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
@@ -79,8 +79,18 @@
                         </div>
                     </div>
                 </form>
+                <c:choose>
+                    <c:when test="${sessionScope.isLoginExist == true}">
+                        <fmt:message key="label.login_exist" bundle="${messages}"/>
+                    </c:when>
+                </c:choose>
+                <c:if test="${not empty sessionScope.isLoginExist}">
+                    <c:remove var="isLoginExist" scope="session" />
+                </c:if>
             </div>
         </div>
+
+
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 

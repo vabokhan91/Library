@@ -96,6 +96,7 @@
 
     <hr>
 
+    <jsp:include page="../footer.jsp"/>
     <footer>
         <p>© Company 2017</p>
     </footer>

@@ -22,16 +22,20 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+
 import static by.epam.bokhan.receiver.impl.ReceiverConstant.*;
 import static by.epam.bokhan.util.UserValidator.*;
 
 public class UserReceiverImpl implements UserReceiver {
 
+
+
     /**
      * Login user and moves him to personal cabinet
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void login(RequestContent requestContent) throws ReceiverException {
         UserDAO userDAO = new UserDAOImpl();
@@ -56,9 +60,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Logout user and invalidates session
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void logout(RequestContent requestContent) {
         requestContent.insertParameter(INVALIDATE, TRUE);
@@ -66,13 +71,14 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Registers new user
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void registerUser(RequestContent requestContent) throws ReceiverException {
         UserDAO userDAO = new UserDAOImpl();
-        boolean isUserRegistered = false;
+        boolean isUserRegistered;
         String name = (String) requestContent.getRequestParameters().get(USER_NAME);
         String surname = (String) requestContent.getRequestParameters().get(USER_SURNAME);
         String libraryCardValue = (String) requestContent.getRequestParameters().get(LIBRARY_CARD);
@@ -81,18 +87,24 @@ public class UserReceiverImpl implements UserReceiver {
         String confirmPassword = (String) requestContent.getRequestParameters().get(CONFIRM_PASSWORD);
         try {
             if (isUserNameValid(name) && isUserSurnameValid(surname) && isLibraryCardIdValid(libraryCardValue)
-                    && isPasswordValid(password) && isPasswordValid(confirmPassword) && isPasswordsEquals(password, confirmPassword)) {
+                    && isPasswordValid(password) && isPasswordValid(confirmPassword) && isPasswordsEquals(password, confirmPassword) && isLoginValid(login)) {
                 User user = new User();
-                int libraryCard = Integer.parseInt(libraryCardValue);
-                String hashedPassword = PasswordEncoder.encodePassword(password);
-                user.setName(name);
-                user.setSurname(surname);
-                user.setLibraryCardNumber(libraryCard);
                 user.setLogin(login);
-                user.setPassword(hashedPassword);
-                isUserRegistered = userDAO.registerUser(user);
+                boolean isLoginExist = userDAO.isLoginExist(user);
+                if (!isLoginExist) {
+                    int libraryCard = Integer.parseInt(libraryCardValue);
+                    String hashedPassword = PasswordEncoder.encodePassword(password);
+                    user.setName(name);
+                    user.setSurname(surname);
+                    user.setLibraryCardNumber(libraryCard);
+                    user.setPassword(hashedPassword);
+                    isUserRegistered = userDAO.registerUser(user);
+                    requestContent.insertAttribute(IS_LOGIN_EXIST, isLoginExist);
+                    requestContent.insertAttribute(IS_USER_REGISTERED, isUserRegistered);
+                } else {
+                    requestContent.insertAttribute(IS_LOGIN_EXIST, isLoginExist);
+                }
             }
-            requestContent.insertAttribute(IS_USER_REGISTERED, isUserRegistered);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -100,13 +112,14 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Adds new user
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void addUser(RequestContent requestContent) throws ReceiverException {
         UserDAO userDAO = new UserDAOImpl();
-        boolean isUserAdded = false;
+        boolean isUserAdded;
         String name = (String) requestContent.getRequestParameters().get(USER_NAME);
         String surname = (String) requestContent.getRequestParameters().get(USER_SURNAME);
         String patronymic = (String) requestContent.getRequestParameters().get(USER_PATRONYMIC);
@@ -118,9 +131,34 @@ public class UserReceiverImpl implements UserReceiver {
         String phone = (String) requestContent.getRequestParameters().get(USER_MOBILE_PHONE);
         Part userPhoto = (Part) requestContent.getMultiTypeParts().get(USER_PHOTO);
         try {
-            if (isUserNameValid(name) && isUserSurnameValid(surname) && isUserPatronymicValid(patronymic) &&
-                    isUserAddressValid(address) && isUserMobilePhoneValid(phone) && isUserRoleValid(roleValue)) {
-                User user = new User();
+            User user = new User();
+            if (isLoginValid(login) && isPasswordValid(password) && isPasswordValid(confirmPassword) && isPasswordsEquals(password, confirmPassword)) {
+                user.setLogin(login);
+                boolean isLoginExist = userDAO.isLoginExist(user);
+                if (!isLoginExist && isUserNameValid(name) && isUserSurnameValid(surname) && isUserPatronymicValid(patronymic) &&
+                        isUserAddressValid(address) && isUserMobilePhoneValid(phone) && isUserRoleValid(roleValue)) {
+                    String hashedPassword = PasswordEncoder.encodePassword(password);
+                    user.setPassword(hashedPassword);
+                    Role role = Role.valueOf(roleValue.toUpperCase());
+                    user.setName(name);
+                    user.setSurname(surname);
+                    user.setPatronymic(patronymic);
+                    user.setAddress(address);
+                    user.setMobilePhone(phone);
+                    user.setRole(role);
+                    if (userPhoto != null) {
+                        String image = ImageConverter.convertImageToBase64(userPhoto);
+                        if (!image.isEmpty()) {
+                            user.setPhoto(image);
+                        }
+                    }
+                    isUserAdded = userDAO.addUser(user);
+                    requestContent.insertAttribute(USER_IS_ADDED, isUserAdded);
+                }else {
+                    requestContent.insertAttribute(IS_LOGIN_EXIST, isLoginExist);
+                }
+            }else if(isUserNameValid(name) && isUserSurnameValid(surname) && isUserPatronymicValid(patronymic) &&
+                    isUserAddressValid(address) && isUserMobilePhoneValid(phone) && isUserRoleValid(roleValue)){
                 Role role = Role.valueOf(roleValue.toUpperCase());
                 user.setName(name);
                 user.setSurname(surname);
@@ -128,11 +166,6 @@ public class UserReceiverImpl implements UserReceiver {
                 user.setAddress(address);
                 user.setMobilePhone(phone);
                 user.setRole(role);
-                if (isLoginValid(login) && isPasswordValid(password) && isPasswordValid(confirmPassword) && isPasswordsEquals(password, confirmPassword)) {
-                    String hashedPassword = PasswordEncoder.encodePassword(password);
-                    user.setLogin(login);
-                    user.setPassword(hashedPassword);
-                }
                 if (userPhoto != null) {
                     String image = ImageConverter.convertImageToBase64(userPhoto);
                     if (!image.isEmpty()) {
@@ -140,8 +173,8 @@ public class UserReceiverImpl implements UserReceiver {
                     }
                 }
                 isUserAdded = userDAO.addUser(user);
+                requestContent.insertAttribute(USER_IS_ADDED, isUserAdded);
             }
-            requestContent.insertAttribute(USER_IS_ADDED, isUserAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }
@@ -149,9 +182,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Gets all users and inserts them into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void getAllUsers(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -165,9 +199,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Removes user
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void removeUser(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -186,9 +221,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Gets user and inserts him into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void getUser(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -209,9 +245,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Blocks user and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void blockUser(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -230,9 +267,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Unblocks user and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void unblockUser(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -251,9 +289,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Gets all blocked users and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void getBlockedUsers(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -268,9 +307,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Gets all not blocked users and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void getNotBlockedUsers(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -285,9 +325,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Gets explicit user information and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void getExplicitUserInfo(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -306,9 +347,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Edits user and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void editUser(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -364,24 +406,25 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Changes user password and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void changePassword(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
         boolean isPasswordChanged = false;
-        String libraryCardValue = (String) requestContent.getRequestParameters().get(LIBRARY_CARD);
+        String userIdValue = (String) requestContent.getRequestParameters().get(USER_ID);
         String oldPassword = (String) requestContent.getRequestParameters().get(OLD_PASSWORD);
         String newPassword = (String) requestContent.getRequestParameters().get(NEW_PASSWORD);
         String confirmPassword = (String) requestContent.getRequestParameters().get(CONFIRM_PASSWORD);
         try {
             if (isPasswordValid(oldPassword) && isPasswordValid(newPassword) && isPasswordValid(confirmPassword)
-                    && isPasswordsEquals(newPassword, confirmPassword) && isLibraryCardIdValid(libraryCardValue)) {
-                int libraryCard = Integer.parseInt(libraryCardValue);
+                    && isPasswordsEquals(newPassword, confirmPassword) && isUserIdValid(userIdValue)) {
+                int userId = Integer.parseInt(userIdValue);
                 String hashedOldPassword = PasswordEncoder.encodePassword(oldPassword);
                 String hashedNewPassword = PasswordEncoder.encodePassword(newPassword);
-                isPasswordChanged = dao.changePassword(libraryCard, hashedOldPassword, hashedNewPassword);
+                isPasswordChanged = dao.changePassword(userId, hashedOldPassword, hashedNewPassword);
             }
             requestContent.insertAttribute(IS_PASSWORD_CHANGED, isPasswordChanged);
         } catch (DAOException e) {
@@ -391,9 +434,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Changes user login and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void changeLogin(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -413,9 +457,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Upload user photo and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void uploadUserPhoto(RequestContent requestContent) throws ReceiverException {
         UserDAO dao = new UserDAOImpl();
@@ -442,9 +487,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Gets user orders and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void getUserOrders(RequestContent requestContent) throws ReceiverException {
         UserDAO userDAO = new UserDAOImpl();
@@ -463,9 +509,10 @@ public class UserReceiverImpl implements UserReceiver {
 
     /**
      * Gets user online orders and inserts result of operation into RequestContent object
+     *
      * @param requestContent object holding all request parameters and session attributes
      * @throws ReceiverException
-     * */
+     */
     @Override
     public void getUserOnlineOrders(RequestContent requestContent) throws ReceiverException {
         UserDAO userDAO = new UserDAOImpl();

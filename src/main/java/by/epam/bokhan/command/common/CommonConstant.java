@@ -18,6 +18,7 @@ class CommonConstant {
     static final String SHOW_ALL_USERS_PAGE = "path.page.show_all_users";
     static final String TO_SHOW_BOOKS_PAGE = "path.page.book.show_all_books_page";
     static final String EDIT_USER_PAGE = "path.page.edit_user";
+    static final String REGISTRATION_PAGE = "path.page.registration_page";
     static final String TO_EXPLICIT_BOOK_INFO_PAGE = "path.page.book.explicit_book_info";
     static final String CANCEL_ONLINE_ORDER_STATUS_COMMAND = "/controller?command=to_cancel_online_order_status_page";
     static final String ADD_USER_PAGE_COMMAND = "/controller?command=to_add_user_page";
@@ -26,6 +27,8 @@ class CommonConstant {
     static final String TO_USER_MAIN_PAGE = "/controller?command=to_user_main_page";
     static final String TO_LIBRARIAN_MAIN_PAGE_COMMAND = "/controller?command=to_librarian_main_page";
     static final String TO_ADMIN_MAIN_PAGE = "/controller?command=to_admin_page";
+    static final String IS_LOGIN_EXIST = "isLoginExist";
+    static final String TO_REGISTRATION_PAGE_COMMAND = "/controller?command=to_registration_page";
 
 
     private CommonConstant() {

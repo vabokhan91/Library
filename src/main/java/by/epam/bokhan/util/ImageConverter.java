@@ -15,11 +15,7 @@ public class ImageConverter {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    /**
-     * Converts object of type Part to base64 String
-     * @param userPhoto object to convert
-     * @return converted String
-     * */
+    /*Converts object of type Part into base64 String*/
     public static String convertImageToBase64(Part userPhoto) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         InputStream inputStream = null;

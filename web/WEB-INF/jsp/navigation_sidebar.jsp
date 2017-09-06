@@ -46,6 +46,7 @@
             <a href="/controller?command=to_change_login_page" class="list-group-item"><fmt:message key="label.login.change_login" bundle="${messages}"/></a>
             <a href="/controller?command=get_user_orders&library_card=${sessionScope.user.libraryCardNumber}" class="list-group-item"><fmt:message key="label.order.watch_orders" bundle="${messages}"/></a>
             <a href="/controller?command=to_user_find_book_page" class="list-group-item"><fmt:message key="label.book.find_book" bundle="${messages}"/></a>
+            <a href="/controller?command=to_user_find_book_page" class="list-group-item"><fmt:message key="label.book.make_online_order" bundle="${messages}"/></a>
             <a href="/controller?command=get_all_books" class="list-group-item"><fmt:message key="label.book.show_all_books" bundle="${messages}"/></a>
             <a href="/controller?command=to_get_online_orders_page&library_card=${sessionScope.user.libraryCardNumber}" class="list-group-item"><fmt:message key="label.book.online_orders" bundle="${messages}"/></a>
             <a href="/controller?command=to_get_online_orders_page&library_card=${sessionScope.user.libraryCardNumber}" class="list-group-item"><fmt:message key="label.book.cancel_online_order" bundle="${messages}"/></a>
