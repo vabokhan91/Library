@@ -15,7 +15,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 
 <div class="container">
@@ -53,12 +53,13 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="publisher" class="col-3 col-form-label required" style="margin-right: 13px" ><fmt:message key="label.book.publisher" bundle="${messages}"/></label>
-                        <select id="publisher" class="custom-select col-5"  name="book_publisher" required>
+                        <label for="publisher" class="col-3 col-form-label required"><fmt:message key="label.book.publisher" bundle="${messages}"/></label>
+                        <div class="col-5"><select id="publisher" class="custom-select col-5"  name="book_publisher" required>
                             <c:forEach items="${publishers}" var="publisher">
                                 <option value="${publisher.id}">${publisher.getName()} </option>
                             </c:forEach>
                         </select>
+                        </div>
                     </div>
 
 
@@ -127,26 +128,6 @@
         <jsp:include page="../navigation_sidebar.jsp"/>
 
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <c:if test="${not empty user}">
-
-                <c:choose>
-                    <c:when test="${user.role.ordinal()==3}">
-                        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
-                                                                                                           bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role.ordinal()==2}">
-                        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-                    </c:when>
-
-                </c:choose>
-            </c:if>
-
-        </div>--%>
-
-
 
     </div>
 </div>
@@ -154,76 +135,6 @@
 
 <jsp:include page="../footer.jsp"/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<%--
-<form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
-    <input type="hidden" name="command" value="add_book"/>
-    <fmt:message key="label.book.book_title" bundle="${messages}"/> : <input type="text" name="book_title" value="" pattern="[\d\w\W[а-яА-Я}]]+" required/><br/>
-
-    <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : <input type="text" name="book_pages" value="" pattern="\d{1,5}" required><br/>
-
-    <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : <input type="text" name="book_year" value="" pattern="\d{1,5}" required><br/>
-
-    <fmt:message key="label.book.isbn" bundle="${messages}"/> : <input type="text" name="book_isbn" value="" required pattern="(\d+-\d+-\d+-\d+-\d+)|(\d+-\d+-\d+-\d+)"><br/>
-
-    <fmt:message key="label.book.publisher" bundle="${messages}"/> : <select name="book_publisher">
-        <c:forEach items="${publishers}" var="publisher">
-            <option value="${publisher.id}">${publisher.getName()} </option>
-        </c:forEach>
-    </select><br/>
-
-    <fmt:message key="label.book.genre" bundle="${messages}"/> : <br/>
-    <select multiple name="book_genre" required>
-    <c:forEach items="${genres}" var="genre">
-    <option value="${genre.id}">${genre.getName()} </option>
-    </c:forEach>
-    </select><br/>
-
-    <fmt:message key="label.book.author" bundle="${messages}"/> : <br/>
-    <select multiple name="book_author" required>
-    <c:forEach items="${authors}" var="author">
-    <option value="${author.id}">${author.getSurname()} ${author.getName()} ${author.getPatronymic()} </option>
-    </c:forEach>
-    </select><br/>
-
-    <fmt:message key="label.book.description" bundle="${messages}"/> :<br/> <textarea name="book_description" id="book_description" cols="30"
-                                                                                 rows="10"></textarea><br/>
-
-    <fmt:message key="label.book.image" bundle="${messages}"/> :
-    <input type="file" name="book_image" size="50"/>
-<br/>
-    <input type="hidden" name="book_location" value="storage">
-    <input type="submit" name="submit" value=<fmt:message key="label.button.add_book" bundle="${messages}"/> />
-</form>
-
-
-
-
-
-<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
---%>
 
 </body>
 </html>

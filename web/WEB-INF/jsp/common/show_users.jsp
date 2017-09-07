@@ -16,7 +16,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
@@ -55,26 +55,8 @@
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <c:if test="${not empty user}">
-
-                <c:choose>
-                    <c:when test="${user.role.ordinal()==3}">
-                        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
-                                                                                                           bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role.ordinal()==2}">
-                        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-                    </c:when>
-                </c:choose>
-            </c:if>
-        </div>--%>
     </div>
 </div>
-
-
 
 <jsp:include page="../footer.jsp"/>
 

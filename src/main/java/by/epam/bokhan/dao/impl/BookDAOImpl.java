@@ -103,10 +103,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
 
     /**
-    * Gets all books from the database
+     * Gets all books from the database
+     *
      * @return List of found books
-    * @throws DAOException if no connection with database
-    * */
+     * @throws DAOException if no connection with database
+     */
     @Override
     public List<Book> getAllBooks() throws DAOException {
         LinkedList<Book> books = new LinkedList<>();
@@ -174,10 +175,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Gets book by its id
+     *
      * @param bookId book id
      * @return List of found books
      * @throws DAOException if SQLException occurs
-     * */
+     */
     @Override
     public List<Book> getBookById(int bookId) throws DAOException {
         LinkedList<Book> books = new LinkedList<>();
@@ -248,10 +250,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Gets books by title
+     *
      * @param title title of the book
      * @return List of found books
      * @throws DAOException if SQLException occurs
-     * */
+     */
     @Override
     public List<Book> getBookByTitle(String title) throws DAOException {
         LinkedList<Book> books = new LinkedList<>();
@@ -323,10 +326,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Gets explicit book information
+     *
      * @param bookId id of the book
      * @return found book
      * @throws DAOException if SQLException occurs
-     * */
+     */
     @Override
     public Book getExplicitBookInfo(int bookId) throws DAOException {
         Book book = new Book();
@@ -395,10 +399,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Gets books last order
+     *
      * @param bookId book id
      * @return books last order
      * @throws DAOException
-     * */
+     */
     @Override
     public Order getLastOrderOfBook(int bookId) throws DAOException {
         Order order = new Order();
@@ -410,7 +415,7 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             booksLastOrderStatement.setInt(1, bookId);
             booksLastOrderStatement.setInt(2, bookId);
             ResultSet resultSet = booksLastOrderStatement.executeQuery();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 Timestamp orderDateTimeStamp = resultSet.getTimestamp(ORDER_DATE);
                 LocalDate orderDate = orderDateTimeStamp != null ? orderDateTimeStamp.toLocalDateTime().toLocalDate() : null;
                 order.setOrderDate(orderDate);
@@ -439,10 +444,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     }
 
     /**
-     * Gets all genres
+     * Gets all genres from database
+     *
      * @return List of genres
      * @throws DAOException
-     * */
+     */
     @Override
     public List<Genre> getAllGenres() throws DAOException {
         List<Genre> genres = new ArrayList<>();
@@ -471,10 +477,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
      * Editing book. If book information edited, then book image, book genres and book authors are edited,
      * else rollback is done. If all editing operations done successfully, returns true,
      * else rollback is done and returns false.
+     *
      * @param book book for editing
      * @return true/false, depending on result of the operation
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean editBook(Book book) throws DAOException {
         boolean isFullBookEdited = false;
@@ -486,11 +493,6 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
         PreparedStatement deleteAuthorStatement = null;
         PreparedStatement addAuthorStatement = null;
         boolean isBookEdited;
-        boolean isBookImageEdited;
-        boolean isGenreDeleted;
-        boolean isGenreEdited = false;
-        boolean isAuthorDeleted;
-        boolean isAuthorEdited = false;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
@@ -509,53 +511,40 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
                     changeBookImageStatement = connection.prepareStatement(SQL_CHANGE_BOOK_IMAGE);
                     changeBookImageStatement.setString(1, book.getImage());
                     changeBookImageStatement.setInt(2, book.getId());
-                    int changeBookImageResult = changeBookImageStatement.executeUpdate();
-                    isBookImageEdited = changeBookImageResult > 0;
-                } else {
-                    isBookImageEdited = true;
+                    changeBookImageStatement.executeUpdate();
                 }
                 deleteGenreStatement = connection.prepareStatement(SQL_DELETE_BOOKS_GENRE);
                 deleteGenreStatement.setInt(1, book.getId());
-                int deleteGenreResult = deleteGenreStatement.executeUpdate();
-                isGenreDeleted = deleteGenreResult > 0;
-                if (isGenreDeleted) {
-                    addGenreStatement = connection.prepareStatement(SQL_ADD_BOOK_GENRE);
-                    int addGenreResult = 0;
-                    List<Genre> genres = book.getGenre();
-                    for (Genre genre : genres) {
-                        addGenreStatement.setInt(1, book.getId());
-                        addGenreStatement.setInt(2, genre.getId());
-                        addGenreResult = addGenreStatement.executeUpdate();
-                        if (addGenreResult == 0) {
-                            break;
-                        }
+                deleteGenreStatement.executeUpdate();
+                addGenreStatement = connection.prepareStatement(SQL_ADD_BOOK_GENRE);
+                int addGenreResult;
+                List<Genre> genres = book.getGenre();
+                for (Genre genre : genres) {
+                    addGenreStatement.setInt(1, book.getId());
+                    addGenreStatement.setInt(2, genre.getId());
+                    addGenreResult = addGenreStatement.executeUpdate();
+                    if (addGenreResult == 0) {
+                        connection.rollback();
+                        break;
                     }
-                    isGenreEdited = addGenreResult > 0;
                 }
                 deleteAuthorStatement = connection.prepareStatement(SQL_DELETE_BOOKS_AUTHOR);
                 deleteAuthorStatement.setInt(1, book.getId());
-                int deleteAuthorResult = deleteAuthorStatement.executeUpdate();
-                isAuthorDeleted = deleteAuthorResult > 0;
-                if (isAuthorDeleted) {
-                    addAuthorStatement = connection.prepareStatement(SQL_ADD_BOOK_AUTHOR);
-                    int addAuthorResult = 0;
-                    List<Author> authors = book.getAuthors();
-                    for (Author author : authors) {
-                        addAuthorStatement.setInt(1, book.getId());
-                        addAuthorStatement.setInt(2, author.getId());
-                        addAuthorResult = addAuthorStatement.executeUpdate();
-                        if (addAuthorResult == 0) {
-                            break;
-                        }
+                deleteAuthorStatement.executeUpdate();
+                addAuthorStatement = connection.prepareStatement(SQL_ADD_BOOK_AUTHOR);
+                int addAuthorResult;
+                List<Author> authors = book.getAuthors();
+                for (Author author : authors) {
+                    addAuthorStatement.setInt(1, book.getId());
+                    addAuthorStatement.setInt(2, author.getId());
+                    addAuthorResult = addAuthorStatement.executeUpdate();
+                    if (addAuthorResult == 0) {
+                        connection.rollback();
+                        break;
                     }
-                    isAuthorEdited = addAuthorResult > 0;
                 }
-                if (isAuthorEdited && isGenreEdited && isBookImageEdited) {
-                    isFullBookEdited = true;
-                    connection.commit();
-                } else {
-                    connection.rollback();
-                }
+                isFullBookEdited = true;
+                connection.commit();
             } else {
                 connection.rollback();
             }
@@ -580,10 +569,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Adds new author
+     *
      * @param author author to add
      * @return boolean, depending on the operation result
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean addAuthor(Author author) throws DAOException {
         boolean isAuthorAdded;
@@ -609,10 +599,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Adds new publisher
+     *
      * @param publisher publisher to add
      * @return boolean, depending on the operation result
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean addPublisher(Publisher publisher) throws DAOException {
         boolean isPublisherAdded;
@@ -635,10 +626,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Deletes publisher
+     *
      * @param publishers publishers to delete
      * @return boolean, depending on the operation result
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean deletePublisher(List<Publisher> publishers) throws DAOException {
         boolean isPublisherDeleted = false;
@@ -679,10 +671,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Adds new genre
+     *
      * @param genre genre to add
      * @return boolean, depending on the operation result
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean addGenre(Genre genre) throws DAOException {
         boolean isGenreAdded = false;
@@ -718,10 +711,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Deletes genres
+     *
      * @param genres genres to delete
      * @return boolean, depending on the operation result
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean deleteGenre(List<Genre> genres) throws DAOException {
         boolean isGenreDeleted = false;
@@ -761,10 +755,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Deletes authors
+     *
      * @param authors authors to delete
      * @return boolean, depending on the operation result
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean deleteAuthor(List<Author> authors) throws DAOException {
         boolean isAuthorDeleted = false;
@@ -804,9 +799,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Gets all authors
+     *
      * @return List of authors
      * @throws DAOException
-     * */
+     */
     @Override
     public List<Author> getAllAuthors() throws DAOException {
         List<Author> authors = new ArrayList<>();
@@ -836,9 +832,10 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Gets all publishers
+     *
      * @return List of publishers
      * @throws DAOException
-     * */
+     */
     @Override
     public List<Publisher> getAllPublishers() throws DAOException {
         List<Publisher> publishers = new ArrayList<>();
@@ -867,10 +864,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
     /**
      * Adds book, if book information added, then book image, book authors and book genres are added,
      * else rollback is done. If all operation done successfully, commit is done, else rollback
+     *
      * @param book book to add
      * @return boolean, depending on the result of the operation
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean addBook(Book book) throws DAOException {
         boolean isBookFullyAdded = false;
@@ -957,10 +955,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Checks if book in storage, if true, deletes it. Otherwise book is not deleted
+     *
      * @param bookId book id
      * @return List of publishers
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean deleteBookById(int bookId) throws DAOException {
         boolean isBookDeleted = false;
@@ -990,11 +989,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Adds order of the book.
-     * @param order order to add
+     *
+     * @param order       order to add
      * @param typeOfOrder type of order
      * @return boolean, depending on the result of the operation
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean addOrder(Order order, String typeOfOrder) throws DAOException {
         boolean isOrderFullyAdded = false;
@@ -1061,11 +1061,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Returns book to the library
+     *
      * @param orderId id of the order
-     * @param bookId id of the book to return
+     * @param bookId  id of the book to return
      * @return boolean, depending on the result of the operation
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean returnBook(int orderId, int bookId) throws DAOException {
         boolean isBookFullyReturned = false;
@@ -1112,11 +1113,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Adds online order.
-     * @param bookId book id
+     *
+     * @param bookId      book id
      * @param libraryCard library card
      * @return boolean, depending on the result of the operation
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean addOnlineOrder(int bookId, int libraryCard) throws DAOException {
         boolean isOnlineOrderFullyAdded = false;
@@ -1164,11 +1166,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Cancelles online order.
+     *
      * @param orderId order id
-     * @param bookId book id
+     * @param bookId  book id
      * @return boolean, depending on the result of the operation
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean cancelOnlineOrder(int orderId, int bookId) throws DAOException {
         boolean isOnlineOrderFullyCancelled = false;
@@ -1215,10 +1218,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Gets online order status
+     *
      * @param orderId order id
      * @return status of the order
      * @throws DAOException
-     * */
+     */
     @Override
     public OrderStatus onlineOrderStatus(int orderId) throws DAOException {
         OrderStatus orderStatus = null;
@@ -1246,11 +1250,12 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Executes online order
+     *
      * @param onlineOrder online order to execute
      * @param typeOfOrder type of order
      * @return boolean, depending on the result of the operation
      * @throws DAOException
-     * */
+     */
     @Override
     public boolean executeOnlineOrder(OnlineOrder onlineOrder, String typeOfOrder) throws DAOException {
         boolean isOnlineOrderFullyExecuted = false;
@@ -1322,10 +1327,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Gets books by genre
+     *
      * @param genre book genre
      * @return List of found books
      * @throws DAOException
-     * */
+     */
     @Override
     public List<Book> getBooksByGenre(Genre genre) throws DAOException {
         LinkedList<Book> books = new LinkedList<>();
@@ -1394,10 +1400,11 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
 
     /**
      * Gets random books from database
+     *
      * @param numberOfBooks number of books to return
      * @return List of found books
      * @throws DAOException
-     * */
+     */
     @Override
     public List<Book> getRandomBooks(int numberOfBooks) throws DAOException {
         LinkedList<Book> books = new LinkedList<>();
@@ -1409,51 +1416,51 @@ public class BookDAOImpl extends AbstractDAO implements BookDAO {
             getRandomBooksStatement.setInt(1, numberOfBooks);
             ResultSet foundBooks = getRandomBooksStatement.executeQuery();
             while (foundBooks.next()) {
-                    int bookId = foundBooks.getInt(BOOK_ID);
-                    int lastBookId = !books.isEmpty() ? books.getLast().getId() : 0;
-                    if (lastBookId == bookId) {
-                        Genre bookGenre = new Genre();
-                        bookGenre.setId(foundBooks.getInt(GENRES_ID));
-                        bookGenre.setName(foundBooks.getString(GENRES_NAME));
-                        if (!books.getLast().getGenre().contains(bookGenre)) {
-                            books.getLast().addGenre(bookGenre);
-                        }
-                        Author author = new Author();
-                        author.setName(foundBooks.getString(AUTHOR_NAME));
-                        author.setSurname(foundBooks.getString(AUTHOR_SURNAME));
-                        author.setPatronymic(foundBooks.getString(AUTHOR_PATRONYMIC));
-                        if (!books.getLast().getAuthors().contains(author)) {
-                            books.getLast().addAuthor(author);
-                        }
-                    }else {
-                        Book book = new Book();
-                        book.setId(bookId);
-                        book.setTitle(foundBooks.getString(BOOK_TITLE));
-                        book.setPages(foundBooks.getInt(BOOK_PAGES));
-                        book.setIsbn(foundBooks.getString(BOOK_ISBN));
-                        book.setYear(foundBooks.getInt(BOOK_YEAR));
-                        book.setDescription(foundBooks.getString(BOOK_DESCRIPTION));
-                        book.setLocation(Location.valueOf(foundBooks.getString(BOOK_LOCATION).toUpperCase()));
-                        Publisher publisher = new Publisher();
-                        publisher.setId(foundBooks.getInt(PUBLISHER_ID));
-                        publisher.setName(foundBooks.getString(PUBLISHER_NAME));
-                        book.setPublisher(publisher);
-                        Genre bookGenre = new Genre();
-                        bookGenre.setId(foundBooks.getInt(GENRES_ID));
-                        bookGenre.setName(foundBooks.getString(GENRES_NAME));
-                        book.addGenre(bookGenre);
-                        Author author = new Author();
-                        author.setName(foundBooks.getString(AUTHOR_NAME));
-                        author.setSurname(foundBooks.getString(AUTHOR_SURNAME));
-                        author.setPatronymic(foundBooks.getString(AUTHOR_PATRONYMIC));
-                        book.addAuthor(author);
-                        Blob imageBlob = foundBooks.getBlob(BOOK_IMAGE);
-                        if (imageBlob != null) {
-                            String image = new String(imageBlob.getBytes(1, (int) imageBlob.length()));
-                            book.setImage(image);
-                        }
-                        books.add(book);
+                int bookId = foundBooks.getInt(BOOK_ID);
+                int lastBookId = !books.isEmpty() ? books.getLast().getId() : 0;
+                if (lastBookId == bookId) {
+                    Genre bookGenre = new Genre();
+                    bookGenre.setId(foundBooks.getInt(GENRES_ID));
+                    bookGenre.setName(foundBooks.getString(GENRES_NAME));
+                    if (!books.getLast().getGenre().contains(bookGenre)) {
+                        books.getLast().addGenre(bookGenre);
                     }
+                    Author author = new Author();
+                    author.setName(foundBooks.getString(AUTHOR_NAME));
+                    author.setSurname(foundBooks.getString(AUTHOR_SURNAME));
+                    author.setPatronymic(foundBooks.getString(AUTHOR_PATRONYMIC));
+                    if (!books.getLast().getAuthors().contains(author)) {
+                        books.getLast().addAuthor(author);
+                    }
+                } else {
+                    Book book = new Book();
+                    book.setId(bookId);
+                    book.setTitle(foundBooks.getString(BOOK_TITLE));
+                    book.setPages(foundBooks.getInt(BOOK_PAGES));
+                    book.setIsbn(foundBooks.getString(BOOK_ISBN));
+                    book.setYear(foundBooks.getInt(BOOK_YEAR));
+                    book.setDescription(foundBooks.getString(BOOK_DESCRIPTION));
+                    book.setLocation(Location.valueOf(foundBooks.getString(BOOK_LOCATION).toUpperCase()));
+                    Publisher publisher = new Publisher();
+                    publisher.setId(foundBooks.getInt(PUBLISHER_ID));
+                    publisher.setName(foundBooks.getString(PUBLISHER_NAME));
+                    book.setPublisher(publisher);
+                    Genre bookGenre = new Genre();
+                    bookGenre.setId(foundBooks.getInt(GENRES_ID));
+                    bookGenre.setName(foundBooks.getString(GENRES_NAME));
+                    book.addGenre(bookGenre);
+                    Author author = new Author();
+                    author.setName(foundBooks.getString(AUTHOR_NAME));
+                    author.setSurname(foundBooks.getString(AUTHOR_SURNAME));
+                    author.setPatronymic(foundBooks.getString(AUTHOR_PATRONYMIC));
+                    book.addAuthor(author);
+                    Blob imageBlob = foundBooks.getBlob(BOOK_IMAGE);
+                    if (imageBlob != null) {
+                        String image = new String(imageBlob.getBytes(1, (int) imageBlob.length()));
+                        book.setImage(image);
+                    }
+                    books.add(book);
+                }
             }
             return books;
         } catch (SQLException e) {

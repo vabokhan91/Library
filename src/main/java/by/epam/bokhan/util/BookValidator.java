@@ -213,4 +213,8 @@ public class BookValidator {
         }
         return isOnlineOrderIdValid;
     }
+    /*Checks if string is empty*/
+    public static boolean checkIfStringIsEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 }

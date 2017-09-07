@@ -15,7 +15,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
 
@@ -56,7 +56,7 @@
 
                             <c:if test="${item.getLocation()==Location.STORAGE && user.role==Role.CLIENT}">
                                 <td>
-                                    <form method="post" action="/controller" accept-charset="UTF-8">
+                                    <form action="/controller" accept-charset="UTF-8">
                                         <input type="hidden" name="command" value="to_add_online_order_page"/>
                                         <input type="hidden" name="book_id" value="${item.id}"/>
                                         <input type="hidden" name="type_of_search" value="by_id">
@@ -107,26 +107,6 @@
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <c:if test="${not empty user}">
-                <c:choose>
-                    <c:when test="${user.role==Role.ADMINISTRATOR}">
-                        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
-                                                                                 bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role==Role.LIBRARIAN}">
-                        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role==Role.CLIENT}">
-                        <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu"
-                                                                                     bundle="${messages}"/> </a><br/>
-                    </c:when>
-                </c:choose>
-            </c:if>
-
-        </div>--%>
     </div>
 
 </div>

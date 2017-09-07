@@ -15,7 +15,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
 
@@ -65,6 +65,38 @@
                                     </form>
                                 </td>
                             </c:if>
+
+                            <c:if test="${user.role == Role.LIBRARIAN}">
+                                <td>
+                                    <form class="form-action" action="/controller" accept-charset="UTF-8">
+                                        <input type="hidden" name="command" value="get_book_for_editing"/>
+                                        <input type="hidden" name="book_id" value="${item.id}"/>
+                                        <button class="btn btn-secondary" type="submit" ><fmt:message key="label.book.edit_book"
+                                                                                                      bundle="${messages}"/></button>
+                                    </form>
+                                </td>
+                                <c:if test="${item.getLocation()==Location.STORAGE}">
+                                    <td>
+                                        <form class="form-action" method="post" action="/controller" accept-charset="UTF-8">
+                                            <input type="hidden" name="command" value="delete_book"/>
+                                            <input type="hidden" name="book_id" value="${item.id}"/>
+                                            <button class="btn btn-secondary" type="submit" ><fmt:message key="label.button.book.delete_book"
+                                                                                                          bundle="${messages}"/></button>
+                                        </form>
+                                    </td>
+                                </c:if>
+                                <c:if test="${item.getLocation()==Location.STORAGE}">
+                                    <td>
+                                        <form class="form-action" action="/controller" accept-charset="UTF-8">
+                                            <input type="hidden" name="command" value="to_add_order_page"/>
+                                            <input type="hidden" name="book_id" value="${item.id}"/>
+                                            <button class="btn btn-secondary" type="submit" ><fmt:message key="label.button.book.add_order"
+                                                                                                          bundle="${messages}"/></button>
+                                        </form>
+                                    </td>
+                                </c:if>
+                            </c:if>
+
                         </div>
                     </div>
                 </c:forEach>

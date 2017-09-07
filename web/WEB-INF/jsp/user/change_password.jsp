@@ -24,11 +24,11 @@
                 confirm_password_field = document.getElementById("confirm_password");
 
             if (!old_password_field.checkValidity()) {
-                old_password_field.setCustomValidity('old password failed');
+                old_password_field.setCustomValidity("<fmt:message key="label.password_not valid" bundle="${messages}"/>");
             }
 
             if (!new_password_field.checkValidity()) {
-                new_password_field.setCustomValidity("new password failed");
+                new_password_field.setCustomValidity("<fmt:message key="label.password_not valid" bundle="${messages}"/>");
             }
 
             if (!confirm_password_field.checkValidity()) {
@@ -47,7 +47,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
@@ -63,7 +63,7 @@
                                 key="label.password.enter_old_password" bundle="${messages}"/></label>
                         <div class="col-5">
                             <input type="password" class="form-control" id="old_password" name="old_password" value=""
-                                   pattern="[\w!()*&^%$@]{1,12}" onkeyup="this.setCustomValidity('')" required/>
+                                   pattern="[\w!()*&^%$@]{3,12}" onkeyup="this.setCustomValidity('')" required/>
                         </div>
                     </div>
 
@@ -72,7 +72,7 @@
                                 key="label.password.enter_new_password" bundle="${messages}"/></label>
                         <div class="col-5">
                             <input type="password" class="form-control" id="new_password" name="new_password" value=""
-                                   pattern="[\w!()*&^%$@]{1,12}" onkeyup="this.setCustomValidity('')" required/>
+                                   pattern="[\w!()*&^%$@]{3,12}" onkeyup="this.setCustomValidity('')" required/>
                             <small class="form-text text-muted">
                                 <fmt:message key="label.password.password_info" bundle="${messages}"/>
                             </small>
@@ -102,12 +102,6 @@
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
-                    key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message
-                    key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-        </div>--%>
     </div>
 </div>
 <jsp:include page="../footer.jsp"/>

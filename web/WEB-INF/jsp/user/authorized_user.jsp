@@ -17,7 +17,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
 
@@ -25,9 +25,8 @@
 
         <div class="col-12 col-md-9">
             <div class="jumbotron">
-                <h1>Hello, world!</h1>
-                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some
-                    responsive-range viewport sizes to see it in action.</p>
+                <h2><ctg:welcome-tag/></h2>
+                <p><fmt:message key="label.personal_cabinet_message" bundle="${messages}"/> </p>
             </div>
             <div class="row">
 

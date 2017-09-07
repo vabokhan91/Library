@@ -130,4 +130,9 @@ public class UserValidator {
         }
         return isRoleValid;
     }
+
+    /*Checks if string is empty*/
+    public static boolean isStringEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
 }

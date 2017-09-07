@@ -10,16 +10,39 @@
 <head>
     <title><fmt:message key="label.registration" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
+    <script>
+        function validatePasswordForm() {
+            var password_form = document.getElementById('user_form'),
+                new_password_field = document.getElementById("new_password"),
+                confirm_password_field = document.getElementById("confirm_password");
+
+            if (!new_password_field.checkValidity()) {
+                new_password_field.setCustomValidity("<fmt:message key="label.password_not valid" bundle="${messages}"/>");
+            }
+
+            if (!confirm_password_field.checkValidity()) {
+                confirm_password_field.setCustomValidity("confirm password failed");
+            }
+
+            if (new_password_field.value !== confirm_password_field.value) {
+                confirm_password_field.setCustomValidity("<fmt:message key="label.passwords_dont_match" bundle="${messages}"/>");
+            }
+
+            if (password_form.reportValidity()){
+                password_form.submit();
+            }
+        }
+    </script>
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
         <div class="col-12 col-md-9">
             <div >
-                <form method="post" action="/controller" accept-charset="UTF-8" >
+                <form method="post" action="/controller" id="user_form" novalidate onsubmit="event.preventDefault(); validatePasswordForm();" accept-charset="UTF-8" >
                     <input type="hidden" name="command" value="register" />
 
                     <div class="form-group row">
@@ -54,9 +77,9 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="password" class="col-6 col-form-label required"><fmt:message key="label.password" bundle="${messages}"/></label>
+                        <label for="new_password" class="col-6 col-form-label required"><fmt:message key="label.password" bundle="${messages}"/></label>
                         <div class="col-6">
-                            <input type = "password" class="form-control" id="password" name = "user_password" value="" pattern="[\w!()*&^%$@]{1,12}" placeholder=<fmt:message key="label.password" bundle="${messages}"/> required/>
+                            <input type = "password" class="form-control" id="new_password" onkeyup="this.setCustomValidity('')" name = "user_password" value="" pattern="[\w!()*&^%$@]{3,12}" placeholder=<fmt:message key="label.password" bundle="${messages}"/> required/>
                             <small class="form-text text-muted">
                                 <fmt:message key="label.password.password_info" bundle="${messages}"/>
                             </small>
@@ -66,7 +89,7 @@
                     <div class="form-group row">
                         <label for="confirm_password" class="col-6 col-form-label required"><fmt:message key="label.confirm_password" bundle="${messages}"/></label>
                         <div class="col-6">
-                            <input type = "password" class="form-control" id="confirm_password" name = "confirm_password" value="" placeholder= <fmt:message key="label.placeholder.confirm_password" bundle="${messages}"/> pattern="[\w!()*&^%$@]{1,12}" required/>
+                            <input type = "password" class="form-control" id="confirm_password" onkeyup="this.setCustomValidity('')" name = "confirm_password" value="" placeholder= <fmt:message key="label.placeholder.confirm_password" bundle="${messages}"/> pattern="[\w!()*&^%$@]{3,12}" required/>
                             <small class="form-text text-muted">
                                 <fmt:message key="label.password.password_info" bundle="${messages}"/>
                             </small>
@@ -94,29 +117,12 @@
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-        </div>--%>
+
     </div>
 </div>
 
 
 <jsp:include page="../footer.jsp"/>
-<script >
-    var password = document.getElementById("password")
-        , confirm_password = document.getElementById("confirm_password");
-
-    function validatePassword(){
-        if(password.value != confirm_password.value) {
-            confirm_password.setCustomValidity("Passwords Don't Match");
-        } else {
-            confirm_password.setCustomValidity('');
-        }
-    }
-
-    password.onchange = validatePassword;
-    confirm_password.onkeyup = validatePassword;
-</script>
 
 </body>
 </html>

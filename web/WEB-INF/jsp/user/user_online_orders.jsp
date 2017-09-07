@@ -17,7 +17,7 @@
     <%@include file="../common_imports.jsp"%>
 </head>
 <body background="image/books-484766_1920.jpg">
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
@@ -153,19 +153,6 @@
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-                <c:choose>
-                    <c:when test="${user.role == Role.LIBRARIAN}">
-                        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role == Role.CLIENT}">
-                        <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-                    </c:when>
-                </c:choose>
-
-        </div>--%>
 
     </div>
 </div>

@@ -14,7 +14,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
 
@@ -50,13 +50,7 @@
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
-                    key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message
-                    key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
 
-        </div>--%>
     </div>
 
 </div>

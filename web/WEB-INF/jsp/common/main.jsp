@@ -13,7 +13,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-    <%@include file="../header.jsp"%>
+    <jsp:include page="../header.jsp"/>
 
     <div class="container">
         <div class="row row-offcanvas row-offcanvas-right">
@@ -22,10 +22,7 @@
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Toggle nav</button>
                 </p>
                 <div class="jumbotron">
-                    <ctg:welcome-tag />
-                    <h6 class="form-signin-heading"><fmt:message key="label.login_to_account" bundle="${messages}"/></h6>
-                    <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap123. Try some
-                        responsive-range viewport sizes to see it in action.</p>
+                    <p><fmt:message key="label.welcome_message" bundle="${messages}"/> </p>
                 </div>
 
                 <div class="row">

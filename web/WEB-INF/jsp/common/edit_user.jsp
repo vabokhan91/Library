@@ -13,17 +13,40 @@
 <head>
     <title><fmt:message key="label.user.edit_user" bundle="${messages}"/></title>
     <%@include file="../common_imports.jsp"%>
+    <script>
+        function validatePasswordForm() {
+            var password_form = document.getElementById('user_form'),
+                new_password_field = document.getElementById("new_password"),
+                confirm_password_field = document.getElementById("confirm_password");
+
+            if (new_password_field &&!new_password_field.checkValidity()) {
+                new_password_field.setCustomValidity("<fmt:message key="label.password_not valid" bundle="${messages}"/>");
+            }
+
+            if (confirm_password_field && !confirm_password_field.checkValidity()) {
+                confirm_password_field.setCustomValidity("confirm password failed");
+            }
+
+            if (new_password_field && confirm_password_field && new_password_field.value !== confirm_password_field.value) {
+                confirm_password_field.setCustomValidity("<fmt:message key="label.passwords_dont_match" bundle="${messages}"/>");
+            }
+
+            if (password_form.reportValidity()){
+                password_form.submit();
+            }
+        }
+    </script>
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
 
         <div class="col-12 col-md-9">
             <div >
-                <form method="post" action="/controller" accept-charset="UTF-8" enctype="multipart/form-data">
+                <form method="post" action="/controller" id="user_form" accept-charset="UTF-8" novalidate onsubmit="event.preventDefault(); validatePasswordForm();" enctype="multipart/form-data">
                     <input type="hidden" name="command" value="edit_user"/>
                     <c:forEach items="${foundUser}" var="found_user">
                         <input type="hidden" name="user_id" value="${found_user.id}"/>
@@ -53,12 +76,13 @@
                         <c:choose>
                                     <c:when test="${user.role == Role.ADMINISTRATOR}">
                                         <div class="form-group row">
-                                        <label for="role" class="col-3 col-form-label required" style="margin-right: 13px" ><fmt:message key="label.role" bundle="${messages}"/> <c:out value="${found_user.role.name}"/></label>
-                                            <select id="role" class="form-control col-5"  name="user_role" required>
+                                        <label for="role" class="col-3 col-form-label required" ><fmt:message key="label.role" bundle="${messages}"/> <c:out value="${found_user.role.name}"/></label>
+                                            <div class="col-5"><select id="role" class="form-control"  name="user_role" required>
                                                 <option value="${found_user.role}" ><fmt:message key="label.choose_role" bundle="${messages}" /> </option>
                                                 <option value="${Role.CLIENT}" ><fmt:message key="label.user.client" bundle="${messages}" /> </option>
                                                 <option value="${Role.LIBRARIAN}"><fmt:message key="label.user.librarian" bundle="${messages}"/> </option>
-                                            </select><br/>
+                                            </select>
+                                            </div><br/>
                                         </div>
                                     </c:when>
                                     <c:when test="${user.role == Role.LIBRARIAN}">
@@ -87,9 +111,9 @@
                         <c:choose>
                             <c:when test="${user.role==Role.ADMINISTRATOR}">
                                 <div class="form-group row">
-                                    <label for="login" class="col-3 col-form-label required"><fmt:message key="label.login.login" bundle="${messages}"/></label>
+                                    <label for="login" class="col-3 col-form-label "><fmt:message key="label.login.login" bundle="${messages}"/></label>
                                     <div class="col-5">
-                                        <input type = "text" class="form-control" id="login" name="login" value="${found_user.login}" pattern="[\w!()*&^%$@]{1,12}" required/>
+                                        <input type = "text" class="form-control" id="login" name="login" value="${found_user.login}" pattern="[\w!()*&^%$@]{5,12}" />
                                         <small class="form-text text-muted">
                                             <fmt:message key="label.login.login_info" bundle="${messages}"/>
                                         </small>
@@ -97,9 +121,9 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="password" class="col-3 col-form-label required"><fmt:message key="label.password" bundle="${messages}"/></label>
+                                    <label for="new_password" class="col-3 col-form-label "><fmt:message key="label.password" bundle="${messages}"/></label>
                                     <div class="col-5">
-                                        <input type = "password" class="form-control" id="password" name="new_password" value="" pattern="[\w!()*&^%$@]{1,12}"/>
+                                        <input type = "password" class="form-control" id="new_password" onkeyup="this.setCustomValidity('')" name="new_password" value="" pattern="[\w!()*&^%$@]{3,12}" />
                                         <small class="form-text text-muted">
                                             <fmt:message key="label.password.password_info" bundle="${messages}"/>
                                         </small>
@@ -107,9 +131,9 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="confirm_password" class="col-3 col-form-label required"><fmt:message key="label.password.repeat_password" bundle="${messages}"/></label>
+                                    <label for="confirm_password" class="col-3 col-form-label "><fmt:message key="label.password.repeat_password" bundle="${messages}"/></label>
                                     <div class="col-5">
-                                        <input type = "password" class="form-control" id="confirm_password" name="confirm_password" value="" pattern="[\w!()*&^%$@]{1,12}"/>
+                                        <input type = "password" class="form-control" id="confirm_password" onkeyup="this.setCustomValidity('')" name="confirm_password" value="" pattern="[\w!()*&^%$@]{3,12}" />
                                     </div>
                                 </div>
 
@@ -137,42 +161,8 @@
         <jsp:include page="../navigation_sidebar.jsp"/>
 
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <c:if test="${not empty user}">
-
-                <c:choose>
-                    <c:when test="${user.role==Role.ADMINISTRATOR}">
-                        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message key="label.button.to_main_menu"
-                                                                                                           bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role==Role.LIBRARIAN}">
-                        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-                    </c:when>
-                </c:choose>
-            </c:if>
-
-        </div>--%>
-
     </div>
 </div>
-
-<script >
-    var password = document.getElementById("password")
-        , confirm_password = document.getElementById("confirm_password");
-
-    function validatePassword(){
-        if(password.value != confirm_password.value) {
-            confirm_password.setCustomValidity("Passwords Don't Match");
-        } else {
-            confirm_password.setCustomValidity('');
-        }
-    }
-
-    password.onchange = validatePassword;
-    confirm_password.onkeyup = validatePassword;
-</script>
 
 
 <jsp:include page="../footer.jsp"/>

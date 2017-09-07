@@ -19,7 +19,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
 
@@ -111,30 +111,7 @@
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message
-                    key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <c:if test="${not empty user}">
 
-                <c:choose>
-                    <c:when test="${user.role.ordinal()==3}">
-                        <a class="btn btn-secondary" href="/controller?command=to_admin_page"><fmt:message
-                                key="label.button.to_main_menu"
-                                bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role.ordinal()==2}">
-                        <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                                key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
-                    </c:when>
-                    <c:when test="${user.role.ordinal()==1}">
-                        <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message
-                                key="label.button.to_main_menu"
-                                bundle="${messages}"/> </a><br/>
-                    </c:when>
-                </c:choose>
-            </c:if>
-
-        </div>--%>
 
 </div>
 
@@ -142,49 +119,6 @@
 
 <jsp:include page="../footer.jsp"/>
 
-
-<%--<form method="post" action="/controller" accept-charset="UTF-8">
-    <input type="hidden" name="command" value="add_order">
-    <c:forEach items="${foundBook}" var="item">
-
-        <fmt:message key="label.book.id" bundle="${messages}"/> : ${item.getId()}<br/>
-        <fmt:message key="label.book.title" bundle="${messages}"/> : ${item.getTitle()}<br/>
-        <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
-        <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
-        <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
-        <fmt:message key="label.book.publisher" bundle="${messages}"/> :<c:if
-            test="${not empty item.publisher}">${item.publisher.name}</c:if><br/>
-        <fmt:message key="label.book.author" bundle="${messages}"/> :
-        <c:forEach items="${item.authors}" var="authors">
-            ${authors.toString()}
-        </c:forEach><br/>
-        <fmt:message key="label.book.genre" bundle="${messages}"/> :
-        <c:forEach items="${item.genre}" var="genres">
-            ${genres.getName()}
-        </c:forEach><br/>
-        <br/>
-        <fmt:message key="label.book.orderStatus" bundle="${messages}"/> : ${item.orderStatus}<br/>
-
-        <fmt:message key="label.book.type_of_order" bundle="${messages}"/> :
-        <select name="type_of_order" required>
-            <option value="subscription"><fmt:message key="label.book.subscription" bundle="${messages}"/></option>
-            <option value="reading_room"><fmt:message key="label.book.reading_room" bundle="${messages}"/></option>
-        </select><br/>
-        <fmt:message key="label.book.enter_library_card" bundle="${messages}"/> : <input type="text" name="library_card"
-                                                                                         value="" required
-                                                                                         pattern="\d{1,5}"/><br/>
-        <input type="hidden" name="book_id" value="${foundBook.get(0).id}"/>
-        <input type="hidden" name="librarian_id" value="${sessionScope.user.id}">
-    </c:forEach>
-    <input type="submit" name="submit" value=
-    <fmt:message key="label.button.book.add_order" bundle="${messages}"/>/>
-</form>
-<br/>
-
-<a href="/controller?command=to_librarian_main_page"><fmt:message key="label.button.to_main_menu"
-                                                                  bundle="${messages}"/> </a><br/>
-
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>--%>
 
 
 </body>

@@ -16,7 +16,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
@@ -40,12 +40,7 @@
                                 </div>
                             </div>
 
-                            <%--<div class="col-12 required">
-                                <fmt:message key="label.book.enter_genre_name" bundle="${messages}"/> </div><br/>
 
-                            <input type="text" class="form-control" name="genre_name" value="" placeholder=<fmt:message key="label.placeholder.genre_name" bundle="${messages}"/> pattern="[a-zA-Zа-яА-Я\s]{1,30}" required>
-
-                            <input class="btn btn-secondary" type="submit" value="<fmt:message key="label.genre.add_genre" bundle="${messages}"/> ">--%>
                         </form>
                     </div>
                     <c:choose>
@@ -69,12 +64,7 @@
 
 
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <a class="btn btn-secondary" href="/controller?command=to_librarian_main_page"><fmt:message
-                    key="label.button.to_main_menu" bundle="${messages}"/> </a><br/>
 
-        </div>--%>
     </div>
 </div>
 

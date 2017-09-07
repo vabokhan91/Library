@@ -11,16 +11,9 @@ import by.epam.bokhan.entity.User;
 import by.epam.bokhan.exception.DAOException;
 import by.epam.bokhan.exception.ReceiverException;
 import by.epam.bokhan.receiver.UserReceiver;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.Part;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import static by.epam.bokhan.receiver.impl.ReceiverConstant.*;
@@ -119,7 +112,7 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public void addUser(RequestContent requestContent) throws ReceiverException {
         UserDAO userDAO = new UserDAOImpl();
-        boolean isUserAdded;
+        boolean isUserAdded = false;
         String name = (String) requestContent.getRequestParameters().get(USER_NAME);
         String surname = (String) requestContent.getRequestParameters().get(USER_SURNAME);
         String patronymic = (String) requestContent.getRequestParameters().get(USER_PATRONYMIC);
@@ -157,7 +150,7 @@ public class UserReceiverImpl implements UserReceiver {
                 }else {
                     requestContent.insertAttribute(IS_LOGIN_EXIST, isLoginExist);
                 }
-            }else if(isUserNameValid(name) && isUserSurnameValid(surname) && isUserPatronymicValid(patronymic) &&
+            }else if(isUserNameValid(name) && isUserSurnameValid(surname) && isUserPatronymicValid(patronymic) && isStringEmpty(password) &&
                     isUserAddressValid(address) && isUserMobilePhoneValid(phone) && isUserRoleValid(roleValue)){
                 Role role = Role.valueOf(roleValue.toUpperCase());
                 user.setName(name);
@@ -175,6 +168,7 @@ public class UserReceiverImpl implements UserReceiver {
                 isUserAdded = userDAO.addUser(user);
                 requestContent.insertAttribute(USER_IS_ADDED, isUserAdded);
             }
+            requestContent.insertAttribute(USER_IS_ADDED, isUserAdded);
         } catch (DAOException e) {
             throw new ReceiverException(e);
         }

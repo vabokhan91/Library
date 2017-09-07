@@ -17,7 +17,7 @@
 </head>
 <body background="image/books-484766_1920.jpg">
 
-<%@include file="../header.jsp"%>
+<jsp:include page="../header.jsp"/>
 
 <div class="container">
 
@@ -27,11 +27,7 @@
             <p class="float-right d-md-none">
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Toggle nav</button>
             </p>
-            <div class="jumbotron">
-                <h1>Hello, world!</h1>
-                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some
-                    responsive-range viewport sizes to see it in action.</p>
-            </div>
+
             <div class="row">
 
                     <div class="col-10">
@@ -72,11 +68,7 @@
 
         <jsp:include page="../navigation_sidebar.jsp"/>
 
-        <%--<div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
-            <a class="btn btn-secondary" href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a><br/>
-            <a class="btn btn-secondary" href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu"
-                                                                                                   bundle="${messages}"/> </a><br/>
-        </div>--%>
+
     </div>
 
 </div>
@@ -89,37 +81,6 @@
 
 
 
-
-
-<%--<c:forEach items="${foundBook}" var="item">
-    <fmt:message key="label.book.title" bundle="${messages}"/> : ${item.title}<br/>
-    <fmt:message key="label.book.number_of_pages" bundle="${messages}"/> : ${item.pages}<br/>
-    <fmt:message key="label.book.year_of_publishing" bundle="${messages}"/> : ${item.year}<br/>
-    <fmt:message key="label.book.isbn" bundle="${messages}"/> : ${item.isbn}<br/>
-    <fmt:message key="label.book.publisher" bundle="${messages}"/> : ${item.publisher.name}<br/>
-    <fmt:message key="label.book.author" bundle="${messages}"/> :
-    <c:forEach items="${item.authors}" var="authors">
-        ${authors.toString()}
-    </c:forEach><br/>
-    <fmt:message key="label.book.genre" bundle="${messages}"/> :
-    <c:forEach items="${item.genre}" var="genres">
-        ${genres.getName()}
-    </c:forEach><br/>
-    <form method="post" action="/controller" accept-charset="UTF-8">
-        <input type="hidden" name="command" value="add_online_order"/>
-        <input type="hidden" name="book_id" value="${item.id}"/>
-        <input type="hidden" name="library_card" value="${sessionScope.user.libraryCardNumber}"/>
-        <input type="submit" name="submit" value=<fmt:message key="label.button.book.order"
-                                                              bundle="${messages}"/>>
-    </form>
-</c:forEach><br/>
-
-
-<a href="/controller?command=to_user_main_page"><fmt:message key="label.button.to_main_menu" bundle="${messages}"/> </a>
-<br/>
-
-<a href="/controller?command=to_main_page"><fmt:message key="label.button.to_main_page" bundle="${messages}"/> </a>
-<br/>--%>
 
 
 </body>
