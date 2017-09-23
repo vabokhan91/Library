@@ -174,7 +174,7 @@ public class BookValidator {
 
         return isPatronymicValid;
     }
-    /*Checks if book location is valid*/
+    /*Checks book location is valid*/
     public static boolean isBookLocationValid(String locationValue) {
         boolean isLocationValid = false;
         if (locationValue != null) {
